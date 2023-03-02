@@ -76,6 +76,7 @@ void sound_reset(u8 reverbPresetId);
 
 void audio_init(void); // in load.c
 
+// Use of function recommended because of if statement guard or something idk
 void do_the_wii_crash_haha_lol_funny_meme_xd(void);
 
 #endif // AUDIO_EXTERNAL_H

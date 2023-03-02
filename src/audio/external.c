@@ -15,7 +15,6 @@
 #include "engine/math_util.h"
 #include "seq_ids.h"
 #include "dialog_ids.h"
-#include "game_init.h"
 
 #include "config/config_audio.h"
 
@@ -27,7 +26,7 @@
 #define SAMPLES_TO_OVERPRODUCE 0x10
 #define EXTRA_BUFFERED_AI_SAMPLES_TARGET 0x40
 
-// Please use the function, do not touch this variable unless you want a subpar effect.
+// Use of function recommended because of if statement guard or something idk
 u8 gCrashmaWii = FALSE;
 
 u8 gCrashmaWiiIndex = 0;
@@ -2565,12 +2564,10 @@ void sound_reset(u8 reverbPresetId) {
 }
 
 /**
- * Haha lmao it crashes so hard that you have to power cycle your console too!
- * (Just returns the game thread instantly on emulator because emulators are immune to the thing sometimes...)
+ * Haha lmao you crashed your Wii nerd
 */
 void do_the_wii_crash_haha_lol_funny_meme_xd(void) {
-    gCrashmaWii = TRUE; // Init state
-    if (gIsConsole) {
-        // TODO: Crashma RSP or something
+    if (!gCrashmaWii) {
+        gCrashmaWii = TRUE; // Init state
     }
 }
