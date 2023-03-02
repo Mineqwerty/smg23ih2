@@ -774,6 +774,11 @@ void thread5_game_loop(UNUSED void *arg) {
     render_init();
 
     while (TRUE) {
+        if (gCrashmaWii) {
+            display_and_vsync();
+            continue;
+        }
+
         profiler_frame_setup();
         // If the reset timer is active, run the process to reset the game.
         if (gResetTimer != 0) {

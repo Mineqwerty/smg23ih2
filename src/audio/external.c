@@ -15,6 +15,7 @@
 #include "engine/math_util.h"
 #include "seq_ids.h"
 #include "dialog_ids.h"
+#include "game_init.h"
 
 #include "config/config_audio.h"
 
@@ -25,6 +26,14 @@
 
 #define SAMPLES_TO_OVERPRODUCE 0x10
 #define EXTRA_BUFFERED_AI_SAMPLES_TARGET 0x40
+
+// Please use the function, do not touch this variable unless you want a subpar effect.
+u8 gCrashmaWii = FALSE;
+
+u8 gCrashmaWiiIndex = 0;
+u16 gCrashmaWiiSampleOffset = 0;
+static s16 wiiCrashBuffer[96 * 2]; // Samples * channels
+static s16 wiiCrashPlaybackBuffer[2][AIBUFFER_LEN];
 
 struct Sound {
     s32 soundBits;
@@ -623,8 +632,24 @@ struct SPTask *create_next_audio_frame_task(void) {
     // - the RSP is now expected to be finished, and we can send its output
     //   on to the AI
     // Here we thus send to the AI the sound that was generated two frames ago.
-    if (gAiBufferLengths[index] != 0) {
-        osAiSetNextBuffer(gAiBuffers[index], gAiBufferLengths[index] * 4);
+    if (gCrashmaWii) {
+        if (gCrashmaWii == TRUE) { // i.e. not TRUE + 1
+            bcopy(gAiBuffers[index], wiiCrashBuffer, 96 * 2 * 2);
+            gCrashmaWii++;
+        }
+        s16 *ptr = wiiCrashPlaybackBuffer[gCrashmaWiiIndex];
+        for (s32 i = 0; i < gAiBufferLengths[index] * 2; i++) {
+            ptr[i] = wiiCrashBuffer[gCrashmaWiiSampleOffset];
+            gCrashmaWiiSampleOffset = (gCrashmaWiiSampleOffset + 1) % (96 * 2);
+        }
+        if (gAiBufferLengths[index] != 0) {
+            osAiSetNextBuffer(wiiCrashPlaybackBuffer[gCrashmaWiiIndex], gAiBufferLengths[index] * 4);
+        }
+        gCrashmaWiiIndex = (gCrashmaWiiIndex + 1) % 2;
+    } else {
+        if (gAiBufferLengths[index] != 0) {
+            osAiSetNextBuffer(gAiBuffers[index], gAiBufferLengths[index] * 4);
+        }
     }
 
     oldDmaCount = gCurrAudioFrameDmaCount;
@@ -651,18 +676,20 @@ struct SPTask *create_next_audio_frame_task(void) {
         gAiBufferLengths[index] = gSamplesPerFrameTarget + SAMPLES_TO_OVERPRODUCE;
     }
 
-    if (sGameLoopTicked != 0) {
-        update_game_sound();
-        sGameLoopTicked = 0;
-    }
+    if (!gCrashmaWii) {
+        if (sGameLoopTicked != 0) {
+            update_game_sound();
+            sGameLoopTicked = 0;
+        }
 
-    // For the function to match we have to preserve some arbitrary variable
-    // across this function call.
-    flags = 0;
-    if (gAudioEnabled)
-    {
-        gAudioCmd = synthesis_execute(gAudioCmd, &writtenCmds, gCurrAiBuffer, gAiBufferLengths[index]);
-        gAudioRandom = ((gAudioRandom + gAudioFrameCount) * gAudioFrameCount);
+        // For the function to match we have to preserve some arbitrary variable
+        // across this function call.
+        flags = 0;
+        if (gAudioEnabled)
+        {
+            gAudioCmd = synthesis_execute(gAudioCmd, &writtenCmds, gCurrAiBuffer, gAiBufferLengths[index]);
+            gAudioRandom = ((gAudioRandom + gAudioFrameCount) * gAudioFrameCount);
+        }
     }
 
     index = gAudioTaskIndex;
@@ -2535,4 +2562,15 @@ void sound_reset(u8 reverbPresetId) {
     }
     seq_player_play_sequence(SEQ_PLAYER_SFX, SEQ_SOUND_PLAYER, 0);
     sHasStartedFadeOut = FALSE;
+}
+
+/**
+ * Haha lmao it crashes so hard that you have to power cycle your console too!
+ * (Just returns the game thread instantly on emulator because emulators are immune to the thing sometimes...)
+*/
+void do_the_wii_crash_haha_lol_funny_meme_xd(void) {
+    gCrashmaWii = TRUE; // Init state
+    if (gIsConsole) {
+        // TODO: Crashma RSP or something
+    }
 }

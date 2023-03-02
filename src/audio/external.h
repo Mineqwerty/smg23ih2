@@ -35,6 +35,9 @@ extern f32 gGlobalSoundSource[3];
 // defined in data.c, used by the game
 extern u32 gAudioRandom;
 
+// Please use the function, do not touch this variable unless you want a subpar effect.
+extern u8 gCrashmaWii;
+
 extern s8 sLevelAreaReverbs[LEVEL_COUNT][3];
 
 struct SPTask *create_next_audio_frame_task(void);
@@ -72,5 +75,7 @@ void play_toads_jingle(void);
 void sound_reset(u8 reverbPresetId);
 
 void audio_init(void); // in load.c
+
+void do_the_wii_crash_haha_lol_funny_meme_xd(void);
 
 #endif // AUDIO_EXTERNAL_H
