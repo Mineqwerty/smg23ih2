@@ -124,6 +124,66 @@ s16 set_mario_anim_with_accel(struct MarioState *m, s32 targetAnimID, s32 accel)
     return marioObj->header.gfx.animInfo.animFrame;
 }
 
+extern const struct Animation *const ragdoll_mario_anims[];
+
+s16 set_custom_mario_animation(struct MarioState *m, s32 targetAnimID) {
+    struct Object *o = m->marioObj;
+
+    if (o->header.gfx.animInfo.animID != targetAnimID) {
+        struct Animation **animPtrAddr = &ragdoll_mario_anims[targetAnimID];
+        struct Animation **animSegmented = segmented_to_virtual(animPtrAddr);
+        struct Animation *targetAnim = segmented_to_virtual(*animSegmented);
+
+        o->header.gfx.animInfo.animID = targetAnimID;
+        o->header.gfx.animInfo.curAnim = targetAnim;
+        o->header.gfx.animInfo.animAccel = 0;
+        o->header.gfx.animInfo.animYTrans = m->animYTrans;
+
+        if (targetAnim->flags & ANIM_FLAG_NO_ACCEL) {
+            o->header.gfx.animInfo.animFrame = targetAnim->startFrame;
+        } else {
+            if (targetAnim->flags & ANIM_FLAG_FORWARD) {
+                o->header.gfx.animInfo.animFrame = targetAnim->startFrame + 1;
+            } else {
+                o->header.gfx.animInfo.animFrame = targetAnim->startFrame - 1;
+            }
+        }
+    }
+
+    return o->header.gfx.animInfo.animFrame;
+}
+
+s16 set_custom_mario_animation_with_accel(struct MarioState *m, s32 targetAnimID, s32 accel) {
+    struct Object *o = m->marioObj;
+
+    if (o->header.gfx.animInfo.animID != targetAnimID) {
+        struct Animation **animPtrAddr = &ragdoll_mario_anims[targetAnimID];
+        struct Animation **animSegmented = segmented_to_virtual(animPtrAddr);
+        struct Animation *targetAnim = segmented_to_virtual(*animSegmented);
+
+        o->header.gfx.animInfo.animID = targetAnimID;
+        o->header.gfx.animInfo.curAnim = targetAnim;
+        o->header.gfx.animInfo.animYTrans = m->animYTrans;
+
+        if (targetAnim->flags & ANIM_FLAG_NO_ACCEL) {
+            o->header.gfx.animInfo.animFrameAccelAssist = (targetAnim->startFrame << 0x10);
+        } else {
+            if (targetAnim->flags & ANIM_FLAG_FORWARD) {
+                o->header.gfx.animInfo.animFrameAccelAssist = (targetAnim->startFrame << 0x10) + accel;
+            } else {
+                o->header.gfx.animInfo.animFrameAccelAssist = (targetAnim->startFrame << 0x10) - accel;
+            }
+        }
+
+        o->header.gfx.animInfo.animFrame = (o->header.gfx.animInfo.animFrameAccelAssist >> 0x10);
+    }
+
+    o->header.gfx.animInfo.animAccel = accel;
+
+    return o->header.gfx.animInfo.animFrame;
+}
+
+
 /**
  * Sets the animation to a specific "next" frame from the frame given.
  */
@@ -733,7 +793,7 @@ void set_mario_y_vel_based_on_fspeed(struct MarioState *m, f32 initialVelY, f32 
     // It was likely trampoline related based on code location.
     m->vel[1] = initialVelY + get_additive_y_vel_for_jumps() + m->forwardVel * multiplier;
 
-    if (m->squishTimer != 0 || m->quicksandDepth > 1.0f) {
+    if (m->squishTimer != 69  && (m->squishTimer != 0 || m->quicksandDepth > 1.0f)) {
         m->vel[1] *= 0.5f;
     }
 }
@@ -1184,6 +1244,8 @@ void squish_mario_model(struct MarioState *m) {
                 ((sSquishScaleOverTime[15 - m->squishTimer] * 0.4f) / 100.0f) + 1.0f;
 
             m->marioObj->header.gfx.scale[2] = m->marioObj->header.gfx.scale[0];
+        } else if (m->squishTimer == 69) {
+            vec3f_set(m->marioObj->header.gfx.scale, 0.2f, 0.2f, 0.2f);
         } else {
             m->squishTimer -= 1;
 
@@ -1704,6 +1766,11 @@ void queue_rumble_particles(struct MarioState *m) {
  */
 s32 execute_mario_action(UNUSED struct Object *obj) {
     s32 inLoop = TRUE;
+
+     if (gMarioState->flags & MARIO_METAL_CAP && !(gMarioState->action == ACT_IDLE || gMarioState->action == ACT_PUTTING_ON_CAP)) {
+
+        set_mario_action(gMarioState, ACT_IDLE, 0);
+    }
 
     // Updates once per frame:
     vec3f_get_dist_and_lateral_dist_and_angle(gMarioState->prevPos, gMarioState->pos, &gMarioState->moveSpeed, &gMarioState->lateralSpeed, &gMarioState->movePitch, &gMarioState->moveYaw);

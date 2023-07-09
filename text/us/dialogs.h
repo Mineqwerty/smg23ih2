@@ -219,20 +219,17 @@ Do you want to Save?\n\
 \n\
 //You Bet//Not Now"))
 
-DEFINE_DIALOG(DIALOG_015, 1, 4, 30, 200, _("\
-You can punch enemies to\n\
-knock them down. Press [A]\n\
-to jump, [B] to punch.\n\
-Press [A] then [B] to Kick.\n\
-To pick something up,\n\
-press [B], too. To throw\n\
-something you're holding,\n\
-press [B] again."))
+DEFINE_DIALOG(DIALOG_015, 1, 6, 30, 200, _("\
+Mario: look its capy!!!\n\
+I can thrown cappy to poses\n\
+emenies!!!!"))
 
 DEFINE_DIALOG(DIALOG_016, 1, 3, 30, 200, _("\
-Hop on the shiny shell and\n\
-ride wherever you want to\n\
-go! Shred those enemies!"))
+THIS IS THE LEAD CAP\n\
+not cloud cap otr metal\n\
+cap!\n\
+the diference is lead\n\
+is hevier!"))
 
 DEFINE_DIALOG(DIALOG_017, 1, 4, 30, 200, _("\
 I'm the Big Bob-omb, lord\n\
@@ -261,14 +258,15 @@ this royal turf? I think\n\
 that you cannot!"))
 
 DEFINE_DIALOG(DIALOG_018, 1, 4, 30, 200, _("\
-I'm sleeping because...\n\
-...I'm sleepy. I don't\n\
-like being disturbed.\n\
-Please walk quietly."))
+kaiso area warning hard"))
 
-DEFINE_DIALOG(DIALOG_019, 1, 2, 30, 200, _("\
-Shhh! Please walk\n\
-quietly in the hallway!"))
+DEFINE_DIALOG(DIALOG_019, 1, 6, 95, 150, _("\
+Dear Mario:\n\
+AAAAAAAAAAAAAAAAAA\n\
+AAAAAAAAAAAAAAAAAA\n\
+AAAAAAAAAAAAAAAAAA\n\
+AAAAAAAAAAAAAAAAAA\n\
+AAAAAAAAAAAAAAAAAH"))
 
 DEFINE_DIALOG(DIALOG_020, 1, 6, 95, 150, _("\
 Dear Mario:\n\

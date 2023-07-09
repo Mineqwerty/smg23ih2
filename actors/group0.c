@@ -30,3 +30,11 @@
 #include "src/s2d_engine/s2d_config.h"
 #include FONT_C_FILE
 #endif
+
+#include "mario/anims/data.inc.c"
+#include "mario/anims/table.inc.c"
+#include "ragdoll_mario/anims/data.inc.c"
+#include "ragdoll_mario/anims/table.inc.c"
+#include "ragdoll_mario/model.inc.c"
+#include "supergoomb/model.inc.c"
+#include "cappy/model.inc.c"

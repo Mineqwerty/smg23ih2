@@ -449,6 +449,7 @@ void bhv_chain_chomp_gate_update(void);
 void bhv_wiggler_update(void);
 void bhv_wiggler_body_part_update(void);
 void bhv_enemy_lakitu_update(void);
+void bhv_lakitu_adopt_red_coin(void);
 void bhv_camera_lakitu_init(void);
 void bhv_camera_lakitu_update(void);
 void bhv_cloud_update(void);
@@ -576,3 +577,10 @@ extern struct WaterDropletParams gShallowWaterSplashDropletParams;
 extern struct WaterDropletParams gShallowWaterWaveDropletParams;
 
 #endif // BEHAVIOR_ACTIONS_H
+
+void bhv_troll_water_level_init(void);
+void bhv_troll_water_level_loop(void);
+void bhv_sponge_circle_init(void);
+void bhv_sponge_circle_loop(void);
+void bhv_endless_stairs_music_controller_init(void);
+void bhv_endless_stairs_music_controller_loop(void);

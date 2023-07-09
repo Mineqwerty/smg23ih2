@@ -791,6 +791,26 @@ void geo_process_scale(struct GraphNodeScale *node) {
     append_dl_and_return((struct GraphNodeDisplayList *)node);
 }
 
+static void geo_process_scale_better(struct GraphNodeScaleBetter *node) {
+    UNUSED Mat4 transform;
+    Vec3f scaleVec;
+    Mtx *mtx = alloc_display_list(sizeof(*mtx));
+
+    vec3f_set(scaleVec, node->scaleX, node->scaleY, node->scaleZ);
+    mtxf_scale_vec3f(gMatStack[gMatStackIndex + 1], gMatStack[gMatStackIndex], scaleVec);
+    gMatStackIndex++;
+    mtxf_to_mtx(mtx, gMatStack[gMatStackIndex]);
+    gMatStackFixed[gMatStackIndex] = mtx;
+    if (node->displayList != NULL) {
+        geo_append_display_list(node->displayList, node->node.flags >> 8);
+    }
+    if (node->node.children != NULL) {
+        geo_process_node_and_siblings(node->node.children);
+    }
+    gMatStackIndex--;
+}
+
+
 /**
  * Process a billboard node. A transformation matrix is created that makes its
  * children face the camera, and it is pushed on the floating point and fixed
@@ -1301,6 +1321,7 @@ static GeoProcessFunc GeoProcessJumpTable[] = {
     [GRAPH_NODE_TYPE_BILLBOARD           ] = geo_process_billboard,
     [GRAPH_NODE_TYPE_DISPLAY_LIST        ] = geo_process_display_list,
     [GRAPH_NODE_TYPE_SCALE               ] = geo_process_scale,
+    [GRAPH_NODE_TYPE_SCALE_BETTER] = geo_process_scale_better,
     [GRAPH_NODE_TYPE_SHADOW              ] = geo_process_shadow,
     [GRAPH_NODE_TYPE_OBJECT_PARENT       ] = geo_process_object_parent,
     [GRAPH_NODE_TYPE_GENERATED_LIST      ] = geo_process_generated_list,

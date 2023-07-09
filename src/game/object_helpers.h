@@ -59,6 +59,11 @@ enum GeoUpdateLayerTransparencyModes {
     GEO_TRANSPARENCY_MODE_INTER     = 30,
 };
 
+
+Gfx *geo_peach_head_scaler(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
+s32 obj_cappy_collide(struct Object *obj);
+
+
 Gfx *geo_update_projectile_pos_from_parent(s32 callContext, UNUSED struct GraphNode *node, Mat4 mtx);
 Gfx *geo_update_layer_transparency(s32 callContext, struct GraphNode *node, UNUSED void *context);
 Gfx *geo_switch_anim_state(s32 callContext, struct GraphNode *node, UNUSED void *context);

@@ -2808,15 +2808,11 @@ sound_ref .sound_general_grand_star
 sound_ref .sound_general_grand_star_jump
 sound_ref .sound_general_boat_rock
 sound_ref .sound_general_vanish_sfx
-sound_ref .sound_menu_enter_hole
-sound_ref .sound_general_red_coin
-sound_ref .sound_general_birds_fly_away
-sound_ref .sound_general_right_answer
-sound_ref .sound_general_metal_pound
-sound_ref .sound_general_boing1
-sound_ref .sound_general_boing2
-sound_ref .sound_general_yoshi_walk
-sound_ref .sound_general_enemy_alert1
+sound_ref .sound_ragdoll
+sound_ref .sound_sponge
+sound_ref .sound_capture
+
+
 
 .sound_general_activate_cap_switch:
 chan_setbank 5
@@ -4405,6 +4401,30 @@ layer_transpose 1
 layer_portamento 0x81, 19, 255
 layer_note1 31, 0x32, 115
 layer_end
+
+.sound_ragdoll:
+chan_setbank 0
+chan_setinstr 6
+chan_setlayer 0, .layer_AAAA
+chan_end
+
+.sound_sponge:
+chan_setbank 0
+chan_setinstr 7
+chan_setlayer 0, .layer_AAAA
+chan_end
+
+.sound_capture:
+chan_setbank 0
+chan_setinstr 7
+chan_setlayer 0, .layer_AAAA
+chan_end
+
+
+.layer_AAAA:
+  layer_note1 39, 0x100, 127
+  layer_end
+
 
 .channel4_table:
 sound_ref .sound_env_waterfall1

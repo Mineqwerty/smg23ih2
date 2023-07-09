@@ -51,6 +51,8 @@ extern s8 gGamecubeControllerPort;
 extern u8 gIsConsole;
 extern u8 gCacheEmulated;
 extern u8 gBorderHeight;
+extern u8 gShitMusic;
+extern u8 gBetterMarioCam;
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
 extern u8 gCustomDebugMode;
 #endif

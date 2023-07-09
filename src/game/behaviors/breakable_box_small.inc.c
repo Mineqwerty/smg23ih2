@@ -31,7 +31,29 @@ void small_breakable_box_spawn_dust(void) {
 void small_breakable_box_act_move(void) {
     s16 collisionFlags = object_step();
 
-    obj_attack_collided_from_other_object(o);
+    if (o->oCappyObj == NULL) {
+        obj_cappy_collide(o);
+    }
+
+    f32 dist;
+    struct Object *chuckFuck = cur_obj_find_nearest_object_with_behavior(bhvChuckya, &dist);
+
+    if (dist < 200.0f && o->oAction == 0) {
+        o->oCappyObj = chuckFuck;
+        play_sound(SOUND_SPONGE, gMarioState->marioObj->header.gfx.cameraToObject);
+        o->oAction++;
+    }
+
+    if (o->oCappyObj != NULL) {
+        gMarioState->marioObj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_NONE];
+        o->oCappyObj->oPosX = gMarioState->pos[0];
+        o->oCappyObj->oPosY = gMarioState->pos[1];
+        o->oCappyObj->oPosZ = gMarioState->pos[2];
+        o->oPosX = o->oCappyObj->oPosX;
+        o->oPosY = o->oCappyObj->oPosY + 200;
+        o->oPosZ = o->oCappyObj->oPosZ;
+        
+    }
 
     if (collisionFlags == OBJ_COL_FLAG_GROUNDED) {
         cur_obj_play_sound_2(SOUND_GENERAL_SMALL_BOX_LANDING);
@@ -65,7 +87,7 @@ void breakable_box_small_released_loop(void) {
 
     // Despawn, and create a corkbox respawner
     if (o->oBreakableBoxSmallFramesSinceReleased > 900) {
-        create_respawner(MODEL_BREAKABLE_BOX, bhvBreakableBoxSmall, 3000);
+        create_respawner(MODEL_CAPPY, bhvBreakableBoxSmall, 3000);
         o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
     }
 }
@@ -82,7 +104,7 @@ void breakable_box_small_idle_loop(void) {
 
         case OBJ_ACT_DEATH_PLANE_DEATH:
             o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
-            create_respawner(MODEL_BREAKABLE_BOX, bhvBreakableBoxSmall, 3000);
+            create_respawner(MODEL_CAPPY, bhvBreakableBoxSmall, 3000);
             break;
     }
 

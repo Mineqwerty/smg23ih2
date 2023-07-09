@@ -55,7 +55,7 @@ enum GeoLayoutCommands {
     /*0x1B*/ GEO_CMD_COPY_VIEW,
     /*0x1C*/ GEO_CMD_NODE_HELD_OBJ,
     /*0x1D*/ GEO_CMD_NODE_SCALE,
-    /*0x1E*/ GEO_CMD_NOP_1E,
+    GEO_CMD_NODE_SCALE_BETTER,
     /*0x1F*/ GEO_CMD_NOP_1F,
     /*0x20*/ GEO_CMD_NODE_CULLING_RADIUS,
 };
@@ -437,6 +437,11 @@ enum GeoLayoutCommands {
 #define GEO_SCALE(layer, scale) \
     CMD_BBH(GEO_CMD_NODE_SCALE, layer, 0x0000), \
     CMD_W(scale)
+#define GEO_SCALE_BETTER(layer, scaleX, scaleY, scaleZ) \
+    CMD_BBH(GEO_CMD_NODE_SCALE_BETTER, layer, 0x0000), \
+    CMD_W(scaleX),\
+    CMD_W(scaleY),\
+    CMD_W(scaleZ)
 #define GEO_SCALE_WITH_DL(layer, scale, displayList) \
     CMD_BBH(GEO_CMD_NODE_SCALE, (layer | 0x80), 0x0000), \
     CMD_W(scale), \

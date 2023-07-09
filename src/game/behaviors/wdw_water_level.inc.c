@@ -26,7 +26,7 @@ void bhv_water_level_diamond_loop(void) {
                 break;
 
             case WATER_LEVEL_DIAMOND_ACT_IDLE:
-                if (!gWDWWaterLevelChanging && obj_check_if_collided_with_object(o, gMarioObject)) {
+                if (!gWDWWaterLevelChanging && gMarioState->pos[2] < -5000) {
                     o->oAction++; // WATER_LEVEL_DIAMOND_ACT_CHANGE_WATER_LEVEL
                     gWDWWaterLevelChanging = TRUE;
                 }
@@ -35,8 +35,8 @@ void bhv_water_level_diamond_loop(void) {
             case WATER_LEVEL_DIAMOND_ACT_CHANGE_WATER_LEVEL:
                 o->oAngleVelYaw = 0;
                 gEnvironmentLevels[0] = (s32) approach_f32_symmetric(
-                    (f32) gEnvironmentLevels[0], (f32) o->oWaterLevelTriggerTargetWaterLevel, 10.0f);
-                if (gEnvironmentLevels[0] == o->oWaterLevelTriggerTargetWaterLevel) {
+                    (f32) gEnvironmentLevels[0], -10000, 20.0f);
+                if (gEnvironmentLevels[0] == -10000) {
                     if ((s16) o->oFaceAngleYaw == 0) {
                         o->oAction++; // WATER_LEVEL_DIAMOND_ACT_IDLE_SPINNING
                     } else {

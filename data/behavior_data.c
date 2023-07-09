@@ -731,6 +731,7 @@ const BehaviorScript bhvChuckya[] = {
     SPAWN_OBJ(/*Model*/ MODEL_NONE, /*Behavior*/ bhvChuckyaAnchorMario),
     SET_INT(oNumLootCoins, 5),
     SET_INT(oIntangibleTimer, 0),
+    SET_FLOAT(oDrawingDistance, 20000),
     SET_HOME(),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_chuckya_loop),
@@ -4788,6 +4789,7 @@ const BehaviorScript bhvBreakableBoxSmall[] = {
     DROP_TO_FLOOR(),
     SET_HOME(),
     CALL_NATIVE(bhv_breakable_box_small_init),
+    SET_FLOAT(oDrawingDistance, 20000),
     BEGIN_LOOP(),
         SET_INT(oIntangibleTimer, 0),
         CALL_NATIVE(bhv_breakable_box_small_loop),
@@ -5107,6 +5109,7 @@ const BehaviorScript bhvGoomba[] = {
     LOAD_ANIMATIONS(oAnimations, goomba_seg8_anims_0801DA4C),
     SET_HOME(),
     SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 40, /*Gravity*/ -400, /*Bounciness*/ -50, /*Drag strength*/ 1000, /*Friction*/ 1000, /*Buoyancy*/ 0, /*Unused*/ 0, 0),
+    SET_FLOAT(oDrawingDistance, 20000),
     CALL_NATIVE(bhv_goomba_init),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_goomba_update),
@@ -5238,10 +5241,9 @@ const BehaviorScript bhvWigglerBody[] = {
 const BehaviorScript bhvEnemyLakitu[] = {
     BEGIN(OBJ_LIST_PUSHABLE),
     OR_INT(oFlags, (OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
-    LOAD_ANIMATIONS(oAnimations, lakitu_enemy_seg5_anims_050144D4),
-    ANIMATE(ENEMY_LAKITU_ANIM_SPAWN),
     SET_HOME(),
     SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 40, /*Gravity*/ 0, /*Bounciness*/ -50, /*Drag strength*/ 0, /*Friction*/ 0, /*Buoyancy*/ 200, /*Unused*/ 0, 0),
+    CALL_NATIVE(bhv_lakitu_adopt_red_coin),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_enemy_lakitu_update),
     END_LOOP(),
@@ -6080,3 +6082,33 @@ const BehaviorScript bhvIntroScene[] = {
 };
 
 
+
+const BehaviorScript bhvTrollWaterLevel[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    SET_FLOAT(oDrawingDistance, 30000),
+    CALL_NATIVE(bhv_troll_water_level_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_troll_water_level_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSpongeCircle[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    SET_FLOAT(oDrawingDistance, 20000),
+    CALL_NATIVE(bhv_sponge_circle_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_sponge_circle_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvEndlessStairsMusicController[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    SET_FLOAT(oDrawingDistance, 20000),
+    CALL_NATIVE(bhv_endless_stairs_music_controller_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_endless_stairs_music_controller_loop),
+    END_LOOP(),
+};

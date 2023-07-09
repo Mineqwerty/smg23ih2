@@ -18,3 +18,8 @@
 #include "levels/castle_grounds/areas/1/7/geo.inc.c"
 #include "levels/castle_grounds/areas/1/8/geo.inc.c"
 #include "levels/castle_grounds/areas/1/geo.inc.c"
+
+#include "levels/castle_grounds/geo.inc.c"
+
+#include "levels/castle_grounds/troll_water/geo.inc.c"
+#include "levels/castle_grounds/sponge_circle/geo.inc.c"

@@ -16,3 +16,7 @@
 #include "water_splash/geo.inc.c"
 #include "sparkle_animation/geo.inc.c"
 #include "mario/geo.inc.c"
+
+#include "ragdoll_mario/geo.inc.c"
+#include "supergoomb/geo.inc.c"
+#include "cappy/geo.inc.c"

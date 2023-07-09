@@ -66,6 +66,7 @@ enum GraphNodeTypes {
     GRAPH_NODE_TYPE_BILLBOARD,
     GRAPH_NODE_TYPE_DISPLAY_LIST,
     GRAPH_NODE_TYPE_SCALE,
+    GRAPH_NODE_TYPE_SCALE_BETTER,
     GRAPH_NODE_TYPE_SHADOW,
     GRAPH_NODE_TYPE_OBJECT_PARENT,
     GRAPH_NODE_TYPE_GENERATED_LIST,
@@ -294,6 +295,15 @@ struct GraphNodeScale {
     /*0x18*/ f32 scale;
 };
 
+struct GraphNodeScaleBetter
+{
+    /*0x00*/ struct GraphNode node;
+    /*0x14*/ void *displayList;
+    /*0x18*/ f32 scaleX;
+    /*0x1C*/ f32 scaleY;
+    /*0x20*/ f32 scaleZ;
+};
+
 /** GraphNode that draws a shadow under an object.
  *  Almost every object starts with a shadow node.
  *  The shadow type determines the shape (round or rectangular), vertices (4 or 9)
@@ -392,7 +402,9 @@ struct GraphNodeObjectParent        *init_graph_node_object_parent       (struct
 struct GraphNodeGenerated           *init_graph_node_generated           (struct AllocOnlyPool *pool, struct GraphNodeGenerated           *graphNode, GraphNodeFunc gfxFunc, s32 parameter);
 struct GraphNodeBackground          *init_graph_node_background          (struct AllocOnlyPool *pool, struct GraphNodeBackground          *graphNode, u16 background, GraphNodeFunc backgroundFunc, s32 zero);
 struct GraphNodeHeldObject          *init_graph_node_held_object         (struct AllocOnlyPool *pool, struct GraphNodeHeldObject          *graphNode, struct Object *objNode, Vec3s translation, GraphNodeFunc nodeFunc, s32 playerIndex);
-
+struct GraphNodeScaleBetter *init_graph_node_scale_better(struct AllocOnlyPool *pool,
+                                             struct GraphNodeScaleBetter *graphNode, s32 drawingLayer,
+                                             void *displayList, f32 scaleX, f32 scaleY, f32 scaleZ);
 struct GraphNode *geo_add_child       (struct GraphNode *parent, struct GraphNode *childNode);
 struct GraphNode *geo_remove_child    (struct GraphNode *graphNode);
 struct GraphNode *geo_make_first_child(struct GraphNode *newFirstChild);

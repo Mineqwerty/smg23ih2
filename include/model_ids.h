@@ -421,7 +421,6 @@
 // group 16
 #define MODEL_CHILL_BULLY                 0x64        // chilly_chief_geo
 #define MODEL_BIG_CHILL_BULLY             0x65        // chilly_chief_big_geo
-#define MODEL_MONEYBAG                    0x66        // moneybag_geo
 
 // group 17
 #define MODEL_SWOOP                       0x64        // swoop_geo
@@ -548,6 +547,17 @@
 #ifdef IA8_30FPS_COINS
 #define MODEL_SILVER_COIN                 0xE2        // silver_coin_geo
 #define MODEL_SILVER_COIN_NO_SHADOW       0xE3        // silver_coin_no_shadow_geo
+
+
+
+#define MODEL_MARIO_RAGDOLL                 0x100
+#define MODEL_MONEYBAG                    0x101        // moneybag_geo
+
+#define MODEL_TROLL_WATER_LEVEL                 0x120
+#define MODEL_SPONGE_CIRCLE                 0x121
+#define MODEL_CAPPY                 0x122
+
+
 #endif
 
 // Menu Models (overwrites Level Geometry IDs)

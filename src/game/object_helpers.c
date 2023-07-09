@@ -41,6 +41,31 @@ Gfx *geo_update_projectile_pos_from_parent(s32 callContext, UNUSED struct GraphN
     return NULL;
 }
 
+
+Gfx *geo_peach_head_scaler(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx) {
+    struct GraphNodeScaleBetter *scaleNode = (struct GraphNodeScaleBetter *) node->next;
+    struct Object *obj;
+
+    obj = (struct Object *) gCurGraphNodeObject;
+
+    if (callContext == GEO_CONTEXT_RENDER) {
+        if (obj->oTimer > 90) {
+            scaleNode->scaleY = 1.0f + (((f32)o->oTimer - 90.0f) / 30.0f);
+        }
+        else if (obj->oAction == 3) {
+            scaleNode->scaleY = 5.0f + (((f32)o->oTimer) / 30.0f);
+        }
+
+        if (obj->oTimer == 110) {
+            gDialogID = DIALOG_019;
+        }
+        
+    }
+    
+    return NULL;
+}
+
+
 Gfx *geo_update_layer_transparency(s32 callContext, struct GraphNode *node, UNUSED void *context) {
     Gfx *dlStart = NULL;
 
@@ -2223,6 +2248,20 @@ s32 obj_attack_collided_from_other_object(struct Object *obj) {
         if (other != gMarioObject) {
             other->oInteractStatus |= INT_STATUS_TOUCHED_MARIO | INT_STATUS_WAS_ATTACKED | INT_STATUS_INTERACTED
                                       | INT_STATUS_TOUCHED_BOB_OMB;
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+s32 obj_cappy_collide(struct Object *obj) {
+    if (obj->numCollidedObjs != 0) {
+        struct Object *other = obj->collidedObjs[0];
+
+        if (other != gMarioObject) {
+            obj->oCappyObj = other;
+            play_sound(SOUND_SPONGE, gMarioState->marioObj->header.gfx.cameraToObject);
             return TRUE;
         }
     }

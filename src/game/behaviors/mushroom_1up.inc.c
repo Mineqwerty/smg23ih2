@@ -12,6 +12,7 @@ void bhv_1up_interact(void) {
 #ifdef ENABLE_LIVES
         gMarioState->numLives++;
 #endif
+        gMarioState->squishTimer = 69;
         o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
 #if ENABLE_RUMBLE
         queue_rumble_data(5, 80);

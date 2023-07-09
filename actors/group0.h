@@ -331,4 +331,17 @@ extern const Gfx white_particle_small_dl_end[];
 extern const Gfx white_particle_small_dl[];
 extern const Gfx white_particle_small_unused_dl[];
 
+
+#include "mario/anim_header.h"
+
+#include "ragdoll_mario/anim_header.h"
+#include "mario/geo_header.h"
+
+#include "ragdoll_mario/geo_header.h"
+
+#include "supergoomb/geo_header.h"
+
+#include "cappy/geo_header.h"
+
+
 #endif

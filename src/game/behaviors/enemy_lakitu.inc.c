@@ -93,17 +93,17 @@ static void enemy_lakitu_update_speed_and_angle(void) {
  * hold it, then enter the hold spiny sub-action.
  */
 static void enemy_lakitu_sub_act_no_spiny(void) {
-    cur_obj_init_animation_with_sound(1);
+    //cur_obj_init_animation_with_sound(1);
 
     if (o->oEnemyLakituSpinyCooldown != 0) {
         o->oEnemyLakituSpinyCooldown--;
     } else if (o->oEnemyLakituNumSpinies < 3 && o->oDistanceToMario < 800.0f
                && abs_angle_diff(o->oAngleToMario, o->oFaceAngleYaw) < 0x4000) {
-        struct Object *spiny = spawn_object(o, MODEL_SPINY_BALL, bhvSpiny);
+         struct Object *spiny = spawn_object(o, MODEL_CHUCKYA, bhvChuckya);
         if (spiny != NULL) {
             o->prevObj = spiny;
             spiny->oAction = SPINY_ACT_HELD_BY_LAKITU;
-            obj_init_animation_with_sound(spiny, spiny_egg_seg5_anims_050157E4, 0);
+            //obj_init_animation_with_sound(spiny, spiny_egg_seg5_anims_050157E4, 0);
 
             o->oEnemyLakituNumSpinies++;
             o->oSubAction = ENEMY_LAKITU_SUB_ACT_HOLD_SPINY;
@@ -117,7 +117,7 @@ static void enemy_lakitu_sub_act_no_spiny(void) {
  * enter the throw spiny sub-action.
  */
 static void enemy_lakitu_sub_act_hold_spiny(void) {
-    cur_obj_init_anim_extend(3);
+    //cur_obj_init_anim_extend(3);
 
     if (o->oEnemyLakituSpinyCooldown != 0) {
         o->oEnemyLakituSpinyCooldown--;
@@ -135,12 +135,12 @@ static void enemy_lakitu_sub_act_hold_spiny(void) {
  * Throw the spiny, then enter the no spiny sub-action.
  */
 static void enemy_lakitu_sub_act_throw_spiny(void) {
-    if (cur_obj_init_anim_check_frame(2, 2)) {
+    if (o->oTimer == 2) {
         cur_obj_play_sound_2(SOUND_OBJ_EVIL_LAKITU_THROW);
         o->prevObj = NULL;
     }
 
-    if (cur_obj_check_if_near_animation_end()) {
+    if (o->oTimer == 30) {
         o->oSubAction = ENEMY_LAKITU_SUB_ACT_NO_SPINY;
         o->oEnemyLakituSpinyCooldown = random_linear_offset(100, 100);
     }
@@ -182,6 +182,16 @@ static void enemy_lakitu_act_main(void) {
     }
 }
 
+
+void bhv_lakitu_adopt_red_coin(void) {
+    f32 dist;
+    struct Object *redCoin = cur_obj_find_nearest_object_with_behavior(bhvRedCoin, &dist);
+    if (redCoin) {
+        o->oLakituRedCoin = redCoin;
+    }
+}
+
+
 /**
  * Update function for bhvEnemyLakitu.
  */
@@ -189,6 +199,12 @@ void bhv_enemy_lakitu_update(void) {
     // PARTIAL_UPDATE
 
     treat_far_home_as_mario(2000.0f);
+
+     if (o->oLakituRedCoin) {
+        o->oLakituRedCoin->oPosX = o->oPosX;
+        o->oLakituRedCoin->oPosY = o->oPosY + 10;
+        o->oLakituRedCoin->oPosZ = o->oPosZ;
+    }
 
     switch (o->oAction) {
         case ENEMY_LAKITU_ACT_UNINITIALIZED:

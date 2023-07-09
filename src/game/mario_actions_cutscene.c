@@ -1721,6 +1721,7 @@ static void intro_cutscene_jump_out_of_pipe(struct MarioState *m) {
     }
 
     if (m->actionTimer++ >= 118) {
+        gShitMusic = 0;
         m->marioObj->header.gfx.node.flags |= GRAPH_RENDER_ACTIVE;
 
         play_sound_if_no_flag(m, SOUND_ACTION_HIT_3, MARIO_ACTION_SOUND_PLAYED);
@@ -1729,9 +1730,9 @@ static void intro_cutscene_jump_out_of_pipe(struct MarioState *m) {
         set_mario_animation(m, MARIO_ANIM_SINGLE_JUMP);
         mario_set_forward_vel(m, 10.0f);
         if (perform_air_step(m, AIR_STEP_CHECK_NONE) == AIR_STEP_LANDED) {
-            sound_banks_enable(SEQ_PLAYER_SFX, SOUND_BANKS_DISABLED_DURING_INTRO_CUTSCENE);
-            play_mario_landing_sound(m, SOUND_ACTION_TERRAIN_LANDING);
-            play_sound(SOUND_MARIO_HAHA, m->marioObj->header.gfx.cameraToObject);
+            set_mario_action(m, ACT_RAGDOLL, 0);
+            play_sound(SOUND_RAGDOLL, m->marioObj->header.gfx.cameraToObject);
+            obj_mark_for_deletion(sIntroWarpPipeObj);
             advance_cutscene_step(m);
         }
     }

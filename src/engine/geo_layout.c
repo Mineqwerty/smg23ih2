@@ -39,7 +39,7 @@ GeoLayoutCommandProc GeoLayoutJumpTable[] = {
     /*GEO_CMD_COPY_VIEW                 */ geo_layout_cmd_copy_view,
     /*GEO_CMD_NODE_HELD_OBJ             */ geo_layout_cmd_node_held_obj,
     /*GEO_CMD_NODE_SCALE                */ geo_layout_cmd_node_scale,
-    /*GEO_CMD_NOP_1E                    */ geo_layout_cmd_nop2,
+     /*GEO_CMD_NODE_SCALE_BETER          */geo_layout_cmd_node_scale_better, //geo_layout_cmd_nop2,
     /*GEO_CMD_NOP_1F                    */ geo_layout_cmd_nop3,
     /*GEO_CMD_NODE_CULLING_RADIUS       */ geo_layout_cmd_node_culling_radius,
 };
@@ -543,6 +543,24 @@ void geo_layout_cmd_node_scale(void) {
 
     gGeoLayoutCommand += 0x08 << CMD_SIZE_SHIFT;
 }
+
+void geo_layout_cmd_node_scale_better(void) {
+    struct GraphNodeScaleBetter *graphNode;
+
+    s16 drawingLayer = 0;
+    s16 params = cur_geo_cmd_u8(0x01);
+    f32 scaleX = cur_geo_cmd_u32(0x04) / 65536.0f;
+    f32 scaleY = cur_geo_cmd_u32(0x08) / 65536.0f;
+    f32 scaleZ = cur_geo_cmd_u32(0x0C) / 65536.0f;
+    void *displayList = NULL;
+
+    graphNode = init_graph_node_scale_better(gGraphNodePool, NULL, drawingLayer, displayList, scaleX, scaleY, scaleZ);
+
+    register_scene_graph_node(&graphNode->node);
+
+    gGeoLayoutCommand += 0x10 << CMD_SIZE_SHIFT;
+}
+
 
 // 0x1E: No operation
 void geo_layout_cmd_nop2(void) {

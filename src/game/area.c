@@ -88,6 +88,12 @@ Vp gViewport = { {
     { 640, 480, 511, 0 },
 } };
 
+Vp gShitViewport = { {
+    { 64, 48, 511, 0 },
+    { 64, 48, 511, 0 },
+} };
+
+
 #if MULTILANG
 const char *gNoControllerMsg[] = {
     "NO CONTROLLER",
@@ -383,6 +389,16 @@ void play_transition_after_delay(s16 transType, s16 time, u8 red, u8 green, u8 b
 void render_game(void) {
     PROFILER_GET_SNAPSHOT_TYPE(PROFILER_DELTA_COLLISION);
     if (gCurrentArea != NULL && !gWarpTransition.pauseRendering) {
+
+        if (gBetterMarioCam) {
+            gShitViewport.vp.vscale[0] = 48;
+    gShitViewport.vp.vscale[1] = 32;
+    gShitViewport.vp.vtrans[0] = SCREEN_WIDTH  * 2;
+    gShitViewport.vp.vtrans[1] = SCREEN_HEIGHT * 2;
+    override_viewport_and_clip(NULL, &gShitViewport, 0, 0, 0);
+        }
+
+
         if (gCurrentArea->graphNode) {
             geo_process_root(gCurrentArea->graphNode, gViewportOverride, gViewportClip, gFBSetColor);
         }

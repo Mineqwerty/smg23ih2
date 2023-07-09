@@ -14,6 +14,9 @@
 #include "memory.h"
 #include "behavior_data.h"
 #include "rumble_init.h"
+#include "src/game/game_init.h"
+#include "seq_ids.h"
+#include "src/game/ingame_menu.h"
 
 #include "config.h"
 
@@ -1773,6 +1776,29 @@ s32 act_jump_land(struct MarioState *m) {
     return FALSE;
 }
 
+s32 act_ragdoll(struct MarioState *m) {
+    m->marioObj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO_RAGDOLL];
+    set_custom_mario_animation(m, 0);
+    m->marioObj->header.gfx.angle[0] = 0x8000;
+    m->marioObj->header.gfx.angle[1] = 0x0;
+
+    if (m->actionTimer++ < 35) {
+        m->marioObj->header.gfx.pos[1] -= 3.0f;
+        m->marioObj->header.gfx.pos[2] -= 1.0f;
+    }
+
+    if (m->actionTimer > 150 && gDialogID == -1) {
+        if (m->input & INPUT_A_PRESSED) {
+            play_secondary_music(SEQ_LEVEL_GRASS, 0, 255, 10);
+            gShitMusic = 1;
+            return set_mario_action(m, ACT_JUMP, 0);
+    }
+        
+    }
+    return FALSE;
+}
+
+
 s32 act_freefall_land(struct MarioState *m) {
     if (common_landing_cancels(m, &sFreefallLandAction, set_jumping_action)) {
         return TRUE;
@@ -1989,6 +2015,7 @@ s32 mario_execute_moving_action(struct MarioState *m) {
         case ACT_GROUND_BONK:              cancel = act_ground_bonk(m);              break;
         case ACT_DEATH_EXIT_LAND:          cancel = act_death_exit_land(m);          break;
         case ACT_JUMP_LAND:                cancel = act_jump_land(m);                break;
+        case ACT_RAGDOLL:                cancel = act_ragdoll(m);                break;
         case ACT_FREEFALL_LAND:            cancel = act_freefall_land(m);            break;
         case ACT_DOUBLE_JUMP_LAND:         cancel = act_double_jump_land(m);         break;
         case ACT_SIDE_FLIP_LAND:           cancel = act_side_flip_land(m);           break;

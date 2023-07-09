@@ -53,6 +53,7 @@ extern s8 gHudFlash;
 
 extern s8 gDialogCourseActNum;
 extern s16 gInGameLanguage;
+extern s16 gDialogID;
 
 struct DialogEntry {
     /*0x00*/ u32 unused;
