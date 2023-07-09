@@ -485,7 +485,7 @@
 #define MODEL_IDLE_WATER_WAVE             0xA6        // idle_water_wave_geo
 #define MODEL_WATER_SPLASH                0xA7        // water_splash_geo
 #define MODEL_BUBBLE                      0xA8        // bubble_geo
-// find me
+#define MODEL_CUSTOM_FAZANA_CAR                 0xA9        // fazana_car_geo
 #define MODEL_PURPLE_MARBLE               0xAA        // purple_marble_geo
 // find me
 #define MODEL_UNKNOWN_AC                  0xAC        // according to an special preset, it was the original id of the castle floor trap

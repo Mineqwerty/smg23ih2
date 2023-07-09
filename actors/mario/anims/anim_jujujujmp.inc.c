@@ -33,7 +33,7 @@ static const u16 mario_anim_jujujujmp_indices[] = {
 	
 };
 
-static const struct Animation mario_anim_jujujujmp = {
+UNUSED static const struct Animation mario_anim_jujujujmp = {
 	1,
 	0,
 	0,

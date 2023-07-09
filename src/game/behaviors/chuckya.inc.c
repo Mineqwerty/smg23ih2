@@ -1,6 +1,6 @@
 // chuckya.inc.c
 
-void common_anchor_mario_behavior(f32 forwardVel, f32 yVel, s32 flag) {
+void common_anchor_mario_behavior(UNUSED f32 forwardVel, UNUSED f32 yVel, s32 flag) {
     switch (o->parentObj->oCommonAnchorAction) {
         case 0:
             break;

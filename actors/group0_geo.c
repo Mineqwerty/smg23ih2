@@ -20,3 +20,4 @@
 #include "ragdoll_mario/geo.inc.c"
 #include "supergoomb/geo.inc.c"
 #include "cappy/geo.inc.c"
+#include "fazana_car/geo.inc.c"

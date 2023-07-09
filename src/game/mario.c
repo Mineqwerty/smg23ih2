@@ -130,7 +130,7 @@ s16 set_custom_mario_animation(struct MarioState *m, s32 targetAnimID) {
     struct Object *o = m->marioObj;
 
     if (o->header.gfx.animInfo.animID != targetAnimID) {
-        struct Animation **animPtrAddr = &ragdoll_mario_anims[targetAnimID];
+        struct Animation **animPtrAddr = (struct Animation **) &ragdoll_mario_anims[targetAnimID];
         struct Animation **animSegmented = segmented_to_virtual(animPtrAddr);
         struct Animation *targetAnim = segmented_to_virtual(*animSegmented);
 
@@ -157,7 +157,7 @@ s16 set_custom_mario_animation_with_accel(struct MarioState *m, s32 targetAnimID
     struct Object *o = m->marioObj;
 
     if (o->header.gfx.animInfo.animID != targetAnimID) {
-        struct Animation **animPtrAddr = &ragdoll_mario_anims[targetAnimID];
+        struct Animation **animPtrAddr = (struct Animation **) &ragdoll_mario_anims[targetAnimID];
         struct Animation **animSegmented = segmented_to_virtual(animPtrAddr);
         struct Animation *targetAnim = segmented_to_virtual(*animSegmented);
 

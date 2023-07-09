@@ -343,5 +343,8 @@ extern const Gfx white_particle_small_unused_dl[];
 
 #include "cappy/geo_header.h"
 
+#include "fazana_car/geo_header.h"
+
+#include "fazana_car/collision_header.h"
 
 #endif

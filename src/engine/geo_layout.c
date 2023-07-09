@@ -548,7 +548,7 @@ void geo_layout_cmd_node_scale_better(void) {
     struct GraphNodeScaleBetter *graphNode;
 
     s16 drawingLayer = 0;
-    s16 params = cur_geo_cmd_u8(0x01);
+    UNUSED s16 params = cur_geo_cmd_u8(0x01);
     f32 scaleX = cur_geo_cmd_u32(0x04) / 65536.0f;
     f32 scaleY = cur_geo_cmd_u32(0x08) / 65536.0f;
     f32 scaleZ = cur_geo_cmd_u32(0x0C) / 65536.0f;

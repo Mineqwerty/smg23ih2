@@ -38,3 +38,5 @@
 #include "ragdoll_mario/model.inc.c"
 #include "supergoomb/model.inc.c"
 #include "cappy/model.inc.c"
+#include "fazana_car/model.inc.c"
+#include "fazana_car/collision.inc.c"

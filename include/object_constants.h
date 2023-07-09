@@ -753,6 +753,10 @@ enum oSubActionBowserActQuickJump { // BOWSER_ACT_QUICK_JUMP
     /* oAction */
     #define BREAKABLE_BOX_SMALL_ACT_MOVE                    0x0
 
+/* Fazana Car */
+    /* oAction */
+    #define FAZANA_CAR_ACT_MOVE                    0x0
+
 /* Jumping Box */
     /* oAction */
     #define JUMPING_BOX_ACT_IDLE                            0x0
