@@ -16,7 +16,6 @@ void bhv_fazana_car_init(void) {
     o->oGravity = 2.5f;
     o->oFriction = 0.99f;
     o->oBuoyancy = 1.4f;
-    cur_obj_scale(16.0f);
     // obj_set_hitbox(o, &sFazanaCarHitbox);
     o->oAnimState = BREAKABLE_BOX_ANIM_STATE_CORK_BOX;
     o->activeFlags |= ACTIVE_FLAG_DESTRUCTIVE_OBJ_DONT_DESTROY;
@@ -137,4 +136,54 @@ void bhv_fazana_car_loop(void) {
             fazana_car_get_dropped();
             break;
     }
+}
+
+Gfx *car_front_wheels(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
+    if (callContext == GEO_CONTEXT_RENDER) {
+        struct Object *obj = (struct Object *) gCurGraphNodeObject;
+        struct GraphNodeTranslationRotation *rotNode = (struct GraphNodeTranslationRotation *) node->next;
+
+        rotNode->rotation[0] = obj->oFazanaCarWheelRot;
+        rotNode->rotation[1] = obj->oFazanaCarWheelTurn;
+        rotNode->rotation[2] = 0;
+
+    }
+    return NULL;
+}
+
+Gfx *car_rear_wheels(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
+    if (callContext == GEO_CONTEXT_RENDER) {
+        struct Object *obj = (struct Object *) gCurGraphNodeObject;
+        struct GraphNodeTranslationRotation *rotNode = (struct GraphNodeTranslationRotation *) node->next;
+
+        rotNode->rotation[0] = obj->oFazanaCarWheelRot;
+        rotNode->rotation[1] = 0;
+        rotNode->rotation[2] = 0;
+
+    }
+    return NULL;
+}
+
+Gfx *car_left_door(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
+    if (callContext == GEO_CONTEXT_RENDER) {
+        struct GraphNodeTranslationRotation *rotNode = (struct GraphNodeTranslationRotation *) node->next;
+
+        rotNode->rotation[0] = 0;
+        rotNode->rotation[1] = 0; //Negative Door angle
+        rotNode->rotation[2] = 0;
+
+    }
+    return NULL;
+}
+
+Gfx *car_right_door(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
+    if (callContext == GEO_CONTEXT_RENDER) {
+        struct GraphNodeTranslationRotation *rotNode = (struct GraphNodeTranslationRotation *) node->next;
+
+        rotNode->rotation[0] = 0;
+        rotNode->rotation[1] = 0; // Positive door angle
+        rotNode->rotation[2] = 0;
+
+    }
+    return NULL;
 }
