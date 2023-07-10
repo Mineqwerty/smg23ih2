@@ -581,6 +581,28 @@ s32 act_debug_free_move(struct MarioState *m) {
     return FALSE;
 }
 
+s32 act_fazana_car(struct MarioState *m) {
+    struct Object *fazanaCar = m->fazanaCar;
+
+    set_mario_animation(m, MARIO_ANIM_GENERAL_FALL);
+    perform_air_step(m, AIR_STEP_CHECK_NONE);
+
+    m->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_ACTIVE;
+
+    if (fazanaCar == NULL || fazanaCar->activeFlags == ACTIVE_FLAG_DEACTIVATED || !(fazanaCar->header.gfx.node.flags & GRAPH_RENDER_ACTIVE)) {
+        m->fazanaCar = NULL;
+        m->marioObj->header.gfx.node.flags |= GRAPH_RENDER_ACTIVE;
+        vec3_same(m->marioObj->header.gfx.scale, 1.0f);
+        return set_mario_action(m, ACT_IDLE, 0);
+    }
+
+    vec3f_copy(m->pos, &fazanaCar->oPosVec);
+    vec3i_to_vec3s(m->faceAngle, &fazanaCar->oFaceAngleVec);
+    m->forwardVel = fazanaCar->oForwardVel; // Debug mainly
+
+    return FALSE;
+}
+
 void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
     struct Object *celebStar = NULL;
 
@@ -2640,8 +2662,10 @@ static s32 check_for_instant_quicksand(struct MarioState *m) {
 s32 mario_execute_cutscene_action(struct MarioState *m) {
     s32 cancel;
 
-    if (check_for_instant_quicksand(m)) {
-        return TRUE;
+    if (m->action != ACT_FAZANA_CAR) {
+        if (check_for_instant_quicksand(m)) {
+            return TRUE;
+        }
     }
 
     /* clang-format off */
@@ -2655,6 +2679,7 @@ s32 mario_execute_cutscene_action(struct MarioState *m) {
         case ACT_READING_AUTOMATIC_DIALOG:   cancel = act_reading_automatic_dialog(m);   break;
         case ACT_READING_NPC_DIALOG:         cancel = act_reading_npc_dialog(m);         break;
         case ACT_DEBUG_FREE_MOVE:            cancel = act_debug_free_move(m);            break;
+        case ACT_FAZANA_CAR:                 cancel = act_fazana_car(m);                 break;
         case ACT_READING_SIGN:               cancel = act_reading_sign(m);               break;
         case ACT_JUMBO_STAR_CUTSCENE:        cancel = act_jumbo_star_cutscene(m);        break;
         case ACT_WAITING_FOR_DIALOG:         cancel = act_waiting_for_dialog(m);         break;

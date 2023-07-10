@@ -8,6 +8,7 @@
 #include "audio/external.h"
 #include "interaction.h"
 #include "engine/math_util.h"
+#include "engine/graph_node.h"
 #include "rumble_init.h"
 
 /**

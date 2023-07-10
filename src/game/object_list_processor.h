@@ -35,7 +35,7 @@ enum ObjectList {
     OBJ_LIST_UNUSED_1,    //  (1) (unused)
     OBJ_LIST_DESTRUCTIVE, //  (2) things that can be used to destroy other objects, like
                           //      bob-ombs and corkboxes
-    OBJ_LIST_UNUSED_3,    //  (3) (unused)
+    OBJ_LIST_CAR,         //  (3) (fazana car pretty much)
     OBJ_LIST_GENACTOR,    //  (4) general actors. most normal 'enemies' or actors are
                           //      on this list. (MIPS, bullet bill, bully, etc)
     OBJ_LIST_PUSHABLE,    //  (5) pushable actors. This is a group of objects which

@@ -11,6 +11,7 @@
 #include "engine/behavior_script.h"
 #include "engine/math_util.h"
 #include "engine/surface_collision.h"
+#include "engine/surface_load.h"
 #include "envfx_bubbles.h"
 #include "game_init.h"
 #include "ingame_menu.h"
@@ -163,19 +164,22 @@ s8 turn_obj_away_from_steep_floor(struct Surface *objFloor, f32 floorY, f32 objV
 
     if (objFloor == NULL) {
         if (o->behavior == segmented_to_virtual(bhvFazanaCar)) {
-            f32 lowerY = MAX(o->oPosY, FLOOR_LOWER_LIMIT);
-            f32 upperY = CELL_HEIGHT_LIMIT;
+            struct Surface *floor;
+            f32 upperY = find_floor(o->oPosX, CELL_HEIGHT_LIMIT, o->oPosZ, &floor);
 
-            // Binary search to get car back in-bounds if it gets stuck in a slanted wall
-            while (lowerY < upperY) {
-                f32 yCheck = (upperY + lowerY) / 2;
-                f32 yHeight = find_floor_height(o->oPosX, yCheck, o->oPosZ);
+            if (floor != NULL) {
+                f32 lowerY = FLOOR_LOWER_LIMIT;
 
-                if (yHeight <= lowerY) {
-                    lowerY = yCheck + 1.0f;
-                } else {
-                    upperY = MIN(yHeight, yCheck) - 1.0f;
-                    o->oPosY = yHeight;
+                // Binary search to get car back in-bounds if it gets stuck in a slanted wall
+                while (lowerY < upperY) {
+                    f32 yHeight = find_floor_height(o->oPosX, upperY, o->oPosZ);
+
+                    if (yHeight <= lowerY) {
+                        break;
+                    } else {
+                        o->oPosY = yHeight;
+                        upperY = MIN(yHeight, upperY) - 1.0f;
+                    }
                 }
             }
         } else {

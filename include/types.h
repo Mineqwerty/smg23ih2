@@ -489,6 +489,7 @@ struct MarioState {
              s16 ceilYaw;
              s16 wallYaw;
     // -- HackerSM64 MarioState fields end --
+             struct Object *fazanaCar;
 };
 
 #endif // TYPES_H

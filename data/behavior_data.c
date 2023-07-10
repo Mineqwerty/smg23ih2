@@ -4797,16 +4797,14 @@ const BehaviorScript bhvBreakableBoxSmall[] = {
 };
 
 const BehaviorScript bhvFazanaCar[] = {
-    BEGIN(OBJ_LIST_SURFACE),
-    // BEGIN(OBJ_LIST_DESTRUCTIVE),
-    OR_INT(oFlags, (OBJ_FLAG_HOLDABLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
-    DROP_TO_FLOOR(),
-    SET_HOME(),
+    BEGIN(OBJ_LIST_CAR),
+    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
     LOAD_COLLISION_DATA(fazana_car_collision),
-    SET_FLOAT(oCollisionDistance, 2000),
+    SET_FLOAT(oCollisionDistance, 3000),
+    SET_FLOAT(oDrawingDistance, 20000),
     CALL_NATIVE(bhv_fazana_car_init),
     BEGIN_LOOP(),
-        CALL_NATIVE(load_object_collision_model),
+        SET_INT(oIntangibleTimer, 0),
         CALL_NATIVE(bhv_fazana_car_loop),
     END_LOOP(),
 };

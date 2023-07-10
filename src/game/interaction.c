@@ -603,6 +603,10 @@ u32 determine_knockback_action(struct MarioState *m, UNUSED s32 arg) {
 }
 
 void push_mario_out_of_object(struct MarioState *m, struct Object *obj, f32 padding) {
+    if (m->action == ACT_FAZANA_CAR) {
+        return;
+    }
+
     f32 minDistance = obj->hitboxRadius + m->marioObj->hitboxRadius + padding;
 
     f32 offsetX = m->pos[0] - obj->oPosX;

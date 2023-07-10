@@ -552,6 +552,7 @@ void update_terrain_objects(void) {
     first = profiler_get_delta(PROFILER_DELTA_COLLISION);
 #endif
     gObjectCounter += update_objects_in_list(&gObjectLists[OBJ_LIST_SURFACE]);
+    gObjectCounter += update_objects_in_list(&gObjectLists[OBJ_LIST_CAR]);
     profiler_update(PROFILER_TIME_DYNAMIC, profiler_get_delta(PROFILER_DELTA_COLLISION) - first);
 
     // If the dynamic surface pool has overflowed, throw an error.
