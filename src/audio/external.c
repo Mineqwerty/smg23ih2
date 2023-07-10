@@ -1,5 +1,6 @@
 #include <ultra64.h>
 #include "sm64.h"
+#include "behavior_data.h"
 #include "heap.h"
 #include "load.h"
 #include "data.h"
@@ -1394,6 +1395,10 @@ static void update_game_sound(void) {
                                               *sSoundBanks[bank][soundIndex].z);
                             gSequencePlayers[SEQ_PLAYER_SFX].channels[channelIndex]->freqScale =
                                 get_sound_freq_scale(bank, soundIndex);
+
+                            if ((sSoundBanks[bank][soundIndex].soundBits & 0xFFFFFF00) == (SOUND_ENV_CAR_MOTOR & 0xFFFFFF00)) {
+                                gSequencePlayers[SEQ_PLAYER_SFX].channels[channelIndex]->freqScale *= 2.0f;
+                            }
 #endif
                             break;
                     }
@@ -1560,6 +1565,14 @@ static void update_game_sound(void) {
                                               *sSoundBanks[bank][soundIndex].z);
                             gSequencePlayers[SEQ_PLAYER_SFX].channels[channelIndex]->freqScale =
                                 get_sound_freq_scale(bank, soundIndex);
+
+                            if ((sSoundBanks[bank][soundIndex].soundBits & 0xFFFFFF00) == (SOUND_ENV_CAR_MOTOR & 0xFFFFFF00)) {
+                                f32 dist;
+                                struct Object *obj = obj_find_nearest_object_with_behavior(gMarioObject, bhvFazanaCar, &dist);
+                                if (obj) {
+                                    gSequencePlayers[SEQ_PLAYER_SFX].channels[channelIndex]->freqScale *= obj->oFazanaCarSoundPitch;
+                                }
+                            }
 #endif
                             break;
                     }

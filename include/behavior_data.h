@@ -421,6 +421,7 @@ extern const BehaviorScript bhvHidden1upInPoleSpawner[];
 extern const BehaviorScript bhvControllablePlatform[];
 extern const BehaviorScript bhvControllablePlatformSub[];
 extern const BehaviorScript bhvBreakableBoxSmall[];
+extern const BehaviorScript bhvCarOrangeNumber[];
 extern const BehaviorScript bhvFazanaCar[];
 extern const BehaviorScript bhvSlidingSnowMound[];
 extern const BehaviorScript bhvSnowMoundSpawn[];

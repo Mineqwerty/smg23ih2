@@ -467,10 +467,14 @@
 #define /*0x0FC*/ oBreakableBoxSmallFramesSinceReleased OBJECT_FIELD_S32(0x1D)
 
 /* Fazana Car */
-#define /*0x0F4*/ oFazanaCarWheelRot  OBJECT_FIELD_S32(0x1B)
-#define /*0x0F8*/ oFazanaCarWheelTurn OBJECT_FIELD_S32(0x1C)
-#define /*0x0FC*/ oFazanaCarLeftDoor  OBJECT_FIELD_S32(0x1D)
-#define /*0x100*/ oFazanaCarRightDoor OBJECT_FIELD_S32(0x1E)
+#define /*0x0F4*/ oFazanaCarWheelRot       OBJECT_FIELD_S32(0x1B)
+#define /*0x0F8*/ oFazanaCarWheelTurn      OBJECT_FIELD_S32(0x1C)
+#define /*0x0FC*/ oFazanaCarLeftDoor       OBJECT_FIELD_S32(0x1D)
+#define /*0x100*/ oFazanaCarRightDoor      OBJECT_FIELD_S32(0x1E)
+#define /*0x104*/ oFazanaCarBIndicator     OBJECT_FIELD_OBJ(0x1F)
+#define /*0x108*/ oFazanaCarGroundedLast   OBJECT_FIELD_S32(0x20)
+#define /*0x10C*/ oFazanaCarAerialRotation OBJECT_FIELD_S32(0x21)
+#define /*0x10C*/ oFazanaCarSoundPitch     OBJECT_FIELD_F32(0x49)
 
 /* Jumping Box (Crazy Box) */
 #define /*0x0F4*/ oJumpingBoxUnusedTimerMin OBJECT_FIELD_S32(0x1B)

@@ -4467,6 +4467,22 @@ sound_ref .sound_env_waterfall1
 sound_ref .sound_env_waterfall1
 sound_ref .sound_env_waterfall1
 sound_ref .sound_env_waterfall1
+sound_ref .sound_env_car_motor
+
+.sound_env_car_motor:
+chan_setbank 5
+chan_setinstr 16
+chan_setval 0x18
+chan_call .set_reverb
+chan_setenvelope .envelope_32C4
+chan_setlayer 0, .layer_car_motor
+chan_end
+
+.layer_car_motor:
+layer_somethingon
+.layer_car_motor_loop:
+layer_note1 39, 0x100, 82
+layer_jump .layer_car_motor_loop
 
 .sound_env_waterfall1:
 chan_setbank 5

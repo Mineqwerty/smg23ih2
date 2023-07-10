@@ -2595,7 +2595,6 @@ const Gfx dl_billboard_num_9[] = {
     gsSPEndDisplayList(),
 };
 
-#ifdef DIALOG_INDICATOR
 const Gfx dl_billboard_num_A[] = {
     gsSPDisplayList(dl_billboard_num_begin),
     gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_hud_char_A),
@@ -2649,7 +2648,6 @@ const Gfx dl_billboard_num_F[] = {
     gsSPDisplayList(dl_billboard_num_end),
     gsSPEndDisplayList(),
 };
-#endif
 
 #ifdef HD_SHADOWS
 ALIGNED8 static const Texture texture_shadow_quarter_circle_64[] = {

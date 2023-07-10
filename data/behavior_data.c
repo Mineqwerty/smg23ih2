@@ -4796,6 +4796,17 @@ const BehaviorScript bhvBreakableBoxSmall[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvCarOrangeNumber[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BILLBOARD(),
+    SET_HOME(),
+    CALL_NATIVE(bhv_car_orange_number_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_car_orange_number_loop),
+    END_LOOP(),
+};
+
 const BehaviorScript bhvFazanaCar[] = {
     BEGIN(OBJ_LIST_CAR),
     OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),

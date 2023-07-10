@@ -289,6 +289,12 @@ enum OrangeNumbers { // oBehParams2ndByte, oAnimState
     ORANGE_NUMBER_F
 };
 
+/* Fazana Car Actions */
+enum FazanaCarActions {
+    FAZANA_CAR_ACT_IDLE,
+    FAZANA_CAR_ACT_DRIVE,
+};
+
 /* Coin Type */
 enum CoinTypes { // coinType
     COIN_TYPE_NONE,
