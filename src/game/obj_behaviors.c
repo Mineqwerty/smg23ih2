@@ -162,7 +162,25 @@ s8 turn_obj_away_from_steep_floor(struct Surface *objFloor, f32 floorY, f32 objV
     f32 floor_nX, floor_nY, floor_nZ, objVelXCopy, objVelZCopy, objYawX, objYawZ;
 
     if (objFloor == NULL) {
-        o->oMoveAngleYaw += 0x8000;
+        if (o->behavior == segmented_to_virtual(bhvFazanaCar)) {
+            f32 lowerY = MAX(o->oPosY, FLOOR_LOWER_LIMIT);
+            f32 upperY = CELL_HEIGHT_LIMIT;
+
+            // Binary search to get car back in-bounds if it gets stuck in a slanted wall
+            while (lowerY < upperY) {
+                f32 yCheck = (upperY + lowerY) / 2;
+                f32 yHeight = find_floor_height(o->oPosX, yCheck, o->oPosZ);
+
+                if (yHeight <= lowerY) {
+                    lowerY = yCheck + 1.0f;
+                } else {
+                    upperY = MIN(yHeight, yCheck) - 1.0f;
+                    o->oPosY = yHeight;
+                }
+            }
+        } else {
+            o->oMoveAngleYaw += 0x8000;
+        }
         return FALSE;
     }
 
@@ -176,6 +194,9 @@ s8 turn_obj_away_from_steep_floor(struct Surface *objFloor, f32 floorY, f32 objV
         objVelZCopy = objVelZ;
         turn_obj_away_from_surface(objVelXCopy, objVelZCopy, floor_nX, floor_nY, floor_nZ, &objYawX, &objYawZ);
         o->oMoveAngleYaw = atan2s(objYawZ, objYawX);
+        if (o->behavior == segmented_to_virtual(bhvFazanaCar) && o->oForwardVel < 0.0f) {
+            o->oMoveAngleYaw += 0x8000;
+        }
         return FALSE;
     }
 
@@ -271,10 +292,17 @@ void calc_new_obj_vel_and_pos_y(struct Surface *objFloor, f32 objFloorY, f32 obj
 
         if (objVelX != 0 || objVelZ != 0) {
             o->oMoveAngleYaw = atan2s(objVelZ, objVelX);
+            if (o->behavior == segmented_to_virtual(bhvFazanaCar) && o->oForwardVel < 0.0f) {
+                o->oMoveAngleYaw += 0x8000;
+            }
         }
 
         calc_obj_friction(&objFriction, floor_nY);
-        o->oForwardVel = sqrtf(sqr(objVelX) + sqr(objVelZ)) * objFriction;
+        if (o->behavior == segmented_to_virtual(bhvFazanaCar) && o->oForwardVel < 0.0f) {
+            o->oForwardVel = -sqrtf(sqr(objVelX) + sqr(objVelZ)) * objFriction;
+        } else {
+            o->oForwardVel = sqrtf(sqr(objVelX) + sqr(objVelZ)) * objFriction;
+        }
     }
 }
 
@@ -332,11 +360,18 @@ void calc_new_obj_vel_and_pos_y_underwater(struct Surface *objFloor, f32 floorY,
 
     if (objVelX != 0 || objVelZ != 0) {
         o->oMoveAngleYaw = atan2s(objVelZ, objVelX);
+        if (o->behavior == segmented_to_virtual(bhvFazanaCar) && o->oForwardVel < 0.0f) {
+            o->oMoveAngleYaw += 0x8000;
+        }
     }
 
     // Decreases both vertical velocity and forward velocity. Likely so that skips above
     // don't loop infinitely.
-    o->oForwardVel = sqrtf(sqr(objVelX) + sqr(objVelZ)) * 0.8f;
+    if (o->behavior == segmented_to_virtual(bhvFazanaCar) && o->oForwardVel < 0.0f) {
+        o->oForwardVel = -sqrtf(sqr(objVelX) + sqr(objVelZ)) * 0.8f;
+    } else {
+        o->oForwardVel = sqrtf(sqr(objVelX) + sqr(objVelZ)) * 0.8f;
+    }
     o->oVelY *= 0.8f;
 }
 
