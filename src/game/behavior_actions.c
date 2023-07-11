@@ -237,3 +237,4 @@ void set_obj_anim_with_accel_and_sound(s16 frame1, s16 frame2, s32 sound) {
 #include "behaviors/troll_water_level.inc.c"
 #include "behaviors/sponge_circle.inc.c"
 #include "behaviors/endless_stairs_music_controller.inc.c"
+#include "behaviors/shell_troll_warp_handler.inc.c"

@@ -596,3 +596,5 @@ void bhv_sponge_circle_init(void);
 void bhv_sponge_circle_loop(void);
 void bhv_endless_stairs_music_controller_init(void);
 void bhv_endless_stairs_music_controller_loop(void);
+void bhv_shell_troll_warp_handler_init(void);
+void bhv_shell_troll_warp_handler_loop(void);

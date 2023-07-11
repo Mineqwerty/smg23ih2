@@ -550,3 +550,4 @@ extern const BehaviorScript bhvUnusedFakeStar[];
 extern const BehaviorScript bhvTrollWaterLevel[];
 extern const BehaviorScript bhvSpongeCircle[];
 extern const BehaviorScript bhvEndlessStairsMusicController[];
+extern const BehaviorScript bhvShellTrollWarpHandler[];

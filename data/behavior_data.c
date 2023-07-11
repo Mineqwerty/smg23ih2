@@ -6148,3 +6148,11 @@ const BehaviorScript bhvEndlessStairsMusicController[] = {
         CALL_NATIVE(bhv_endless_stairs_music_controller_loop),
     END_LOOP(),
 };
+const BehaviorScript bhvShellTrollWarpHandler[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    CALL_NATIVE(bhv_shell_troll_warp_handler_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_shell_troll_warp_handler_loop),
+    END_LOOP(),
+};
