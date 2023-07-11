@@ -1090,6 +1090,13 @@ void init_reverb_us(s32 presetId) {
         }
     }
 
+    if (gBetterReverbPresetValue == 3) { // manual override
+        gReverbDownsampleRate = 8;
+        gVolume = -1;
+    } else {
+        gVolume = gAudioSessionSettings.volume;
+    }
+
     reverbFilterCount -= reverbFilterCount % 3;
     
     if (reverbFilterCount > NUM_ALLPASS) {

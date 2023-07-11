@@ -1,16 +1,16 @@
 // hidden_block.inc.c
 
-#define HIDDEN_BLOCK_SCALE 308 // Hidden blocks are 300 x 300 x 300
+#define HIDDEN_BLOCK_SCALE 154 // Hidden blocks should be 154 x 154 x 154
 #define HIDDEN_BLOCK_DOWNWARD_VELOCITY -20.0f
 
 void bhv_hidden_block_init(void) {
     cur_obj_hide();
     if (o->oBehParams2ndByte != 0) {
         o->oHiddenBlockScale = (s32) (HIDDEN_BLOCK_SCALE * o->oBehParams2ndByte) / 0x10;
-        cur_obj_scale((f32) o->oHiddenBlockScale / (f32) HIDDEN_BLOCK_SCALE);
+        cur_obj_scale(((f32) o->oHiddenBlockScale / (f32) HIDDEN_BLOCK_SCALE) * 0.5f); // Actual model is twice size of default hidden block size
     } else {
         o->oHiddenBlockScale = HIDDEN_BLOCK_SCALE;
-        cur_obj_scale(1.0f);
+        cur_obj_scale(0.5f); // Actual model is twice size of default hidden block size
     }
 }
 
@@ -23,7 +23,7 @@ static void animate_hidden_block(void) {
     }
 
     o->oPosY = o->oHomeY + (o->oHiddenBlockScale * 0.225f) * sins(0x8000 * o->oTimer / 5);
-    load_object_collision_model();
+    // load_object_collision_model(); // Can cause bonking and stuff
 }
 
 void bhv_hidden_block_loop(void) {
@@ -42,7 +42,7 @@ void bhv_hidden_block_loop(void) {
         return;
 
     // NOTE: This may be cheeseable if o->oHiddenBlockScale is significantly decreased
-    if (distY < 0 || distY > (o->oHiddenBlockScale / 4) || gMarioObject->oVelY <= 0.0f)
+    if (distY < 0 || distY > (o->oHiddenBlockScale / 2) || gMarioObject->oVelY <= 0.0f)
         return;
     
     o->oAction = HIDDEN_BLOCK_ACT_ANIMATED;

@@ -1511,7 +1511,11 @@ u64 *process_envelope(u64 *cmd, struct NoteSubEu *note, struct NoteSynthesisStat
         aSetVolume(cmd++, A_VOL | A_RIGHT, vol->sourceRight, 0, 0);
         aSetVolume32(cmd++, A_RATE | A_LEFT, vol->targetLeft, rampLeft);
         aSetVolume32(cmd++, A_RATE | A_RIGHT, vol->targetRight, rampRight);
-        aSetVolume(cmd++, A_AUX, gVolume, 0, note->reverbVolShifted);
+        if (gVolume >= 0) {
+            aSetVolume(cmd++, A_AUX, gVolume, 0, note->reverbVolShifted);
+        } else {
+            aSetVolume(cmd++, A_AUX, 0, 0, 0x7FFF);
+        }
 #endif
     }
 
@@ -1552,7 +1556,7 @@ u64 *process_envelope(u64 *cmd, struct NoteSubEu *note, struct NoteSynthesisStat
         }
     }
 #else
-    if (gSynthesisReverb.useReverb && note->reverbVol != 0) {
+    if ((gSynthesisReverb.useReverb && note->reverbVol != 0) || gVolume < 0) {
         mixerFlags |= A_AUX;
     }
     aEnvMixer(cmd++, mixerFlags, VIRTUAL_TO_PHYSICAL2(note->synthesisBuffers->mixEnvelopeState));

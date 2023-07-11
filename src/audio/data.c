@@ -140,6 +140,22 @@ struct BetterReverbSettings gBetterReverbSettings[] = {
         .reverbMultsL = sReverbMultsArr[1],
         .reverbMultsR = sReverbMultsArr[2],
     },
+    { /* Preset 3 - low resolution everything with audio latency */
+        .useLightweightSettings = FALSE,
+        .downsampleRate = -1, // Overridden (NOTE: override hardcoded to reverb preset 3)
+        .isMono = FALSE,
+        .filterCount = 3,
+
+        .windowSize = REVERB_WINDOW_SIZE_MAX / 2,
+        .gain = 0x0000,
+        .gainIndex = 0x00,
+        .reverbIndex = 0x00,
+
+        .delaysL = sReverbDelaysArr[0],
+        .delaysR = sReverbDelaysArr[0],
+        .reverbMultsL = sReverbMultsArr[0],
+        .reverbMultsR = sReverbMultsArr[0],
+    },
 };
 
 #ifdef PUPPYPRINT_DEBUG
