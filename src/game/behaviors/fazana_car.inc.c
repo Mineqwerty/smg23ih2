@@ -45,14 +45,6 @@ void bhv_fazana_car_init(void) {
     o->oFazanaCarBIndicator = spawn_object_relative(0x000B, 0, 0, 0, o, MODEL_NUMBER, bhvCarOrangeNumber);
 }
 
-void fazana_car_spawn_dust(void) {
-    return;
-
-    // struct Object *smokeObj = spawn_object(o, MODEL_SMOKE, bhvSmoke);
-    // smokeObj->oPosX += (s32)(random_float() * 80.0f) - 40;
-    // smokeObj->oPosZ += (s32)(random_float() * 80.0f) - 40;
-}
-
 static void fazana_car_set_forward_velocity_and_turn_wheels(void) {
     if (gPlayer1Controller->stickY <= -2.0f || gPlayer1Controller->stickY >= 2.0f) {
         f32 stickCapY = gPlayer1Controller->stickY / 52.0f;
@@ -95,7 +87,7 @@ static void fazana_car_set_forward_velocity_and_turn_wheels(void) {
 }
 
 void fazana_car_act_move(void) {
-    s16 collisionFlags = object_step();
+    s16 collisionFlags = object_step_without_floor_orient();
 
     s32 collidedObjects = o->numCollidedObjs;
     while (collidedObjects > 0) {
@@ -119,11 +111,17 @@ void fazana_car_act_move(void) {
         if (o->oVelY > 0.0f) {
             o->oVelY *= 2.0f * o->oBounciness;
         }
-        // if (ABS(o->oForwardVel) > 20.0f) {
-        //     fazana_car_spawn_dust();
-        // }
+
+        if (o->oFloor != NULL) {
+            o->oFazanaCarLastFloor = o->oFloor;
+        }
     } else {
         o->oFazanaCarGroundedLast = FALSE;
+    }
+
+    if (o->oFazanaCarLastFloor) {
+        struct Surface *floor = o->oFazanaCarLastFloor;
+        obj_orient_graph(o, floor->normal.x, floor->normal.y, floor->normal.z);
     }
 
     f32 movementPercentage = ABS(o->oForwardVel) / FORWARD_VELOCITY_CAP;
