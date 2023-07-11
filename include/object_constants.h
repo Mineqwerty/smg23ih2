@@ -295,6 +295,13 @@ enum FazanaCarActions {
     FAZANA_CAR_ACT_DRIVE,
 };
 
+/* Hidden Block Actions */
+enum HiddenBlockActionStates {
+    HIDDEN_BLOCK_ACT_HIDDEN,
+    HIDDEN_BLOCK_ACT_ANIMATED,
+    HIDDEN_BLOCK_ACT_IDLE,
+};
+
 /* Coin Type */
 enum CoinTypes { // coinType
     COIN_TYPE_NONE,

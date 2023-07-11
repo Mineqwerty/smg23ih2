@@ -550,12 +550,14 @@
 
 
 
-#define MODEL_MARIO_RAGDOLL                 0x100
+#define MODEL_MARIO_RAGDOLL               0x100
 #define MODEL_MONEYBAG                    0x101        // moneybag_geo
 
-#define MODEL_TROLL_WATER_LEVEL                 0x120
-#define MODEL_SPONGE_CIRCLE                 0x121
-#define MODEL_CAPPY                 0x122
+#define MODEL_TROLL_WATER_LEVEL           0x120
+#define MODEL_SPONGE_CIRCLE               0x121
+#define MODEL_CAPPY                       0x122
+
+#define MODEL_HIDDEN_BLOCK                0x123        // hidden_block_geo
 
 
 #endif

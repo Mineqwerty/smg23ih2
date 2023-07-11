@@ -331,6 +331,11 @@ extern const Gfx white_particle_small_dl_end[];
 extern const Gfx white_particle_small_dl[];
 extern const Gfx white_particle_small_unused_dl[];
 
+// hidden_block
+extern const GeoLayout hidden_block_geo[];
+extern const Gfx hidden_block_dl[];
+extern const Collision hidden_block_collision[];
+
 
 #include "mario/anim_header.h"
 

@@ -355,6 +355,7 @@ sound_ref .sound_action_jump_default
 sound_ref .sound_action_jump_default
 sound_ref .sound_action_jump_default
 sound_ref .sound_action_jump_default
+sound_ref .sound_action_hit_hidden_block
 
 .sound_action_jump_default:
 chan_setbank 1
@@ -1526,6 +1527,18 @@ chan_setbank 1
 chan_setinstr 8
 chan_setlayer 1, .layer_3F1
 chan_end
+
+.sound_action_hit_hidden_block:
+chan_setbank 5
+chan_setinstr 17
+chan_setval 0x14
+chan_call .set_reverb
+chan_setlayer 0, .layer_hit_hidden_block
+chan_end
+
+.layer_hit_hidden_block:
+layer_note1 39, 0x10, 95
+layer_end
 
 .channel1_table:
 sound_ref .sound_moving_slide_default

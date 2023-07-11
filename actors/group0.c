@@ -26,6 +26,9 @@
 
 #include "sparkle_animation/model.inc.c"
 
+#include "hidden_block/model.inc.c"
+#include "hidden_block/collision.inc.c"
+
 #ifdef S2DEX_TEXT_ENGINE
 #include "src/s2d_engine/s2d_config.h"
 #include FONT_C_FILE

@@ -38,6 +38,7 @@ void bhv_fazana_car_init(void) {
     o->oGravity = 1.25f;
     o->oFriction = 0.97f;
     o->oBuoyancy = 0.5f;
+    o->oBounciness = 0.35f;
     obj_set_hitbox(o, &sFazanaCarHitbox);
     cur_obj_become_tangible();
 
@@ -115,6 +116,9 @@ void fazana_car_act_move(void) {
 
     if (collisionFlags & OBJ_COL_FLAG_GROUNDED) {
         o->oFazanaCarGroundedLast = TRUE;
+        if (o->oVelY > 0.0f) {
+            o->oVelY *= 2.0f * o->oBounciness;
+        }
         // if (ABS(o->oForwardVel) > 20.0f) {
         //     fazana_car_spawn_dust();
         // }

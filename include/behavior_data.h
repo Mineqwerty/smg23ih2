@@ -423,6 +423,7 @@ extern const BehaviorScript bhvControllablePlatformSub[];
 extern const BehaviorScript bhvBreakableBoxSmall[];
 extern const BehaviorScript bhvCarOrangeNumber[];
 extern const BehaviorScript bhvFazanaCar[];
+extern const BehaviorScript bhvHiddenBlock[];
 extern const BehaviorScript bhvSlidingSnowMound[];
 extern const BehaviorScript bhvSnowMoundSpawn[];
 extern const BehaviorScript bhvWdwSquareFloatingPlatform[];

@@ -112,9 +112,10 @@ const LevelScript level_main_scripts_entry[] = {
     LOAD_MODEL_FROM_GEO(MODEL_EXPLOSION,               explosion_geo),
     LOAD_MODEL_FROM_GEO(MODEL_DIRT_ANIMATION,          dirt_animation_geo),
     LOAD_MODEL_FROM_GEO(MODEL_CARTOON_STAR,            cartoon_star_geo),
-      LOAD_MODEL_FROM_GEO(MODEL_MARIO_RAGDOLL,            ragdoll_mario_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_GOOMBA,            supergoomb_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_CAPPY,            cappy_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_MARIO_RAGDOLL,           ragdoll_mario_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_GOOMBA,                  supergoomb_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_CAPPY,                   cappy_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_HIDDEN_BLOCK,            hidden_block_geo),
 #ifdef IA8_30FPS_COINS
     LOAD_MODEL_FROM_GEO(MODEL_SILVER_COIN,             silver_coin_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SILVER_COIN_NO_SHADOW,   silver_coin_no_shadow_geo),
@@ -199,7 +200,7 @@ const LevelScript script_func_global_1[] = {
     LOAD_MODEL_FROM_GEO(MODEL_HEART,                   heart_geo),
     LOAD_MODEL_FROM_GEO(MODEL_FLYGUY,                  flyguy_geo),
     LOAD_MODEL_FROM_GEO(MODEL_CHUCKYA,                 chuckya_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_TRAJECTORY_MARKER_BALL,      bowling_ball_track_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_TRAJECTORY_MARKER_BALL,  bowling_ball_track_geo),
     RETURN(),
 };
 

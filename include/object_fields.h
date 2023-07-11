@@ -476,6 +476,9 @@
 #define /*0x10C*/ oFazanaCarAerialRotation OBJECT_FIELD_S32(0x21)
 #define /*0x10C*/ oFazanaCarSoundPitch     OBJECT_FIELD_F32(0x49)
 
+/* Hidden Block */
+#define /*0x0F4*/ oHiddenBlockScale        OBJECT_FIELD_S32(0x1B)
+
 /* Jumping Box (Crazy Box) */
 #define /*0x0F4*/ oJumpingBoxUnusedTimerMin OBJECT_FIELD_S32(0x1B)
 #define /*0x0F8*/ oJumpingBoxRandomTimer    OBJECT_FIELD_S32(0x1C)

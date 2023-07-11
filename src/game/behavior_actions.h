@@ -409,6 +409,8 @@ void bhv_car_orange_number_init(void);
 void bhv_car_orange_number_loop(void);
 void bhv_fazana_car_init(void);
 void bhv_fazana_car_loop(void);
+void bhv_hidden_block_init(void);
+void bhv_hidden_block_loop(void);
 void bhv_sliding_snow_mound_loop(void);
 void bhv_snow_mound_spawn_loop(void);
 void bhv_floating_platform_loop(void);

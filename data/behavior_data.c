@@ -4820,6 +4820,18 @@ const BehaviorScript bhvFazanaCar[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvHiddenBlock[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    LOAD_COLLISION_DATA(hidden_block_collision),
+    SET_FLOAT(oCollisionDistance, 500),
+    SET_HOME(),
+    CALL_NATIVE(bhv_hidden_block_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_hidden_block_loop),
+    END_LOOP(),
+};
+
 const BehaviorScript bhvSlidingSnowMound[] = {
     BEGIN(OBJ_LIST_SURFACE),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),

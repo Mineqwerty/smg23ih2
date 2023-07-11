@@ -256,7 +256,7 @@ void check_car_object_collision(void) {
     while (nextObj != carObj) {
         if (
             nextObj->oDistanceToMario < 2000.0f &&
-            (ABS(nextObj->oForwardVel) > 5.0f || ABS(nextObj->oVelY) > 5.0f)
+            (ABS(nextObj->oForwardVel) > 25.0f || ABS(nextObj->oVelY) > 12.5f)
         ) {
             check_collision_in_list(nextObj, (struct Object *) nextObj->header.next, carObj);
             check_collision_in_list(nextObj, (struct Object *) gObjectLists[OBJ_LIST_GENACTOR].next,
