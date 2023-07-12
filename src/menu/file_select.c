@@ -111,6 +111,9 @@ s8 sScoreFileCoinScoreMode = 0;
 
 // In EU, if no save file exists, open the language menu so the user can find it.
 
+f32 sMoveFileSelectBaseX = 0.0f;
+f32 sMoveFileSelectBaseY = 0.0f;
+
 unsigned char textReturn[] = { TEXT_RETURN };
 
 unsigned char textViewScore[] = { TEXT_CHECK_SCORE };
@@ -187,6 +190,19 @@ void beh_yellow_background_menu_init(void) {
  */
 void beh_yellow_background_menu_loop(void) {
     cur_obj_scale(9.0f);
+
+    f32 rawStickX = gPlayer3Controller->rawStickX;
+    f32 rawStickY = gPlayer3Controller->rawStickY;
+
+    if (rawStickY > -2 && rawStickY < 2) {
+        rawStickY = 0;
+    }
+    if (rawStickX > -2 && rawStickX < 2) {
+        rawStickX = 0;
+    }
+
+    o->oPosX += rawStickX * 2;
+    o->oPosY += rawStickY * 2;
 }
 
 /**
@@ -384,6 +400,20 @@ void bhv_menu_button_init(void) {
  * object scale for each button.
  */
 void bhv_menu_button_loop(void) {
+
+    s16 rawStickX = gPlayer3Controller->rawStickX;
+    s16 rawStickY = gPlayer3Controller->rawStickY;
+
+    if (rawStickY > -2 && rawStickY < 2) {
+        rawStickY = 0;
+    }
+    if (rawStickX > -2 && rawStickX < 2) {
+        rawStickX = 0;
+    }
+
+    o->oParentRelativePosX += rawStickX * 2;
+    o->oParentRelativePosY += rawStickY * 2;
+
     switch (gCurrentObject->oMenuButtonState) {
         case MENU_BUTTON_STATE_DEFAULT: // Button state
             gCurrentObject->oMenuButtonOrigPosZ = gCurrentObject->oPosZ;
@@ -1221,8 +1251,8 @@ void handle_controller_cursor_input(void) {
     }
 
     // Move cursor
-    sCursorPos[0] += rawStickX / 8;
-    sCursorPos[1] += rawStickY / 8;
+    //sCursorPos[0] += rawStickX / 8;
+    //sCursorPos[1] += rawStickY / 8;
 
     // Stop cursor from going offscreen
     if (sCursorPos[0] > 132.0f) {
@@ -1353,32 +1383,48 @@ void print_save_file_star_count(s8 fileIndex, s16 x, s16 y) {
  * Same rule applies for score, copy and erase strings.
  */
 void print_main_menu_strings(void) {
+
+
+    f32 rawStickX = gPlayer3Controller->rawStickX;
+    f32 rawStickY = gPlayer3Controller->rawStickY;
+
+    if (rawStickY > -2 && rawStickY < 2) {
+        rawStickY = 0;
+    }
+    if (rawStickX > -2 && rawStickX < 2) {
+        rawStickX = 0;
+    }
+
+    sMoveFileSelectBaseX += rawStickX / 34.1f;
+    sMoveFileSelectBaseY -= rawStickY / 34.1f;
+
     // Print "SELECT FILE" text
+
     gSPDisplayList(gDisplayListHead++, dl_rgba16_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
-    print_hud_lut_string(HUD_LUT_DIFF, SELECT_FILE_X, 35, textSelectFile);
+    print_hud_lut_string(HUD_LUT_DIFF, SELECT_FILE_X + sMoveFileSelectBaseX, 35 + sMoveFileSelectBaseY, textSelectFile);
     // Print file star counts
-    print_save_file_star_count(SAVE_FILE_A, SAVEFILE_X1, 78);
-    print_save_file_star_count(SAVE_FILE_B, SAVEFILE_X2, 78);
-    print_save_file_star_count(SAVE_FILE_C, SAVEFILE_X1, 118);
-    print_save_file_star_count(SAVE_FILE_D, SAVEFILE_X2, 118);
+    print_save_file_star_count(SAVE_FILE_A, SAVEFILE_X1 + sMoveFileSelectBaseX, 78 + sMoveFileSelectBaseY);
+    print_save_file_star_count(SAVE_FILE_B, SAVEFILE_X2 + sMoveFileSelectBaseX, 78 + sMoveFileSelectBaseY);
+    print_save_file_star_count(SAVE_FILE_C, SAVEFILE_X1 + sMoveFileSelectBaseX, 118 + sMoveFileSelectBaseY);
+    print_save_file_star_count(SAVE_FILE_D, SAVEFILE_X2 + sMoveFileSelectBaseX, 118 + sMoveFileSelectBaseY);
     gSPDisplayList(gDisplayListHead++, dl_rgba16_text_end);
     // Print menu names
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
-    print_generic_string(SCORE_X, 39, textScore);
-    print_generic_string(COPY_X, 39, textCopy);
-    print_generic_string(ERASE_X, 39, textErase);
+    print_generic_string(SCORE_X + sMoveFileSelectBaseX, 39 + -sMoveFileSelectBaseY, textScore);
+    print_generic_string(COPY_X + sMoveFileSelectBaseX, 39 + -sMoveFileSelectBaseY, textCopy);
+    print_generic_string(ERASE_X + sMoveFileSelectBaseX, 39 + -sMoveFileSelectBaseY, textErase);
     sSoundTextX = get_str_x_pos_from_center(254, textSoundModes[sSoundMode], 10.0f);
-    print_generic_string(sSoundTextX, 39, textSoundModes[sSoundMode]);
+    print_generic_string(sSoundTextX + sMoveFileSelectBaseX, 39 + -sMoveFileSelectBaseY, textSoundModes[sSoundMode]);
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
     // Print file names
     gSPDisplayList(gDisplayListHead++, dl_menu_ia8_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
-    print_menu_generic_string(MARIOTEXT_X1, 65, textMarioA);
-    print_menu_generic_string(MARIOTEXT_X2, 65, textMarioB);
-    print_menu_generic_string(MARIOTEXT_X1, 105, textMarioC);
-    print_menu_generic_string(MARIOTEXT_X2, 105, textMarioD);
+    print_menu_generic_string(MARIOTEXT_X1 + sMoveFileSelectBaseX, 65 + sMoveFileSelectBaseY, textMarioA);
+    print_menu_generic_string(MARIOTEXT_X2 + sMoveFileSelectBaseX, 65 + sMoveFileSelectBaseY, textMarioB);
+    print_menu_generic_string(MARIOTEXT_X1 + sMoveFileSelectBaseX, 105 + sMoveFileSelectBaseY, textMarioC);
+    print_menu_generic_string(MARIOTEXT_X2 + sMoveFileSelectBaseX, 105 + sMoveFileSelectBaseY, textMarioD);
     gSPDisplayList(gDisplayListHead++, dl_menu_ia8_text_end);
 }
 
@@ -2033,10 +2079,10 @@ s32 lvl_init_menu_values_and_cursor_pos(UNUSED s32 arg, UNUSED s32 unused) {
     // gCurrSaveFileNum is 1 by default when the game boots, as such
     // the cursor will point on Mario A save file.
     switch (gCurrSaveFileNum) {
-        case SAVE_FILE_NUM_A: sCursorPos[0] = -94.0f; sCursorPos[1] = 46.0f; break;
-        case SAVE_FILE_NUM_B: sCursorPos[0] =  24.0f; sCursorPos[1] = 46.0f; break;
-        case SAVE_FILE_NUM_C: sCursorPos[0] = -94.0f; sCursorPos[1] =  5.0f; break;
-        case SAVE_FILE_NUM_D: sCursorPos[0] =  24.0f; sCursorPos[1] =  5.0f; break;
+        case SAVE_FILE_NUM_A: sCursorPos[0] = -40.0f; sCursorPos[1] = 20.0f; break;
+        case SAVE_FILE_NUM_B: sCursorPos[0] =  -40.0f; sCursorPos[1] = 20.0f; break;
+        case SAVE_FILE_NUM_C: sCursorPos[0] = -40.0f; sCursorPos[1] =  20.0f; break;
+        case SAVE_FILE_NUM_D: sCursorPos[0] =  -40.0f; sCursorPos[1] =  20.0f; break;
     }
     sClickPos[0] = -10000;
     sClickPos[1] = -10000;
