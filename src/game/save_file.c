@@ -324,6 +324,8 @@ void save_file_erase(s32 fileIndex) {
     touch_high_score_ages(fileIndex);
     bzero(&gSaveBuffer.files[fileIndex][0], sizeof(gSaveBuffer.files[fileIndex][0]));
 
+    gSaveBuffer.files[fileIndex][0].checkpoint.checkpointID = 0xFF;
+
     gSaveFileModified = TRUE;
     save_file_do_save(fileIndex);
 }
@@ -674,27 +676,6 @@ void save_file_set_cannon_unlocked(void) {
     gSaveFileModified = TRUE;
 }
 
-void save_file_set_cap_pos(s16 x, s16 y, s16 z) {
-    struct SaveFile *saveFile = &gSaveBuffer.files[gCurrSaveFileNum - 1][0];
-
-    saveFile->capLevel = gCurrLevelNum;
-    saveFile->capArea = gCurrAreaIndex;
-    vec3s_set(saveFile->capPos, x, y, z);
-    save_file_set_flags(SAVE_FLAG_CAP_ON_GROUND);
-}
-
-s32 save_file_get_cap_pos(Vec3s capPos) {
-    struct SaveFile *saveFile = &gSaveBuffer.files[gCurrSaveFileNum - 1][0];
-    s32 flags = save_file_get_flags();
-
-    if (saveFile->capLevel == gCurrLevelNum && saveFile->capArea == gCurrAreaIndex
-        && (flags & SAVE_FLAG_CAP_ON_GROUND)) {
-        vec3s_copy(capPos, saveFile->capPos);
-        return TRUE;
-    }
-    return FALSE;
-}
-
 void save_file_set_sound_mode(u16 mode) {
     set_sound_mode(mode);
     gSaveBuffer.menuData.soundMode = mode;
@@ -722,17 +703,6 @@ u32 save_file_get_sound_mode(void) {
 
 void save_file_move_cap_to_default_location(void) {
     if (save_file_get_flags() & SAVE_FLAG_CAP_ON_GROUND) {
-        switch (gSaveBuffer.files[gCurrSaveFileNum - 1][0].capLevel) {
-            case LEVEL_SSL:
-                save_file_set_flags(SAVE_FLAG_CAP_ON_KLEPTO);
-                break;
-            case LEVEL_SL:
-                save_file_set_flags(SAVE_FLAG_CAP_ON_MR_BLIZZARD);
-                break;
-            case LEVEL_TTM:
-                save_file_set_flags(SAVE_FLAG_CAP_ON_UKIKI);
-                break;
-        }
         save_file_clear_flags(SAVE_FLAG_CAP_ON_GROUND);
     }
 }
@@ -791,4 +761,36 @@ s32 check_warp_checkpoint(struct WarpNode *warpNode) {
     }
 
     return warpCheckpointActive;
+}
+
+struct SaveFileCheckpoint *save_file_get_last_checkpoint(void) {
+    struct SaveFileCheckpoint *checkpoint = &gSaveBuffer.files[gCurrSaveFileNum - 1][0].checkpoint;
+
+    if (checkpoint->checkpointID == 0xFF) {
+        return NULL;
+    }
+
+    return checkpoint;
+}
+
+u8 save_file_set_checkpoint(u8 checkpointID, u8 levelNum, u8 areaNum) {
+    struct SaveFileCheckpoint *checkpoint = &gSaveBuffer.files[gCurrSaveFileNum - 1][0].checkpoint;
+
+    if (
+      checkpoint->checkpointID != checkpointID ||
+      checkpoint->checkpointLastLevel != levelNum ||
+      checkpoint->checkpointLastArea != areaNum
+    ) {
+        checkpoint->checkpointID = checkpointID;
+        checkpoint->checkpointLastLevel = levelNum;
+        checkpoint->checkpointLastArea = areaNum;
+
+        gSaveFileModified = TRUE;
+        
+        save_file_do_save(gCurrSaveFileNum - 1);
+
+        return TRUE;
+    }
+
+    return FALSE;
 }

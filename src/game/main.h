@@ -87,6 +87,7 @@ extern struct RumbleSettings gCurrRumbleSettings;
 
 extern struct VblankHandler *gVblankHandler1;
 extern struct VblankHandler *gVblankHandler2;
+extern struct VblankHandler *gVblankHandler3;
 extern struct SPTask *gActiveSPTask;
 extern s8 gAudioEnabled;
 extern u32 gNumVblanks;

@@ -2,6 +2,7 @@
 #include <ultra64.h>
 
 #include "sm64.h"
+#include "behavior_data.h"
 #include "seq_ids.h"
 #include "dialog_ids.h"
 #include "audio/external.h"
@@ -33,6 +34,7 @@
 #include "puppyprint.h"
 #include "puppylights.h"
 #include "level_commands.h"
+#include "debug.h"
 
 #include "config.h"
 
@@ -352,6 +354,15 @@ void set_mario_initial_action(struct MarioState *m, u32 spawnType, u32 actionArg
 void init_mario_after_warp(void) {
     struct ObjectWarpNode *spawnNode = area_get_warp_node(sWarpDest.nodeId);
     u32 marioSpawnType = get_mario_spawn_type(spawnNode->object);
+    struct SaveFileCheckpoint *checkpoint = save_file_get_last_checkpoint();
+
+    if (spawnNode->object->behavior == segmented_to_virtual(bhvCheckpointWarp) && checkpoint) {
+        struct Object *ckptObj = find_first_object_with_behavior_and_bparams(bhvCheckpoint, (u32) checkpoint->checkpointID << 16, (0xFF << 16));
+        if (ckptObj) {
+            vec3f_copy(&spawnNode->object->oPosVec, &ckptObj->oPosVec);
+            spawnNode->object->oPosY += 500.0f;
+        }
+    }
 
     if (gMarioState->action != ACT_UNINITIALIZED) {
         gPlayerSpawnInfos[0].startPos[0] = (s16) spawnNode->object->oPosX;
@@ -439,7 +450,7 @@ void init_mario_after_warp(void) {
         }
 #endif
 #ifndef DISABLE_EXIT_COURSE
-       if (sWarpDest.arg == WARP_FLAG_EXIT_COURSE) {
+       if (sWarpDest.arg == WARP_FLAG_EXIT_COURSE && sWarpDest.nodeId != WARP_NODE_CHECKPOINT) {
             play_sound(SOUND_MENU_MARIO_CASTLE_WARP, gGlobalSoundSource);
         }
 #endif
@@ -844,6 +855,18 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 }
                 fadeMusic = FALSE;
                 break;
+        }
+
+        if (sSourceWarpNodeId == WARP_NODE_DEATH) {
+            struct SaveFileCheckpoint *checkpoint = save_file_get_last_checkpoint();
+            struct ObjectWarpNode *warpNode = area_get_warp_node(WARP_NODE_CHECKPOINT);
+
+            if (checkpoint && warpNode) {
+                sSourceWarpNodeId = WARP_NODE_CHECKPOINT;
+                sDelayedWarpArg = WARP_FLAG_EXIT_COURSE; // Force level warp
+                warpNode->node.destLevel = checkpoint->checkpointLastLevel;
+                warpNode->node.destArea = checkpoint->checkpointLastArea;
+            }
         }
 
         if (fadeMusic && gCurrDemoInput == NULL) {

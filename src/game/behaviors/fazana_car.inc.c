@@ -1,4 +1,4 @@
-// fazana_car.inc.cs
+// fazana_car.inc.c
 
 #define TURN_RATIO_CONSTANT 0.01f
 #define TURN_RATIO_AERIAL_CONSTANT 0.875f

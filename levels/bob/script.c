@@ -85,6 +85,8 @@ const LevelScript level_bob_entry[] = {
         OBJECT(/*model*/ MODEL_NONE, /*pos*/  1980,   768,  6618, /*angle*/ 0, -151, 0, /*behParam*/ 0x000E0000, /*beh*/ bhvFadingWarp),
         OBJECT(MODEL_CUSTOM_FAZANA_CAR, -6800, 1024, 440, 0, 0, 0, 0x00000000, bhvFazanaCar),
         OBJECT(MODEL_HIDDEN_BLOCK, -6800, 1324, -500, 0, 0, 0, 0x20 << 16, bhvHiddenBlock),
+        OBJECT(MODEL_NONE, -6800, 1024, -1000, 0, 0, 0, BP(0, 1, 0x02, 0x80), bhvCheckpoint),
+        OBJECT(MODEL_NONE, -6800, 1024, -2000, 0, 0, 0, BP(0, 2, 0x02, 0x80), bhvCheckpoint),
         WARP_NODE(/*id*/ 0x0A, /*destLevel*/ LEVEL_BOB, /*destArea*/ 0x01, /*destNode*/ 0x0A, /*flags*/ WARP_NO_CHECKPOINT),
         WARP_NODE(/*id*/ 0x0B, /*destLevel*/ LEVEL_BOB, /*destArea*/ 0x01, /*destNode*/ 0x0C, /*flags*/ WARP_NO_CHECKPOINT),
         WARP_NODE(/*id*/ 0x0C, /*destLevel*/ LEVEL_BOB, /*destArea*/ 0x01, /*destNode*/ 0x0B, /*flags*/ WARP_NO_CHECKPOINT),
