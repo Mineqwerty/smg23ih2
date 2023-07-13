@@ -2824,6 +2824,7 @@ sound_ref .sound_general_vanish_sfx
 sound_ref .sound_ragdoll
 sound_ref .sound_sponge
 sound_ref .sound_capture
+sound_ref .sound_bruh
 
 
 
@@ -4429,7 +4430,13 @@ chan_end
 
 .sound_capture:
 chan_setbank 0
-chan_setinstr 7
+chan_setinstr 8
+chan_setlayer 0, .layer_AAAA
+chan_end
+
+.sound_bruh:
+chan_setbank 0
+chan_setinstr 9
 chan_setlayer 0, .layer_AAAA
 chan_end
 

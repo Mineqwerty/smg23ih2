@@ -28,5 +28,6 @@ extern Gfx *intro_seg7_dl_main_logo;
 extern Gfx *intro_seg7_dl_copyright_trademark;
 extern f32 intro_seg7_table_scale_1[];
 extern f32 intro_seg7_table_scale_2[];
+extern f32 intro_seg7_table_scale_penis[];
 
 #endif // SEGMENT7_H

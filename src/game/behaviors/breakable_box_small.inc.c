@@ -41,7 +41,7 @@ void small_breakable_box_act_move(void) {
 
         if (dist < 200.0f && o->oAction == 0) {
             o->oCappyObj = chuckFuck;
-            play_sound(SOUND_SPONGE, gMarioState->marioObj->header.gfx.cameraToObject);
+            play_sound(SOUND_CAPTURE, gMarioState->marioObj->header.gfx.cameraToObject);
             o->oAction++;
         }
 

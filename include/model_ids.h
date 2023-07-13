@@ -559,6 +559,8 @@
 
 #define MODEL_HIDDEN_BLOCK                0x123        // hidden_block_geo
 
+#define MODEL_TITLE_SPONGE                0x124
+
 
 #endif
 

@@ -54,6 +54,11 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "08_capture"
+        },
+        "inst9": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "09_bruh"
         }
     },
     "instrument_list": [
@@ -65,6 +70,7 @@
         "inst5",
         "inst6",
         "inst7",
-        "inst8"
+        "inst8",
+        "inst9"
     ]
 }

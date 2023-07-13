@@ -6156,3 +6156,13 @@ const BehaviorScript bhvShellTrollWarpHandler[] = {
         CALL_NATIVE(bhv_shell_troll_warp_handler_loop),
     END_LOOP(),
 };
+
+const BehaviorScript bhvTitleSponge[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    CALL_NATIVE(bhv_title_sponge_init),
+    SET_FLOAT(oDrawingDistance, 30000),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_title_sponge_loop),
+    END_LOOP(),
+};

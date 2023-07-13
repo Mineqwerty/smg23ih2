@@ -49,6 +49,7 @@ Gfx *geo_intro_super_mario_64_logo(s32 callContext, struct GraphNode *node, UNUS
     } else if (callContext == GEO_CONTEXT_RENDER) {
         f32 *scaleTable1 = segmented_to_virtual(intro_seg7_table_scale_1);
         f32 *scaleTable2 = segmented_to_virtual(intro_seg7_table_scale_2);
+        f32 *scaleTablePenis = segmented_to_virtual(intro_seg7_table_scale_penis);
         SET_GRAPH_NODE_LAYER(graphNode->flags, LAYER_OPAQUE);
         Mtx *scaleMat = alloc_display_list(sizeof(*scaleMat));
         dl = alloc_display_list(4 * sizeof(*dl));
@@ -59,12 +60,12 @@ Gfx *geo_intro_super_mario_64_logo(s32 callContext, struct GraphNode *node, UNUS
         if (sIntroFrameCounter >= 0 && sIntroFrameCounter < INTRO_STEPS_ZOOM_IN) {
             // zooming in
             vec3f_copy(scale, &scaleTable1[sIntroFrameCounter * 3]);
-        } else if (sIntroFrameCounter >= INTRO_STEPS_ZOOM_IN && sIntroFrameCounter < INTRO_STEPS_HOLD_1) {
+        } else if (sIntroFrameCounter >= INTRO_STEPS_ZOOM_IN && sIntroFrameCounter < 40) {
             // holding
             vec3_same(scale, 1.0f);
-        } else if (sIntroFrameCounter >= INTRO_STEPS_HOLD_1 && sIntroFrameCounter < INTRO_STEPS_ZOOM_OUT) {
-            // zooming out
-            vec3f_copy(scale, &scaleTable2[(sIntroFrameCounter - INTRO_STEPS_HOLD_1) * 3]);
+        } else if (sIntroFrameCounter >= 40 && sIntroFrameCounter < INTRO_STEPS_ZOOM_OUT) {
+            // AIYGSUIYEVBFIBAIviUSHIUGAWFEBIUBAFUB
+            vec3f_copy(scale, &scaleTablePenis[(sIntroFrameCounter - 40) * 3]);
         } else {
             // disappeared
             vec3_zero(scale);
