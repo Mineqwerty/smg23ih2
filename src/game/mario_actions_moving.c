@@ -14,6 +14,7 @@
 #include "memory.h"
 #include "behavior_data.h"
 #include "rumble_init.h"
+#include "sound_init.h"
 #include "src/game/game_init.h"
 #include "seq_ids.h"
 #include "src/game/ingame_menu.h"
@@ -1789,8 +1790,8 @@ s32 act_ragdoll(struct MarioState *m) {
 
     if (m->actionTimer > 150 && gDialogID == -1) {
         if (m->input & INPUT_A_PRESSED) {
-            play_secondary_music(SEQ_LEVEL_GRASS, 0, 255, 10);
-            gShitMusic = 1;
+            set_background_music(0, SEQ_LEVEL_GRASS, 0);
+            gShitMusic = TRUE;
             return set_mario_action(m, ACT_JUMP, 0);
     }
         

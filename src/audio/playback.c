@@ -1151,6 +1151,7 @@ s32 note_init_for_layer(struct Note *note, struct SequenceChannelLayer *seqLayer
     note->prevParentLayer = NO_LAYER;
     note->parentLayer = seqLayer;
     note->priority = seqLayer->seqChannel->notePriority;
+    note->shouldNotShitMusic = seqLayer->shouldNotShitMusic;
     if (!IS_BANK_LOAD_COMPLETE(seqLayer->seqChannel->bankId)) {
         return TRUE;
     }
@@ -1420,6 +1421,7 @@ void note_init_all(void) {
 #endif
 #endif
         note->priority = NOTE_PRIORITY_DISABLED;
+        note->shouldNotShitMusic = FALSE;
 #ifdef VERSION_SH
         note->unkSH34 = 0;
 #endif

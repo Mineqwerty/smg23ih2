@@ -112,6 +112,7 @@ s32 seq_channel_set_layer(struct SequenceChannel *seqChannel, s32 layerIndex) {
     layer->enabled = TRUE;
     layer->stopSomething = FALSE;
     layer->continuousNotes = FALSE;
+    layer->shouldNotShitMusic = FALSE;
     layer->finished = FALSE;
 #if defined(VERSION_EU) || defined(VERSION_SH)
     layer->ignoreDrumPan = FALSE;

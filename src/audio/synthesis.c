@@ -1742,7 +1742,7 @@ void note_set_vel_pan_reverb(struct Note *note, f32 velocity, f32 pan, u8 reverb
 
 void note_set_frequency(struct Note *note, f32 frequency) {
     note->frequency = frequency;
-    if (gShitMusic == 1) {
+    if (gShitMusic && note->shouldNotShitMusic == FALSE) {
         note->frequency += random_float() / 5.0f;
     }
 }
@@ -1771,6 +1771,7 @@ void note_disable(struct Note *note) {
         note_set_vel_pan_reverb(note, 0, 0.5f, 0);
     }
     note->priority = NOTE_PRIORITY_DISABLED;
+    note->shouldNotShitMusic = FALSE;
     note->enabled = FALSE;
     note->finished = FALSE;
     note->parentLayer = NO_LAYER;

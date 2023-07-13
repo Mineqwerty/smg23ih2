@@ -785,6 +785,7 @@ u8 save_file_set_checkpoint(u8 checkpointID, u8 levelNum, u8 areaNum) {
         checkpoint->checkpointLastLevel = levelNum;
         checkpoint->checkpointLastArea = areaNum;
 
+        gSaveBuffer.files[gCurrSaveFileNum - 1][0].flags |= SAVE_FLAG_FILE_EXISTS;
         gSaveFileModified = TRUE;
         
         save_file_do_save(gCurrSaveFileNum - 1);
@@ -793,4 +794,39 @@ u8 save_file_set_checkpoint(u8 checkpointID, u8 levelNum, u8 areaNum) {
     }
 
     return FALSE;
+}
+
+u32 save_file_get_red_coin_flags(void) {
+    return gSaveBuffer.files[gCurrSaveFileNum - 1][0].redCoinFlags;
+}
+
+u32 save_file_get_red_coin_flags_count(void) {
+    u32 flags = gSaveBuffer.files[gCurrSaveFileNum - 1][0].redCoinFlags;
+    u32 count = 0;
+
+    for (u32 i = 0; i < sizeof(flags) * 8; i++) {
+        if ((1U << i) & flags) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+void save_file_set_red_coin_flags(u32 flagsToSet) {
+    gSaveBuffer.files[gCurrSaveFileNum - 1][0].redCoinFlags |= flagsToSet;
+
+    gSaveBuffer.files[gCurrSaveFileNum - 1][0].flags |= SAVE_FLAG_FILE_EXISTS;
+    gSaveFileModified = TRUE;
+    
+    save_file_do_save(gCurrSaveFileNum - 1);
+}
+
+void save_file_clear_red_coin_flags(u32 flagsToClear) {
+    gSaveBuffer.files[gCurrSaveFileNum - 1][0].redCoinFlags &= ~flagsToClear;
+
+    gSaveBuffer.files[gCurrSaveFileNum - 1][0].flags |= SAVE_FLAG_FILE_EXISTS;
+    gSaveFileModified = TRUE;
+    
+    save_file_do_save(gCurrSaveFileNum - 1);
 }

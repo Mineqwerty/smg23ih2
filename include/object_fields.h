@@ -452,6 +452,7 @@
 #define /*0x0F4*/ oCoinRespawnBits  OBJECT_FIELD_S32(0x1B)
 #define /*0x0F8*/ oCoinSnapToGround OBJECT_FIELD_S32(0x1C)
 #define /*0x110*/ oCoinBaseYVel     OBJECT_FIELD_F32(0x22)
+#define /*0x1B4*/ oRedCoinBounce    OBJECT_FIELD_S32(0x49)
 #define /*0x1B0*/ oCoinBounceTimer  OBJECT_FIELD_S32(0x4A)
 
 /* Collision Particle */
@@ -846,6 +847,9 @@
 #define /*0x10C*/ oSLWalkingPenguinCurStep           OBJECT_FIELD_S32(0x21)
 #define /*0x110*/ oSLWalkingPenguinCurStepTimer      OBJECT_FIELD_S32(0x22)
 
+/* Endless Staircase Music */
+#define /*0x0F4*/ oPlayingEndlessStaircaseMusic OBJECT_FIELD_S32(0x1B)
+
 /* Piranha Plant */
 #define /*0x0F4*/ oPiranhaPlantSleepMusicState OBJECT_FIELD_S32(0x1B)
 #define /*0x0F8*/ oPiranhaPlantScale           OBJECT_FIELD_F32(0x1C)
@@ -1016,7 +1020,8 @@
 /* Hidden Star */
 // Secrets/Red Coins
 #define /*0x0F4*/ oHiddenStarTriggerCounter OBJECT_FIELD_S32(0x1B)
-#define /*0x0F8*/ oHiddenStarTriggerTotal OBJECT_FIELD_S32(0x1C)
+#define /*0x0F8*/ oHiddenStarTriggerTotal   OBJECT_FIELD_S32(0x1C)
+#define /*0x0FC*/ oHiddenStarSpawnStar      OBJECT_FIELD_OBJ(0x1D)
 
 /* Sealed Door Star */
 #define /*0x108*/ oUnlockDoorStarState  OBJECT_FIELD_U32(0x20)

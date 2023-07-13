@@ -1117,10 +1117,34 @@ s32 drop_and_set_mario_action(struct MarioState *m, u32 action, u32 actionArg) {
 }
 
 /**
+ * Hurt Mario and (maybe) drop red coins
+ */
+void set_hurt_counter(struct MarioState *m, u8 additionalDamage, u8 shouldDropRedCoins) {
+    m->hurtCounter += additionalDamage;
+
+    if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS && shouldDropRedCoins) {
+        u32 redCoinFlags = save_file_get_red_coin_flags();
+
+        if (redCoinFlags != 0) {
+            for (u32 i = 0; i < sizeof(redCoinFlags) * 8; i++) {
+                if ((1U << i) & redCoinFlags) {
+                    obj_spawn_loot_coins(gMarioObject, 1, 0, bhvBounceyRedCoinGetsSpawned, 20, MODEL_RED_COIN, i << 16);
+                }
+            }
+
+            save_file_clear_red_coin_flags(-1);
+
+            play_sound(SOUND_MENU_SONIC_LOSE_RINGS, gGlobalSoundSource);
+        }
+    }
+}
+
+/**
  * Increment Mario's hurt counter and set a new action.
  */
 s32 hurt_and_set_mario_action(struct MarioState *m, u32 action, u32 actionArg, s16 hurtCounter) {
-    m->hurtCounter = hurtCounter;
+    m->hurtCounter = 0;
+    set_hurt_counter(m, hurtCounter, TRUE);
 
     return set_mario_action(m, action, actionArg);
 }

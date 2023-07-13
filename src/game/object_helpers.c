@@ -1325,9 +1325,9 @@ void cur_obj_set_hurtbox_radius_and_height(f32 radius, f32 height) {
     o->hurtboxHeight = height;
 }
 
-static void obj_spawn_loot_coins(struct Object *obj, s32 numCoins, f32 baseYVel,
+void obj_spawn_loot_coins(struct Object *obj, s32 numCoins, f32 baseYVel,
                                     const BehaviorScript *coinBehavior,
-                                    s16 posJitter, ModelID16 model) {
+                                    s16 posJitter, ModelID16 model, u32 behaviorParams) {
     s32 i;
     struct Surface *floor;
     struct Object *coin;
@@ -1338,25 +1338,30 @@ static void obj_spawn_loot_coins(struct Object *obj, s32 numCoins, f32 baseYVel,
     }
 
     for (i = 0; i < numCoins; i++) {
-        if (obj->oNumLootCoins <= 0) {
-            break;
-        }
+        if (obj != gMarioObject) {
+            if (obj->oNumLootCoins <= 0) {
+                break;
+            }
 
-        obj->oNumLootCoins--;
+            obj->oNumLootCoins--;
+        }
 
         coin = spawn_object(obj, model, coinBehavior);
         obj_translate_xz_random(coin, posJitter);
         coin->oPosY = spawnHeight;
         coin->oCoinBaseYVel = baseYVel;
+
+        coin->oBehParams = behaviorParams;
+        coin->oBehParams2ndByte = GET_BPARAM2(behaviorParams);
     }
 }
 
 void obj_spawn_loot_blue_coins(struct Object *obj, s32 numCoins, f32 baseYVel, s16 posJitter) {
-    obj_spawn_loot_coins(obj, numCoins, baseYVel, bhvBlueCoinJumping, posJitter, MODEL_BLUE_COIN);
+    obj_spawn_loot_coins(obj, numCoins, baseYVel, bhvBlueCoinJumping, posJitter, MODEL_BLUE_COIN, 0);
 }
 
 void obj_spawn_loot_yellow_coins(struct Object *obj, s32 numCoins, f32 baseYVel) {
-    obj_spawn_loot_coins(obj, numCoins, baseYVel, bhvSingleCoinGetsSpawned, 0, MODEL_YELLOW_COIN);
+    obj_spawn_loot_coins(obj, numCoins, baseYVel, bhvSingleCoinGetsSpawned, 0, MODEL_YELLOW_COIN, 0);
 }
 
 void cur_obj_spawn_loot_coin_at_mario_pos(void) {
@@ -2309,7 +2314,7 @@ s32 obj_cappy_collide(struct Object *obj) {
 
         if (other != gMarioObject) {
             obj->oCappyObj = other;
-            play_sound(SOUND_SPONGE, gMarioState->marioObj->header.gfx.cameraToObject);
+            play_sound(SOUND_CAPTURE, gMarioState->marioObj->header.gfx.cameraToObject);
             return TRUE;
         }
     }

@@ -41,6 +41,7 @@
 #include "save_file.h"
 #include "seq_ids.h"
 #include "sm64.h"
+#include "sound_init.h"
 #include "spawn_object.h"
 #include "spawn_sound.h"
 #include "rumble_init.h"

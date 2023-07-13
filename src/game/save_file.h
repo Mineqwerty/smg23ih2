@@ -33,7 +33,9 @@ struct SaveFileCheckpoint {
 struct SaveFile {
     struct SaveFileCheckpoint checkpoint;
 
-    u8 pad[5];
+    u8 redCoinFlags;
+
+    u8 pad[4];
 
     u32 flags;
 
@@ -198,6 +200,10 @@ s32 check_warp_checkpoint(struct WarpNode *warpNode);
 
 struct SaveFileCheckpoint *save_file_get_last_checkpoint(void);
 u8 save_file_set_checkpoint(u8 checkpointID, u8 levelNum, u8 areaNum);
+u32 save_file_get_red_coin_flags(void);
+u32 save_file_get_red_coin_flags_count(void);
+void save_file_set_red_coin_flags(u32 flagsToSet);
+void save_file_clear_red_coin_flags(u32 flagsToClear);
 
 #if MULTILANG
 enum EuLanguages {

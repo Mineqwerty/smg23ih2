@@ -55,4 +55,6 @@ s32 execute_mario_action(UNUSED struct Object *obj);
 void init_mario(void);
 void init_mario_from_save_file(void);
 
+void set_hurt_counter(struct MarioState *m, u8 additionalDamage, u8 shouldDropRedCoins);
+
 #endif // MARIO_H

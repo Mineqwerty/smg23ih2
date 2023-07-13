@@ -137,10 +137,12 @@ void spawn_default_star(f32 x, f32 y, f32 z) {
     starObj->oBehParams2ndByte = SPAWN_STAR_ARC_CUTSCENE_BP_DEFAULT_STAR;
 }
 
-void spawn_red_coin_cutscene_star(f32 x, f32 y, f32 z) {
+struct Object *spawn_red_coin_cutscene_star(f32 x, f32 y, f32 z) {
     struct Object *starObj = NULL;
     starObj = spawn_star(starObj, x, y, z);
     starObj->oBehParams2ndByte = SPAWN_STAR_ARC_CUTSCENE_BP_HIDDEN_STAR;
+
+    return starObj;
 }
 
 void spawn_no_exit_star(f32 x, f32 y, f32 z) {
@@ -177,25 +179,45 @@ void bhv_hidden_red_coin_star_init(void) {
         o->oHiddenStarTriggerTotal = numRedCoinsRemaining + gRedCoinsCollected;
         o->oHiddenStarTriggerCounter = o->oHiddenStarTriggerTotal - numRedCoinsRemaining;
     }
+
+    if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS) {
+        o->oHiddenStarTriggerCounter = save_file_get_red_coin_flags_count();
+        o->oHiddenStarTriggerTotal = 8; // NOTE: Hardcoded to 8 reds
+    }
     
 }
 
 void bhv_hidden_red_coin_star_loop(void) {
+    if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS) {
+        o->oHiddenStarTriggerCounter = save_file_get_red_coin_flags_count();
+    }
     gRedCoinsCollected = o->oHiddenStarTriggerCounter;
 
     switch (o->oAction) {
         case HIDDEN_STAR_ACT_INACTIVE:
-            if (o->oHiddenStarTriggerCounter == o->oHiddenStarTriggerTotal) {
+            if (o->oHiddenStarTriggerCounter >= o->oHiddenStarTriggerTotal) {
                 o->oAction = HIDDEN_STAR_ACT_ACTIVE;
             }
             break;
 
         case HIDDEN_STAR_ACT_ACTIVE:
             if (o->oTimer > 2) {
-                spawn_red_coin_cutscene_star(o->oPosX, o->oPosY, o->oPosZ);
+                o->oHiddenStarSpawnStar = spawn_red_coin_cutscene_star(o->oPosX, o->oPosY, o->oPosZ);
                 spawn_mist_particles();
-                o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+                o->oAction = HIDDEN_STAR_ACT_WAITING_FOR_COIN_LOSS;
             }
             break;
+
+        case HIDDEN_STAR_ACT_WAITING_FOR_COIN_LOSS:
+            if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS && o->oHiddenStarSpawnStar) {
+                if (o->oHiddenStarTriggerCounter < o->oHiddenStarTriggerTotal) {
+                    o->oAction = HIDDEN_STAR_ACT_INACTIVE;
+                    spawn_mist_particles();
+                    o->oHiddenStarSpawnStar->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+                    o->oHiddenStarSpawnStar = NULL;
+                }
+            }
+            break;
+
     }
 }

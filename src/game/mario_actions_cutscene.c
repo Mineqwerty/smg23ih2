@@ -1552,7 +1552,7 @@ s32 act_squished(struct MarioState *m) {
             } else {
                 if (!(m->flags & MARIO_METAL_CAP) && m->invincTimer == 0) {
                     // cap on: 3 units; cap off: 4.5 units
-                    m->hurtCounter += m->flags & MARIO_CAP_ON_HEAD ? 12 : 18;
+                    set_hurt_counter(m, (m->flags & MARIO_CAP_ON_HEAD) ? 12 : 18, TRUE);
                     play_sound_if_no_flag(m, SOUND_MARIO_ATTACKED, MARIO_MARIO_SOUND_PLAYED);
                 }
 
@@ -1743,7 +1743,6 @@ static void intro_cutscene_jump_out_of_pipe(struct MarioState *m) {
     }
 
     if (m->actionTimer++ >= 118) {
-        gShitMusic = 0;
         m->marioObj->header.gfx.node.flags |= GRAPH_RENDER_ACTIVE;
 
         play_sound_if_no_flag(m, SOUND_ACTION_HIT_3, MARIO_ACTION_SOUND_PLAYED);
