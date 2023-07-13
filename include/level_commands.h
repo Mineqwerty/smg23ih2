@@ -330,6 +330,8 @@ enum GoddardScene {
     CMD_PTR(geo)
 
 #define END_AREA() \
+    WARP_NODE(WARP_NODE_CHECKPOINT, LEVEL_RESTART_GAME, 0x00, WARP_NODE_CHECKPOINT, 0x00), /* Entry node only! */ \
+    OBJECT(MODEL_NONE, 0, 0, 0, 0, 0, 0, (u32) WARP_NODE_CHECKPOINT << 16, bhvCheckpointWarp), \
     CMD_BBH(LEVEL_CMD_END_AREA, 0x04, 0x0000)
 
 #define LOAD_MODEL_FROM_DL(model, dl, layer) \

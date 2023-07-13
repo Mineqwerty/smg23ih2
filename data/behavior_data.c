@@ -3520,6 +3520,10 @@ const BehaviorScript bhvSpinAirborneWarp[] = {
     BREAK(),
 };
 
+const BehaviorScript bhvCheckpointWarp[] = {
+    BREAK(),
+};
+
 const BehaviorScript bhvFlyingWarp[] = {
     BREAK(),
 };
@@ -4793,6 +4797,16 @@ const BehaviorScript bhvBreakableBoxSmall[] = {
     BEGIN_LOOP(),
         SET_INT(oIntangibleTimer, 0),
         CALL_NATIVE(bhv_breakable_box_small_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvCheckpoint[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO)),
+    DROP_TO_FLOOR(),
+    SET_HOME(),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_checkpoint_loop),
     END_LOOP(),
 };
 
