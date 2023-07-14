@@ -1901,6 +1901,12 @@ s32 act_flying_triple_jump(struct MarioState *m) {
 
 s32 act_top_of_pole_jump(struct MarioState *m) {
     play_mario_jump_sound(m);
+    if (m->actionTimer++ < 30) {
+        m->vel[1] = 300.0f;
+    }
+    else {
+        m->vel[1] -= 20.0f;
+    }
     common_air_action_step(m, ACT_FREEFALL_LAND, MARIO_ANIM_HANDSTAND_JUMP, AIR_STEP_CHECK_LEDGE_GRAB);
     return FALSE;
 }
