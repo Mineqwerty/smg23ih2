@@ -1272,6 +1272,7 @@
 #define /*0x0FC*/ oWoodenPostSpeedY           OBJECT_FIELD_F32(0x1D)
 #define /*0x100*/ oWoodenPostMarioPounding    OBJECT_FIELD_S32(0x1E)
 #define /*0x104*/ oWoodenPostOffsetY          OBJECT_FIELD_F32(0x1F)
+#define /*0x108*/ oWoodenPostHasTalked        OBJECT_FIELD_F32(0x20)
 
 /* Yoshi */
 #define /*0x0F4*/ oYoshiBlinkTimer OBJECT_FIELD_S32(0x1B)
