@@ -49,4 +49,8 @@ extern const LevelScript level_castle_grounds_entry[];
 #include "levels/castle_grounds/sponge_circle/geo_header.h"
 
 
+#include "levels/castle_grounds/wii/collision_header.h"
+
+#include "levels/castle_grounds/wii/geo_header.h"
+
 #endif

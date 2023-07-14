@@ -76,6 +76,7 @@ void small_breakable_box_act_move(void) {
         obj_spawn_yellow_coins(o, 3);
         create_sound_spawner(SOUND_GENERAL_BREAK_BOX);
         o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+        gMarioState->marioObj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO];
     }
 
     obj_check_floor_death(collisionFlags, sObjFloor);

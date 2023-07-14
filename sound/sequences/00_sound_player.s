@@ -4434,6 +4434,7 @@ chan_end
 
 .layer_sponge:
 layer_note1 39, 0x94, 127
+layer_shouldnotshitmusic 1
 layer_end
 
 .sound_capture:
@@ -4444,6 +4445,7 @@ chan_end
 
 .layer_capture:
 layer_note1 39, 0x3d, 103
+layer_shouldnotshitmusic 1
 layer_end
 
 .sound_bruh:

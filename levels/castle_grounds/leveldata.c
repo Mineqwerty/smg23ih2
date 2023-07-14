@@ -36,3 +36,5 @@
 
 #include "levels/castle_grounds/troll_water/model.inc.c"
 #include "levels/castle_grounds/sponge_circle/model.inc.c"
+#include "levels/castle_grounds/wii/collision.inc.c"
+#include "levels/castle_grounds/wii/model.inc.c"

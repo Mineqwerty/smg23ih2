@@ -23,3 +23,4 @@
 
 #include "levels/castle_grounds/troll_water/geo.inc.c"
 #include "levels/castle_grounds/sponge_circle/geo.inc.c"
+#include "levels/castle_grounds/wii/geo.inc.c"

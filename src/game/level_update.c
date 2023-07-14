@@ -1396,6 +1396,7 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
     sWarpCheckpointActive = FALSE;
     gCurrLevelNum = levelNum;
     gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
+	if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS) return 0;
 
     switch (gCurrLevelNum) {
         case SMG23IH2_LEVEL_1:

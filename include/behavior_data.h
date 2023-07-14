@@ -555,3 +555,4 @@ extern const BehaviorScript bhvSpongeCircle[];
 extern const BehaviorScript bhvEndlessStairsMusicController[];
 extern const BehaviorScript bhvShellTrollWarpHandler[];
 extern const BehaviorScript bhvTitleSponge[];
+extern const BehaviorScript bhvWii[];

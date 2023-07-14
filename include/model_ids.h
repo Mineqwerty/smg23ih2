@@ -560,6 +560,7 @@
 #define MODEL_HIDDEN_BLOCK                0x123        // hidden_block_geo
 
 #define MODEL_TITLE_SPONGE                0x124
+#define MODEL_WII                0x125
 
 
 #endif

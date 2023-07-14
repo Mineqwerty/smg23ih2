@@ -1,0 +1,16 @@
+extern const GeoLayout wii_geo[];
+extern Lights1 wii_f3dlite_material_015_lights;
+extern Lights1 wii_f3dlite_material_016_lights;
+extern Lights1 wii_f3dlite_material_017_lights;
+extern u8 wii_wiiz_rgba16[];
+extern Vtx wii_Plane_005_mesh_layer_1_vtx_0[55];
+extern Gfx wii_Plane_005_mesh_layer_1_tri_0[];
+extern Vtx wii_Plane_005_mesh_layer_1_vtx_1[192];
+extern Gfx wii_Plane_005_mesh_layer_1_tri_1[];
+extern Vtx wii_Plane_005_mesh_layer_1_vtx_2[24];
+extern Gfx wii_Plane_005_mesh_layer_1_tri_2[];
+extern Gfx mat_wii_f3dlite_material_015[];
+extern Gfx mat_wii_f3dlite_material_016[];
+extern Gfx mat_wii_f3dlite_material_017[];
+extern Gfx wii_Plane_005_mesh_layer_1[];
+extern Gfx wii_material_revert_render_settings[];
