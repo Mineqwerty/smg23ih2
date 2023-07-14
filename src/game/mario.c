@@ -1796,6 +1796,16 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
         set_mario_action(gMarioState, ACT_IDLE, 0);
     }
 
+    if (gPlayer1Controller->buttonPressed & D_JPAD) {
+        initiate_warp(LEVEL_WF, 2, 0x0A, 0);
+    }
+
+    if (gChangeArea > 0) {
+        change_area(gChangeArea);
+        gMarioState->area = gCurrentArea;
+        gChangeArea = 0;
+    }
+
     // Updates once per frame:
     vec3f_get_dist_and_lateral_dist_and_angle(gMarioState->prevPos, gMarioState->pos, &gMarioState->moveSpeed, &gMarioState->lateralSpeed, &gMarioState->movePitch, &gMarioState->moveYaw);
     vec3f_copy(gMarioState->prevPos, gMarioState->pos);

@@ -51,6 +51,7 @@ u8 gCacheEmulated = TRUE;
 u8 gBorderHeight;
 u8 gShitMusic;
 u8 gBetterMarioCam;
+u8 gChangeArea;
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
 u8 gCustomDebugMode;
 #endif
