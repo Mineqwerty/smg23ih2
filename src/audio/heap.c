@@ -1174,6 +1174,8 @@ void init_reverb_us(s32 presetId) {
 
 #if defined(VERSION_JP) || defined(VERSION_US)
 void audio_reset_session(s32 reverbPresetId) {
+    gShitMusic = FALSE;
+
     if (sAudioIsInitialized) {
         if (gAudioLoadLock != AUDIO_LOCK_UNINITIALIZED) {
             gAudioLoadLock = AUDIO_LOCK_LOADING;

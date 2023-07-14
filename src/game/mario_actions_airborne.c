@@ -51,7 +51,7 @@ s32 lava_boost_on_wall(struct MarioState *m) {
     }
 
     if (!(m->flags & MARIO_METAL_CAP)) {
-        m->hurtCounter += (m->flags & MARIO_CAP_ON_HEAD) ? 12 : 18;
+        set_hurt_counter(m, (m->flags & MARIO_CAP_ON_HEAD) ? 12 : 18, TRUE);
     }
 
     play_sound(SOUND_MARIO_ON_FIRE, m->marioObj->header.gfx.cameraToObject);
@@ -71,7 +71,7 @@ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
     if (m->action != ACT_TWIRLING && m->floor->type != SURFACE_BURNING) {
         if (m->vel[1] < -55.0f) {
             if (fallHeight > FALL_DAMAGE_HEIGHT_LARGE) {
-                m->hurtCounter += (m->flags & MARIO_CAP_ON_HEAD) ? 16 : 24;
+                set_hurt_counter(m, (m->flags & MARIO_CAP_ON_HEAD) ? 16 : 24, TRUE);
 #if ENABLE_RUMBLE
                 queue_rumble_data(5, 80);
 #endif
@@ -79,7 +79,7 @@ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
                 play_sound(SOUND_MARIO_ATTACKED, m->marioObj->header.gfx.cameraToObject);
                 return drop_and_set_mario_action(m, hardFallAction, 4);
             } else if (fallHeight > damageHeight && !mario_floor_is_slippery(m)) {
-                m->hurtCounter += (m->flags & MARIO_CAP_ON_HEAD) ? 8 : 12;
+                set_hurt_counter(m, (m->flags & MARIO_CAP_ON_HEAD) ? 8 : 12, TRUE);
                 m->squishTimer = 30;
 #if ENABLE_RUMBLE
                 queue_rumble_data(5, 80);
@@ -1483,7 +1483,7 @@ s32 act_lava_boost(struct MarioState *m) {
             if (m->floor->type == SURFACE_BURNING) {
                 m->actionState = ACT_STATE_LAVA_BOOST_HIT_LAVA;
                 if (!(m->flags & MARIO_METAL_CAP)) {
-                    m->hurtCounter += (m->flags & MARIO_CAP_ON_HEAD) ? 12 : 18;
+                    set_hurt_counter(m, (m->flags & MARIO_CAP_ON_HEAD) ? 12 : 18, TRUE);
                 }
                 m->vel[1] = 84.0f;
                 play_sound(SOUND_MARIO_ON_FIRE, m->marioObj->header.gfx.cameraToObject);

@@ -998,6 +998,7 @@ enum oBehParam1stByteStarAct { // BPARAM1
     /* oAction */
     #define HIDDEN_STAR_ACT_INACTIVE                        0x0
     #define HIDDEN_STAR_ACT_ACTIVE                          0x1
+    #define HIDDEN_STAR_ACT_WAITING_FOR_COIN_LOSS           0x2
 
 /* Spawn Star stay at position cutscene */
     /* oBehParams2ndByte */

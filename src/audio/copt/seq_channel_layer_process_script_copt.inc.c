@@ -216,11 +216,14 @@ void seq_channel_layer_process_script(struct SequenceChannelLayer *layer) {
 
             case 0xc2: // layer_transpose; set transposition in semitones
             case 0xc9: // layer_setshortnoteduration
+            case 0xcb: // layer_shouldnotshitmusic
                 temp_a0_5 = *(state->pc++);
                 if (cmd == 0xc9) {
                     layer->noteDuration = temp_a0_5;
-                } else {
+                } else if (cmd == 0xc2) {
                     layer->transposition = temp_a0_5;
+                } else {
+                    layer->shouldNotShitMusic = temp_a0_5;
                 }
                 break;
 

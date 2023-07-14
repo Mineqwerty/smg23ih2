@@ -59,6 +59,11 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "09_bruh"
+        },
+        "inst10": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "0A_sonic_lose_rings"
         }
     },
     "instrument_list": [
@@ -71,6 +76,7 @@
         "inst6",
         "inst7",
         "inst8",
-        "inst9"
+        "inst9",
+        "inst10"
     ]
 }

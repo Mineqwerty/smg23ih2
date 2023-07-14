@@ -6713,9 +6713,9 @@ void cutscene_intro_peach_start_letter_music(UNUSED struct Camera *c) {
  * Raise the volume (not in JP) and start the flying music.
  */
 void cutscene_intro_peach_start_flying_music(UNUSED struct Camera *c) {
+    gShitMusic = TRUE;
     seq_player_unlower_volume(SEQ_PLAYER_LEVEL, 60);
     cutscene_intro_peach_play_lakitu_flying_music();
-    gShitMusic = 1;
 }
 
 #ifdef VERSION_EU

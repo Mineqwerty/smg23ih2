@@ -4419,31 +4419,42 @@ layer_end
 .sound_ragdoll:
 chan_setbank 0
 chan_setinstr 6
-chan_setlayer 0, .layer_AAAA
+chan_setlayer 0, .layer_ragdoll
 chan_end
+
+.layer_ragdoll:
+layer_note1 39, 0xD0, 111 // Intentionally cut short
+layer_end
 
 .sound_sponge:
 chan_setbank 0
 chan_setinstr 7
-chan_setlayer 0, .layer_AAAA
+chan_setlayer 0, .layer_sponge
 chan_end
+
+.layer_sponge:
+layer_note1 39, 0x94, 127
+layer_end
 
 .sound_capture:
 chan_setbank 0
 chan_setinstr 8
-chan_setlayer 0, .layer_AAAA
+chan_setlayer 0, .layer_capture
 chan_end
+
+.layer_capture:
+layer_note1 39, 0x3d, 103
+layer_end
 
 .sound_bruh:
 chan_setbank 0
 chan_setinstr 9
-chan_setlayer 0, .layer_AAAA
+chan_setlayer 0, .layer_bruh
 chan_end
 
-
-.layer_AAAA:
-  layer_note1 39, 0x100, 127
-  layer_end
+.layer_bruh:
+layer_note1 39, 0x16b, 111
+layer_end
 
 
 .channel4_table:
@@ -6954,7 +6965,7 @@ sound_ref .sound_menu_exit_a_sign
 sound_ref .sound_menu_mario_castle_warp2
 sound_ref .sound_menu_star_sound_okey_dokey
 sound_ref .sound_menu_star_sound_lets_a_go
-sound_ref .sound_menu_yoshi_gain_lives
+sound_ref .sound_menu_sonic_lose_rings
 sound_ref .sound_menu_enter_pipe
 sound_ref .sound_menu_exit_pipe
 sound_ref .sound_menu_collect_red_coin
@@ -7755,6 +7766,17 @@ chan_end
 
 .layer_311D:
 layer_note1 39, 0xb4, 127
+layer_end
+
+.sound_menu_sonic_lose_rings:
+chan_setbank 0
+chan_setinstr 10
+chan_setlayer 0, .layer_sonic_lose_rings
+chan_end
+
+.layer_sonic_lose_rings:
+layer_shouldnotshitmusic 1
+layer_note1 39, 0x92, 111
 layer_end
 
 .sound_menu_collect_red_coin:

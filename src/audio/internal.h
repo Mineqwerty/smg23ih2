@@ -505,6 +505,7 @@ struct SequenceChannelLayer {
     /*0x00, 0x00*/ u8 finished : 1;
     /*0x00, 0x00*/ u8 stopSomething : 1; // ?
     /*0x00, 0x00*/ u8 continuousNotes : 1; // keep the same note for consecutive notes with the same sound
+    /*0x00, 0x00*/ u8 shouldNotShitMusic : 1;
 #if defined(VERSION_EU) || defined(VERSION_SH)
     /*    , 0x00*/ u8 unusedEu0b8 : 1;
     /*    , 0x00*/ u8 notePropertiesNeedInit : 1;
@@ -672,6 +673,7 @@ struct Note {
     /*0x00*/ u8 finished              : 1;
     /*0x00*/ u8 envMixerNeedsInit     : 1;
     /*0x00*/ u8 initFullVelocity      : 1;
+    /*0x00*/ u8 shouldNotShitMusic    : 1;
 #ifdef ENABLE_STEREO_HEADSET_EFFECTS
     /*0x00*/ u8 stereoHeadsetEffects  : 1;
     /*0x00*/ u8 usesHeadsetPanEffects : 1;

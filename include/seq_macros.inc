@@ -643,6 +643,11 @@
     .byte \a
 .endm
 
+.macro layer_shouldnotshitmusic a
+    .byte 0xcb
+    .byte \a
+.endm
+
 .macro layer_setshortnotevelocityfromtable a
     .byte 0xd0 + \a
 .endm
