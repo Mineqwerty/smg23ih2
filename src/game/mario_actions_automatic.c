@@ -150,7 +150,7 @@ s32 act_holding_pole(struct MarioState *m) {
 }
 
 s32 act_climbing_pole(struct MarioState *m) {
-    struct Object *marioObj = m->marioObj;
+    UNUSED struct Object *marioObj = m->marioObj;
     s16 cameraAngle = m->area->camera->yaw;
 
     if (m->health < 0x100) {
