@@ -1122,7 +1122,7 @@ s32 drop_and_set_mario_action(struct MarioState *m, u32 action, u32 actionArg) {
 void set_hurt_counter(struct MarioState *m, u8 additionalDamage, u8 shouldDropRedCoins) {
     m->hurtCounter += additionalDamage;
 
-    if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS && shouldDropRedCoins) {
+    if (gCurrLevelNum == SMG23IH2_LEVEL_1 && shouldDropRedCoins) {
         u32 redCoinFlags = save_file_get_red_coin_flags();
 
         if (redCoinFlags != 0) {

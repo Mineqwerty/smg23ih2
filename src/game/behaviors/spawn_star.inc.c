@@ -180,7 +180,7 @@ void bhv_hidden_red_coin_star_init(void) {
         o->oHiddenStarTriggerCounter = o->oHiddenStarTriggerTotal - numRedCoinsRemaining;
     }
 
-    if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS) {
+    if (gCurrLevelNum == SMG23IH2_LEVEL_1) {
         o->oHiddenStarTriggerCounter = save_file_get_red_coin_flags_count();
         o->oHiddenStarTriggerTotal = 8; // NOTE: Hardcoded to 8 reds
     }
@@ -188,7 +188,7 @@ void bhv_hidden_red_coin_star_init(void) {
 }
 
 void bhv_hidden_red_coin_star_loop(void) {
-    if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS) {
+    if (gCurrLevelNum == SMG23IH2_LEVEL_1) {
         o->oHiddenStarTriggerCounter = save_file_get_red_coin_flags_count();
     }
     gRedCoinsCollected = o->oHiddenStarTriggerCounter;
@@ -209,7 +209,7 @@ void bhv_hidden_red_coin_star_loop(void) {
             break;
 
         case HIDDEN_STAR_ACT_WAITING_FOR_COIN_LOSS:
-            if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS && o->oHiddenStarSpawnStar) {
+            if (gCurrLevelNum == SMG23IH2_LEVEL_1 && o->oHiddenStarSpawnStar) {
                 if (o->oHiddenStarTriggerCounter < o->oHiddenStarTriggerTotal) {
                     o->oAction = HIDDEN_STAR_ACT_INACTIVE;
                     spawn_mist_particles();

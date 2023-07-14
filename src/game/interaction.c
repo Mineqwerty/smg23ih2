@@ -1734,7 +1734,7 @@ u32 check_read_sign(struct MarioState *m, struct Object *obj) {
             m->interactObj = obj;
             m->usedObj     = obj;
 
-            if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS) {
+            if (gCurrLevelNum == SMG23IH2_LEVEL_2) {
                 obj->oWoodenPostHasTalked = TRUE;
                 obj->hitboxRadius = 1000;
                 obj->hitboxHeight = 1000;

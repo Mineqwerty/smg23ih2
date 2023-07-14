@@ -67,7 +67,7 @@ void bhv_red_coin_init(void) {
 
     obj_set_hitbox(o, &sRedCoinHitbox);
 
-    if (o->parentObj != NULL && gCurrLevelNum == LEVEL_CASTLE_GROUNDS) {
+    if (o->parentObj != NULL && gCurrLevelNum == SMG23IH2_LEVEL_1) {
         o->parentObj->oHiddenStarTriggerCounter = (s32) save_file_get_red_coin_flags_count();
         if (save_file_get_red_coin_flags() & (1U << o->oBehParams2ndByte)) {
             o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
@@ -104,7 +104,7 @@ void bhv_red_coin_loop(void) {
             // ...increment the star's counter.
             o->parentObj->oHiddenStarTriggerCounter++;
 
-            if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS) {
+            if (gCurrLevelNum == SMG23IH2_LEVEL_1) {
                 save_file_set_red_coin_flags(1U << o->oBehParams2ndByte);
                 o->parentObj->oHiddenStarTriggerCounter = (s32) save_file_get_red_coin_flags_count();
             }
