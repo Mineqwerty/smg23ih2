@@ -23,3 +23,4 @@
 #include "cappy/geo.inc.c"
 #include "fazana_car/geo.inc.c"
 #include "custom_mario_death_sprite/geo.inc.c"
+#include "mario_maker_laugh/geo.inc.c"

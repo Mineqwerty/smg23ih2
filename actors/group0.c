@@ -44,3 +44,4 @@
 #include "fazana_car/model.inc.c"
 #include "fazana_car/collision.inc.c"
 #include "custom_mario_death_sprite/model.inc.c"
+#include "mario_maker_laugh/model.inc.c"

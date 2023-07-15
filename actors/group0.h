@@ -354,4 +354,6 @@ extern const Collision hidden_block_collision[];
 
 #include "custom_mario_death_sprite/geo_header.h"
 
+#include "mario_maker_laugh/geo_header.h"
+
 #endif

@@ -778,7 +778,6 @@ void thread5_game_loop(UNUSED void *arg) {
 
     while (TRUE) {
         if (gCrashmaWii) {
-            display_and_vsync();
             continue;
         }
 

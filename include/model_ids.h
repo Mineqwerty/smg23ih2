@@ -562,6 +562,7 @@
 #define MODEL_TITLE_SPONGE                0x124
 #define MODEL_WII                         0x125
 #define MODEL_MARIO_DEATH_SPRITE          0x126
+#define MODEL_MARIO_MAKER_LAUGH           0x127
 
 
 #endif
