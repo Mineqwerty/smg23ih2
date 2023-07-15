@@ -1696,7 +1696,12 @@ void render_pause_course_options(s16 x, s16 y, s8 *index, s16 yIndex) {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
 
     print_generic_string(x + 10, y - 2, LANGUAGE_ARRAY(textContinue));
+
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 0, gDialogTextAlpha);
+
     print_generic_string(x + 10, y - 17, LANGUAGE_ARRAY(textExitCourse));
+
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
 
     if (*index != MENU_OPT_CAMERA_ANGLE_R) {
         print_generic_string(x + 10, y - 33, LANGUAGE_ARRAY(textCameraAngleR));
@@ -1899,16 +1904,16 @@ s32 render_pause_courses_and_castle(void) {
             shade_screen();
             render_pause_my_score_coins();
             render_pause_red_coins();
-#ifndef DISABLE_EXIT_COURSE
-#ifdef EXIT_COURSE_WHILE_MOVING
-            if ((gMarioStates[0].action & (ACT_FLAG_SWIMMING | ACT_FLAG_METAL_WATER | ACT_FLAG_PAUSE_EXIT))
-             || (gMarioStates[0].pos[1] <= gMarioStates[0].floorHeight)) {
-#else
-            if (gMarioStates[0].action & ACT_FLAG_PAUSE_EXIT) {
-#endif
+// #ifndef DISABLE_EXIT_COURSE
+// #ifdef EXIT_COURSE_WHILE_MOVING
+//             if ((gMarioStates[0].action & (ACT_FLAG_SWIMMING | ACT_FLAG_METAL_WATER | ACT_FLAG_PAUSE_EXIT))
+//              || (gMarioStates[0].pos[1] <= gMarioStates[0].floorHeight)) {
+// #else
+//             if (gMarioStates[0].action & ACT_FLAG_PAUSE_EXIT) {
+// #endif
                 render_pause_course_options(99, 93, &gDialogLineNum, 15);
-            }
-#endif
+//             }
+// #endif
 
             if (gPlayer3Controller->buttonPressed & (A_BUTTON | START_BUTTON)) {
                 level_set_transition(0, NULL);
