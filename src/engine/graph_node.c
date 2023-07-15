@@ -813,6 +813,10 @@ s32 geo_update_animation_frame(struct AnimInfo *obj, s32 *accelAssist) {
     s32 result;
     struct Animation *anim = obj->curAnim;
 
+    if (gMarioState->action == ACT_CLASSIC_DEATH) {
+        return obj->animFrame;
+    }
+
     if (obj->animTimer == gAreaUpdateCounter || anim->flags & ANIM_FLAG_NO_ACCEL) {
         if (accelAssist != NULL) {
             accelAssist[0] = obj->animFrameAccelAssist;

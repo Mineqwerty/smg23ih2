@@ -417,6 +417,20 @@ s32 act_disappeared(struct MarioState *m) {
     return FALSE;
 }
 
+// makes Mario disappear and triggers fake death animation
+s32 act_classic_death(struct MarioState *m) {
+    set_mario_animation(m, MARIO_ANIM_A_POSE);
+    m->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_ACTIVE;
+    m->actionTimer++;
+    if (m->actionArg) {
+        m->actionArg--;
+        if ((m->actionArg & 0xFFFF) == 0) {
+            level_trigger_warp(m, WARP_OP_DEATH);
+        }
+    }
+    return FALSE;
+}
+
 s32 act_reading_automatic_dialog(struct MarioState *m) {
     u32 actionArg;
 
@@ -1225,6 +1239,15 @@ s32 act_unused_death_exit(struct MarioState *m) {
     }
     // one unit of health
     m->health = 0x0100;
+#ifdef BREATH_METER
+    m->breath = 0x880;
+#endif
+    return FALSE;
+}
+
+s32 act_checkpoint_warp(struct MarioState *m) {
+    launch_mario_until_land(m, ACT_FREEFALL_LAND_STOP, MARIO_ANIM_GENERAL_FALL, 0.0f);
+    m->health = 0x0880;
 #ifdef BREATH_METER
     m->breath = 0x880;
 #endif
@@ -2682,6 +2705,7 @@ s32 mario_execute_cutscene_action(struct MarioState *m) {
         case ACT_READING_SIGN:               cancel = act_reading_sign(m);               break;
         case ACT_JUMBO_STAR_CUTSCENE:        cancel = act_jumbo_star_cutscene(m);        break;
         case ACT_WAITING_FOR_DIALOG:         cancel = act_waiting_for_dialog(m);         break;
+        case ACT_CLASSIC_DEATH:              cancel = act_classic_death(m);              break;
         case ACT_STANDING_DEATH:             cancel = act_standing_death(m);             break;
         case ACT_QUICKSAND_DEATH:            cancel = act_quicksand_death(m);            break;
         case ACT_ELECTROCUTION:              cancel = act_electrocution(m);              break;
@@ -2702,6 +2726,7 @@ s32 mario_execute_cutscene_action(struct MarioState *m) {
         case ACT_EXIT_LAND_SAVE_DIALOG:      cancel = act_exit_land_save_dialog(m);      break;
         case ACT_DEATH_EXIT:                 cancel = act_death_exit(m);                 break;
         case ACT_UNUSED_DEATH_EXIT:          cancel = act_unused_death_exit(m);          break;
+        case ACT_CHECKPOINT_WARP:            cancel = act_checkpoint_warp(m);            break;
         case ACT_FALLING_DEATH_EXIT:         cancel = act_falling_death_exit(m);         break;
         case ACT_SPECIAL_EXIT_AIRBORNE:      cancel = act_special_exit_airborne(m);      break;
         case ACT_SPECIAL_DEATH_EXIT:         cancel = act_special_death_exit(m);         break;

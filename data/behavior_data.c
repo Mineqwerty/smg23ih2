@@ -4825,6 +4825,16 @@ const BehaviorScript bhvCheckpoint[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvMarioDeathSprite[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BILLBOARD(),
+    SET_HOME(),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_mario_death_sprite_loop),
+    END_LOOP(),
+};
+
 const BehaviorScript bhvCarOrangeNumber[] = {
     BEGIN(OBJ_LIST_LEVEL),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
@@ -6146,8 +6156,6 @@ const BehaviorScript bhvIntroScene[] = {
     END_LOOP(),
 };
 
-
-
 const BehaviorScript bhvTrollWaterLevel[] = {
     BEGIN(OBJ_LIST_GENACTOR),
     OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
@@ -6177,6 +6185,7 @@ const BehaviorScript bhvEndlessStairsMusicController[] = {
         CALL_NATIVE(bhv_endless_stairs_music_controller_loop),
     END_LOOP(),
 };
+
 const BehaviorScript bhvShellTrollWarpHandler[] = {
     BEGIN(OBJ_LIST_GENACTOR),
     OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),

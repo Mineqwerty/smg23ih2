@@ -69,7 +69,7 @@ const LevelScript level_main_scripts_entry[] = {
     LOAD_MODEL_FROM_GEO(MODEL_SMOKE,                   smoke_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SPARKLES,                sparkles_geo),
     LOAD_MODEL_FROM_GEO(MODEL_BUBBLE,                  bubble_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_CUSTOM_FAZANA_CAR,             fazana_car_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_CUSTOM_FAZANA_CAR,       fazana_car_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SMALL_WATER_SPLASH,      small_water_splash_geo),
     LOAD_MODEL_FROM_GEO(MODEL_IDLE_WATER_WAVE,         idle_water_wave_geo),
     LOAD_MODEL_FROM_GEO(MODEL_WATER_SPLASH,            water_splash_geo),
@@ -116,6 +116,7 @@ const LevelScript level_main_scripts_entry[] = {
     LOAD_MODEL_FROM_GEO(MODEL_GOOMBA,                  supergoomb_geo),
     LOAD_MODEL_FROM_GEO(MODEL_CAPPY,                   cappy_geo),
     LOAD_MODEL_FROM_GEO(MODEL_HIDDEN_BLOCK,            hidden_block_geo),
+	LOAD_MODEL_FROM_GEO(MODEL_MARIO_DEATH_SPRITE,      custom_mario_death_sprite_geo), 
 #ifdef IA8_30FPS_COINS
     LOAD_MODEL_FROM_GEO(MODEL_SILVER_COIN,             silver_coin_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SILVER_COIN_NO_SHADOW,   silver_coin_no_shadow_geo),

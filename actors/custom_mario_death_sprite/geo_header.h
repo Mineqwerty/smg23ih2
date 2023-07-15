@@ -1,0 +1,8 @@
+extern const GeoLayout custom_mario_death_sprite_geo[];
+extern u8 custom_mario_death_sprite_mario_sprite_rgba16[];
+extern Vtx custom_mario_death_sprite_DeathSprite_DeathSprite_mesh_layer_4_mario_vtx_0[4];
+extern Gfx custom_mario_death_sprite_DeathSprite_DeathSprite_mesh_layer_4_mario_tri_0[];
+extern Gfx mat_custom_mario_death_sprite_DeathSprite_Icon_mario[];
+extern Gfx mat_revert_custom_mario_death_sprite_DeathSprite_Icon[];
+extern Gfx custom_mario_death_sprite_DeathSprite_DeathSprite_mesh_layer_4_mario[];
+extern Gfx custom_mario_death_sprite_material_revert_render_settings[];

@@ -6,6 +6,7 @@
 #include "game/area.h"
 #include "game/behavior_actions.h"
 #include "game/game_init.h"
+#include "game/level_update.h"
 #include "game/mario.h"
 #include "game/memory.h"
 #include "game/obj_behaviors_2.h"
@@ -823,6 +824,12 @@ void cur_obj_update(void) {
     f32 distanceFromMario;
     BhvCommandProc bhvCmdProc;
     s32 bhvProcResult;
+
+    if (gMarioState->action == ACT_CLASSIC_DEATH) {
+        if (o->behavior != segmented_to_virtual(bhvMario) && o->behavior != segmented_to_virtual(bhvMarioDeathSprite)) {
+            return;
+        }
+    }
 
     s32 inRoom = cur_obj_is_mario_in_room();
 

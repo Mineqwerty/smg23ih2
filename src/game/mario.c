@@ -1005,6 +1005,10 @@ u32 set_mario_action_cutscene(struct MarioState *m, u32 action, UNUSED u32 actio
  * specific function if needed.
  */
 u32 set_mario_action(struct MarioState *m, u32 action, u32 actionArg) {
+    if (m->action == ACT_CLASSIC_DEATH && m->actionTimer == 0) {
+        return FALSE;
+    }
+
     switch (action & ACT_GROUP_MASK) {
         case ACT_GROUP_MOVING:    action = set_mario_action_moving(   m, action, actionArg); break;
         case ACT_GROUP_AIRBORNE:  action = set_mario_action_airborne( m, action, actionArg); break;
@@ -1121,6 +1125,21 @@ s32 drop_and_set_mario_action(struct MarioState *m, u32 action, u32 actionArg) {
  */
 void set_hurt_counter(struct MarioState *m, u8 additionalDamage, u8 shouldDropRedCoins) {
     m->hurtCounter += additionalDamage;
+
+    if (m->hurtCounter == 0) {
+        return;
+    }
+
+    if (gCurrLevelNum == SMG23IH2_LEVEL_2) {
+        m->hurtCounter = 0;
+        mario_set_forward_vel(m, 0.0f);
+        m->vel[1] = 0.0f;
+        fadeout_music(0);
+        set_mario_action(m, ACT_CLASSIC_DEATH, 90);
+        play_sound(SOUND_MARIO_CLASSIC_DEATH, gGlobalSoundSource);
+        spawn_object(m->marioObj, MODEL_MARIO_DEATH_SPRITE, bhvMarioDeathSprite);
+        return;
+    }
 
     if (gCurrLevelNum == SMG23IH2_LEVEL_1 && shouldDropRedCoins) {
         u32 redCoinFlags = save_file_get_red_coin_flags();

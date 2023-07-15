@@ -352,4 +352,6 @@ extern const Collision hidden_block_collision[];
 
 #include "fazana_car/collision_header.h"
 
+#include "custom_mario_death_sprite/geo_header.h"
+
 #endif

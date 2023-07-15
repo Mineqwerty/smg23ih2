@@ -2055,6 +2055,7 @@ sound_ref .sound_peach_something_special
 sound_ref .sound_peach_bake_a_cake
 sound_ref .sound_peach_for_mario
 sound_ref .sound_peach_mario2
+sound_ref .sound_mario_classic_death
 
 .sound_mario_jump_hoo:
 chan_setbank 8
@@ -2687,6 +2688,17 @@ chan_end
 
 .layer_F8A:
 layer_note1 39, 0x50, 127
+layer_end
+
+.sound_mario_classic_death:
+chan_setbank 8
+chan_setinstr 27
+chan_setlayer 0, .layer_mario_classic_death
+chan_end
+
+.layer_mario_classic_death:
+layer_shouldnotshitmusic 1
+layer_note1 39, 0xfc, 127
 layer_end
 
 #if defined(VERSION_EU) || defined(VERSION_SH)

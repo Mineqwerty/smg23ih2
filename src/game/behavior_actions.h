@@ -409,6 +409,7 @@ void bhv_breakable_box_small_loop(void);
 void bhv_car_orange_number_init(void);
 void bhv_car_orange_number_loop(void);
 void bhv_checkpoint_loop(void);
+void bhv_mario_death_sprite_loop(void);
 void bhv_fazana_car_init(void);
 void bhv_fazana_car_loop(void);
 void bhv_hidden_block_init(void);
