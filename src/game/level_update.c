@@ -1392,6 +1392,20 @@ s32 lvl_init_from_save_file(UNUSED s16 initOrUpdate, s32 levelNum) {
 #else
     gNeverEnteredCastle = 0;
 #endif
+
+#ifndef TEST_LEVEL
+    struct SaveFileCheckpoint *checkpoint = save_file_get_last_checkpoint();
+    if (checkpoint) {
+        levelNum = checkpoint->checkpointLastLevel;
+
+        sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
+        sWarpDest.levelNum = levelNum;
+        sWarpDest.areaIdx = checkpoint->checkpointLastArea;
+        sWarpDest.nodeId = WARP_NODE_CHECKPOINT;
+        sWarpDest.arg = WARP_FLAG_EXIT_COURSE;
+    }
+#endif
+
     gCurrLevelNum = levelNum;
     gCurrCourseNum = COURSE_NONE;
     gSavedCourseNum = COURSE_NONE;

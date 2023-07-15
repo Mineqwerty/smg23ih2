@@ -1980,7 +1980,11 @@ void init_mario(void) {
 void init_mario_from_save_file(void) {
     gMarioState->playerID = 0;
     gMarioState->flags = MARIO_NONE;
-    gMarioState->action = ACT_UNINITIALIZED;
+    if (sWarpDest.type == WARP_TYPE_NOT_WARPING) {
+        gMarioState->action = ACT_UNINITIALIZED;
+    } else {
+        gMarioState->action = ACT_DISAPPEARED;
+    }
     gMarioState->spawnInfo = &gPlayerSpawnInfos[0];
     gMarioState->statusForCamera = &gPlayerCameraState[0];
     gMarioState->marioBodyState = &gBodyStates[0];
