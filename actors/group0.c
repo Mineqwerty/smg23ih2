@@ -26,6 +26,8 @@
 
 #include "sparkle_animation/model.inc.c"
 
+#include "bubba/model.inc.c"
+
 #include "hidden_block/model.inc.c"
 #include "hidden_block/collision.inc.c"
 

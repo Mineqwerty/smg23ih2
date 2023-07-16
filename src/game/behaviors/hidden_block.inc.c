@@ -1,17 +1,18 @@
 // hidden_block.inc.c
 
-#define HIDDEN_BLOCK_SCALE 154 // Hidden blocks should be 154 x 154 x 154
+#define HIDDEN_BLOCK_SCALE 308 // Hidden blocks should be 308 x 308 x 308
 #define HIDDEN_BLOCK_DOWNWARD_VELOCITY -20.0f
 
 void bhv_hidden_block_init(void) {
     cur_obj_hide();
-    if (o->oBehParams2ndByte != 0) {
-        o->oHiddenBlockScale = (s32) (HIDDEN_BLOCK_SCALE * o->oBehParams2ndByte) / 0x10;
-        cur_obj_scale(((f32) o->oHiddenBlockScale / (f32) HIDDEN_BLOCK_SCALE) * 0.5f); // Actual model is twice size of default hidden block size
+
+    if (BPARAM3 != 0) {
+        o->oHiddenBlockScale = (s32) (HIDDEN_BLOCK_SCALE * BPARAM3) / 0x10;
     } else {
         o->oHiddenBlockScale = HIDDEN_BLOCK_SCALE;
-        cur_obj_scale(0.5f); // Actual model is twice size of default hidden block size
     }
+
+    cur_obj_scale((f32) o->oHiddenBlockScale / (f32) HIDDEN_BLOCK_SCALE);
 }
 
 static void animate_hidden_block(void) {
@@ -26,9 +27,35 @@ static void animate_hidden_block(void) {
     // load_object_collision_model(); // Can cause bonking and stuff
 }
 
+static void spawn_hidden_block_object_with_bparam2(void) {
+    struct Object *obj;
+    u8 bparam3 = BPARAM3;
+    if (BPARAM3 == 0) {
+        bparam3 = 0x10;
+    }
+
+    switch (o->oBehParams2ndByte) {
+        case 1:
+            obj = spawn_object_abs_with_rot(o, 0, MODEL_BUBBA, bhvBubbaHiddenBlock,
+                o->oPosX, o->oPosY + o->oHiddenBlockScale, o->oPosZ, 0, 0, 0);
+            break;
+        case 0:
+        default:
+            return;
+    }
+
+    if (obj) {
+        SET_BPARAM3(obj->oBehParams, bparam3);
+        cur_obj_play_sound_2(SOUND_OBJ2_HIDDEN_BLOCK_ITEM); // TODO:
+    }
+}
+
 void bhv_hidden_block_loop(void) {
     if (o->oAction != HIDDEN_BLOCK_ACT_HIDDEN) {
         if (o->oAction == HIDDEN_BLOCK_ACT_ANIMATED) {
+            if (o->oTimer == 1) {
+                spawn_hidden_block_object_with_bparam2();
+            }
             animate_hidden_block();
         }
         return;
@@ -48,11 +75,13 @@ void bhv_hidden_block_loop(void) {
     o->oAction = HIDDEN_BLOCK_ACT_ANIMATED;
     cur_obj_unhide();
 
-    // Collect coin from the block
-    gMarioState->numCoins++;
-    gMarioState->health += 0x100;
-    if (gMarioState->health > 0x880)
-        gMarioState->health = 0x880;
+    if (o->oBehParams2ndByte == 0) {
+        // Collect coin from the block
+        gMarioState->numCoins++;
+        gMarioState->health += 0x100;
+        if (gMarioState->health > 0x880)
+            gMarioState->health = 0x880;
+    }
 
     gMarioState->pos[1] = o->oPosY - 120.0f;
     gMarioState->vel[1] = HIDDEN_BLOCK_DOWNWARD_VELOCITY;

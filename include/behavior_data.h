@@ -541,6 +541,7 @@ extern const BehaviorScript bhvDDDPole[];
 extern const BehaviorScript bhvRedCoinStarMarker[];
 extern const BehaviorScript bhvTripletButterfly[];
 extern const BehaviorScript bhvBubba[];
+extern const BehaviorScript bhvBubbaHiddenBlock[];
 extern const BehaviorScript bhvBeginningLakitu[];
 extern const BehaviorScript bhvBeginningPeach[];
 extern const BehaviorScript bhvEndBirds1[];

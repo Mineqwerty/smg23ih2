@@ -5097,6 +5097,7 @@ sound_ref .sound_obj_bowser_roar
 sound_ref .sound_obj_bowser_tail_pickup
 sound_ref .sound_obj_bowser_defeated
 sound_ref .sound_obj_bowser_spinning
+sound_ref .sound_obj_hidden_block_item
 
 .sound_general_swish_water:
 chan_setbank 6
@@ -6690,6 +6691,16 @@ layer_portamento 0x81, 26, 255
 layer_note1 38, 0xd, 105
 layer_portamento 0x81, 22, 255
 layer_note1 34, 0x10, 105
+layer_end
+
+.sound_obj_hidden_block_item:
+chan_setbank 5
+chan_setinstr 18
+chan_setlayer 0, .layer_obj_hidden_block_item
+chan_end
+
+.layer_obj_hidden_block_item:
+layer_note1 39, 0x35, 127
 layer_end
 
 .channel6_table:

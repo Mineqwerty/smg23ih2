@@ -15,6 +15,7 @@
 #include "sparkle/geo.inc.c"
 #include "water_splash/geo.inc.c"
 #include "sparkle_animation/geo.inc.c"
+#include "bubba/geo.inc.c"
 #include "hidden_block/geo.inc.c"
 #include "mario/geo.inc.c"
 

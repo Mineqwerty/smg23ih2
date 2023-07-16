@@ -381,7 +381,6 @@
 #define MODEL_SPINY                       0x56        // spiny_geo
 #define MODEL_WIGGLER_HEAD                0x57        // wiggler_head_geo
 #define MODEL_WIGGLER_BODY                0x58        // wiggler_body_geo
-#define MODEL_BUBBA                       0x59        // bubba_geo
 
 // referenced in macro presets. Unknown usage.
 #define MODEL_UNKNOWN_54                  0x54
@@ -513,7 +512,7 @@
 #define MODEL_SEAWEED                     0xC1        // seaweed_geo
 #define MODEL_AMP                         0xC2        // dAmpGeo
 #define MODEL_BOBOMB_BUDDY                0xC3        // bobomb_buddy_geo
-// find me
+#define MODEL_BUBBA                       0xC4        // bubba_geo
 // find me
 // find me
 #define MODEL_SSL_TOX_BOX                 0xC7        // ssl_geo_000630
