@@ -406,6 +406,7 @@ const Gfx spiny_seg5_dl_05016738[] = {
 
 // 0x05016A48 - 0x05016A58
 const Gfx spiny_seg5_dl_05016A48[] = {
+    // gsDPSetCombineMode(G_CC_SHADEFADEA, G_CC_SHADEFADEA),
     gsSPNumLights(NUMLIGHTS_1),
     gsSPEndDisplayList(),
 };
