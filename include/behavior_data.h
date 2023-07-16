@@ -424,6 +424,7 @@ extern const BehaviorScript bhvControllablePlatform[];
 extern const BehaviorScript bhvControllablePlatformSub[];
 extern const BehaviorScript bhvBreakableBoxSmall[];
 extern const BehaviorScript bhvCheckpoint[];
+extern const BehaviorScript bhvMarioDeathSprite[];
 extern const BehaviorScript bhvCarOrangeNumber[];
 extern const BehaviorScript bhvFazanaCar[];
 extern const BehaviorScript bhvHiddenBlock[];

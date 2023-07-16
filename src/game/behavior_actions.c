@@ -47,6 +47,8 @@
 #include "rumble_init.h"
 #include "puppylights.h"
 
+extern void geo_append_display_list(void *displayList, s32 layer);
+
 #include "behaviors/star_door.inc.c"
 #include "behaviors/mr_i.inc.c"
 #include "behaviors/pole.inc.c"
@@ -138,6 +140,17 @@ Gfx *geo_move_mario_part_from_parent(s32 callContext, UNUSED struct GraphNode *n
             obj_update_pos_from_parent_transformation(mtx, obj->prevObj);
             obj_set_gfx_pos_from_pos(obj->prevObj);
         }
+    }
+
+    return NULL;
+}
+
+// Crashes PL apparently
+Gfx *geo_crashma_parallel_launcher_lmao(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
+    struct GraphNodeDisplayList *nodeDL = (struct GraphNodeDisplayList*) node;
+
+    if (callContext == GEO_CONTEXT_RENDER && nodeDL->displayList != NULL) {
+        geo_append_display_list((void *) VIRTUAL_TO_PHYSICAL(nodeDL->displayList), LAYER_FORCE_ALPHA_ON_TOP);
     }
 
     return NULL;

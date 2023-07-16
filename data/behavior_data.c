@@ -4818,11 +4818,21 @@ const BehaviorScript bhvBreakableBoxSmall[] = {
 
 const BehaviorScript bhvCheckpoint[] = {
     BEGIN(OBJ_LIST_LEVEL),
-    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO)),
+    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_ACTIVE_FROM_AFAR)),
     DROP_TO_FLOOR(),
     SET_HOME(),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_checkpoint_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvMarioDeathSprite[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_ACTIVE_FROM_AFAR)),
+    BILLBOARD(),
+    SET_HOME(),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_mario_death_sprite_loop),
     END_LOOP(),
 };
 
@@ -4852,7 +4862,7 @@ const BehaviorScript bhvFazanaCar[] = {
 
 const BehaviorScript bhvHiddenBlock[] = {
     BEGIN(OBJ_LIST_SURFACE),
-    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_ACTIVE_FROM_AFAR)),
     LOAD_COLLISION_DATA(hidden_block_collision),
     SET_FLOAT(oCollisionDistance, 500),
     SET_HOME(),
@@ -6147,8 +6157,6 @@ const BehaviorScript bhvIntroScene[] = {
     END_LOOP(),
 };
 
-
-
 const BehaviorScript bhvTrollWaterLevel[] = {
     BEGIN(OBJ_LIST_GENACTOR),
     OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
@@ -6178,6 +6186,7 @@ const BehaviorScript bhvEndlessStairsMusicController[] = {
         CALL_NATIVE(bhv_endless_stairs_music_controller_loop),
     END_LOOP(),
 };
+
 const BehaviorScript bhvShellTrollWarpHandler[] = {
     BEGIN(OBJ_LIST_GENACTOR),
     OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),

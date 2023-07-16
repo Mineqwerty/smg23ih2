@@ -17,6 +17,8 @@
 
 #include "config.h"
 
+u8 sAllowFallDamage = FALSE;
+
 void play_flip_sounds(struct MarioState *m, s16 frame1, s16 frame2, s16 frame3) {
     s32 animFrame = m->marioObj->header.gfx.animInfo.animFrame;
     if (animFrame == frame1 || animFrame == frame2 || animFrame == frame3) {
@@ -67,6 +69,12 @@ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
     f32 fallHeight = m->peakHeight - m->pos[1];
 
     f32 damageHeight = FALL_DAMAGE_HEIGHT_SMALL;
+
+    if (!sAllowFallDamage) {
+        return FALSE;
+    }
+
+    sAllowFallDamage = FALSE;
 
     if (m->action != ACT_TWIRLING && m->floor->type != SURFACE_BURNING) {
         if (m->vel[1] < -55.0f) {
@@ -1903,6 +1911,7 @@ s32 act_top_of_pole_jump(struct MarioState *m) {
     play_mario_jump_sound(m);
     if (m->actionTimer++ < 30) {
         m->vel[1] = 300.0f;
+        sAllowFallDamage = TRUE;
     }
     else {
         m->vel[1] -= 20.0f;

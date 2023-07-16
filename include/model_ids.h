@@ -485,7 +485,7 @@
 #define MODEL_IDLE_WATER_WAVE             0xA6        // idle_water_wave_geo
 #define MODEL_WATER_SPLASH                0xA7        // water_splash_geo
 #define MODEL_BUBBLE                      0xA8        // bubble_geo
-#define MODEL_CUSTOM_FAZANA_CAR                 0xA9        // fazana_car_geo
+#define MODEL_CUSTOM_FAZANA_CAR           0xA9        // fazana_car_geo
 #define MODEL_PURPLE_MARBLE               0xAA        // purple_marble_geo
 // find me
 #define MODEL_UNKNOWN_AC                  0xAC        // according to an special preset, it was the original id of the castle floor trap
@@ -560,7 +560,9 @@
 #define MODEL_HIDDEN_BLOCK                0x123        // hidden_block_geo
 
 #define MODEL_TITLE_SPONGE                0x124
-#define MODEL_WII                0x125
+#define MODEL_WII                         0x125
+#define MODEL_MARIO_DEATH_SPRITE          0x126
+#define MODEL_MARIO_MAKER_LAUGH           0x127
 
 
 #endif

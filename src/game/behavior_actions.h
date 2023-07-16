@@ -409,6 +409,7 @@ void bhv_breakable_box_small_loop(void);
 void bhv_car_orange_number_init(void);
 void bhv_car_orange_number_loop(void);
 void bhv_checkpoint_loop(void);
+void bhv_mario_death_sprite_loop(void);
 void bhv_fazana_car_init(void);
 void bhv_fazana_car_loop(void);
 void bhv_hidden_block_init(void);
@@ -561,6 +562,9 @@ void bhv_yoshi_loop(void);
 void bhv_volcano_trap_loop(void);
 
 Gfx *geo_move_mario_part_from_parent(s32 callContext, UNUSED struct GraphNode *node, Mat4 mtx);
+
+// Crashes PL apparently
+Gfx *geo_crashma_parallel_launcher_lmao(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c);
 
 // Bowser
 Gfx *geo_bits_bowser_coloring(s32 callContext, struct GraphNode *node, UNUSED s32 context);

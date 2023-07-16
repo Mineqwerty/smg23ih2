@@ -812,6 +812,7 @@ UNUSED s32 debug_sequence_tracker(s16 debugInputSequence[]) {
 #include "behaviors/controllable_platform.inc.c"
 #include "behaviors/breakable_box_small.inc.c"
 #include "behaviors/checkpoint.inc.c"
+#include "behaviors/mario_death_sprite.inc.c"
 #include "behaviors/fazana_car.inc.c"
 #include "behaviors/snow_mound.inc.c"
 #include "behaviors/floating_platform.inc.c"

@@ -339,6 +339,9 @@ void set_mario_initial_action(struct MarioState *m, u32 spawnType, u32 actionArg
         case MARIO_SPAWN_LAUNCH_DEATH:
             set_mario_action(m, ACT_SPECIAL_DEATH_EXIT, 0);
             break;
+        case MARIO_SPAWN_CHECKPOINT_WARP:
+            set_mario_action(m, ACT_CHECKPOINT_WARP, 0);
+            break;
     }
 
 #ifdef PREVENT_DEATH_LOOP
@@ -449,11 +452,11 @@ void init_mario_after_warp(void) {
             play_sound(SOUND_MENU_MARIO_CASTLE_WARP, gGlobalSoundSource);
         }
 #endif
-#ifndef DISABLE_EXIT_COURSE
-       if (sWarpDest.arg == WARP_FLAG_EXIT_COURSE && sWarpDest.nodeId != WARP_NODE_CHECKPOINT) {
-            play_sound(SOUND_MENU_MARIO_CASTLE_WARP, gGlobalSoundSource);
-        }
-#endif
+// #ifndef DISABLE_EXIT_COURSE
+//        if (sWarpDest.arg == WARP_FLAG_EXIT_COURSE && sWarpDest.nodeId != WARP_NODE_CHECKPOINT) {
+//             play_sound(SOUND_MENU_MARIO_CASTLE_WARP, gGlobalSoundSource);
+//         }
+// #endif
     }
 #ifdef PUPPYPRINT_DEBUG
     gPuppyWarp = 0;
@@ -774,10 +777,17 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                     sDelayedWarpOp = WARP_OP_GAME_OVER;
                 }
 #endif
-                sDelayedWarpTimer = 48;
+                
                 sSourceWarpNodeId = WARP_NODE_DEATH;
-                play_transition(WARP_TRANSITION_FADE_INTO_BOWSER, sDelayedWarpTimer, 0x00, 0x00, 0x00);
-                play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
+
+                if (m->action == ACT_CLASSIC_DEATH) {
+                    sDelayedWarpTimer = 40;
+                    play_transition(WARP_TRANSITION_FADE_INTO_COLOR, sDelayedWarpTimer - 10, 0x00, 0x00, 0x00);
+                } else {
+                    sDelayedWarpTimer = 48;
+                    play_transition(WARP_TRANSITION_FADE_INTO_BOWSER, sDelayedWarpTimer, 0x00, 0x00, 0x00);
+                    play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
+                }
 #ifdef PREVENT_DEATH_LOOP
                 m->isDead = TRUE;
 #endif
@@ -887,11 +897,18 @@ void initiate_delayed_warp(void) {
 #ifdef PUPPYPRINT_DEBUG
     if (gPuppyWarp) {
         initiate_warp(gPuppyWarp, gPuppyWarpArea, 0x0A, 0);
+        if (gMarioState->action == ACT_CLASSIC_DEATH) { // Remove object freeze
+            gMarioState->action = ACT_DISAPPEARED;
+        }
     }
 #endif
 
     if (sDelayedWarpOp != WARP_OP_NONE && --sDelayedWarpTimer == 0) {
         reset_dialog_render_state();
+
+        if (gMarioState->action == ACT_CLASSIC_DEATH) { // Remove object freeze
+            gMarioState->action = ACT_DISAPPEARED;
+        }
 
         if (gDebugLevelSelect && (sDelayedWarpOp & WARP_OP_TRIGGERS_LEVEL_SELECT)) {
             warp_special(WARP_SPECIAL_LEVEL_SELECT);
@@ -1117,7 +1134,12 @@ s32 play_mode_paused(void) {
             set_play_mode(PLAY_MODE_NORMAL);
             level_trigger_warp(gMarioState, WARP_OP_DEATH);
 #else
-            initiate_warp(EXIT_COURSE_LEVEL, EXIT_COURSE_AREA, EXIT_COURSE_NODE, WARP_FLAG_EXIT_COURSE);
+            struct SaveFileCheckpoint *checkpoint = save_file_get_last_checkpoint();
+            if (checkpoint) {
+                initiate_warp(checkpoint->checkpointLastLevel, checkpoint->checkpointLastArea, WARP_NODE_CHECKPOINT, WARP_FLAG_EXIT_COURSE);
+            } else {
+                initiate_warp(EXIT_COURSE_LEVEL, EXIT_COURSE_AREA, EXIT_COURSE_NODE, WARP_FLAG_EXIT_COURSE);
+            }
             fade_into_special_warp(WARP_SPECIAL_NONE, 0);
             gSavedCourseNum = COURSE_NONE;
 #endif
@@ -1375,6 +1397,20 @@ s32 lvl_init_from_save_file(UNUSED s16 initOrUpdate, s32 levelNum) {
 #else
     gNeverEnteredCastle = 0;
 #endif
+
+#ifndef TEST_LEVEL
+    struct SaveFileCheckpoint *checkpoint = save_file_get_last_checkpoint();
+    if (checkpoint) {
+        levelNum = checkpoint->checkpointLastLevel;
+
+        sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
+        sWarpDest.levelNum = levelNum;
+        sWarpDest.areaIdx = checkpoint->checkpointLastArea;
+        sWarpDest.nodeId = WARP_NODE_CHECKPOINT;
+        sWarpDest.arg = WARP_FLAG_EXIT_COURSE;
+    }
+#endif
+
     gCurrLevelNum = levelNum;
     gCurrCourseNum = COURSE_NONE;
     gSavedCourseNum = COURSE_NONE;
@@ -1391,7 +1427,7 @@ s32 lvl_init_from_save_file(UNUSED s16 initOrUpdate, s32 levelNum) {
 }
 
 s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
-    s32 warpCheckpointActive = sWarpCheckpointActive;
+    // s32 warpCheckpointActive = sWarpCheckpointActive;
 
     sWarpCheckpointActive = FALSE;
     gCurrLevelNum = levelNum;
@@ -1424,9 +1460,9 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
         disable_warp_checkpoint();
     }
 
-    if (gCurrCourseNum > COURSE_STAGES_MAX || warpCheckpointActive) {
+    // if (gCurrCourseNum > COURSE_STAGES_MAX || warpCheckpointActive) {
         return FALSE;
-    }
+    // }
 
     return !gDebugLevelSelect;
 }

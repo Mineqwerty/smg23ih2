@@ -69,7 +69,8 @@ enum MarioSpawnType {
     MARIO_SPAWN_LAUNCH_STAR_COLLECT,
     MARIO_SPAWN_LAUNCH_DEATH,
     MARIO_SPAWN_UNUSED_38,
-    MARIO_SPAWN_FADE_FROM_BLACK
+    MARIO_SPAWN_FADE_FROM_BLACK,
+    MARIO_SPAWN_CHECKPOINT_WARP
 };
 
 struct CreditsEntry {
@@ -182,5 +183,6 @@ s32 lvl_init_from_save_file(      UNUSED s16 initOrUpdate,        s32 levelNum);
 s32 lvl_set_current_level(        UNUSED s16 initOrUpdate,        s32 levelNum);
 s32 lvl_play_the_end_screen_sound(UNUSED s16 initOrUpdate, UNUSED s32 levelNum);
 void basic_update(void);
+void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags);
 
 #endif // LEVEL_UPDATE_H
