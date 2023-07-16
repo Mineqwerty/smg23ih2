@@ -10,7 +10,7 @@ void bhv_mario_death_sprite_loop(void) {
     switch (o->oAction) {
         case ACT_MARIO_DEATH_SPRITE_STATIONARY:
             if (gCamera && gMarioObject) {
-                if ((s16) gCamera->yaw - (s16) gMarioObject->oFaceAngleYaw >= 0) {
+                if ((u16) ((u16) gCamera->yaw - (u16) gMarioObject->oFaceAngleYaw) < 0x8000) {
                     o->oAnimState = 1;
                 } else {
                     o->oAnimState = 0;
