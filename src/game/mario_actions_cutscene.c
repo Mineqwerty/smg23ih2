@@ -978,7 +978,13 @@ s32 act_going_through_door(struct MarioState *m) {
     m->pos[2] = m->usedObj->oPosZ;
 
     update_mario_pos_for_anim(m);
-    stop_and_set_height_to_floor(m);
+    // stop_and_set_height_to_floor(m);
+
+    mario_set_forward_vel(m, 0.0f);
+    m->vel[1] = 0.0f;
+
+    vec3f_copy(m->marioObj->header.gfx.pos, m->pos);
+    vec3s_set(m->marioObj->header.gfx.angle, 0, m->faceAngle[1], 0);
 
     if (m->actionArg & WARP_FLAG_DOOR_IS_WARP) {
         if (m->actionTimer == 16) {
@@ -1015,7 +1021,7 @@ s32 act_warp_door_spawn(struct MarioState *m) {
 #endif
     }
     set_mario_animation(m, MARIO_ANIM_FIRST_PERSON);
-    stop_and_set_height_to_floor(m);
+    // stop_and_set_height_to_floor(m);
     return FALSE;
 }
 

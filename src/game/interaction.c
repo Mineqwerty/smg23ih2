@@ -1736,8 +1736,8 @@ u32 check_read_sign(struct MarioState *m, struct Object *obj) {
 
             if (gCurrLevelNum == SMG23IH2_LEVEL_2) {
                 obj->oWoodenPostHasTalked = TRUE;
-                obj->hitboxRadius = 1000;
-                obj->hitboxHeight = 1000;
+                obj->hitboxRadius = 1600;
+                obj->hitboxHeight = 300;
             }
 
             return set_mario_action(m, ACT_READING_SIGN, 0);
