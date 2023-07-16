@@ -43,3 +43,5 @@
 #include "levels/wf/areas/1/geo.inc.c"
 
 #include "levels/wf/geo.inc.c"
+
+#include "levels/wf/funny_box/geo.inc.c"

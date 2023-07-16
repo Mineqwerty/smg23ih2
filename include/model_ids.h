@@ -378,7 +378,7 @@
 // group 11
 #define MODEL_ENEMY_LAKITU                0x54        // enemy_lakitu_geo
 #define MODEL_SPINY_BALL                  0x55        // spiny_ball_geo
-#define MODEL_SPINY                       0x56        // spiny_geo
+
 #define MODEL_WIGGLER_HEAD                0x57        // wiggler_head_geo
 #define MODEL_WIGGLER_BODY                0x58        // wiggler_body_geo
 #define MODEL_BUBBA                       0x59        // bubba_geo
@@ -563,6 +563,9 @@
 #define MODEL_WII                         0x125
 #define MODEL_MARIO_DEATH_SPRITE          0x126
 #define MODEL_MARIO_MAKER_LAUGH           0x127
+#define MODEL_GLOBAL_DOOR                 0x128
+#define MODEL_SPINY                       0x129
+#define MODEL_FUNNYBOX                       0x12A
 
 
 #endif

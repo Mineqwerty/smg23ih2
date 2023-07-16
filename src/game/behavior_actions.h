@@ -609,3 +609,5 @@ void bhv_title_sponge_init(void);
 void bhv_title_sponge_loop(void);
 void bhv_wii_init(void);
 void bhv_wii_loop(void);
+void bhv_funny_box_init(void);
+void bhv_funny_box_loop(void);

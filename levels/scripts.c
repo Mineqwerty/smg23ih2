@@ -117,7 +117,8 @@ const LevelScript level_main_scripts_entry[] = {
     LOAD_MODEL_FROM_GEO(MODEL_CAPPY,                   cappy_geo),
     LOAD_MODEL_FROM_GEO(MODEL_HIDDEN_BLOCK,            hidden_block_geo),
 	LOAD_MODEL_FROM_GEO(MODEL_MARIO_DEATH_SPRITE,      custom_mario_death_sprite_geo), 
-	LOAD_MODEL_FROM_GEO(MODEL_MARIO_MAKER_LAUGH,       mario_maker_laugh_geo), 
+	LOAD_MODEL_FROM_GEO(MODEL_MARIO_MAKER_LAUGH,       mario_maker_laugh_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_SPINY,                   spiny_geo),
 #ifdef IA8_30FPS_COINS
     LOAD_MODEL_FROM_GEO(MODEL_SILVER_COIN,             silver_coin_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SILVER_COIN_NO_SHADOW,   silver_coin_no_shadow_geo),
@@ -295,7 +296,6 @@ const LevelScript script_func_global_11[] = {
 const LevelScript script_func_global_12[] = {
     LOAD_MODEL_FROM_GEO(MODEL_ENEMY_LAKITU,            enemy_lakitu_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SPINY_BALL,              spiny_ball_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_SPINY,                   spiny_geo),
     LOAD_MODEL_FROM_GEO(MODEL_WIGGLER_HEAD,            wiggler_head_geo),
     LOAD_MODEL_FROM_GEO(MODEL_WIGGLER_BODY,            wiggler_body_geo),
     LOAD_MODEL_FROM_GEO(MODEL_BUBBA,                   bubba_geo),

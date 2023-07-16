@@ -34,6 +34,15 @@
 #include FONT_C_FILE
 #endif
 
+#include "spiny/model.inc.c"
+#include "spiny/anims/data.inc.c"
+#include "spiny/anims/table.inc.c"
+
+#include "spiny_egg/model.inc.c"
+#include "spiny_egg/anims/data.inc.c"
+#include "spiny_egg/anims/table.inc.c"
+
+
 #include "mario/anims/data.inc.c"
 #include "mario/anims/table.inc.c"
 #include "ragdoll_mario/anims/data.inc.c"

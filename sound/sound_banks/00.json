@@ -64,6 +64,11 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "0A_sonic_lose_rings"
+        },
+        "inst11": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "0B_squirrel"
         }
     },
     "instrument_list": [
@@ -77,6 +82,7 @@
         "inst7",
         "inst8",
         "inst9",
-        "inst10"
+        "inst10",
+        "inst11"
     ]
 }

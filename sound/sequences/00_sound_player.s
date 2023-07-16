@@ -2837,6 +2837,7 @@ sound_ref .sound_ragdoll
 sound_ref .sound_sponge
 sound_ref .sound_capture
 sound_ref .sound_bruh
+sound_ref .sound_squirrel
 
 
 
@@ -4468,6 +4469,16 @@ chan_end
 
 .layer_bruh:
 layer_note1 39, 0x16b, 111
+layer_end
+
+.sound_squirrel:
+chan_setbank 0
+chan_setinstr 11
+chan_setlayer 0, .layer_squirrel
+chan_end
+
+.layer_squirrel:
+layer_note1 39, 0x8b6, 111
 layer_end
 
 

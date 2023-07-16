@@ -336,6 +336,30 @@ extern const GeoLayout hidden_block_geo[];
 extern const Gfx hidden_block_dl[];
 extern const Collision hidden_block_collision[];
 
+// spiny
+extern const GeoLayout spiny_geo[];
+extern const Gfx spiny_seg5_dl_05016418[];
+extern const Gfx spiny_seg5_dl_050164E0[];
+extern const Gfx spiny_seg5_dl_050165A8[];
+extern const Gfx spiny_seg5_dl_05016670[];
+extern const Gfx spiny_seg5_dl_05016738[];
+extern const Gfx spiny_seg5_dl_05016A48[];
+extern const struct Animation *const spiny_seg5_anims_05016EAC[];
+
+// spiny_egg
+extern const GeoLayout spiny_ball_geo[];
+extern const Gfx spiny_egg_seg5_dl_050151A8[];
+extern const Gfx spiny_egg_seg5_dl_050151E0[];
+extern const Gfx spiny_egg_seg5_dl_05015218[];
+extern const Gfx spiny_egg_seg5_dl_05015250[];
+extern const Gfx spiny_egg_seg5_dl_05015288[];
+extern const Gfx spiny_egg_seg5_dl_050152C0[];
+extern const Gfx spiny_egg_seg5_dl_050152F8[];
+extern const Gfx spiny_egg_seg5_dl_05015330[];
+extern const Gfx spiny_egg_seg5_dl_05015368[];
+extern const Gfx spiny_egg_seg5_dl_05015740[];
+extern const struct Animation *const spiny_egg_seg5_anims_050157E4[];
+
 
 #include "mario/anim_header.h"
 

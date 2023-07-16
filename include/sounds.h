@@ -369,6 +369,7 @@ enum SoundBank {
 #define SOUND_SPONGE                             /* 0x045F8080 */ SOUND_ARG_LOAD(SOUND_BANK_GENERAL,  0x78, 0x40, SOUND_DISCRETE)
 #define SOUND_CAPTURE                            /* 0x045F8080 */ SOUND_ARG_LOAD(SOUND_BANK_GENERAL,  0x79, 0x80, SOUND_DISCRETE)
 #define SOUND_BRUH                               /* 0x045F8080 */ SOUND_ARG_LOAD(SOUND_BANK_GENERAL,  0x7A, 0xC0, SOUND_DISCRETE)
+#define SOUND_DRUNK_SQUIRREL                               /* 0x045F8080 */ SOUND_ARG_LOAD(SOUND_BANK_GENERAL,  0x7B, 0xC0, SOUND_DISCRETE)
 
 
 /* Environment Sound Effects */

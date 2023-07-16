@@ -102,4 +102,6 @@ extern const LevelScript level_wf_entry[];
 
 #include "levels/wf/header.inc.h"
 
+#include "levels/wf/funny_box/geo_header.h"
+
 #endif

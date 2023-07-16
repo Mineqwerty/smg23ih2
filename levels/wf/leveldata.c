@@ -69,3 +69,5 @@
 #include "levels/wf/areas/1/movtext.inc.c"
 
 #include "levels/wf/leveldata.inc.c"
+
+#include "levels/wf/funny_box/model.inc.c"

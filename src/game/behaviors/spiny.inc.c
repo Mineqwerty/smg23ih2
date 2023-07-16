@@ -1,4 +1,4 @@
-
+#include "actors/group0.h"
 /**
  * Behavior for bhvSpiny.
  * When spawned by lakitu, its parent object is the lakitu.

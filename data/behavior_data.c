@@ -6216,3 +6216,13 @@ const BehaviorScript bhvWii[] = {
         CALL_NATIVE(load_object_collision_model),
     END_LOOP(),
 };
+
+const BehaviorScript bhvFunnyBox[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    SET_FLOAT(oDrawingDistance, 30000),
+    CALL_NATIVE(bhv_funny_box_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_funny_box_loop),
+    END_LOOP(),
+};

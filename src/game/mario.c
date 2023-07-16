@@ -32,6 +32,7 @@
 #include "save_file.h"
 #include "sound_init.h"
 #include "rumble_init.h"
+#include "include/seq_ids.h"
 
 
 /**************************************************
@@ -1815,14 +1816,13 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
         set_mario_action(gMarioState, ACT_IDLE, 0);
     }
 
-    if (gPlayer1Controller->buttonPressed & D_JPAD) {
-        initiate_warp(LEVEL_WF, 2, 0x0A, 0);
-    }
-
     if (gChangeArea > 0) {
         change_area(gChangeArea);
         gMarioState->area = gCurrentArea;
         gChangeArea = 0;
+        if (gCurrLevelNum == SMG23IH2_LEVEL_2) {
+            play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_SHIT_BROS_3), 0);
+        }
     }
 
     // Updates once per frame:
