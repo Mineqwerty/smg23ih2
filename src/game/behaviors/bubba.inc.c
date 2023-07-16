@@ -12,6 +12,18 @@ static struct ObjectHitbox sBubbaHitbox = {
     /* hurtboxHeight:     */ 200,
 };
 
+static struct ObjectHitbox sBubbaHiddenBlockHitbox = {
+    /* interactType:      */ INTERACT_DAMAGE,
+    /* downOffset:        */ 0,
+    /* damageOrCoinValue: */ 1,
+    /* health:            */ 99,
+    /* numLootCoins:      */ 0,
+    /* radius:            */ 500,
+    /* height:            */ 350,
+    /* hurtboxRadius:     */ 500,
+    /* hurtboxHeight:     */ 350,
+};
+
 void bubba_act_idle(void) {
     f32 lateralDistToHome = cur_obj_lateral_dist_to_home();
     treat_far_home_as_mario(2000.0f);
@@ -159,4 +171,46 @@ void bhv_bubba_loop(void) {
     if (o->oPosY < o->oFloorHeight) {
         o->oPosY = o->oFloorHeight;
     }
+}
+
+void bhv_bubba_hidden_block_init(void) {
+    obj_set_hitbox(o, &sBubbaHiddenBlockHitbox);
+    cur_obj_become_intangible();
+
+    o->oVelY = 70.0f;
+    if (BPARAM3 != 0) {
+        o->oBubbaHiddenBlockGrowthSize = (f32) BPARAM3 / 0x10;
+    } else {
+        o->oBubbaHiddenBlockGrowthSize = 1.0f;
+    }
+    o->oBubbaHiddenBlockScale = 0.25f * o->oBubbaHiddenBlockGrowthSize;
+
+    if (gCamera) {
+        o->oFaceAngleYaw = ((u16) gCamera->yaw + 0x4000) & 0x7FFF;
+    }
+}
+
+void bhv_bubba_hidden_block_loop(void) {
+    if (o->oBubbaHiddenBlockScale < o->oBubbaHiddenBlockGrowthSize) {
+        o->oBubbaHiddenBlockScale += o->oBubbaHiddenBlockGrowthSize / 4.0f;
+        if (o->oBubbaHiddenBlockScale > o->oBubbaHiddenBlockGrowthSize) {
+            o->oBubbaHiddenBlockScale = o->oBubbaHiddenBlockGrowthSize;
+        }
+        cur_obj_scale(o->oBubbaHiddenBlockScale);
+    } else {
+        cur_obj_scale(o->oBubbaHiddenBlockGrowthSize);
+        cur_obj_become_tangible();
+    }
+
+    o->oVelY -= 10.0f;
+    if (o->oVelY < -125.0f) {
+        o->oVelY = -125.0f;
+    }
+    if (o->oPosY - o->oVelY < FLOOR_LOWER_LIMIT) {
+        obj_mark_for_deletion(o);
+        return;
+    }
+
+    o->oPosY += o->oVelY;
+    o->oInteractStatus = INT_STATUS_NONE;
 }

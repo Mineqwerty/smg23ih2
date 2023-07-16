@@ -6108,6 +6108,17 @@ const BehaviorScript bhvBubba[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvBubbaHiddenBlock[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    SET_FLOAT(oDrawingDistance, 10000),
+    SET_HOME(),
+    CALL_NATIVE(bhv_bubba_hidden_block_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_bubba_hidden_block_loop),
+    END_LOOP(),
+};
+
 const BehaviorScript bhvBeginningLakitu[] = {
     BEGIN(OBJ_LIST_DEFAULT),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),

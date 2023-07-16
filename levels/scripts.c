@@ -115,6 +115,7 @@ const LevelScript level_main_scripts_entry[] = {
     LOAD_MODEL_FROM_GEO(MODEL_MARIO_RAGDOLL,           ragdoll_mario_geo),
     LOAD_MODEL_FROM_GEO(MODEL_GOOMBA,                  supergoomb_geo),
     LOAD_MODEL_FROM_GEO(MODEL_CAPPY,                   cappy_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_BUBBA,                   bubba_geo),
     LOAD_MODEL_FROM_GEO(MODEL_HIDDEN_BLOCK,            hidden_block_geo),
 	LOAD_MODEL_FROM_GEO(MODEL_MARIO_DEATH_SPRITE,      custom_mario_death_sprite_geo), 
 	LOAD_MODEL_FROM_GEO(MODEL_MARIO_MAKER_LAUGH,       mario_maker_laugh_geo),
@@ -298,7 +299,6 @@ const LevelScript script_func_global_12[] = {
     LOAD_MODEL_FROM_GEO(MODEL_SPINY_BALL,              spiny_ball_geo),
     LOAD_MODEL_FROM_GEO(MODEL_WIGGLER_HEAD,            wiggler_head_geo),
     LOAD_MODEL_FROM_GEO(MODEL_WIGGLER_BODY,            wiggler_body_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_BUBBA,                   bubba_geo),
     RETURN(),
 };
 

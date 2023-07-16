@@ -369,6 +369,10 @@
 #define /*0x1B0*/ oBubbaPitchVel                   OBJECT_FIELD_S16(0x4A, 0)
 #define /*0x1B2*/ oBubbaYawVel                     OBJECT_FIELD_S16(0x4A, 1)
 
+/* Bubba Hidden Block */
+#define /*0x0F4*/ oBubbaHiddenBlockScale           OBJECT_FIELD_F32(0x1B)
+#define /*0x0F4*/ oBubbaHiddenBlockGrowthSize      OBJECT_FIELD_F32(0x1C)
+
 /* Bullet Bill */
 #define /*0x0F8*/ oBulletBillInitialMoveYaw OBJECT_FIELD_S32(0x1C)
 
