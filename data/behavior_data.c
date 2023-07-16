@@ -4817,7 +4817,7 @@ const BehaviorScript bhvBreakableBoxSmall[] = {
 
 const BehaviorScript bhvCheckpoint[] = {
     BEGIN(OBJ_LIST_LEVEL),
-    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO)),
+    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_ACTIVE_FROM_AFAR)),
     DROP_TO_FLOOR(),
     SET_HOME(),
     BEGIN_LOOP(),
@@ -4827,7 +4827,7 @@ const BehaviorScript bhvCheckpoint[] = {
 
 const BehaviorScript bhvMarioDeathSprite[] = {
     BEGIN(OBJ_LIST_LEVEL),
-    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_ACTIVE_FROM_AFAR)),
     BILLBOARD(),
     SET_HOME(),
     BEGIN_LOOP(),
@@ -4861,7 +4861,7 @@ const BehaviorScript bhvFazanaCar[] = {
 
 const BehaviorScript bhvHiddenBlock[] = {
     BEGIN(OBJ_LIST_SURFACE),
-    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_ACTIVE_FROM_AFAR)),
     LOAD_COLLISION_DATA(hidden_block_collision),
     SET_FLOAT(oCollisionDistance, 500),
     SET_HOME(),

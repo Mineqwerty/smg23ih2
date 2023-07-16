@@ -20,7 +20,7 @@ Gfx custom_mario_death_sprite_DeathSprite_DeathSprite_mesh_layer_4_mario_tri_0[]
 Gfx mat_custom_mario_death_sprite_DeathSprite_Icon_mario[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0),
-	gsSPClearGeometryMode(G_CULL_BACK),
+	gsSPClearGeometryMode(G_CULL_BACK | G_ZBUFFER),
 	gsDPSetTextureFilter(G_TF_POINT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPTileSync(),
@@ -36,7 +36,7 @@ Gfx mat_custom_mario_death_sprite_DeathSprite_Icon_mario[] = {
 
 Gfx mat_revert_custom_mario_death_sprite_DeathSprite_Icon[] = {
 	gsDPPipeSync(),
-	gsSPSetGeometryMode(G_CULL_BACK),
+	gsSPSetGeometryMode(G_CULL_BACK | G_ZBUFFER),
 	gsDPSetTextureFilter(G_TF_BILERP),
 	gsSPEndDisplayList(),
 };

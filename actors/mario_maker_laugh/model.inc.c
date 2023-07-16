@@ -42,7 +42,7 @@ Gfx mario_maker_laugh_LaughSprite_LaughSprite_mesh_layer_4_mario_tri_1[] = {
 Gfx mat_mario_maker_laugh_pink_Icon_mario[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0),
-	gsSPClearGeometryMode(G_CULL_BACK),
+	gsSPClearGeometryMode(G_CULL_BACK | G_ZBUFFER),
 	gsDPSetTextureFilter(G_TF_POINT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPTileSync(),
@@ -59,7 +59,7 @@ Gfx mat_mario_maker_laugh_pink_Icon_mario[] = {
 Gfx mat_mario_maker_laugh_blue_Icon_mario[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0),
-	gsSPClearGeometryMode(G_CULL_BACK),
+	gsSPClearGeometryMode(G_CULL_BACK | G_ZBUFFER),
 	gsDPSetTextureFilter(G_TF_POINT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPTileSync(),
@@ -76,7 +76,7 @@ Gfx mat_mario_maker_laugh_blue_Icon_mario[] = {
 Gfx mat_mario_maker_laugh_yellow_Icon_mario[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0),
-	gsSPClearGeometryMode(G_CULL_BACK),
+	gsSPClearGeometryMode(G_CULL_BACK | G_ZBUFFER),
 	gsDPSetTextureFilter(G_TF_POINT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPTileSync(),
@@ -92,7 +92,7 @@ Gfx mat_mario_maker_laugh_yellow_Icon_mario[] = {
 
 Gfx mat_revert_mario_maker_laugh_LaughSprite_Icon[] = {
 	gsDPPipeSync(),
-	gsSPSetGeometryMode(G_CULL_BACK),
+	gsSPSetGeometryMode(G_CULL_BACK | G_ZBUFFER),
 	gsDPSetTextureFilter(G_TF_BILERP),
 	gsSPEndDisplayList(),
 };

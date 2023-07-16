@@ -563,6 +563,9 @@ void bhv_volcano_trap_loop(void);
 
 Gfx *geo_move_mario_part_from_parent(s32 callContext, UNUSED struct GraphNode *node, Mat4 mtx);
 
+// Crashes PL apparently
+Gfx *geo_crashma_parallel_launcher_lmao(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c);
+
 // Bowser
 Gfx *geo_bits_bowser_coloring(s32 callContext, struct GraphNode *node, UNUSED s32 context);
 Gfx *geo_update_body_rot_from_parent(s32 callContext, UNUSED struct GraphNode *node, Mat4 mtx);
