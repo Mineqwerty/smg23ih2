@@ -3798,6 +3798,7 @@ const BehaviorScript bhvMessagePanel[] = {
     BEGIN_LOOP(),
         SET_INT(oIntangibleTimer, 0),
         SET_INT(oInteractStatus, INT_STATUS_NONE),
+        CALL_NATIVE(bhv_sign_change_dialog),
     END_LOOP(),
 };
 

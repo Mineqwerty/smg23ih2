@@ -600,6 +600,7 @@ void bhv_endless_stairs_music_controller_init(void);
 void bhv_endless_stairs_music_controller_loop(void);
 void bhv_shell_troll_warp_handler_init(void);
 void bhv_shell_troll_warp_handler_loop(void);
+void bhv_sign_change_dialog(void);
 void bhv_title_sponge_init(void);
 void bhv_title_sponge_loop(void);
 void bhv_wii_init(void);
