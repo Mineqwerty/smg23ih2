@@ -9,6 +9,13 @@ enum MarioDeathSpriteActions {
 void bhv_mario_death_sprite_loop(void) {
     switch (o->oAction) {
         case ACT_MARIO_DEATH_SPRITE_STATIONARY:
+            if (gCamera && gMarioObject) {
+                if ((s16) gCamera->yaw - (s16) gMarioObject->oFaceAngleYaw >= 0) {
+                    o->oAnimState = 1;
+                } else {
+                    o->oAnimState = 0;
+                }
+            }
             if (o->oTimer >= 24) {
                 o->oAction = ACT_MARIO_DEATH_SPRITE_MOVING;
                 o->oVelY = 55.0f;
