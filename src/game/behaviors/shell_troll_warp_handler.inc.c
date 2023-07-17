@@ -12,30 +12,25 @@ void bhv_shell_troll_warp_handler_loop(void) {
    }
 }
 
+u8 progressiveSignTable[] = {DIALOG_032, DIALOG_035, DIALOG_036};
 void bhv_sign_change_dialog(void) {
-   //for your sanity dont read this and just trust me that it works as intended
-   if (o->oBehParams2ndByte == 32) {
-      if (gMarioState->action == ACT_READING_SIGN) {
-         o->oAction = 1;
-      }
-
-      if (o->oAction == 1 && o->oTimer > 30) {
-         o->oBehParams2ndByte = 35;
-         o->oAction = 2;
-      }
-   }
-
-   if (o->oBehParams2ndByte == 35) {
-      if (gMarioState->action == ACT_READING_SIGN && o->oAction == 3) {
-         o->oAction = 4;
-      }
-      else if (gMarioState->action != ACT_READING_SIGN) {
-         o->oAction = 3;
-      }
-
-      if (o->oAction == 4 && o->oTimer > 30) {
-         o->oBehParams2ndByte = 36;
-         o->oAction = 5;
+   if (o->oBehParams2ndByte == progressiveSignTable[0] || o->oWoodenPostDialogProgression != 0) {
+      switch (o->oAction) {
+         case 0:
+            if (gMarioState->action == ACT_READING_SIGN) {
+               o->oAction = 1;
+            }
+            break;
+         case 1:
+            if (gMarioState->action != ACT_READING_SIGN) {
+               o->oAction = 0;
+               o->oWoodenPostDialogProgression++;
+               if (o->oWoodenPostDialogProgression >= ARRAY_COUNT(progressiveSignTable)) {
+                  o->oWoodenPostDialogProgression = ARRAY_COUNT(progressiveSignTable) - 1;
+               }
+               o->oBehParams2ndByte = progressiveSignTable[o->oWoodenPostDialogProgression];
+            }
+            break;
       }
    }
 }
