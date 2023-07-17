@@ -31,6 +31,8 @@ void bhv_squid_word_loop(void) {
                  ((o->oTimer / 2) * 4096) + (u8 *) sq_bl_textures_dma + 4096);
         dma_read(bottomRightTexture, ((o->oTimer / 2) * 4096) + (u8 *) sq_br_textures_dma,
                  ((o->oTimer / 2) * 4096) + (u8 *) sq_br_textures_dma + 4096);
+
+        load_object_collision_model();
     }
 
     //placeholder transition to action 1

@@ -6295,8 +6295,9 @@ const BehaviorScript bhvGaslightManager[] = {
 };
 
 const BehaviorScript bhvSquidWord[] = {
-    BEGIN(OBJ_LIST_GENACTOR),
+    BEGIN(OBJ_LIST_SURFACE),
     OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    LOAD_COLLISION_DATA(squid_word_collision),
     CALL_NATIVE(bhv_squid_word_init),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_squid_word_loop),

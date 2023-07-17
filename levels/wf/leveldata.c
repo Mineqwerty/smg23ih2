@@ -76,3 +76,4 @@
 #include "levels/wf/gaslight_block/model.inc.c"
 #include "levels/wf/gaslight_block/collision.inc.c"
 #include "levels/wf/squid_word/model.inc.c"
+#include "levels/wf/squid_word/collision.inc.c"
