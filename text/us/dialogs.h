@@ -389,24 +389,13 @@ please dont ground pond \n\
 my wii"))
 
 DEFINE_DIALOG(DIALOG_035, 1, 5, 30, 200, _("\
-sorry!!! you have to\n\
-jump off now hahahjah!!!"))
+oh yeah i forot to mention\n\
+rom manager broke this \n\
+area"))
 
 DEFINE_DIALOG(DIALOG_036, 1, 5, 30, 200, _("\
-OBSERVATION PLATFORM\n\
-Press [C]^ to take a look\n\
-around. Don't miss\n\
-anything!\n\
-\n\
-Press [R] to switch to\n\
-Mario's camera. It\n\
-always follows Mario.\n\
-Press [R] again to switch\n\
-to Lakitu's camera.\n\
-Pause the game and\n\
-switch the mode to 『fix』\n\
-the camera in place while\n\
-holding [R]. Give it a try!"))
+sorry!!! you have to\n\
+jump off now hahahjah!!!"))
 
 DEFINE_DIALOG(DIALOG_037, 1, 2, 30, 200, _("\
 I win! You lose!\n\

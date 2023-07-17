@@ -11,6 +11,7 @@ void bhv_shell_troll_warp_handler_loop(void) {
 }
 
 void bhv_sign_change_dialog(void) {
+   //for your sanity dont read this and just trust me that it works as intended
    if (o->oBehParams2ndByte == 32) {
       if (gMarioState->action == ACT_READING_SIGN) {
          o->oAction = 1;
@@ -18,6 +19,21 @@ void bhv_sign_change_dialog(void) {
 
       if (o->oAction == 1 && o->oTimer > 30) {
          o->oBehParams2ndByte = 35;
+         o->oAction = 2;
+      }
+   }
+
+   if (o->oBehParams2ndByte == 35) {
+      if (gMarioState->action == ACT_READING_SIGN && o->oAction == 3) {
+         o->oAction = 4;
+      }
+      else if (gMarioState->action != ACT_READING_SIGN) {
+         o->oAction = 3;
+      }
+
+      if (o->oAction == 4 && o->oTimer > 30) {
+         o->oBehParams2ndByte = 36;
+         o->oAction = 5;
       }
    }
 }

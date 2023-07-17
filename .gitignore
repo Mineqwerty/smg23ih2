@@ -1591,7 +1591,6 @@ textures/segment2/font_graphics.05B00.ia4.png
 textures/segment2/font_graphics.05B40.ia4.png
 textures/segment2/font_graphics.05B80.ia4.png
 textures/segment2/font_graphics.05BC0.ia4.png
-textures/segment2/font_graphics.05C00.ia4.png
 textures/segment2/font_graphics.05C40.ia4.png
 textures/segment2/font_graphics.05C80.ia4.png
 textures/segment2/font_graphics.05CC0.ia4.png
@@ -1815,9 +1814,6 @@ textures/segment2/segment2.05000.rgba16.png
 textures/segment2/segment2.05200.rgba16.png
 textures/segment2/segment2.05400.rgba16.png
 textures/segment2/segment2.05600.rgba16.png
-textures/segment2/segment2.05800.rgba16.png
-textures/segment2/segment2.05A00.rgba16.png
-textures/segment2/segment2.05C00.rgba16.png
 textures/segment2/segment2.05E00.rgba16.png
 textures/segment2/segment2.06000.rgba16.png
 textures/segment2/segment2.06200.rgba16.png
@@ -2015,9 +2011,6 @@ textures/segment2/segment2.07B10.ia1.png
 textures/segment2/segment2.07B20.ia1.png
 textures/segment2/segment2.07B30.ia1.png
 textures/segment2/segment2.07B40.ia1.png
-textures/segment2/segment2.07B50.rgba16.png
-textures/segment2/segment2.07D50.rgba16.png
-textures/segment2/segment2.07F50.rgba16.png
 textures/segment2/segment2.08150.rgba16.png
 textures/segment2/segment2.081D0.rgba16.png
 textures/segment2/segment2.0F458.ia8.png
