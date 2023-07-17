@@ -15,7 +15,8 @@ void bhv_checkpoint_loop(void) {
             gMarioState->action == ACT_FAZANA_CAR ||
             gMarioState->action == ACT_DEBUG_FREE_MOVE
         ) &&
-        o == obj_find_nearest_object_with_behavior(gMarioObject, bhvCheckpoint, &dist)
+        o == obj_find_nearest_object_with_behavior(gMarioObject, bhvCheckpoint, &dist) &&
+        abss(o->oPosY - gMarioState->pos[1]) < 100
     ) {
         save_file_set_checkpoint(o->oBehParams2ndByte, gCurrLevelNum, gCurrAreaIndex);
     }
