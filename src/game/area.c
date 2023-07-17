@@ -30,6 +30,12 @@
 #include "s2d_engine/init.h"
 #endif
 
+f32 loadProgress = -0.02f;
+s32 renderLoadScreen = FALSE;
+static s32 hasMessedUpLoad = FALSE;
+static s32 loadProgressFrameWait = 0;
+static s32 dotFrames = 0;
+
 struct SpawnInfo gPlayerSpawnInfos[1];
 struct GraphNode *gGraphNodePointers[MODEL_ID_COUNT];
 struct Area gAreaData[AREA_COUNT];
@@ -388,6 +394,234 @@ void play_transition_after_delay(s16 transType, s16 time, u8 red, u8 green, u8 b
     play_transition(transType, time, red, green, blue);
 }
 
+static const char puppyprintStr0[] = "CLEARING MEMORY POOLS...";
+static const char puppyprintStr1[] = "LOADING ASSETS...";
+static const char puppyprintStr2[] = "CONFIGURING LEVEL SETTINGS...";
+static const char puppyprintStr3[] = "PLACING OBJECTS...";
+static const char puppyprintStr4[] = "MESSED SOMETHING UP, TRYING AGAIN!";
+static const char puppyprintStr5[] = "CONFIGURING SETTINGS, ATTEMPT 2...";
+static const char puppyprintStr6[] = "WAITING ON AUDIO DMA...";
+static const char puppyprintStr7[] = "RENDERING LEVEL...";
+static const char puppyprintStr8[] = "LOAD COMPLETE!";
+
+s32 adjust_load_progress_bar(void) {
+    const s32 posX = 15;
+    const s32 posY = 189;
+
+    s32 dotCount;
+
+    if (loadProgress >= 0.0f) {
+        if (dotFrames < 5.0f || dotFrames >= 27.0f)
+            dotCount = -3;
+        else if (dotFrames < 8.0f || dotFrames >= 24.0f)
+            dotCount = -2;
+        else if (dotFrames < 11.0f || dotFrames >= 21.0f)
+            dotCount = -1;
+        else
+            dotCount = 0;
+
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+        print_small_text(SCREEN_CENTER_X, 16, "LOADING COURSE", PRINT_TEXT_ALIGN_CENTRE, PRINT_ALL, FONT_OUTLINE);
+
+        dotFrames = (dotFrames + 1) % 32;
+
+        if (loadProgress < 0.15f && hasMessedUpLoad == FALSE) {
+            f32 f1 = random_float();
+            f32 f2 = random_float();
+            loadProgress += MIN(f1, f2) / 400.0f;
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            print_small_text(posX, posY, puppyprintStr0, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr0) + dotCount - 1, FONT_OUTLINE);
+            return TRUE;
+        }
+        if (loadProgress < 0.33f && hasMessedUpLoad == FALSE) {
+            if (random_u16() % 8 == 0)
+                loadProgress += 0.01f;
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            print_small_text(posX, posY, puppyprintStr1, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr1) + dotCount - 1, FONT_OUTLINE);
+            return TRUE;
+        }
+        if (loadProgress < 0.5f && hasMessedUpLoad != 2) {
+            f32 f1 = random_float();
+            f32 f2 = random_float();
+            loadProgress += MIN(f1, f2) / 120.0f;
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            if (hasMessedUpLoad)
+                print_small_text(posX, posY, puppyprintStr5, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr5) + dotCount - 1, FONT_OUTLINE);
+            else
+                print_small_text(posX, posY, puppyprintStr2, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr2) + dotCount - 1, FONT_OUTLINE);
+            if (loadProgress >= 0.5f) {
+                if (hasMessedUpLoad == FALSE)
+                    loadProgressFrameWait = 55;
+                else
+                    loadProgressFrameWait = 25;
+            }
+            return TRUE;
+        }
+        if ((loadProgress < 0.75f || loadProgressFrameWait > 0) && hasMessedUpLoad == FALSE) {
+            if (loadProgressFrameWait > 0) {
+                loadProgressFrameWait--;
+            }
+            else {
+                f32 f1 = random_float();
+                f32 f2 = random_float();
+                f1 *= f1;
+                f2 *= f2;
+                loadProgress += MAX(f1, f2) / 75.0f;
+                if (loadProgress >= 0.751f) 
+                    loadProgress = 0.751f;
+                if (loadProgress >= 0.75f)
+                    loadProgressFrameWait = 45;
+            }
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            print_small_text(posX, posY, puppyprintStr3, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr3) + dotCount - 1, FONT_OUTLINE);
+            return TRUE;
+        }
+        if (loadProgress < 0.75f && hasMessedUpLoad == TRUE) {
+            if (loadProgressFrameWait > 0) {
+                loadProgressFrameWait--;
+            }
+            else {
+                f32 f1 = random_float();
+                f32 f2 = random_float();
+                f1 *= f1;
+                f2 *= f2;
+                loadProgress += MAX(f1, f2) / 75.0f;
+                if (loadProgress >= 0.751f) 
+                    loadProgress = 0.751f;
+            }
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            print_small_text(posX, posY, puppyprintStr3, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr3) + dotCount - 1, FONT_OUTLINE);
+            return TRUE;
+        }
+        if ((loadProgress >= 0.75f && hasMessedUpLoad == FALSE) || hasMessedUpLoad == 2) {
+            hasMessedUpLoad = 2;
+            if (loadProgressFrameWait > 0) {
+                loadProgressFrameWait--;
+                if (loadProgressFrameWait == 0) {
+                    hasMessedUpLoad = TRUE;
+                    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+                    print_small_text(posX, posY, puppyprintStr5, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr5) + dotCount - 1, FONT_OUTLINE);
+                    return TRUE;
+                }
+            }
+            else {
+                loadProgress -= 0.0045f;
+            }
+            if (hasMessedUpLoad == 2) {
+                gDPSetEnvColor(gDisplayListHead++, 255, 127, 127, 255);
+            } else {
+                gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            }
+            print_small_text(posX, posY, puppyprintStr4, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
+            if (loadProgress < 0.33f && hasMessedUpLoad == 2 && loadProgressFrameWait <= 0)
+                loadProgressFrameWait = 12;
+            return TRUE;
+        }
+        if (loadProgress < 0.925f) {
+            loadProgress += 0.015f;
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            print_small_text(posX, posY, puppyprintStr6, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr6) + dotCount - 1, FONT_OUTLINE);
+            return TRUE;
+        }
+        if (loadProgress < 0.999f) {
+            f32 f1 = random_float();
+            f32 f2 = random_float();
+            loadProgress += MIN(f1, f2) / 650.0f;
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            print_small_text(posX, posY, puppyprintStr7, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr7) + dotCount - 1, FONT_OUTLINE);
+            if (loadProgress >= 0.999f) {
+                loadProgress = 0.9991f;
+                loadProgressFrameWait = 90;
+            }
+            return TRUE;
+        }
+        if (loadProgress < 1.0f) {
+            if (loadProgressFrameWait > 0) {
+                loadProgressFrameWait--;
+            } else {
+                loadProgress = 1.0005f;
+            }
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            print_small_text(posX, posY, puppyprintStr7, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr7) + dotCount - 1, FONT_OUTLINE);
+            return TRUE;
+        }
+    } else {
+        loadProgress += 0.001f;
+        return FALSE;
+    }
+
+    loadProgress += 0.001f;
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+    print_small_text(posX, posY, puppyprintStr8, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
+    return TRUE;
+}
+
+void render_loading_screen(void) {
+    const s32 percX = 305;
+    const s32 percY = 189;
+
+    const s32 curX = 16;
+    const s32 curY = 204;
+    const s32 height = 14;
+    const s32 thickness = 1;
+    char percent[8];
+
+    s32 color = 0xFFFFFFFF;
+    s32 progressX = curX + ((SCREEN_WIDTH - (curX * 2)) * loadProgress);
+
+    s32 sLoadProgress = (loadProgress * 100.0f);
+    if (sLoadProgress > 100)
+        sLoadProgress = 100;
+    else if (sLoadProgress < 0)
+        sLoadProgress = 0;
+
+    sprintf(percent, "%d%%", sLoadProgress);
+
+    if (hasMessedUpLoad == 2) {
+        gDPSetEnvColor(gDisplayListHead++, 255, 191, 191, 255);
+        print_small_text(percX, percY, percent, PRINT_TEXT_ALIGN_RIGHT, PRINT_ALL, FONT_OUTLINE);
+        gDPSetEnvColor(gDisplayListHead++, 255, 191, 191, 255);
+        color = 0xFDF7FDF7;
+    } else {
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+        print_small_text(percX, percY, percent, PRINT_TEXT_ALIGN_RIGHT, PRINT_ALL, FONT_OUTLINE);
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+    }
+
+    gDPSetCycleType( gDisplayListHead++, G_CYC_FILL);
+    gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP);
+
+    gDPPipeSync(gDisplayListHead++);
+    gDPSetFillColor(gDisplayListHead++, color);
+    gDPFillRectangle(gDisplayListHead++, curX - thickness * 2, curY - thickness * 2,
+                    SCREEN_WIDTH - curX + thickness * 2 - 1, curY - thickness - 1);
+
+    gDPPipeSync(gDisplayListHead++);
+    gDPSetFillColor(gDisplayListHead++, color);
+    gDPFillRectangle(gDisplayListHead++, curX - thickness * 2, curY - thickness * 2,
+                    curX - thickness - 1, curY + height + thickness * 2 - 1);
+
+    gDPPipeSync(gDisplayListHead++);
+    gDPSetFillColor(gDisplayListHead++, color);
+    gDPFillRectangle(gDisplayListHead++, curX - thickness * 2, curY + height + thickness,
+                    SCREEN_WIDTH - curX + thickness * 2 - 1, curY + height + thickness * 2 - 1);
+
+    gDPPipeSync(gDisplayListHead++);
+    gDPSetFillColor(gDisplayListHead++, color);
+    gDPFillRectangle(gDisplayListHead++, SCREEN_WIDTH - curX + thickness, curY - thickness * 2,
+                    SCREEN_WIDTH - curX + thickness * 2 - 1, curY + height + thickness * 2 - 1);
+
+    // Progress Bar
+    if (progressX <= curX)
+        return;
+    if (loadProgress >= 1.0f)
+        progressX = SCREEN_WIDTH - curX;
+
+    gDPPipeSync(gDisplayListHead++);
+    gDPSetFillColor(gDisplayListHead++, color);
+    gDPFillRectangle(gDisplayListHead++, curX, curY, progressX - 1, curY + height - 1);
+}
+
 void render_game(void) {
     PROFILER_GET_SNAPSHOT_TYPE(PROFILER_DELTA_COLLISION);
     if (gCurrentArea != NULL && !gWarpTransition.pauseRendering) {
@@ -472,6 +706,16 @@ void render_game(void) {
 
     gViewportOverride = NULL;
     gViewportClip     = NULL;
+
+
+    if (renderLoadScreen) {
+        if (adjust_load_progress_bar())
+            render_loading_screen();
+    } else {
+        hasMessedUpLoad = FALSE;
+        loadProgress = -0.02f;
+        dotFrames = 0;
+    }
 
     profiler_update(PROFILER_TIME_GFX, profiler_get_delta(PROFILER_DELTA_COLLISION) - first);
     profiler_print_times();

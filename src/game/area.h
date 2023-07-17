@@ -7,6 +7,9 @@
 #include "camera.h"
 #include "engine/graph_node.h"
 
+extern f32 loadProgress;
+extern s32 renderLoadScreen;
+
 struct WarpNode {
     /*00*/ u8 id;
     /*01*/ u8 destLevel;

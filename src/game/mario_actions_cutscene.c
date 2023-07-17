@@ -27,6 +27,7 @@
 #include "seq_ids.h"
 #include "sound_init.h"
 #include "rumble_init.h"
+#include "hud.h"
 
 static struct Object *sIntroWarpPipeObj;
 static struct Object *sEndPeachObj;
@@ -1228,6 +1229,8 @@ s32 act_death_exit(struct MarioState *m) {
     }
     // one unit of health
     m->health = 0x0100;
+    sPowerMeterHUD.animation = POWER_METER_VISIBLE;
+    sPowerMeterHUD.y = HUD_POWER_METER_Y;
 #ifdef BREATH_METER
     m->breath = 0x880;
 #endif
@@ -1245,6 +1248,8 @@ s32 act_unused_death_exit(struct MarioState *m) {
     }
     // one unit of health
     m->health = 0x0100;
+    sPowerMeterHUD.animation = POWER_METER_VISIBLE;
+    sPowerMeterHUD.y = HUD_POWER_METER_Y;
 #ifdef BREATH_METER
     m->breath = 0x880;
 #endif
@@ -1253,7 +1258,10 @@ s32 act_unused_death_exit(struct MarioState *m) {
 
 s32 act_checkpoint_warp(struct MarioState *m) {
     launch_mario_until_land(m, ACT_FREEFALL_LAND_STOP, MARIO_ANIM_GENERAL_FALL, 0.0f);
-    m->health = 0x0880;
+    m->health = 0x880;
+    gHudDisplay.wedges = 8;
+    sPowerMeterHUD.animation = POWER_METER_HIDING;
+    sPowerMeterHUD.y = HUD_POWER_METER_HIDDEN_Y;
 #ifdef BREATH_METER
     m->breath = 0x880;
 #endif
@@ -1274,6 +1282,8 @@ s32 act_falling_death_exit(struct MarioState *m) {
     }
     // one unit of health
     m->health = 0x0100;
+    sPowerMeterHUD.animation = POWER_METER_VISIBLE;
+    sPowerMeterHUD.y = HUD_POWER_METER_Y;
 #ifdef BREATH_METER
     m->breath = 0x880;
 #endif
@@ -1330,6 +1340,8 @@ s32 act_special_death_exit(struct MarioState *m) {
     marioObj->header.gfx.node.flags |= GRAPH_RENDER_ACTIVE;
     // one unit of health
     m->health = 0x0100;
+    sPowerMeterHUD.animation = POWER_METER_VISIBLE;
+    sPowerMeterHUD.y = HUD_POWER_METER_Y;
 #ifdef BREATH_METER
     m->breath = 0x880;
 #endif

@@ -1911,7 +1911,7 @@ s32 render_pause_courses_and_castle(void) {
 // #else
 //             if (gMarioStates[0].action & ACT_FLAG_PAUSE_EXIT) {
 // #endif
-                if (gCurrLevelNum == SMG23IH2_LEVEL_2 && get_current_background_music() != SEQ_LEVEL_SLIDE) {
+                if (gCurrLevelNum != SMG23IH2_LEVEL_2 || get_current_background_music() != SEQ_LEVEL_SLIDE) {
                     render_pause_course_options(99, 93, &gDialogLineNum, 15);
                 }
 //             }

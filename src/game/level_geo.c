@@ -8,6 +8,20 @@
 #include "camera.h"
 #include "envfx_snow.h"
 #include "level_geo.h"
+#include "segment7.h"
+#include "game_init.h"
+#include "puppyprint.h"
+
+Gfx *geo_load_screen(s32 state, UNUSED struct GraphNode *node, UNUSED void *context) {
+    if (state == GEO_CONTEXT_RENDER) {
+        gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+        render_multi_image(segmented_to_virtual(load_screen), 0, 0, 320, 240, 320, 240, G_CYC_COPY);
+        gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
+        gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
+    }
+
+    return NULL;
+}
 
 /**
  * Geo function that generates a displaylist for environment effects such as

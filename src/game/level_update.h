@@ -185,4 +185,7 @@ s32 lvl_play_the_end_screen_sound(UNUSED s16 initOrUpdate, UNUSED s32 levelNum);
 void basic_update(void);
 void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags);
 
+s32 lvl_warp_type(UNUSED s16 initOrUpdate, UNUSED s32 levelNum);
+s32 is_loading_screen_done(s16 frames, UNUSED s32 arg1);
+
 #endif // LEVEL_UPDATE_H

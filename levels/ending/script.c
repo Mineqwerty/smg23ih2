@@ -21,10 +21,35 @@ const LevelScript level_ending_entry_loop[] = {
     JUMP(level_ending_entry_loop), // (loop sleep 1 forever)
 };
 
+const LevelScript level_load_screen_entry[] = {
+    /*5*/ AREA(/*index*/ 1, ending_load_screen),
+    /*7*/ END_AREA(),
+
+    /*8*/ FREE_LEVEL_POOL(),
+    /*9*/ SLEEP(/*frames*/ 15),
+    /*10*/ BLACKOUT(/*active*/ FALSE),
+    /*11*/ LOAD_AREA(/*area*/ 1),
+    SET_MENU_MUSIC(/*seq*/ SEQ_SOUND_PLAYER),
+    /*12*/ TRANSITION(/*transType*/ WARP_TRANSITION_FADE_FROM_COLOR, /*time*/ 20, /*color*/ 0x00, 0x00, 0x00),
+    /*14*/ SLEEP(/*frames*/ 20),
+    CALL_LOOP(/*arg*/ SMG23IH2_LEVEL_4, /*func*/ is_loading_screen_done),
+    UNLOAD_AREA(/*area*/ 1),
+    CLEAR_LEVEL(),
+    SLEEP(/*frames*/ 35),
+
+    SET_REG(/*value*/ SMG23IH2_LEVEL_4),
+
+    SLEEP_BEFORE_EXIT(/*frames*/ 1),
+    EXIT(),
+};
+
 const LevelScript level_ending_entry[] = {
     INIT_LEVEL(),
     LOAD_LEVEL_DATA(ending),
     ALLOC_LEVEL_POOL(),
+
+    CALL(/*arg*/ 0, /*func*/ lvl_warp_type),
+    JUMP_IF(OP_EQ, /*arg*/ 0x02,  level_load_screen_entry),
 
     AREA(/*index*/ 1, ending_geo_area_1),
     END_AREA(),

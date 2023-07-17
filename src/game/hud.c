@@ -76,12 +76,6 @@ void print_fps(s32 x, s32 y) {
 
 // ------------ END OF FPS COUNER -----------------
 
-struct PowerMeterHUD {
-    s8 animation;
-    s16 x;
-    s16 y;
-};
-
 struct CameraHUD {
     s16 status;
 };
@@ -90,7 +84,7 @@ struct CameraHUD {
 // When the HUD is rendered this value is 8, full health.
 static s16 sPowerMeterStoredHealth;
 
-static struct PowerMeterHUD sPowerMeterHUD = {
+struct PowerMeterHUD sPowerMeterHUD = {
     POWER_METER_HIDDEN,
     HUD_POWER_METER_X,
     HUD_POWER_METER_HIDDEN_Y,

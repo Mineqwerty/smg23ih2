@@ -79,8 +79,9 @@ void bhv_hidden_block_loop(void) {
         // Collect coin from the block
         gMarioState->numCoins++;
         gMarioState->health += 0x100;
-        if (gMarioState->health > 0x880)
+        if (gMarioState->health > 0x880) {
             gMarioState->health = 0x880;
+        }
     }
 
     if (BPARAM4 > 0) {

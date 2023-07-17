@@ -6,6 +6,10 @@
 
 #include "make_const_nonconst.h"
 
+ALIGNED8 const Texture load_screen[] = {
+#include "levels/ending/load_screen.rgba16.inc.c"
+};
+
 #ifdef VERSION_EU
 #include "levels/ending/cake_eu.inc.c"
 

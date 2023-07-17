@@ -5,6 +5,10 @@
 
 // geo
 extern const GeoLayout ending_geo_area_1[];
+extern const GeoLayout ending_load_screen[];
+
+// texture
+extern const Texture load_screen[];
 
 // leveldata
 extern const Gfx dl_cake_end_screen[];

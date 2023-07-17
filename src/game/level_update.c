@@ -1484,6 +1484,27 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
     return !gDebugLevelSelect;
 }
 
+s32 is_loading_screen_done(s16 levelNum, UNUSED s32 arg1) {
+    renderLoadScreen = TRUE;
+    if (loadProgress < 1.045f) {
+        return FALSE;
+    }
+
+    renderLoadScreen = FALSE;
+
+    gCurrAreaIndex = 1;
+    sWarpDest.levelNum = levelNum;
+    gCurrLevelNum = sWarpDest.levelNum;
+
+    return TRUE;
+}
+
+s32 lvl_warp_type(UNUSED s16 initOrUpdate, UNUSED s32 levelNum) {
+    s32 ret = sWarpDest.areaIdx;
+    sWarpDest.areaIdx = 1;
+    return ret;
+}
+
 /**
  * Play the "thank you so much for to playing my game" sound.
  */
