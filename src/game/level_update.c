@@ -20,6 +20,7 @@
 #include "camera.h"
 #include "object_list_processor.h"
 #include "ingame_menu.h"
+#include "interaction.h"
 #include "obj_behaviors.h"
 #include "save_file.h"
 #if MULTILANG
@@ -432,6 +433,21 @@ void init_mario_after_warp(void) {
 
         if (gMarioState->flags & (MARIO_VANISH_CAP | MARIO_WING_CAP)) {
             play_cap_music(SEQUENCE_ARGS(4, SEQ_EVENT_POWERUP));
+        }
+
+        if (gCurrLevelNum == SMG23IH2_LEVEL_2 && gCurrAreaIndex == 1) {
+            if (!(gMarioState->action & ACT_FLAG_RIDING_SHELL)) {
+                struct Object *obj = spawn_object(gMarioObject, MODEL_KOOPA_SHELL, bhvKoopaShell);
+                gMarioState->interactObj = obj;
+                gMarioState->usedObj = obj;
+                gMarioState->riddenObj = obj;
+                obj->oInteractStatus = ATTACK_FAST_ATTACK + (INT_STATUS_INTERACTED | INT_STATUS_WAS_ATTACKED);
+                update_mario_sound_and_camera(gMarioState);
+                // play_shell_music();
+                mario_drop_held_object(gMarioState);
+
+                set_mario_action(gMarioState, ACT_RIDING_SHELL_FALL, 0);
+            }
         }
 
 #ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
