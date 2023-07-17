@@ -825,10 +825,14 @@ void cur_obj_update(void) {
     BhvCommandProc bhvCmdProc;
     s32 bhvProcResult;
 
-    if (gMarioState->action == ACT_CLASSIC_DEATH) {
-        if (o->behavior != segmented_to_virtual(bhvMario) && o->behavior != segmented_to_virtual(bhvMarioDeathSprite)) {
-            return;
-        }
+    if (
+        gMarioState->action == ACT_CLASSIC_DEATH &&
+        o->behavior != segmented_to_virtual(bhvMario) &&
+        o->behavior != segmented_to_virtual(bhvMarioMakerLaugh) &&
+        o->behavior != segmented_to_virtual(bhvMarioMakerLaughSpawner) &&
+        o->behavior != segmented_to_virtual(bhvMarioDeathSprite)
+    ) {
+        return;
     }
 
     s32 inRoom = cur_obj_is_mario_in_room();

@@ -482,8 +482,11 @@
 #define /*0x10C*/ oFazanaCarSoundPitch     OBJECT_FIELD_F32(0x49)
 #define /*0x10C*/ oFazanaCarLastFloor      OBJECT_FIELD_SURFACE(0x4A)
 
+/* Mario Maker Laugh */
+#define /*0x0F4*/ oMarioMakerLaughScale OBJECT_FIELD_F32(0x1B)
+
 /* Hidden Block */
-#define /*0x0F4*/ oHiddenBlockScale        OBJECT_FIELD_S32(0x1B)
+#define /*0x0F4*/ oHiddenBlockScale OBJECT_FIELD_S32(0x1B)
 
 /* Jumping Box (Crazy Box) */
 #define /*0x0F4*/ oJumpingBoxUnusedTimerMin OBJECT_FIELD_S32(0x1B)

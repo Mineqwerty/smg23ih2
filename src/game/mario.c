@@ -1139,6 +1139,7 @@ void set_hurt_counter(struct MarioState *m, u8 additionalDamage, u8 shouldDropRe
         set_mario_action(m, ACT_CLASSIC_DEATH, 90);
         play_sound(SOUND_MARIO_CLASSIC_DEATH, gGlobalSoundSource);
         spawn_object(m->marioObj, MODEL_MARIO_DEATH_SPRITE, bhvMarioDeathSprite);
+        disable_background_sound();
         return;
     }
 

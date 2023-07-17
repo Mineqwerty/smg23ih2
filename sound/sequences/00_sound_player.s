@@ -12,7 +12,7 @@ seq_setmutescale 0
   seq_setvol 127
 #endif
 seq_settempo 120
-seq_initchannels 0x3ff
+seq_initchannels 0x7ff
 seq_startchannel 0, .channel0
 seq_startchannel 1, .channel1
 seq_startchannel 2, .channel2
@@ -23,6 +23,7 @@ seq_startchannel 6, .channel6
 seq_startchannel 7, .channel7
 seq_startchannel 8, .channel38
 seq_startchannel 9, .channel59
+seq_startchannel 10, .channelA
 .seq_loop:
 seq_delay 20000
 seq_jump .seq_loop
@@ -69,6 +70,17 @@ chan_setval 0
 chan_iowriteval 5
 chan_stereoheadseteffects 1
 chan_setdyntable .channel59_table
+chan_jump .main_loop_023589
+
+.channelA:
+chan_largenoteson
+chan_setinstr 0
+chan_setpanmix 127
+chan_setnotepriority 14
+chan_setval 0
+chan_iowriteval 5
+chan_stereoheadseteffects 1
+chan_setdyntable .channelA_table
 chan_jump .main_loop_023589
 
 // Main loop for standard, non-continuous sound effects
@@ -8028,6 +8040,47 @@ layer_note0 38, 0x3, 127, 127
 .layer_32BF:
 layer_delay 0x2a
 layer_jump .layer_32B7
+
+.channelA_table:
+sound_ref .sound_custom0_mario_maker_laugh_0
+sound_ref .sound_custom0_mario_maker_laugh_1
+sound_ref .sound_custom0_mario_maker_laugh_2
+
+.sound_custom0_mario_maker_laugh_0:
+chan_setbank 5
+chan_setinstr 19
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_custom0_mario_maker_laugh_0
+chan_end
+
+.layer_custom0_mario_maker_laugh_0:
+layer_note1 39, 0xb3, 95
+layer_end
+
+.sound_custom0_mario_maker_laugh_1:
+chan_setbank 5
+chan_setinstr 20
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_custom0_mario_maker_laugh_1
+chan_end
+
+.layer_custom0_mario_maker_laugh_1:
+layer_note1 39, 0xa4, 95
+layer_end
+
+.sound_custom0_mario_maker_laugh_2:
+chan_setbank 5
+chan_setinstr 21
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_custom0_mario_maker_laugh_2
+chan_end
+
+.layer_custom0_mario_maker_laugh_2:
+layer_note1 39, 0x9b, 95
+layer_end
 
 .align 2, 0
 .envelope_32C4:

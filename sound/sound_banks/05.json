@@ -110,6 +110,21 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "1F_hidden_block_item"
+        },
+        "inst19": {
+            "release_rate": 10,
+            "envelope": "envelope0",
+            "sound": "20_mario_maker_laugh_0"
+        },
+        "inst20": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "21_mario_maker_laugh_1"
+        },
+        "inst21": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "22_mario_maker_laugh_2"
         }
     },
     "instrument_list": [
@@ -131,6 +146,9 @@
         "inst15",
         "inst16",
         "inst17",
-        "inst18"
+        "inst18",
+        "inst19",
+        "inst20",
+        "inst21"
     ]
 }

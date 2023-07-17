@@ -83,6 +83,15 @@ void bhv_hidden_block_loop(void) {
             gMarioState->health = 0x880;
     }
 
+    if (BPARAM4 > 0) {
+        struct Object *obj = spawn_object_abs_with_rot(o, 0, MODEL_NONE, bhvMarioMakerLaughSpawner, o->oHomeX, o->oHomeY + (HIDDEN_BLOCK_SCALE / 2), o->oHomeZ, 0, 0, 0);
+        if (obj) {
+            obj->oBehParams2ndByte = BPARAM4;
+            SET_BPARAM2(obj->oBehParams, BPARAM4);
+            SET_BPARAM3(obj->oBehParams, 0x10);
+        }
+    }
+
     gMarioState->pos[1] = o->oPosY - 120.0f;
     gMarioState->vel[1] = HIDDEN_BLOCK_DOWNWARD_VELOCITY;
     gMarioObject->oVelY = gMarioState->vel[1];

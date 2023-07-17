@@ -4836,6 +4836,29 @@ const BehaviorScript bhvMarioDeathSprite[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvMarioMakerLaughSpawner[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BILLBOARD(),
+    SET_HOME(),
+    CALL_NATIVE(bhv_mario_maker_laugh_spawner_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_mario_maker_laugh_spawner_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvMarioMakerLaugh[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    SET_FLOAT(oDrawingDistance, 6000),
+    BILLBOARD(),
+    SET_HOME(),
+    CALL_NATIVE(bhv_mario_maker_laugh_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_mario_maker_laugh_loop),
+    END_LOOP(),
+};
+
 const BehaviorScript bhvCarOrangeNumber[] = {
     BEGIN(OBJ_LIST_LEVEL),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
