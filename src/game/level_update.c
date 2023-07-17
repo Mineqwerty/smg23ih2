@@ -364,7 +364,8 @@ void init_mario_after_warp(void) {
         struct Object *ckptObj = find_first_object_with_behavior_and_bparams(bhvCheckpoint, (u32) checkpoint->checkpointID << 16, (0xFF << 16));
         if (ckptObj) {
             vec3f_copy(&spawnNode->object->oPosVec, &ckptObj->oPosVec);
-            spawnNode->object->oPosY += 500.0f;
+            spawnNode->object->oMoveAngleYaw = ckptObj->oMoveAngleYaw;
+            spawnNode->object->oPosY += 350.0f;
         }
     }
 
