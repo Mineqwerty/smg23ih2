@@ -71,3 +71,7 @@
 #include "levels/wf/leveldata.inc.c"
 
 #include "levels/wf/funny_box/model.inc.c"
+#include "levels/wf/sliding_floor/model.inc.c"
+#include "levels/wf/sliding_floor/collision.inc.c"
+#include "levels/wf/gaslight_block/model.inc.c"
+#include "levels/wf/gaslight_block/collision.inc.c"

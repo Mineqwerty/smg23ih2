@@ -45,3 +45,5 @@
 #include "levels/wf/geo.inc.c"
 
 #include "levels/wf/funny_box/geo.inc.c"
+#include "levels/wf/sliding_floor/geo.inc.c"
+#include "levels/wf/gaslight_block/geo.inc.c"

@@ -1,0 +1,10 @@
+extern const GeoLayout sliding_floor_geo[];
+extern Lights1 sliding_floor_f3dlite_material_014_lights;
+extern u8 sliding_floor_RMGP01_429d3cae_14_ci8[];
+extern u8 sliding_floor_RMGP01_429d3cae_14_pal_rgba16[];
+extern Vtx sliding_floor_Plane_007_mesh_layer_1_vtx_0[20];
+extern Gfx sliding_floor_Plane_007_mesh_layer_1_tri_0[];
+extern Gfx mat_sliding_floor_f3dlite_material_014[];
+extern Gfx mat_revert_sliding_floor_f3dlite_material_014[];
+extern Gfx sliding_floor_Plane_007_mesh_layer_1[];
+extern Gfx sliding_floor_material_revert_render_settings[];

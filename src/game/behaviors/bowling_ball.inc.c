@@ -6,8 +6,8 @@ static struct ObjectHitbox sBowlingBallHitbox = {
     /* damageOrCoinValue: */ 2,
     /* health:            */ 0,
     /* numLootCoins:      */ 0,
-    /* radius:            */ 100,
-    /* height:            */ 150,
+    /* radius:            */ 50,
+    /* height:            */ 75,
     /* hurtboxRadius:     */ 0,
     /* hurtboxHeight:     */ 0,
 };
@@ -112,6 +112,8 @@ void bhv_bowling_ball_initialize_loop(void) {
 
     o->oMoveAngleYaw = o->oPathedTargetYaw;
 
+    cur_obj_scale(0.5f);
+
     switch (o->oBehParams2ndByte) {
         case BBALL_BP_STYPE_BOB_UPPER:
             o->oForwardVel = 20.0f;
@@ -145,12 +147,14 @@ void bhv_bowling_ball_loop(void) {
             break;
 
         case BBALL_ACT_ROLL:
-            bhv_bowling_ball_roll_loop();
+            //bhv_bowling_ball_roll_loop();
             break;
     }
 
+    bowling_ball_set_hitbox();
+
     if (o->oBehParams2ndByte != BBALL_BP_STYPE_THI_SMALL) {
-        set_camera_shake_from_point(SHAKE_POS_BOWLING_BALL, o->oPosX, o->oPosY, o->oPosZ);
+        //set_camera_shake_from_point(SHAKE_POS_BOWLING_BALL, o->oPosX, o->oPosY, o->oPosZ);
     }
 
     set_object_visibility(o, 4000);

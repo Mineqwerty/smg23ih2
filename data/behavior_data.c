@@ -6260,3 +6260,36 @@ const BehaviorScript bhvFunnyBox[] = {
         CALL_NATIVE(bhv_funny_box_loop),
     END_LOOP(),
 };
+
+const BehaviorScript bhvSlidingFloor[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    SET_HOME(),
+    SET_FLOAT(oDrawingDistance, 30000),
+    LOAD_COLLISION_DATA(sliding_floor_collision),
+    CALL_NATIVE(bhv_sliding_floor_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_sliding_floor_loop),
+        CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvGaslightBlock[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    LOAD_COLLISION_DATA(gaslight_block_collision),
+    SET_FLOAT(oDrawingDistance, 30000),
+    CALL_NATIVE(bhv_gaslight_block_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_gaslight_block_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvGaslightManager[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    CALL_NATIVE(bhv_gaslight_manager_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_gaslight_manager_loop),
+    END_LOOP(),
+};

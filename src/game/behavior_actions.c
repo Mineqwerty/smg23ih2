@@ -256,3 +256,5 @@ void set_obj_anim_with_accel_and_sound(s16 frame1, s16 frame2, s32 sound) {
 #include "behaviors/title_sponge.inc.c"
 #include "behaviors/wii.inc.c"
 #include "behaviors/funny_box.inc.c"
+#include "behaviors/sliding_floor.inc.c"
+#include "behaviors/gaslight_block.inc.c"

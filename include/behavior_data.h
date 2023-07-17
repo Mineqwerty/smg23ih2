@@ -561,3 +561,6 @@ extern const BehaviorScript bhvShellTrollWarpHandler[];
 extern const BehaviorScript bhvTitleSponge[];
 extern const BehaviorScript bhvWii[];
 extern const BehaviorScript bhvFunnyBox[];
+extern const BehaviorScript bhvSlidingFloor[];
+extern const BehaviorScript bhvGaslightBlock[];
+extern const BehaviorScript bhvGaslightManager[];

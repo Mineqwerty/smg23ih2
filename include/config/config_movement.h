@@ -76,7 +76,7 @@
 /**
  * Enables Platform Displacement 2, also known as momentum patch. Makes Mario keep the momemtum from moving platforms.
  */
-#define PLATFORM_DISPLACEMENT_2
+//#define PLATFORM_DISPLACEMENT_2
 
 /**
  * Uses Shindou's pole behavior.
