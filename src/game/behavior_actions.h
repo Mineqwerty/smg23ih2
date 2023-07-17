@@ -623,3 +623,5 @@ void bhv_gaslight_block_init(void);
 void bhv_gaslight_block_loop(void);
 void bhv_gaslight_manager_init(void);
 void bhv_gaslight_manager_loop(void);
+void bhv_squid_word_init(void);
+void bhv_squid_word_loop(void);

@@ -6293,3 +6293,12 @@ const BehaviorScript bhvGaslightManager[] = {
         CALL_NATIVE(bhv_gaslight_manager_loop),
     END_LOOP(),
 };
+
+const BehaviorScript bhvSquidWord[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    CALL_NATIVE(bhv_squid_word_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_squid_word_loop),
+    END_LOOP(),
+};

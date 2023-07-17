@@ -75,3 +75,4 @@
 #include "levels/wf/sliding_floor/collision.inc.c"
 #include "levels/wf/gaslight_block/model.inc.c"
 #include "levels/wf/gaslight_block/collision.inc.c"
+#include "levels/wf/squid_word/model.inc.c"

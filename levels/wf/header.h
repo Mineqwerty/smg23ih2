@@ -112,4 +112,6 @@ extern const LevelScript level_wf_entry[];
 
 #include "levels/wf/gaslight_block/collision_header.h"
 
+#include "levels/wf/squid_word/geo_header.h"
+
 #endif

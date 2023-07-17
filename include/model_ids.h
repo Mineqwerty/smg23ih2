@@ -567,6 +567,7 @@
 #define MODEL_FUNNYBOX                       0x12A
 #define MODEL_SLIDING_FLOOR                       0x12B
 #define MODEL_GASLIGHT_BLOCK                       0x12C
+#define MODEL_SQUID_WORD                       0x12D
 
 
 #endif
