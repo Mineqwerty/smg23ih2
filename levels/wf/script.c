@@ -135,7 +135,14 @@ const LevelScript level_wf_entry[] = {
 		/* Fast64 begin persistent block [area commands] */
 
 		OBJECT(MODEL_THWOMP, -4815, 1729, -320, 0, 180, 0, 0x00800000, bhvOffscreenThwomp),
-		OBJECT(MODEL_HIDDEN_BLOCK, -2456, 829, -9780, 0, 90, 0, (6), bhvHiddenBlock),
+		OBJECT(MODEL_HIDDEN_BLOCK, -2456, 829, -9780, 0, 0, 0, (6), bhvHiddenBlock),
+		OBJECT(MODEL_BREAKABLE_BOX, -4815, 829, -9365, 0, 0, 0, BP(0, BREAKABLE_BOX_BP_LARGE, 1, 0), bhvBreakableBox),
+		OBJECT(MODEL_BREAKABLE_BOX, -4815, 829, -9023, 0, 0, 0, BP(0, BREAKABLE_BOX_BP_LARGE, 1, 0), bhvBreakableBox),
+		OBJECT(MODEL_BREAKABLE_BOX, -4815, 829, -8681, 0, 0, 0, BP(0, BREAKABLE_BOX_BP_LARGE, 1, 0), bhvBreakableBox),
+		OBJECT(MODEL_BREAKABLE_BOX, -4815, 829, -8339, 0, 0, 0, BP(0, BREAKABLE_BOX_BP_LARGE, 1, 0), bhvBreakableBox),
+		OBJECT(MODEL_BREAKABLE_BOX, -4815, 829, -7997, 0, 0, 0, BP(0, BREAKABLE_BOX_BP_LARGE, 1, 0), bhvBreakableBox),
+		OBJECT(MODEL_BREAKABLE_BOX, -4815, 829, -7655, 0, 0, 0, BP(0, BREAKABLE_BOX_BP_LARGE, 1, 0), bhvBreakableBox),
+		OBJECT(MODEL_BLACK_BOBOMB, -4815, 829, -9780, 0, 90, 0, BP(0, BOBOMB_BP_STYPE_STATIONARY, 0, 0), bhvBobomb),
 
 		// NOTE: PLEASE REMOVE EVERYTHING BELOW HERE FROM BLENDER MODEL!!!!!!!
 
@@ -158,7 +165,7 @@ const LevelScript level_wf_entry[] = {
 		OBJECT(MODEL_SQUID_WORD, 0, 450, -1336, 0, 0, 0, 0x00000000, bhvSquidWord),
 
 		// Antisoftlock Bullet Bill
-		OBJECT(MODEL_BULLET_BILL, -4831, 625, -4132, 0, -180, 0, 0x00000000, bhvHiddenBulletBill),
+		OBJECT(MODEL_BULLET_BILL, -4831, 625, -4000, 0, -180, 0, 0x00000000, bhvHiddenBulletBill),
 
 		/* Fast64 end persistent block [area commands] */
 	END_AREA(),

@@ -255,6 +255,7 @@
 #define /*0x0F4*/ oBobombBlinkTimer OBJECT_FIELD_S32(0x1B)
 #define /*0x0F8*/ oBobombFuseLit    OBJECT_FIELD_S32(0x1C)
 #define /*0x0FC*/ oBobombFuseTimer  OBJECT_FIELD_S32(0x1D)
+#define /*0x100*/ oBobombInitYaw    OBJECT_FIELD_S32(0x1E)
 
 /* Bob-omb Buddy */
 #define /*0x0F4*/ oBobombBuddyBlinkTimer       OBJECT_FIELD_S32(0x1B)

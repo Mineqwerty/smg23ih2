@@ -102,10 +102,30 @@ void bhv_hidden_object_loop(void) {
 
 void bhv_breakable_box_loop(void) {
     obj_set_hitbox(o, &sBreakableBoxHitbox);
-    cur_obj_set_model(MODEL_BREAKABLE_BOX);
-    if (o->oTimer == 0) breakable_box_init();
-    if (cur_obj_was_attacked_or_ground_pounded()) {
-        obj_explode_and_spawn_coins(46.0f, COIN_TYPE_YELLOW);
-        create_sound_spawner(SOUND_GENERAL_BREAK_BOX);
+
+    if (BPARAM3 == 1) {
+        cur_obj_set_model(MODEL_BREAKABLE_BOX);
+        if (o->oTimer == 0) {
+            o->oHiddenObjectSwitchObj = NULL;
+            o->oAnimState = BREAKABLE_BOX_ANIM_STATE_CORK_BOX;
+            o->header.gfx.scale[0] = 1.73f;
+            o->header.gfx.scale[1] = 1.34f;
+            o->header.gfx.scale[2] = 1.72f;
+        }
+        if ((o->oInteractStatus & INT_STATUS_INTERACTED)
+            && (o->oInteractStatus & INT_STATUS_TOUCHED_BOB_OMB)) {
+            obj_explode_and_spawn_coins(46.0f, COIN_TYPE_NONE);
+            create_sound_spawner(SOUND_GENERAL_BREAK_BOX);
+        }
+
+        o->oInteractStatus = INT_STATUS_NONE;
+    } else {
+        cur_obj_set_model(MODEL_BREAKABLE_BOX);
+        if (o->oTimer == 0) breakable_box_init();
+
+        if (cur_obj_was_attacked_or_ground_pounded()) {
+            obj_explode_and_spawn_coins(46.0f, COIN_TYPE_YELLOW);
+            create_sound_spawner(SOUND_GENERAL_BREAK_BOX);
+        }
     }
 }
