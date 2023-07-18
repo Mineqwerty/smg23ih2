@@ -100,11 +100,6 @@ const LevelScript level_wf_entry[] = {
 		WARP_NODE(0xF1, LEVEL_WF, 0x02, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0x0B, LEVEL_WF, 0x03, 0x0A, WARP_NO_CHECKPOINT),
 		OBJECT(MODEL_BULLET_BILL, -4831, 465, -4132, 0, -180, 0, 0x00000000, bhvBulletBill),
-		OBJECT(MODEL_NONE, -23, 67, -7, 0, 90, 0, (1 << 16) | (250), bhvCheckpoint),
-		OBJECT(MODEL_NONE, 757, 83, -7733, 0, 90, 0, (2 << 16) | (5 << 8) | (250), bhvCheckpoint),
-		OBJECT(MODEL_NONE, -4789, 829, -6271, 0, 90, 0, (3 << 16) | (5 << 8) | (250), bhvCheckpoint),
-		OBJECT(MODEL_NONE, -4789, 829, -779, 0, 90, 0, (4 << 16) | (5 << 8) | (250), bhvCheckpoint),
-		OBJECT(MODEL_NONE, -4789, 829, 6506, 0, 90, 0, (5 << 16) | (5 << 8) | (250), bhvCheckpoint),
 		OBJECT(MODEL_GLOBAL_DOOR, -590, 83, -9402, 0, 90, 0, (11 << 16), bhvDoorWarp),
 		OBJECT(MODEL_NONE, -3907, 829, -9771, 0, 90, 0, (11 << 16), bhvDoorWarp),
 		OBJECT(MODEL_NONE, -4998, 829, -6269, 0, 90, 0, (11 << 16), bhvDoorWarp),
@@ -123,8 +118,6 @@ const LevelScript level_wf_entry[] = {
 		OBJECT(MODEL_HIDDEN_BLOCK, 913, 282, -6437, 0, 90, 0, (6), bhvHiddenBlock),
 		OBJECT(MODEL_HIDDEN_BLOCK, 609, 282, -6437, 0, 90, 0, (6), bhvHiddenBlock),
 		OBJECT(MODEL_HIDDEN_BLOCK, -2748, 781, -9307, 0, 90, 0, (30), bhvHiddenBlock),
-		OBJECT(MODEL_HIDDEN_BLOCK, -4689, 1175, -7205, 0, 90, 0, (6), bhvHiddenBlock),
-		OBJECT(MODEL_HIDDEN_BLOCK, -4962, 1175, -7205, 0, 90, 0, (6), bhvHiddenBlock),
 		OBJECT(MODEL_HIDDEN_BLOCK, -4583, 1132, 6834, 0, 90, 0, (1 << 16) | (6), bhvHiddenBlock),
 		OBJECT(MODEL_HIDDEN_BLOCK, -4583, 1132, 7138, 0, 90, 0, (1 << 16) | (6), bhvHiddenBlock),
 		OBJECT(MODEL_HIDDEN_BLOCK, -1737, 2330, 6995, 0, 90, 0, 0x00000000, bhvHiddenBlock),
@@ -142,6 +135,22 @@ const LevelScript level_wf_entry[] = {
 		SET_BACKGROUND_MUSIC(0x00, SEQ_SHIT_BROS_3),
 		TERRAIN_TYPE(TERRAIN_GRASS),
 		/* Fast64 begin persistent block [area commands] */
+
+		OBJECT(MODEL_THWOMP, -4815, 1729, -320, 0, 180, 0, 0x00800000, bhvOffscreenThwomp),
+
+		// NOTE: PLEASE REMOVE EVERYTHING BELOW FROM MODEL!!!!!!!
+
+		// All checkpoints
+		OBJECT(MODEL_NONE, -23, 67, -7, 0, 0, 0, (1 << 16) | (250), bhvCheckpoint),
+		OBJECT(MODEL_NONE, 757, 83, -7733, 0, 0, 0, (2 << 16) | (5 << 8) | (250), bhvCheckpoint),
+		OBJECT(MODEL_NONE, -4815, 829, -6271, 0, 180, 0, (3 << 16) | (2 << 8) | (250), bhvCheckpoint),
+		OBJECT(MODEL_NONE, -4815, 829, -600, 0, 180, 0, (4 << 16) | (5 << 8) | (250), bhvCheckpoint),
+		OBJECT(MODEL_NONE, -4815, 829, 6506, 0, 180, 0, (5 << 16) | (5 << 8) | (250), bhvCheckpoint),
+
+		// Hidden blocks after bomb excavation
+		OBJECT(MODEL_HIDDEN_BLOCK, -4663, 1080, -7240, 0, 90, 0, (6), bhvHiddenBlock),
+		OBJECT(MODEL_HIDDEN_BLOCK, -4967, 1080, -7240, 0, 90, 0, (6), bhvHiddenBlock),
+
 		/* Fast64 end persistent block [area commands] */
 	END_AREA(),
 
