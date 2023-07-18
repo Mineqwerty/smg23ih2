@@ -9,7 +9,9 @@ void bhv_bullet_bill_init(void) {
 }
 
 void bullet_bill_act_0(void) {
-    cur_obj_become_tangible();
+    if (o->behavior != segmented_to_virtual(bhvHiddenBulletBill)) {
+        cur_obj_become_tangible();
+    }
     o->oForwardVel = 0.0f;
     o->oMoveAngleYaw = o->oBulletBillInitialMoveYaw;
     o->oFaceAnglePitch = 0;
@@ -50,6 +52,9 @@ void bullet_bill_act_2(void) {
         if (o->oTimer == 50) {
             cur_obj_play_sound_2(SOUND_OBJ_POUNDING_CANNON);
             cur_obj_shake_screen(SHAKE_POS_SMALL);
+            if (o->behavior == segmented_to_virtual(bhvHiddenBulletBill)) {
+                cur_obj_become_tangible();
+            }
         }
 
         if (o->oTimer > 150 || o->oMoveFlags & OBJ_MOVE_HIT_WALL) {
@@ -61,6 +66,9 @@ void bullet_bill_act_2(void) {
 
 void bullet_bill_act_3(void) {
     o->oAction = 0;
+    if (o->behavior == segmented_to_virtual(bhvHiddenBulletBill)) {
+        cur_obj_become_intangible();
+    }
 }
 
 void bullet_bill_act_4(void) {
@@ -90,5 +98,27 @@ void bhv_bullet_bill_loop(void) {
     cur_obj_call_action_function(sBulletBillActions);
     if (cur_obj_check_interacted()) {
         o->oAction = 4;
+    }
+}
+
+void bhv_hidden_bullet_bill_init(void) {
+    bhv_bullet_bill_init();
+    cur_obj_become_intangible();
+    cur_obj_hide();
+}
+
+void bhv_hidden_bullet_bill_loop(void) {
+    if (o->header.gfx.node.flags & GRAPH_RENDER_INVISIBLE) {
+        f32 *pos = gMarioState->pos; // Treat like Vec3f with less annoying casts needed to make it work
+        if (
+            (pos[0] >= -4979 && pos[0] <= -4546) &&
+            (pos[1] >=  -136 && pos[1] <=   460) &&
+            (pos[2] >= -5083 && pos[2] <= -4174)
+        ) {
+            cur_obj_unhide();
+            play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_LEVEL_SLIDE), 0);
+        }
+    } else {
+        bhv_bullet_bill_loop();
     }
 }

@@ -99,7 +99,6 @@ const LevelScript level_wf_entry[] = {
 		WARP_NODE(0xF0, LEVEL_CCM, 0x01, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0xF1, LEVEL_WF, 0x02, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0x0B, LEVEL_WF, 0x03, 0x0A, WARP_NO_CHECKPOINT),
-		OBJECT(MODEL_BULLET_BILL, -4831, 465, -4132, 0, -180, 0, 0x00000000, bhvBulletBill),
 		OBJECT(MODEL_GLOBAL_DOOR, -590, 83, -9402, 0, 90, 0, (11 << 16), bhvDoorWarp),
 		OBJECT(MODEL_NONE, -3907, 829, -9771, 0, 90, 0, (11 << 16), bhvDoorWarp),
 		OBJECT(MODEL_NONE, -4998, 829, -6269, 0, 90, 0, (11 << 16), bhvDoorWarp),
@@ -141,11 +140,11 @@ const LevelScript level_wf_entry[] = {
 		// NOTE: PLEASE REMOVE EVERYTHING BELOW HERE FROM BLENDER MODEL!!!!!!!
 
 		// All checkpoints
-		OBJECT(MODEL_NONE, -23, 67, -7, 0, 0, 0, (1 << 16) | (250), bhvCheckpoint),
-		OBJECT(MODEL_NONE, 757, 83, -7733, 0, 0, 0, (2 << 16) | (5 << 8) | (250), bhvCheckpoint),
+		OBJECT(MODEL_NONE, -23, 67, -7, 0, 0, 0, (1 << 16) | 250, bhvCheckpoint),
+		OBJECT(MODEL_NONE, 757, 83, -7733, 0, 0, 0, (2 << 16) | 1500, bhvCheckpoint),
 		OBJECT(MODEL_NONE, -4815, 829, -6271, 0, 180, 0, (3 << 16) | 1000, bhvCheckpoint),
-		OBJECT(MODEL_NONE, -4815, 829, -600, 0, 180, 0, (4 << 16) | (5 << 8) | (250), bhvCheckpoint),
-		OBJECT(MODEL_NONE, -4815, 829, 6506, 0, 180, 0, (5 << 16) | (5 << 8) | (250), bhvCheckpoint),
+		OBJECT(MODEL_NONE, -4815, 829, -600, 0, 180, 0, (4 << 16) | 1500, bhvCheckpoint),
+		OBJECT(MODEL_NONE, -4815, 829, 6506, 0, 180, 0, (5 << 16) | 1500, bhvCheckpoint),
 
 		// Hidden blocks after bomb excavation
 		OBJECT(MODEL_HIDDEN_BLOCK, -4663, 1060, -7320, 0, 0, 0, BP(0, 0, 0x08, 6), bhvHiddenBlock),
@@ -157,6 +156,9 @@ const LevelScript level_wf_entry[] = {
 
 		// Squid Word
 		OBJECT(MODEL_SQUID_WORD, 0, 450, -1336, 0, 0, 0, 0x00000000, bhvSquidWord),
+
+		// Antisoftlock Bullet Bill
+		OBJECT(MODEL_BULLET_BILL, -4831, 625, -4132, 0, -180, 0, 0x00000000, bhvHiddenBulletBill),
 
 		/* Fast64 end persistent block [area commands] */
 	END_AREA(),

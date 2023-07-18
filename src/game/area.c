@@ -625,15 +625,22 @@ void render_loading_screen(void) {
 void render_game(void) {
     PROFILER_GET_SNAPSHOT_TYPE(PROFILER_DELTA_COLLISION);
     if (gCurrentArea != NULL && !gWarpTransition.pauseRendering) {
-
-        if (gBetterMarioCam) {
-            gShitViewport.vp.vscale[0] = 48;
-    gShitViewport.vp.vscale[1] = 32;
-    gShitViewport.vp.vtrans[0] = SCREEN_WIDTH  * 2;
-    gShitViewport.vp.vtrans[1] = SCREEN_HEIGHT * 2;
-    override_viewport_and_clip(NULL, &gShitViewport, 0, 0, 0);
+        switch (gCurrLevelNum) {
+            case SMG23IH2_LEVEL_3:
+                gSPClipRatio(gDisplayListHead++, FRUSTRATIO_6);
+                break;
+            default:
+                gSPClipRatio(gDisplayListHead++, FRUSTRATIO_2);
+                break;
         }
 
+        if (gBetterMarioCam && gCurrLevelNum == SMG23IH2_LEVEL_1) {
+            gShitViewport.vp.vscale[0] = 48;
+            gShitViewport.vp.vscale[1] = 32;
+            gShitViewport.vp.vtrans[0] = SCREEN_WIDTH  * 2;
+            gShitViewport.vp.vtrans[1] = SCREEN_HEIGHT * 2;
+            override_viewport_and_clip(NULL, &gShitViewport, 0, 0, 0);
+        }
 
         if (gCurrentArea->graphNode) {
             geo_process_root(gCurrentArea->graphNode, gViewportOverride, gViewportClip, gFBSetColor);
