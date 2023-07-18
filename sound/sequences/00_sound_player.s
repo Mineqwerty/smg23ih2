@@ -8045,6 +8045,8 @@ layer_jump .layer_32B7
 sound_ref .sound_custom0_mario_maker_laugh_0
 sound_ref .sound_custom0_mario_maker_laugh_1
 sound_ref .sound_custom0_mario_maker_laugh_2
+sound_ref .sound_action_kick_shell
+sound_ref .sound_action_squid_word_scream
 
 .sound_custom0_mario_maker_laugh_0:
 chan_setbank 5
@@ -8080,6 +8082,30 @@ chan_end
 
 .layer_custom0_mario_maker_laugh_2:
 layer_note1 39, 0x9b, 95
+layer_end
+
+.sound_action_kick_shell:
+chan_setbank 5
+chan_setinstr 22
+chan_setval 0x20
+chan_call .set_reverb
+chan_setlayer 0, .layer_action_kick_shell
+chan_end
+
+.layer_action_kick_shell:
+layer_note1 39, 0x17, 111
+layer_end
+
+.sound_action_squid_word_scream:
+chan_setbank 5
+chan_setinstr 23
+chan_setval 0x14
+chan_call .set_reverb
+chan_setlayer 0, .layer_action_squid_word_scream
+chan_end
+
+.layer_action_squid_word_scream:
+layer_note1 39, 0x135, 71
 layer_end
 
 .align 2, 0

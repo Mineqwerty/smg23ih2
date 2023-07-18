@@ -6278,7 +6278,7 @@ const BehaviorScript bhvFunnyBox[] = {
 
 const BehaviorScript bhvSlidingFloor[] = {
     BEGIN(OBJ_LIST_SURFACE),
-    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_ACTIVE_FROM_AFAR)),
     SET_HOME(),
     SET_FLOAT(oDrawingDistance, 30000),
     LOAD_COLLISION_DATA(sliding_floor_collision),
@@ -6291,7 +6291,7 @@ const BehaviorScript bhvSlidingFloor[] = {
 
 const BehaviorScript bhvGaslightBlock[] = {
     BEGIN(OBJ_LIST_SURFACE),
-    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_ACTIVE_FROM_AFAR)),
     LOAD_COLLISION_DATA(gaslight_block_collision),
     SET_FLOAT(oDrawingDistance, 30000),
     CALL_NATIVE(bhv_gaslight_block_init),
@@ -6312,6 +6312,8 @@ const BehaviorScript bhvGaslightManager[] = {
 const BehaviorScript bhvSquidWord[] = {
     BEGIN(OBJ_LIST_SURFACE),
     OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    SET_FLOAT(oDrawingDistance, 6000),
+    SET_HOME(),
     LOAD_COLLISION_DATA(squid_word_collision),
     CALL_NATIVE(bhv_squid_word_init),
     BEGIN_LOOP(),

@@ -125,6 +125,16 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "22_mario_maker_laugh_2"
+        },
+        "inst22": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "23_kick_shell"
+        },
+        "inst23": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "24_squid_word_scream"
         }
     },
     "instrument_list": [
@@ -149,6 +159,8 @@
         "inst18",
         "inst19",
         "inst20",
-        "inst21"
+        "inst21",
+        "inst22",
+        "inst23"
     ]
 }

@@ -126,7 +126,6 @@ const LevelScript level_wf_entry[] = {
 		OBJECT(MODEL_HIDDEN_BLOCK, -4583, 1280, 6834, 0, 90, 0, (1 << 16) | (6), bhvHiddenBlock),
 		OBJECT(MODEL_HIDDEN_BLOCK, -4583, 1280, 7138, 0, 90, 0, (1 << 16) | (6), bhvHiddenBlock),
 		OBJECT(MODEL_SLIDING_FLOOR, -4815, 749, -4576, 0, 0, 0, 0x00000000, bhvSlidingFloor),
-		OBJECT(MODEL_SQUID_WORD, 1, 294, -1336, 0, 0, 0, 0x00000000, bhvSquidWord),
 		OBJECT(MODEL_STAR, -1761, 2469, 6993, 0, -90, 0, 0x00000000, bhvStar),
 		OBJECT(MODEL_NONE, 0, 200, 0, 0, 0, 0, 0x000A0000, bhvSpinAirborneWarp),
 		MARIO_POS(0x01, 0, 0, 200, 0),
@@ -137,19 +136,27 @@ const LevelScript level_wf_entry[] = {
 		/* Fast64 begin persistent block [area commands] */
 
 		OBJECT(MODEL_THWOMP, -4815, 1729, -320, 0, 180, 0, 0x00800000, bhvOffscreenThwomp),
+		OBJECT(MODEL_HIDDEN_BLOCK, -2456, 829, -9780, 0, 90, 0, (6), bhvHiddenBlock),
 
-		// NOTE: PLEASE REMOVE EVERYTHING BELOW FROM MODEL!!!!!!!
+		// NOTE: PLEASE REMOVE EVERYTHING BELOW HERE FROM BLENDER MODEL!!!!!!!
 
 		// All checkpoints
 		OBJECT(MODEL_NONE, -23, 67, -7, 0, 0, 0, (1 << 16) | (250), bhvCheckpoint),
 		OBJECT(MODEL_NONE, 757, 83, -7733, 0, 0, 0, (2 << 16) | (5 << 8) | (250), bhvCheckpoint),
-		OBJECT(MODEL_NONE, -4815, 829, -6271, 0, 180, 0, (3 << 16) | (2 << 8) | (250), bhvCheckpoint),
+		OBJECT(MODEL_NONE, -4815, 829, -6271, 0, 180, 0, (3 << 16) | 1000, bhvCheckpoint),
 		OBJECT(MODEL_NONE, -4815, 829, -600, 0, 180, 0, (4 << 16) | (5 << 8) | (250), bhvCheckpoint),
 		OBJECT(MODEL_NONE, -4815, 829, 6506, 0, 180, 0, (5 << 16) | (5 << 8) | (250), bhvCheckpoint),
 
 		// Hidden blocks after bomb excavation
-		OBJECT(MODEL_HIDDEN_BLOCK, -4663, 1080, -7240, 0, 90, 0, (6), bhvHiddenBlock),
-		OBJECT(MODEL_HIDDEN_BLOCK, -4967, 1080, -7240, 0, 90, 0, (6), bhvHiddenBlock),
+		OBJECT(MODEL_HIDDEN_BLOCK, -4663, 1060, -7320, 0, 0, 0, BP(0, 0, 0x08, 6), bhvHiddenBlock),
+		OBJECT(MODEL_HIDDEN_BLOCK, -4813, 1060, -7320, 0, 0, 0, BP(0, 0, 0x08, 6), bhvHiddenBlock),
+		OBJECT(MODEL_HIDDEN_BLOCK, -4967, 1060, -7320, 0, 0, 0, BP(0, 0, 0x08, 6), bhvHiddenBlock),
+		OBJECT(MODEL_HIDDEN_BLOCK, -4663, 1060, -7168, 0, 0, 0, BP(0, 0, 0x08, 6), bhvHiddenBlock),
+		OBJECT(MODEL_HIDDEN_BLOCK, -4813, 1060, -7168, 0, 0, 0, BP(0, 0, 0x08, 6), bhvHiddenBlock),
+		OBJECT(MODEL_HIDDEN_BLOCK, -4967, 1060, -7168, 0, 0, 0, BP(0, 0, 0x08, 6), bhvHiddenBlock),
+
+		// Squid Word
+		OBJECT(MODEL_SQUID_WORD, 0, 450, -1336, 0, 0, 0, 0x00000000, bhvSquidWord),
 
 		/* Fast64 end persistent block [area commands] */
 	END_AREA(),
