@@ -51,6 +51,7 @@ u8 gCacheEmulated = TRUE;
 u8 gBorderHeight;
 u8 gShitMusic;
 u8 gBetterMarioCam;
+u8 gFuckUpScreen;
 u8 gChangeArea;
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
 u8 gCustomDebugMode;
@@ -439,6 +440,43 @@ void display_and_vsync(void) {
         gGoddardVblankCallback = NULL;
     }
     exec_display_list(&gGfxPool->spTask);
+
+    u8 blurColor[3];
+    u8 drawColor[3];
+
+    if (gFuckUpScreen == 1) {
+    for (int i = 1; i < 240; i+=2) {
+        for (int j = 1; j < 320; j+=2) {
+    gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 1)] = gFramebuffers[sRenderingFramebuffer][j + (i*320)];
+    gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 320)] = gFramebuffers[sRenderingFramebuffer][j + (i*320)];
+    gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 321)] = gFramebuffers[sRenderingFramebuffer][j + (i*320)];
+
+    drawColor[0] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0xf800) >>8;
+    drawColor[1] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x7c0) >>3;
+    drawColor[2] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x3e) << 2;
+
+    blurColor[0] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 340] & 0xf800) >> 8;
+    blurColor[1] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 6400] & 0x7c0) >> 3;
+    blurColor[2] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 1540] & 0x3e) << 2;
+
+    
+    if (i > 1) {
+        gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 640)] = GPACK_RGBA5551((drawColor[0] + blurColor[0]) / 2, (drawColor[1] + blurColor[1]) / 2, (drawColor[2] + blurColor[2]) / 2, 255);
+        
+        
+        blurColor[0] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 641] & 0xf800) >> 8;
+        blurColor[1] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 641] & 0x7c0) >> 3;
+        blurColor[2] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 641] & 0x3e) << 2;
+        gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 643)] = GPACK_RGBA5551((drawColor[0] + blurColor[0]) / 2, (drawColor[1] + blurColor[1]) / 2, (drawColor[2] + blurColor[2]) / 2, 255);
+        }
+        
+
+    }
+    }
+
+    }
+
+
 #ifndef UNLOCK_FPS
     osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
 #endif

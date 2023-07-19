@@ -53,6 +53,7 @@ extern u8 gCacheEmulated;
 extern u8 gBorderHeight;
 extern u8 gShitMusic;
 extern u8 gBetterMarioCam;
+extern u8 gFuckUpScreen;
 extern u8 gChangeArea;
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
 extern u8 gCustomDebugMode;
