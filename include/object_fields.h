@@ -486,6 +486,9 @@
 /* Mario Maker Laugh */
 #define /*0x0F4*/ oMarioMakerLaughScale OBJECT_FIELD_F32(0x1B)
 
+/* Babomb Excivatoin Letter */
+#define /*0x0F4*/ oBabombExcivatoinLetterColor OBJECT_FIELD_U32(0x1B)
+
 /* Hidden Block */
 #define /*0x0F4*/ oHiddenBlockScale OBJECT_FIELD_S32(0x1B)
 

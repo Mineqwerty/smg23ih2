@@ -1,0 +1,31 @@
+#include "src/game/envfx_snow.h"
+#include "src/game/behavior_actions.h"
+
+const GeoLayout babomb_excivatoin_geo[] = {
+	GEO_NODE_START(),
+	GEO_OPEN_NODE(),
+	  GEO_ASM(0, geo_babomb_excivatoin_letter_color),
+      GEO_SWITCH_CASE(17, geo_switch_anim_state),
+		GEO_OPEN_NODE(),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_0),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_1),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_2),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_3),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_4),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_5),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_6),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_7),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_8),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_9),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_10),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_11),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_12),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_13),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_14),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_15),
+		  GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_Letter_WallSprite_mesh_layer_4_16),
+		GEO_CLOSE_NODE(),
+		GEO_DISPLAY_LIST(LAYER_ALPHA_DECAL, babomb_excivatoin_material_revert_render_settings),
+	GEO_CLOSE_NODE(),
+	GEO_END(),
+};

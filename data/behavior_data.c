@@ -4890,6 +4890,15 @@ const BehaviorScript bhvMarioMakerLaugh[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvBabombExcivatoinLetter[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, (OBJ_FLAG_ACTIVE_FROM_AFAR | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    CALL_NATIVE(bhv_babomb_excivatoin_letter_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_babomb_excivatoin_letter_loop),
+    END_LOOP(),
+};
+
 const BehaviorScript bhvCarOrangeNumber[] = {
     BEGIN(OBJ_LIST_LEVEL),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),

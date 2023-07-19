@@ -48,3 +48,4 @@
 #include "levels/wf/sliding_floor/geo.inc.c"
 #include "levels/wf/gaslight_block/geo.inc.c"
 #include "levels/wf/squid_word/geo.inc.c"
+#include "levels/wf/babomb_excivatoin/geo.inc.c"

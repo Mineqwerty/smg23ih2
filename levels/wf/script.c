@@ -74,6 +74,7 @@ const LevelScript level_wf_entry[] = {
 	LOAD_MODEL_FROM_GEO(MODEL_SLIDING_FLOOR, sliding_floor_geo), 
 	LOAD_MODEL_FROM_GEO(MODEL_GASLIGHT_BLOCK, gaslight_block_geo), 
 	LOAD_MODEL_FROM_GEO(MODEL_SQUID_WORD, squid_word_geo), 
+	LOAD_MODEL_FROM_GEO(MODEL_BABOMB_EXCIVATOIN, babomb_excivatoin_geo), 
 
 	/* Fast64 begin persistent block [level commands] */
 	/* Fast64 end persistent block [level commands] */
@@ -167,6 +168,24 @@ const LevelScript level_wf_entry[] = {
 		SET_BACKGROUND_MUSIC(0x00, SEQ_SHIT_BROS_3),
 		TERRAIN_TYPE(TERRAIN_GRASS),
 		/* Fast64 begin persistent block [area commands] */
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1600, -8115, 0, 90, 0, (0 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1600, -8280, 0, 90, 0, (1 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1600, -8445, 0, 90, 0, (2 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1600, -8610, 0, 90, 0, (3 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1600, -8776, 0, 90, 0, (4 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1600, -8941, 0, 90, 0, (5 << 16), bhvBabombExcivatoinLetter),
+
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -7701, 0, 90, 0, (6 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -7866, 0, 90, 0, (7 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -8032, 0, 90, 0, (8 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -8197, 0, 90, 0, (9 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -8362, 0, 90, 0, (10 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -8527, 0, 90, 0, (11 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -8693, 0, 90, 0, (12 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -8858, 0, 90, 0, (13 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -9023, 0, 90, 0, (14 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -9189, 0, 90, 0, (15 << 16), bhvBabombExcivatoinLetter),
+		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -9354, 0, 90, 0, (16 << 16), bhvBabombExcivatoinLetter),
 		/* Fast64 end persistent block [area commands] */
 	END_AREA(),
 

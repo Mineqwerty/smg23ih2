@@ -116,4 +116,6 @@ extern const LevelScript level_wf_entry[];
 
 #include "levels/wf/squid_word/collision_header.h"
 
+#include "levels/wf/babomb_excivatoin/geo_header.h"
+
 #endif
