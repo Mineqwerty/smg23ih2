@@ -623,6 +623,12 @@ void render_loading_screen(void) {
 }
 
 void render_game(void) {
+    if (gCurrLevelNum == SMG23IH2_LEVEL_5) {
+        gFuckUpScreen = TRUE;
+    } else {
+        gFuckUpScreen = FALSE;
+    }
+
     PROFILER_GET_SNAPSHOT_TYPE(PROFILER_DELTA_COLLISION);
     if (gCurrentArea != NULL && !gWarpTransition.pauseRendering) {
         switch (gCurrLevelNum) {
