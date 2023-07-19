@@ -930,13 +930,10 @@ DEFINE_DIALOG(DIALOG_080, 1, 1, 30, 200, _("\
 i am tha monkey"))
 
 DEFINE_DIALOG(DIALOG_081, 1, 4, 30, 200, _("\
-The mystery is of Wet\n\
-or Dry.\n\
-And where does the\n\
-solution lie?\n\
-The city welcomes visitors\n\
-with the depth they bring\n\
-as they enter."))
+Mom: Son Go To Some\n\
+Exercise.\n\
+\n\
+Me: Dessert Mario 64"))
 
 DEFINE_DIALOG(DIALOG_082, 1, 4, 30, 200, _("\
 Hold on to your hat! If\n\
