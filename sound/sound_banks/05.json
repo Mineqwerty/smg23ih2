@@ -135,6 +135,11 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "24_squid_word_scream"
+        },
+        "inst24": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "25_surprise_chuckya"
         }
     },
     "instrument_list": [
@@ -161,6 +166,7 @@
         "inst20",
         "inst21",
         "inst22",
-        "inst23"
+        "inst23",
+        "inst24"
     ]
 }

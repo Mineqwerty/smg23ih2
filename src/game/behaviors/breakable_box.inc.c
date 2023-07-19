@@ -103,7 +103,7 @@ void bhv_hidden_object_loop(void) {
 void bhv_breakable_box_loop(void) {
     obj_set_hitbox(o, &sBreakableBoxHitbox);
 
-    if (BPARAM3 == 1) {
+    if (BPARAM3 != 0) {
         cur_obj_set_model(MODEL_BREAKABLE_BOX);
         if (o->oTimer == 0) {
             o->oHiddenObjectSwitchObj = NULL;
@@ -116,6 +116,15 @@ void bhv_breakable_box_loop(void) {
             && (o->oInteractStatus & INT_STATUS_TOUCHED_BOB_OMB)) {
             obj_explode_and_spawn_coins(46.0f, COIN_TYPE_NONE);
             create_sound_spawner(SOUND_GENERAL_BREAK_BOX);
+            if (BPARAM3 == 2) {
+                s16 angle = obj_angle_to_object(o, gMarioObject);
+                struct Object *obj = spawn_object(o, MODEL_CHUCKYA, bhvChuckya);
+                if (obj) {
+                    obj->oFaceAngleYaw = angle;
+                    obj->oMoveAngleYaw = angle;
+                    SET_BPARAM4(obj->oBehParams, 1);
+                }
+            }
         }
 
         o->oInteractStatus = INT_STATUS_NONE;
