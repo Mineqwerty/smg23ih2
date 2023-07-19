@@ -162,12 +162,7 @@ const LevelScript level_wf_entry[] = {
 		// Antisoftlock Bullet Bill
 		OBJECT(MODEL_BULLET_BILL, -4831, 625, -4000, 0, -180, 0, 0x00000000, bhvHiddenBulletBill),
 
-		MARIO_POS(0x01, 0, 0, 200, 0),
-		TERRAIN(wf_area_2_collision),
-		MACRO_OBJECTS(wf_area_2_macro_objs),
-		SET_BACKGROUND_MUSIC(0x00, SEQ_SHIT_BROS_3),
-		TERRAIN_TYPE(TERRAIN_GRASS),
-		/* Fast64 begin persistent block [area commands] */
+		// Babomb Excivatoin Letter Top Row
 		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1600, -8115, 0, 90, 0, (0 << 16), bhvBabombExcivatoinLetter),
 		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1600, -8280, 0, 90, 0, (1 << 16), bhvBabombExcivatoinLetter),
 		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1600, -8445, 0, 90, 0, (2 << 16), bhvBabombExcivatoinLetter),
@@ -175,6 +170,7 @@ const LevelScript level_wf_entry[] = {
 		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1600, -8776, 0, 90, 0, (4 << 16), bhvBabombExcivatoinLetter),
 		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1600, -8941, 0, 90, 0, (5 << 16), bhvBabombExcivatoinLetter),
 
+		// Babomb Excivatoin Letter Bottom Row
 		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -7701, 0, 90, 0, (6 << 16), bhvBabombExcivatoinLetter),
 		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -7866, 0, 90, 0, (7 << 16), bhvBabombExcivatoinLetter),
 		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -8032, 0, 90, 0, (8 << 16), bhvBabombExcivatoinLetter),
@@ -186,6 +182,13 @@ const LevelScript level_wf_entry[] = {
 		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -9023, 0, 90, 0, (14 << 16), bhvBabombExcivatoinLetter),
 		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -9189, 0, 90, 0, (15 << 16), bhvBabombExcivatoinLetter),
 		OBJECT(MODEL_BABOMB_EXCIVATOIN, -4627, 1350, -9354, 0, 90, 0, (16 << 16), bhvBabombExcivatoinLetter),
+
+		MARIO_POS(0x01, 0, 0, 200, 0),
+		TERRAIN(wf_area_2_collision),
+		MACRO_OBJECTS(wf_area_2_macro_objs),
+		SET_BACKGROUND_MUSIC(0x00, SEQ_SHIT_BROS_3),
+		TERRAIN_TYPE(TERRAIN_GRASS),
+		/* Fast64 begin persistent block [area commands] */
 		/* Fast64 end persistent block [area commands] */
 	END_AREA(),
 
