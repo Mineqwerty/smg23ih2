@@ -172,6 +172,9 @@ void fazana_car_idle_loop(void) {
             gMarioState->fazanaCar = o;
             set_mario_action(gMarioState, ACT_FAZANA_CAR, 0);
             o->oAction = FAZANA_CAR_ACT_DRIVE;
+            set_cam_angle(CAM_ANGLE_MARIO);
+            gCameraMovementFlags |= CAM_MOVE_ZOOMED_OUT;
+            sCameraSoundFlags = 0;
         }
     } else {
         o->oFazanaCarBIndicator->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;

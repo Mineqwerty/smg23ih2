@@ -355,16 +355,19 @@ void set_mario_initial_action(struct MarioState *m, u32 spawnType, u32 actionArg
     set_mario_initial_cap_powerup(m);
 }
 
+extern s16 s8DirModeYawOffset;
 void init_mario_after_warp(void) {
     struct ObjectWarpNode *spawnNode = area_get_warp_node(sWarpDest.nodeId);
     u32 marioSpawnType = get_mario_spawn_type(spawnNode->object);
     struct SaveFileCheckpoint *checkpoint = save_file_get_last_checkpoint();
+    s16 initCameraAngle = 0;
 
     if (spawnNode->object->behavior == segmented_to_virtual(bhvCheckpointWarp) && checkpoint) {
         struct Object *ckptObj = find_first_object_with_behavior_and_bparams(bhvCheckpoint, (u32) checkpoint->checkpointID << 16, (0xFF << 16));
         if (ckptObj) {
             vec3f_copy(&spawnNode->object->oPosVec, &ckptObj->oPosVec);
-            spawnNode->object->oMoveAngleYaw = ckptObj->oMoveAngleYaw;
+            initCameraAngle = ckptObj->oMoveAngleYaw;
+            spawnNode->object->oMoveAngleYaw = ckptObj->oMoveAngleYaw + 0x8000;
             spawnNode->object->oPosY += 350.0f;
         }
     }
@@ -397,6 +400,7 @@ void init_mario_after_warp(void) {
     reset_camera(gCurrentArea->camera);
     sWarpDest.type = WARP_TYPE_NOT_WARPING;
     sDelayedWarpOp = WARP_OP_NONE;
+    s8DirModeYawOffset = initCameraAngle;
 
     switch (marioSpawnType) {
         case MARIO_SPAWN_PIPE:

@@ -564,10 +564,11 @@
 #define MODEL_MARIO_MAKER_LAUGH           0x127
 #define MODEL_GLOBAL_DOOR                 0x128
 #define MODEL_SPINY                       0x129
-#define MODEL_FUNNYBOX                       0x12A
-#define MODEL_SLIDING_FLOOR                       0x12B
-#define MODEL_GASLIGHT_BLOCK                       0x12C
-#define MODEL_SQUID_WORD                       0x12D
+#define MODEL_FUNNYBOX                    0x12A
+#define MODEL_SLIDING_FLOOR               0x12B
+#define MODEL_GASLIGHT_BLOCK              0x12C
+#define MODEL_SQUID_WORD                  0x12D
+#define MODEL_BABOMB_EXCIVATOIN           0x12E
 
 
 #endif

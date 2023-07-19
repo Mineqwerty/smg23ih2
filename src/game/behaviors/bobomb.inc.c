@@ -13,6 +13,7 @@ static struct ObjectHitbox sBobombHitbox = {
 };
 
 void bhv_bobomb_init(void) {
+    o->oBobombInitYaw = o->oFaceAngleYaw;
     o->oGravity = 2.5f;
     o->oFriction = 0.8f;
     o->oBuoyancy = 1.3f;
@@ -27,17 +28,41 @@ void bobomb_spawn_coin(void) {
     }
 }
 
+void bobomb_act_hidden(void) {
+    if (o->oTimer == 0) {
+        vec3f_copy(&o->oPosVec, &o->oHomeVec);
+        o->oBobombFuseLit = 0;
+        o->oBobombFuseTimer = 0;
+        o->oForwardVel = 0.0f;
+        o->oVelY = 0.0f;
+    }
+
+    if (o->oTimer >= 60) {
+        struct Object *obj = create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 0);
+        obj->oFaceAngleYaw = o->oBobombInitYaw;
+        obj->oMoveAngleYaw = o->oBobombInitYaw;
+        obj_mark_for_deletion(o);
+    }
+}
+
 void bobomb_act_explode(void) {
     if (o->oTimer < 5) {
         cur_obj_scale(1.0f + ((f32) o->oTimer / 5.0f));
     } else {
-        struct Object *explosion = spawn_object(o, MODEL_EXPLOSION, bhvExplosion);
-        explosion->oGraphYOffset += 100.0f;
+        if (is_point_within_radius_of_mario(o->oPosX, o->oPosY, o->oPosZ, 4000) || BPARAM2 != BOBOMB_BP_STYPE_STATIONARY) {
+            struct Object *explosion = spawn_object(o, MODEL_EXPLOSION, bhvExplosion);
+            explosion->oGraphYOffset += 100.0f;
+        }
 
-        bobomb_spawn_coin();
-        create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 3000);
-
-        o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+        if (BPARAM2 == BOBOMB_BP_STYPE_STATIONARY) {
+            cur_obj_become_intangible();
+            cur_obj_hide();
+            o->oAction = BOBOMB_ACT_HIDDEN;
+        } else {
+            bobomb_spawn_coin();
+            create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 3000);
+            o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+        }
     }
 }
 
@@ -116,16 +141,34 @@ void generic_bobomb_free_loop(void) {
             bobomb_act_explode();
             break;
 
+        case BOBOMB_ACT_HIDDEN:
+            bobomb_act_hidden();
+            return;
+
         case OBJ_ACT_LAVA_DEATH:
             if (obj_lava_death()) {
-                create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 3000);
+                if (BPARAM2 == BOBOMB_BP_STYPE_STATIONARY) {
+                    create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 500);
+                } else {
+                    create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 3000);
+                }
             }
             break;
 
         case OBJ_ACT_DEATH_PLANE_DEATH:
-            o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
-            create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 3000);
+            if (BPARAM2 == BOBOMB_BP_STYPE_STATIONARY) {
+                cur_obj_become_intangible();
+                cur_obj_hide();
+                o->oAction = BOBOMB_ACT_HIDDEN;
+            } else {
+                create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 3000);
+                o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+            }
             break;
+    }
+
+    if (o->oAction == BOBOMB_ACT_HIDDEN) {
+        return;
     }
 
     bobomb_check_interactions();
@@ -145,16 +188,34 @@ void stationary_bobomb_free_loop(void) {
             bobomb_act_explode();
             break;
 
+        case BOBOMB_ACT_HIDDEN:
+            bobomb_act_hidden();
+            return;
+
         case OBJ_ACT_LAVA_DEATH:
             if (obj_lava_death()) {
-                create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 3000);
+                if (BPARAM2 == BOBOMB_BP_STYPE_STATIONARY) {
+                    create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 500);
+                } else {
+                    create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 3000);
+                }
             }
             break;
 
         case OBJ_ACT_DEATH_PLANE_DEATH:
-            o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
-            create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 3000);
+            if (BPARAM2 == BOBOMB_BP_STYPE_STATIONARY) {
+                cur_obj_become_intangible();
+                cur_obj_hide();
+                o->oAction = BOBOMB_ACT_HIDDEN;
+            } else {
+                create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 3000);
+                o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+            }
             break;
+    }
+
+    if (o->oAction == BOBOMB_ACT_HIDDEN) {
+        return;
     }
 
     bobomb_check_interactions();
@@ -165,7 +226,7 @@ void stationary_bobomb_free_loop(void) {
 }
 
 void bobomb_free_loop(void) {
-    if (o->oBehParams2ndByte == BOBOMB_BP_STYPE_GENERIC) {
+    if (BPARAM2 == BOBOMB_BP_STYPE_GENERIC) {
         generic_bobomb_free_loop();
     } else {
         stationary_bobomb_free_loop();
@@ -235,7 +296,7 @@ void curr_obj_random_blink(s32 *blinkTimer) {
 void bhv_bobomb_loop(void) {
     s8 dustPeriodMinus1;
 
-    if (is_point_within_radius_of_mario(o->oPosX, o->oPosY, o->oPosZ, 4000)) {
+    if (is_point_within_radius_of_mario(o->oPosX, o->oPosY, o->oPosZ, 4000) || BPARAM2 == BOBOMB_BP_STYPE_STATIONARY) {
         switch (o->oHeldState) {
             case HELD_FREE:
                 bobomb_free_loop();

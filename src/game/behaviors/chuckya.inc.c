@@ -175,6 +175,11 @@ void chuckya_move(void) {
 }
 
 void bhv_chuckya_loop(void) {
+    if (BPARAM4 == 1) {
+        SET_BPARAM4(o->oBehParams, 0);
+        cur_obj_play_sound_2(SOUND_CUSTOM0_SURPRISE_CHUCKYA);
+    }
+
     cur_obj_scale(2.0f);
     o->oInteractionSubtype |= INT_SUBTYPE_GRABS_MARIO;
 

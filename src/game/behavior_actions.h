@@ -20,6 +20,8 @@ void cur_obj_spawn_strong_wind_particles(s32 windSpread, f32 scale, f32 relPosX,
 void bhv_cap_switch_loop(void);
 void bhv_tiny_star_particles_init(void);
 void bhv_grindel_thwomp_loop(void);
+void bhv_offscreen_thwomp_init(void);
+void bhv_offscreen_thwomp_loop(void);
 void bhv_door_init(void);
 void bhv_door_loop(void);
 void bhv_star_door_loop(void);
@@ -143,6 +145,8 @@ void bhv_beta_boo_key_loop(void);
 void bhv_alpha_boo_key_loop(void);
 void bhv_bullet_bill_init(void);
 void bhv_bullet_bill_loop(void);
+void bhv_hidden_bullet_bill_init(void);
+void bhv_hidden_bullet_bill_loop(void);
 void bhv_white_puff_smoke_init(void);
 void bhv_bowser_tail_anchor_loop(void);
 void bhv_bowser_init(void);
@@ -414,6 +418,8 @@ void bhv_mario_maker_laugh_spawner_init(void);
 void bhv_mario_maker_laugh_spawner_loop(void);
 void bhv_mario_maker_laugh_init(void);
 void bhv_mario_maker_laugh_loop(void);
+void bhv_babomb_excivatoin_letter_init(void);
+void bhv_babomb_excivatoin_letter_loop(void);
 void bhv_fazana_car_init(void);
 void bhv_fazana_car_loop(void);
 void bhv_hidden_block_init(void);
@@ -595,6 +601,9 @@ Gfx *geo_snufit_scale_body(s32 callContext, struct GraphNode *node, UNUSED Mat4 
 
 // Bowser key cutscene
 Gfx *geo_scale_bowser_key(s32 callContext, struct GraphNode *node, UNUSED Mat4 mtx);
+
+// Babomb Excivatoin Letter
+Gfx *geo_babomb_excivatoin_letter_color(s32 callContext, struct GraphNode *node, UNUSED s32 context);
 
 // Water splash
 extern struct WaterDropletParams gShallowWaterSplashDropletParams;

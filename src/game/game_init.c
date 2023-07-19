@@ -626,6 +626,8 @@ void adjust_analog_stick(struct Controller *controller) {
     }
 }
 
+
+#define SWAP_LR_CBUTTONS(x) ((x) & ~(L_CBUTTONS | R_CBUTTONS)) | (((x) & L_CBUTTONS) ? R_CBUTTONS : 0) | (((x) & R_CBUTTONS) ? L_CBUTTONS : 0)
 /**
  * Update the controller struct with available inputs if present.
  */
@@ -647,6 +649,7 @@ void read_controller_inputs(s32 threadID) {
 #endif
 
     for (i = 0; i < 2; i++) {
+        u16 buttons;
         struct Controller *controller = &gControllers[i];
         // if we're receiving inputs, update the controller struct with the new button info.
         if (controller->controllerData != NULL) {
@@ -662,12 +665,22 @@ void read_controller_inputs(s32 threadID) {
                 }
                 controller->controllerData->button = newButton;
             }
+
             controller->rawStickX = controller->controllerData->stick_x;
             controller->rawStickY = controller->controllerData->stick_y;
-            controller->buttonPressed = ~controller->buttonDown & controller->controllerData->button;
-            controller->buttonReleased = ~controller->controllerData->button & controller->buttonDown;
+
+            if (gCurrLevelNum == SMG23IH2_LEVEL_2 && gCurrAreaIndex == 1) {
+                buttons = SWAP_LR_CBUTTONS(controller->controllerData->button);
+                // controller->rawStickX = -controller->controllerData->stick_x;
+            } else {
+                buttons = controller->controllerData->button;
+                // controller->rawStickX = controller->controllerData->stick_x;
+            }
+
+            controller->buttonPressed = ~controller->buttonDown & buttons;
+            controller->buttonReleased = ~buttons & controller->buttonDown;
             // 0.5x A presses are a good meme
-            controller->buttonDown = controller->controllerData->button;
+            controller->buttonDown = buttons;
             adjust_analog_stick(controller);
         } else { // otherwise, if the controllerData is NULL, 0 out all of the inputs.
             controller->rawStickX = 0;
