@@ -55,7 +55,7 @@ const LevelScript level_ccm_entry[] = {
 
 	AREA(1, ccm_area_1),
 		WARP_NODE(0x0A, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
-		WARP_NODE(0xF0, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
+		WARP_NODE(0xF0, LEVEL_ENDING, 0x02, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0xF1, LEVEL_HMC, 0x01, 0x0A, WARP_NO_CHECKPOINT),
 		OBJECT(MODEL_NONE, 6, 0, 1, 0, 112, 0, (1 << 16) | (4 << 8) | (255), bhvCheckpoint),
 		OBJECT(MODEL_WOODEN_SIGNPOST, -1028, 0, 29, 0, 112, 0, (39 << 16), bhvMessagePanel),
@@ -74,7 +74,6 @@ const LevelScript level_ccm_entry[] = {
 		STOP_MUSIC(0),
 		TERRAIN_TYPE(TERRAIN_GRASS),
 		/* Fast64 begin persistent block [area commands] */
-        SET_BACKGROUND_MUSIC_WITH_REVERB(0, SEQ_SHIT_BROS_1, 3, 3),
 		/* Fast64 end persistent block [area commands] */
 	END_AREA(),
 

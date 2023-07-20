@@ -26,7 +26,10 @@ extern const Gfx eu_course_strings_de_table[];
 // from intro_segment7
 extern Gfx *intro_seg7_dl_main_logo;
 extern Gfx *intro_seg7_dl_copyright_trademark;
-extern Texture load_screen[];
+extern Texture load_screen_0[];
+extern Texture load_screen_1[];
+extern Texture load_screen_2[];
+extern Texture load_screen_3[];
 extern f32 intro_seg7_table_scale_1[];
 extern f32 intro_seg7_table_scale_2[];
 extern f32 intro_seg7_table_scale_penis[];

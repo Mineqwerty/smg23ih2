@@ -36,7 +36,7 @@ const GeoLayout ending_geo_area_1[] = {
    GEO_END(),
 };
 
-const GeoLayout ending_load_screen[] = {
+const GeoLayout ending_load_screen_geo[] = {
    GEO_NODE_SCREEN_AREA(0, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH/2, SCREEN_HEIGHT/2),
    GEO_OPEN_NODE(),
       GEO_ZBUFFER(0),
