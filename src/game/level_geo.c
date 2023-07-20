@@ -44,38 +44,43 @@ static const s32 loadScreenTransTimes[ARRAY_COUNT(loadScreenImages) * 2] = {
     IMG3_TRANS_END,
 };
 
+// Scroll left, overlay on top of image to replace
 static void render_trans_screen_0(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
     s32 imageOffset = 320.0f * progressionPercentage;
 
-    render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240, 0, 0, G_CYC_COPY);
-    render_multi_image(segmented_to_virtual(tex1), 320 - imageOffset, 0, 320, 240, 0, 0, G_CYC_COPY);
-
-    loadTransitionStatus = 0; // For next transition
+    render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+    render_multi_image(segmented_to_virtual(tex1), 320 - imageOffset, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
 }
 
-static void render_trans_screen_1(Texture *tex0, Texture *tex1) {
-    if (loadTransitionStatus == 0) {
-        play_transition(WARP_TRANSITION_FADE_INTO_COLOR, 30, 0, 0, 0); // Hardcode to 30, who cares tbh
-        loadTransitionStatus = 1;
-    }
+// Crossfade
+static void render_trans_screen_1(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
+    u8 transparency = 255.0f * progressionPercentage;
 
-    render_multi_image(segmented_to_virtual((loadTransitionStatus < 2) ? tex0 : tex1), 0, 0, 320, 240, 0, 0, G_CYC_COPY);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+    render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, transparency);
+    render_multi_image(segmented_to_virtual(tex1), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 }
 
+// Tile replace
 static void render_trans_screen_2(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
     s32 cycles = CYCLE_COUNT * progressionPercentage * 0.5f;
 
-    render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240,               cycles,               cycles, G_CYC_COPY);
-    render_multi_image(segmented_to_virtual(tex1), 0, 0, 320, 240,                    0, CYCLE_COUNT - cycles, G_CYC_COPY);
-    render_multi_image(segmented_to_virtual(tex1), 0, 0, 320, 240, CYCLE_COUNT - cycles,                    0, G_CYC_COPY);
+    render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240,               cycles,               cycles, G_CYC_1CYCLE);
+    render_multi_image(segmented_to_virtual(tex1), 0, 0, 320, 240,                    0, CYCLE_COUNT - cycles, G_CYC_1CYCLE);
+    render_multi_image(segmented_to_virtual(tex1), 0, 0, 320, 240, CYCLE_COUNT - cycles,                    0, G_CYC_1CYCLE);
 }
 
+// Scroll up, also scroll image to replace
 static void render_trans_screen_3(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
     s32 imageOffset = 240.0f * progressionPercentage;
 
     // Reverse order matters here, else visual jank
-    render_multi_image(segmented_to_virtual(tex1), 0, imageOffset - 240, 320, 240, 0, 0, G_CYC_COPY);
-    render_multi_image(segmented_to_virtual(tex0), 0,       imageOffset, 320, 240, 0, 0, G_CYC_COPY);
+    render_multi_image(segmented_to_virtual(tex1), 0, imageOffset - 240, 320, 240, 0, 0, G_CYC_1CYCLE);
+    render_multi_image(segmented_to_virtual(tex0), 0,       imageOffset, 320, 240, 0, 0, G_CYC_1CYCLE);
 }
 
 static void process_load_screen(void) {
@@ -88,7 +93,7 @@ static void process_load_screen(void) {
 
     if (loadScreenTimer < 0) {
         // Not loading loading screen
-        render_multi_image(segmented_to_virtual(loadScreenImages[0]), 0, 0, 320, 240, 0, 0, G_CYC_COPY);
+        render_multi_image(segmented_to_virtual(loadScreenImages[0]), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
         return;
     }
 
@@ -104,7 +109,7 @@ static void process_load_screen(void) {
 
     if (imageIndex == transImageIndex) {
         // Not transitioning
-        render_multi_image(segmented_to_virtual(loadScreenImages[imageIndex]), 0, 0, 320, 240, 0, 0, G_CYC_COPY);
+        render_multi_image(segmented_to_virtual(loadScreenImages[imageIndex]), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
         return;
     }
 
@@ -118,7 +123,7 @@ static void process_load_screen(void) {
             render_trans_screen_0(loadScreenImages[imageIndex], loadScreenImages[transImageIndex], progressionPercentage);
             break;
         case 1:
-            render_trans_screen_1(loadScreenImages[imageIndex], loadScreenImages[transImageIndex]);
+            render_trans_screen_1(loadScreenImages[imageIndex], loadScreenImages[transImageIndex], progressionPercentage);
             break;
         case 2:
             render_trans_screen_2(loadScreenImages[imageIndex], loadScreenImages[transImageIndex], progressionPercentage);
@@ -134,10 +139,13 @@ static void process_load_screen(void) {
 Gfx *geo_load_screen(s32 state, UNUSED struct GraphNode *node, UNUSED void *context) {
     if (state == GEO_CONTEXT_RENDER) {
         gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+        gDPSetCombineMode(gDisplayListHead++, G_CC_FADEA, G_CC_FADEA);
+        gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
 
         process_load_screen();
 
         gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
+        gDPSetCombineMode(gDisplayListHead++, G_CC_SHADE, G_CC_SHADE);
     }
 
     return NULL;

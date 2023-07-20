@@ -32,7 +32,6 @@
 
 f32 loadProgress = -0.02f;
 s32 loadScreenTimer = -1;
-s32 loadTransitionStatus = 0;
 s32 loadIsTransitioning = FALSE;
 static s32 hasMessedUpLoad = FALSE;
 static s32 loadProgressFrameWait = 0;
@@ -555,7 +554,6 @@ s32 adjust_load_progress_bar(void) {
     loadProgress += 0.001f;
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
     print_small_text(posX, posY, puppyprintStr8, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
-    loadTransitionStatus = 2; // Halt transitions!
     return TRUE;
 }
 
@@ -725,11 +723,6 @@ void render_game(void) {
 
 
     if (loadScreenTimer >= 0) {
-        if (gWarpTransition.pauseRendering && loadTransitionStatus == 1) {
-            play_transition(WARP_TRANSITION_FADE_FROM_COLOR, 30, 0, 0, 0); // Hardcode to 30, who cares tbh
-            loadTransitionStatus = 2;
-        }
-
         if (adjust_load_progress_bar())
             render_loading_screen();
     } else {

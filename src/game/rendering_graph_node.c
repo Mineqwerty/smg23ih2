@@ -114,7 +114,7 @@ struct RenderModeContainer renderModeTable_1Cycle[2] = {
         [LAYER_TRANSPARENT_DECAL] = G_RM_AA_ZB_XLU_DECAL,
         [LAYER_TRANSPARENT] = G_RM_AA_ZB_XLU_SURF,
         [LAYER_TRANSPARENT_INTER] = G_RM_AA_ZB_XLU_INTER,
-        [LAYER_FORCE_ALPHA_ON_TOP] = G_RM_AA_ZB_TEX_EDGE,
+        [LAYER_FORCE_ALPHA_ON_TOP] = G_RM_AA_TEX_EDGE,
     } } };
 
 /* Rendermode settings for cycle 2 for all 13 layers. */
@@ -153,7 +153,7 @@ struct RenderModeContainer renderModeTable_2Cycle[2] = {
         [LAYER_TRANSPARENT_DECAL] = G_RM_AA_ZB_XLU_DECAL2,
         [LAYER_TRANSPARENT] = G_RM_AA_ZB_XLU_SURF2,
         [LAYER_TRANSPARENT_INTER] = G_RM_AA_ZB_XLU_INTER2,
-        [LAYER_FORCE_ALPHA_ON_TOP] = G_RM_AA_ZB_TEX_EDGE2,
+        [LAYER_FORCE_ALPHA_ON_TOP] = G_RM_AA_TEX_EDGE2,
     } } };
 
 ALIGNED16 struct GraphNodeRoot *gCurGraphNodeRoot = NULL;
