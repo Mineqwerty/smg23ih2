@@ -11,13 +11,141 @@
 #include "segment7.h"
 #include "game_init.h"
 #include "puppyprint.h"
+#include "debug.h"
+
+#define STATIC_TIME 195
+
+#define CYCLE_COUNT 40
+
+#define IMG0_TRANS_START (STATIC_TIME - 30)
+#define IMG0_TRANS_END   (IMG0_TRANS_START + 60)
+#define IMG1_TRANS_START (IMG0_TRANS_END + STATIC_TIME)
+#define IMG1_TRANS_END   (IMG1_TRANS_START + 60)
+#define IMG2_TRANS_START (IMG1_TRANS_END + STATIC_TIME)
+#define IMG2_TRANS_END   (IMG2_TRANS_START + 60)
+#define IMG3_TRANS_START (IMG2_TRANS_END + STATIC_TIME)
+#define IMG3_TRANS_END   (IMG3_TRANS_START + 60)
+
+static Texture *loadScreenImages[4] = {
+    load_screen_0,
+    load_screen_1,
+    load_screen_2,
+    load_screen_3,
+};
+
+static const s32 loadScreenTransTimes[ARRAY_COUNT(loadScreenImages) * 2] = {
+    IMG0_TRANS_START,
+    IMG0_TRANS_END,
+    IMG1_TRANS_START,
+    IMG1_TRANS_END,
+    IMG2_TRANS_START,
+    IMG2_TRANS_END,
+    IMG3_TRANS_START,
+    IMG3_TRANS_END,
+};
+
+// Scroll left, overlay on top of image to replace
+static void render_trans_screen_0(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
+    s32 imageOffset = 320.0f * progressionPercentage;
+
+    render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+    render_multi_image(segmented_to_virtual(tex1), 320 - imageOffset, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+}
+
+// Crossfade
+static void render_trans_screen_1(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
+    u8 transparency = 255.0f * progressionPercentage;
+
+    render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, transparency);
+    render_multi_image(segmented_to_virtual(tex1), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+}
+
+// Tile replace
+static void render_trans_screen_2(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
+    s32 cycles = CYCLE_COUNT * progressionPercentage * 0.5f;
+
+    render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240,               cycles,               cycles, G_CYC_1CYCLE);
+    render_multi_image(segmented_to_virtual(tex1), 0, 0, 320, 240,                    0, CYCLE_COUNT - cycles, G_CYC_1CYCLE);
+    render_multi_image(segmented_to_virtual(tex1), 0, 0, 320, 240, CYCLE_COUNT - cycles,                    0, G_CYC_1CYCLE);
+}
+
+// Scroll up, also scroll image to replace
+static void render_trans_screen_3(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
+    s32 imageOffset = 240.0f * progressionPercentage;
+
+    // Reverse order matters here, else visual jank
+    render_multi_image(segmented_to_virtual(tex1), 0, imageOffset - 240, 320, 240, 0, 0, G_CYC_1CYCLE);
+    render_multi_image(segmented_to_virtual(tex0), 0,       imageOffset, 320, 240, 0, 0, G_CYC_1CYCLE);
+}
+
+static void process_load_screen(void) {
+    s32 imageDoubleIndex;
+    s32 imageIndex;
+    s32 transImageIndex;
+    f32 progressionPercentage;
+
+    loadIsTransitioning = FALSE;
+
+    if (loadScreenTimer < 0) {
+        // Not loading loading screen
+        render_multi_image(segmented_to_virtual(loadScreenImages[0]), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+        return;
+    }
+
+    loadScreenTimer %= loadScreenTransTimes[ARRAY_COUNT(loadScreenTransTimes) - 1];
+
+    for (imageDoubleIndex = 0; imageDoubleIndex < ARRAY_COUNT(loadScreenTransTimes) && loadScreenTimer >= loadScreenTransTimes[imageDoubleIndex]; imageDoubleIndex++);
+    if (imageDoubleIndex == ARRAY_COUNT(loadScreenTransTimes)) {
+        error("You suck at coding how did you get here");
+    }
+
+    transImageIndex = ((imageDoubleIndex + 1) / 2) % ARRAY_COUNT(loadScreenImages);
+    imageIndex = imageDoubleIndex / 2;
+
+    if (imageIndex == transImageIndex) {
+        // Not transitioning
+        render_multi_image(segmented_to_virtual(loadScreenImages[imageIndex]), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+        return;
+    }
+
+    loadIsTransitioning = TRUE;
+
+    // NOTE: This assumes the array accesses will always be in bounds. Safety checks are skipped here!!
+    progressionPercentage = (f32) (loadScreenTimer - loadScreenTransTimes[imageDoubleIndex - 1]) / (f32) (loadScreenTransTimes[imageDoubleIndex] - loadScreenTransTimes[imageDoubleIndex - 1]);
+
+    switch (imageIndex) {
+        case 0:
+            render_trans_screen_0(loadScreenImages[imageIndex], loadScreenImages[transImageIndex], progressionPercentage);
+            break;
+        case 1:
+            render_trans_screen_1(loadScreenImages[imageIndex], loadScreenImages[transImageIndex], progressionPercentage);
+            break;
+        case 2:
+            render_trans_screen_2(loadScreenImages[imageIndex], loadScreenImages[transImageIndex], progressionPercentage);
+            break;
+        case 3:
+            render_trans_screen_3(loadScreenImages[imageIndex], loadScreenImages[transImageIndex], progressionPercentage);
+            break;
+        default:
+            break;
+    }
+}
 
 Gfx *geo_load_screen(s32 state, UNUSED struct GraphNode *node, UNUSED void *context) {
     if (state == GEO_CONTEXT_RENDER) {
         gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
-        render_multi_image(segmented_to_virtual(load_screen), 0, 0, 320, 240, 320, 240, G_CYC_COPY);
+        gDPSetCombineMode(gDisplayListHead++, G_CC_FADEA, G_CC_FADEA);
+        gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+
+        process_load_screen();
+
         gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
-        gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
+        gDPSetCombineMode(gDisplayListHead++, G_CC_SHADE, G_CC_SHADE);
     }
 
     return NULL;

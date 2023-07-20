@@ -8,7 +8,8 @@
 #include "engine/graph_node.h"
 
 extern f32 loadProgress;
-extern s32 renderLoadScreen;
+extern s32 loadScreenTimer;
+extern s32 loadIsTransitioning;
 
 struct WarpNode {
     /*00*/ u8 id;

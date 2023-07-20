@@ -22,7 +22,7 @@ const LevelScript level_ending_entry_loop[] = {
 };
 
 const LevelScript level_load_screen_entry[] = {
-    /*5*/ AREA(/*index*/ 1, ending_load_screen),
+    /*5*/ AREA(/*index*/ 1, ending_load_screen_geo),
     /*7*/ END_AREA(),
 
     /*8*/ FREE_LEVEL_POOL(),

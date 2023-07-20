@@ -2010,12 +2010,18 @@ void puppyprint_print_deferred(void) {
     sPuppyprintTextBufferPos = 0;
 }
 
-void render_multi_image(Texture *image, s32 x, s32 y, s32 width, s32 height, UNUSED s32 scaleX, UNUSED s32 scaleY, s32 mode) {
+void render_multi_image(Texture *image, s32 x, s32 y, s32 width, s32 height, s32 cyclesFrontOffset, s32 cyclesBackOffset, s32 mode) {
     s32 posW, posH, imW, imH, modeSC, mOne;
     s32 i     = 0;
     s32 num   = 256;
     s32 maskW = 1;
     s32 maskH = 1;
+
+    // Hardcoded to work with full screen images only
+    if (width != 320 || height != 240) {
+        cyclesFrontOffset = 0;
+        cyclesBackOffset = 0;
+    }
 
     if (mode == G_CYC_COPY) {
         gDPSetCycleType( gDisplayListHead++, mode);
@@ -2077,8 +2083,10 @@ void render_multi_image(Texture *image, s32 x, s32 y, s32 width, s32 height, UNU
     s32 peakH  = height - (height % imH);
     s32 cycles = (width * peakH) / (imW * imH);
 
+    cycles -= (cyclesBackOffset * 7) / 8;
+
     // Pass 1
-    for (i = 0; i < cycles; i++) {
+    for (i = (cyclesFrontOffset * 7) / 8; i < cycles; i++) {
         posW = 0;
         posH = i * imH;
         while (posH >= peakH) {
@@ -2088,7 +2096,7 @@ void render_multi_image(Texture *image, s32 x, s32 y, s32 width, s32 height, UNU
 
         gDPLoadSync(gDisplayListHead++);
         gDPLoadTextureTile(gDisplayListHead++,
-            image, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, height, posW, posH, ((posW + imW) - 1), ((posH + imH) - 1), 0, (G_TX_NOMIRROR | G_TX_CLAMP), (G_TX_NOMIRROR | G_TX_CLAMP), maskW, maskH, 0, 0);
+            image, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, height, posW, posH, ((posW + imW) - 1), ((posH + imH) - 1), 0, (G_TX_NOMIRROR | G_TX_WRAP), (G_TX_NOMIRROR | G_TX_WRAP), maskW, maskH, 0, 0);
         gSPScisTextureRectangle(gDisplayListHead++,
             ((x + posW) << 2),
             ((y + posH) << 2),
@@ -2100,11 +2108,11 @@ void render_multi_image(Texture *image, s32 x, s32 y, s32 width, s32 height, UNU
     if (height-peakH != 0) {
         posW = 0;
         posH = peakH;
-        for (i = 0; i < (width / imW); i++) {
+        for (i = (cyclesFrontOffset / 8); i < (width / imW) - (cyclesBackOffset + 7) / 8; i++) {
             posW = i * imW;
             gDPLoadSync(gDisplayListHead++);
             gDPLoadTextureTile(gDisplayListHead++,
-                image, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, height, posW, posH, ((posW + imW) - 1), (height - 1), 0, (G_TX_NOMIRROR | G_TX_CLAMP), (G_TX_NOMIRROR | G_TX_CLAMP), maskW, maskH, 0, 0);
+                image, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, height, posW, posH, ((posW + imW) - 1), (height - 1), 0, (G_TX_NOMIRROR | G_TX_WRAP), (G_TX_NOMIRROR | G_TX_WRAP), maskW, maskH, 0, 0);
             gSPScisTextureRectangle(gDisplayListHead++,
                 (x + posW) << 2,
                 (y + posH) << 2,

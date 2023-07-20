@@ -1491,12 +1491,13 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
 }
 
 s32 is_loading_screen_done(s16 levelNum, UNUSED s32 arg1) {
-    renderLoadScreen = TRUE;
     if (loadProgress < 1.045f) {
+        loadScreenTimer++;
         return FALSE;
     }
 
-    renderLoadScreen = FALSE;
+    loadScreenTimer = -1;
+    loadIsTransitioning = FALSE;
 
     gCurrAreaIndex = 1;
     sWarpDest.levelNum = levelNum;

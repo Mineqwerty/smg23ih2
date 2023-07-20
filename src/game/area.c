@@ -31,7 +31,8 @@
 #endif
 
 f32 loadProgress = -0.02f;
-s32 renderLoadScreen = FALSE;
+s32 loadScreenTimer = -1;
+s32 loadIsTransitioning = FALSE;
 static s32 hasMessedUpLoad = FALSE;
 static s32 loadProgressFrameWait = 0;
 static s32 dotFrames = 0;
@@ -538,7 +539,7 @@ s32 adjust_load_progress_bar(void) {
         if (loadProgress < 1.0f) {
             if (loadProgressFrameWait > 0) {
                 loadProgressFrameWait--;
-            } else {
+            } else if (!loadIsTransitioning) {
                 loadProgress = 1.0005f;
             }
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
@@ -721,7 +722,7 @@ void render_game(void) {
     gViewportClip     = NULL;
 
 
-    if (renderLoadScreen) {
+    if (loadScreenTimer >= 0) {
         if (adjust_load_progress_bar())
             render_loading_screen();
     } else {
