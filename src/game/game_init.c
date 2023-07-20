@@ -446,63 +446,59 @@ void display_and_vsync(void) {
     u8 blurColor[3];
     u8 drawColor[3];
 
-    u16 blueFade1;
-    u16 blueFade2;
+    UNUSED u16 blueFade1;
+    UNUSED u16 blueFade2;
 
     if (gFuckUpScreen == 1) {
-    for (int i = 1; i < 240; i+=2) {
-        for (int j = 1; j < 320; j+=2) {
-    gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 1)] = gFramebuffers[sRenderingFramebuffer][j + (i*320)];
-    gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 320)] = gFramebuffers[sRenderingFramebuffer][j + (i*320)];
-    gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 321)] = gFramebuffers[sRenderingFramebuffer][j + (i*320)];
+        for (int i = 1; i < 240; i+=2) {
+            for (int j = 1; j < 320; j+=2) {
+                gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 1)] = gFramebuffers[sRenderingFramebuffer][j + (i*320)];
+                gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 320)] = gFramebuffers[sRenderingFramebuffer][j + (i*320)];
+                gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 321)] = gFramebuffers[sRenderingFramebuffer][j + (i*320)];
 
-    drawColor[0] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0xf800) >>8;
-    drawColor[1] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x7c0) >>3;
-    drawColor[2] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x3e) << 2;
+                drawColor[0] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0xf800) >>8;
+                drawColor[1] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x7c0) >>3;
+                drawColor[2] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x3e) << 2;
 
-    blurColor[0] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 340] & 0xf800) >> 8;
-    blurColor[1] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 6400] & 0x7c0) >> 3;
-    blurColor[2] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 1540] & 0x3e) << 2;
+                blurColor[0] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 340] & 0xf800) >> 8;
+                blurColor[1] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 6400] & 0x7c0) >> 3;
+                blurColor[2] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 1540] & 0x3e) << 2;
 
-    
-    if (i > 1) {
-        gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 640)] = GPACK_RGBA5551((drawColor[0] + blurColor[0]) / 2, (drawColor[1] + blurColor[1]) / 2, (drawColor[2] + blurColor[2]) / 2, 255);
-        
-        
-        blurColor[0] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 641] & 0xf800) >> 8;
-        blurColor[1] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 641] & 0x7c0) >> 3;
-        blurColor[2] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 641] & 0x3e) << 2;
-        gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 643)] = GPACK_RGBA5551((drawColor[0] + blurColor[0]) / 2, (drawColor[1] + blurColor[1]) / 2, (drawColor[2] + blurColor[2]) / 2, 255);
+                
+                if (i > 1) {
+                    gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 640)] = GPACK_RGBA5551((drawColor[0] + blurColor[0]) / 2, (drawColor[1] + blurColor[1]) / 2, (drawColor[2] + blurColor[2]) / 2, 255);
+                    
+                    
+                    blurColor[0] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 641] & 0xf800) >> 8;
+                    blurColor[1] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 641] & 0x7c0) >> 3;
+                    blurColor[2] = ( gFramebuffers[sRenderingFramebuffer][j + (i*320) - 641] & 0x3e) << 2;
+                    gFramebuffers[sRenderingFramebuffer][((j + (i*320)) - 643)] = GPACK_RGBA5551((drawColor[0] + blurColor[0]) / 2, (drawColor[1] + blurColor[1]) / 2, (drawColor[2] + blurColor[2]) / 2, 255);
+                }
+            }
         }
-        
-
-    }
-    }
-
     }
 
     if (gPersonaBattleTransition == TRUE) {
         sRenderingFramebuffer = 1;
         if (gPersonaBattleTransitionTimer > 1) {
-        for (int i = 0; i < 240; i+=1) {
-        for (int j = 0; j < 320; j+=2) {
-            
-            u16 distToCenter = abss(i - 120) + abss(j - 160);
-            u8 red = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0xf800) >>8);//- ( distToCenter + gPersonaBattleTransitionTimer));
-            u8 green = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x7c0) >>3 );//- ( distToCenter + gPersonaBattleTransitionTimer));
-            u8 blue = CLAMP_U8((( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x3e) << 2) + (distToCenter + gPersonaBattleTransitionTimer)) ;
-            gFramebuffers[0][((j + (i*320)))] = GPACK_RGBA5551(red, green, blue, 255);
+            for (int i = 0; i < 240; i+=1) {
+                for (int j = 0; j < 320; j+=2) {
+                    u16 distToCenter = abss(i - 120) + abss(j - 160);
+                    u8 red = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0xf800) >>8);//- ( distToCenter + gPersonaBattleTransitionTimer));
+                    u8 green = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x7c0) >>3 );//- ( distToCenter + gPersonaBattleTransitionTimer));
+                    u8 blue = CLAMP_U8((( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x3e) << 2) + (distToCenter + gPersonaBattleTransitionTimer)) ;
+                    gFramebuffers[0][((j + (i*320)))] = GPACK_RGBA5551(red, green, blue, 255);
 
-            red = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + 1 + (i*320)] & 0xf800) >>8);//- ( distToCenter + gPersonaBattleTransitionTimer));
-            green = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + 1 + (i*320)] & 0x7c0) >>3 );//- ( distToCenter + gPersonaBattleTransitionTimer));
-            blue = CLAMP_U8((( gFramebuffers[sRenderingFramebuffer][j + 1 + (i*320)] & 0x3e) << 2) + (distToCenter + gPersonaBattleTransitionTimer)) ;
-            gFramebuffers[0][((j + 1 + (i*320)))] = GPACK_RGBA5551(red, green, blue, 255);
+                    red = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + 1 + (i*320)] & 0xf800) >>8);//- ( distToCenter + gPersonaBattleTransitionTimer));
+                    green = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + 1 + (i*320)] & 0x7c0) >>3 );//- ( distToCenter + gPersonaBattleTransitionTimer));
+                    blue = CLAMP_U8((( gFramebuffers[sRenderingFramebuffer][j + 1 + (i*320)] & 0x3e) << 2) + (distToCenter + gPersonaBattleTransitionTimer)) ;
+                    gFramebuffers[0][((j + 1 + (i*320)))] = GPACK_RGBA5551(red, green, blue, 255);
 
-        }
-        }
+                }
+            }
         }
     }
-    else if (!(gIsConsole || gIsVC || gCacheEmulated)){
+    else if (!(gIsConsole || gIsVC || gCacheEmulated)) {
         sRenderingFramebuffer = 0;
     }
 
