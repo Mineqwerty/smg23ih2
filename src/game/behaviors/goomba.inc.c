@@ -1,4 +1,4 @@
-
+#include "src/game/game_init.h"
 /**
  * Behavior for bhvGoomba and bhvGoombaTripletSpawner,
  * Goombas can either be spawned individually, or spawned by a triplet spawner.
@@ -314,6 +314,10 @@ void huge_goomba_weakly_attacked(void) {
 void bhv_goomba_update(void) {
     // PARTIAL_UPDATE
 
+    if (o->oAction == 4) {
+        return;
+    }
+
     f32 animSpeed;
 
     if (obj_update_standard_actions(o->oGoombaScale)) {
@@ -362,7 +366,17 @@ void bhv_goomba_update(void) {
         if (obj_handle_attacks(&sGoombaHitbox, GOOMBA_ACT_ATTACKED_MARIO,
                                sGoombaAttackHandlers[o->oGoombaSize & 0x1])
                                && (o->oAction != GOOMBA_ACT_ATTACKED_MARIO)) {
-            mark_goomba_as_dead();
+                                if (gCurrLevelNum == SMG23IH2_LEVEL_6) {
+                                    set_mario_action(gMarioState, ACT_PERSONA_BATTLE_TRANSITION, 0);
+                                    gPersonaBattleTransition = TRUE;
+                                    o->oAction = 4;
+                                    return;
+                                }
+                                else {
+                                    mark_goomba_as_dead();
+                                }
+            
+            
         }
 
         cur_obj_move_standard(-78);

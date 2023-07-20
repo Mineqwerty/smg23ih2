@@ -8048,6 +8048,7 @@ sound_ref .sound_custom0_mario_maker_laugh_2
 sound_ref .sound_custom0_kick_shell
 sound_ref .sound_custom0_squid_word_scream
 sound_ref .sound_custom0_surprise_chuckya
+sound_ref .sound_custom0_p_battle_start
 
 .sound_custom0_mario_maker_laugh_0:
 chan_setbank 5
@@ -8120,6 +8121,18 @@ chan_end
 .layer_custom0_surprise_chuckya:
 layer_delay 12
 layer_note1 39, 0x8d, 127
+layer_end
+
+.sound_custom0_p_battle_start:
+chan_setbank 5
+chan_setinstr 25
+chan_setval 0x20
+chan_call .set_reverb
+chan_setlayer 0, .layer_custom0_p_battle_start
+chan_end
+
+.layer_custom0_p_battle_start:
+layer_note1 39, 0x150, 127
 layer_end
 
 .align 2, 0

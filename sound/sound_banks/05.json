@@ -140,6 +140,11 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "25_surprise_chuckya"
+        },
+        "inst25": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "26_p_battle_start"
         }
     },
     "instrument_list": [
@@ -167,6 +172,7 @@
         "inst21",
         "inst22",
         "inst23",
-        "inst24"
+        "inst24",
+        "inst25"
     ]
 }

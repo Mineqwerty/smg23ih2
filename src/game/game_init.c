@@ -52,6 +52,8 @@ u8 gBorderHeight;
 u8 gShitMusic;
 u8 gBetterMarioCam;
 u8 gFuckUpScreen;
+u8 gPersonaBattleTransition;
+u8 gPersonaBattleTransitionTimer;
 u8 gChangeArea;
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
 u8 gCustomDebugMode;
@@ -444,6 +446,9 @@ void display_and_vsync(void) {
     u8 blurColor[3];
     u8 drawColor[3];
 
+    u16 blueFade1;
+    u16 blueFade2;
+
     if (gFuckUpScreen == 1) {
     for (int i = 1; i < 240; i+=2) {
         for (int j = 1; j < 320; j+=2) {
@@ -476,16 +481,52 @@ void display_and_vsync(void) {
 
     }
 
+    if (gPersonaBattleTransition == TRUE) {
+        sRenderingFramebuffer = 1;
+        if (gPersonaBattleTransitionTimer > 1) {
+        for (int i = 0; i < 240; i+=1) {
+        for (int j = 0; j < 320; j+=2) {
+            
+            u16 distToCenter = abss(i - 120) + abss(j - 160);
+            u8 red = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0xf800) >>8);//- ( distToCenter + gPersonaBattleTransitionTimer));
+            u8 green = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x7c0) >>3 );//- ( distToCenter + gPersonaBattleTransitionTimer));
+            u8 blue = CLAMP_U8((( gFramebuffers[sRenderingFramebuffer][j + (i*320)] & 0x3e) << 2) + (distToCenter + gPersonaBattleTransitionTimer)) ;
+            gFramebuffers[0][((j + (i*320)))] = GPACK_RGBA5551(red, green, blue, 255);
+
+            red = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + 1 + (i*320)] & 0xf800) >>8);//- ( distToCenter + gPersonaBattleTransitionTimer));
+            green = /*CLAMP_U8 (*/((gFramebuffers[sRenderingFramebuffer][j + 1 + (i*320)] & 0x7c0) >>3 );//- ( distToCenter + gPersonaBattleTransitionTimer));
+            blue = CLAMP_U8((( gFramebuffers[sRenderingFramebuffer][j + 1 + (i*320)] & 0x3e) << 2) + (distToCenter + gPersonaBattleTransitionTimer)) ;
+            gFramebuffers[0][((j + 1 + (i*320)))] = GPACK_RGBA5551(red, green, blue, 255);
+
+        }
+        }
+        }
+    }
+    else if (!(gIsConsole || gIsVC || gCacheEmulated)){
+        sRenderingFramebuffer = 0;
+    }
+
 
 #ifndef UNLOCK_FPS
+    //if (gPersonaBattleTransition == TRUE) {
+    //    osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
+    //    osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
+    //    osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
+    //}
     osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
+    
 #endif
+if (gPersonaBattleTransition == TRUE) {
+    osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFramebuffers[0]));
+}
+else {
     osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFramebuffers[sRenderedFramebuffer]));
+}
 #ifndef UNLOCK_FPS
     osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
 #endif
     // Skip swapping buffers on inaccurate emulators other than VC so that they display immediately as the Gfx task finishes
-    if (gIsConsole || gIsVC || gCacheEmulated) {
+    if ((gIsConsole || gIsVC || gCacheEmulated)){
         if (++sRenderedFramebuffer == 3) {
             sRenderedFramebuffer = 0;
         }

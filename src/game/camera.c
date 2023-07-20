@@ -1149,8 +1149,13 @@ void mode_8_directions_camera(struct Camera *c) {
         s8DirModeYawOffset = snap_to_45_degrees(s8DirModeYawOffset);
     }
 #endif
-
-    lakitu_zoom(400.f, 0x900);
+    if (gPersonaBattleTransition == TRUE) {
+        lakitu_zoom(400.f - (4 * gPersonaBattleTransitionTimer), 0x900);
+    }
+    else {
+        lakitu_zoom(400.f, 0x900);
+    }
+    
     c->nextYaw = update_8_directions_camera(c, c->focus, pos);
     c->pos[0] = pos[0];
     c->pos[2] = pos[2];
@@ -5849,10 +5854,7 @@ void surface_type_modes_thi(struct Camera *c) {
  * exit. Using hyperspeed, the earlier area can be directly exited from, keeping the changes it applies.
  */
 struct CameraTrigger sCamSL[] = {
-    { 1, cam_sl_snowman_head_8dir, 1119, 3584, 1125, 1177, 358, 358, -0x1D27 },
-    // This trigger surrounds the previous one
-    { 1, cam_sl_free_roam, 1119, 3584, 1125, 4096, 4096, 4096, -0x1D27 },
-    NULL_TRIGGER
+	NULL_TRIGGER
 };
 
 /**
@@ -10411,7 +10413,7 @@ u8 sZoomOutAreaMasks[] = {
 	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 1, 0, 0, 0), // BBH            | CCM
 	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 0, 0, 0, 0), // CASTLE_INSIDE  | HMC
 	ZOOMOUT_AREA_MASK(1, 0, 0, 0, 1, 0, 0, 0), // SSL            | BOB
-	ZOOMOUT_AREA_MASK(1, 0, 0, 0, 1, 0, 0, 0), // SL             | WDW
+	ZOOMOUT_AREA_MASK(1, 1, 0, 0, 1, 0, 0, 0), // SL             | WDW
 	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 1, 1, 0, 0), // JRB            | THI
 	ZOOMOUT_AREA_MASK(0, 0, 0, 0, 1, 0, 0, 0), // TTC            | RR
 	ZOOMOUT_AREA_MASK(1, 0, 0, 0, 1, 0, 0, 0), // CASTLE_GROUNDS | BITDW

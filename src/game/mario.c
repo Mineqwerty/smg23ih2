@@ -1824,6 +1824,9 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
         if (gCurrLevelNum == SMG23IH2_LEVEL_2) {
             play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_SHIT_BROS_3), 0);
         }
+        if (gCurrLevelNum == SMG23IH2_LEVEL_6) {
+            play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_MASS_DESTRUCTION), 0);
+        }
     }
 
     // Updates once per frame:
