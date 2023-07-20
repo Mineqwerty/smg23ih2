@@ -56,7 +56,6 @@ static void render_trans_screen_0(Texture *tex0, Texture *tex1, f32 progressionP
 static void render_trans_screen_1(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
     u8 transparency = 255.0f * progressionPercentage;
 
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
     render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
 
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, transparency);
@@ -141,6 +140,7 @@ Gfx *geo_load_screen(s32 state, UNUSED struct GraphNode *node, UNUSED void *cont
         gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
         gDPSetCombineMode(gDisplayListHead++, G_CC_FADEA, G_CC_FADEA);
         gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
         process_load_screen();
 
