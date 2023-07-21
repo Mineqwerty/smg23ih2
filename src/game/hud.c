@@ -329,11 +329,20 @@ void render_dl_persona() {
                     gDPSetPrimColor(gDisplayListHead++, 0, 0, 188, 99, 126, gPersonaHUDAlpha);
                 }
                 else {
+                    //set prim alpha to fade out the background circle
+                    gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, 
+                                    CLAMP_U8(gPersonaHUDAlpha - abss(gBattleOptionRotationTimer * 21)));
+                    gSPDisplayList(gDisplayListHead++, &selectCircle_selectCircle_mesh);
                     gDPSetPrimColor(gDisplayListHead++, 0, 0, 51, 84, 93, gPersonaHUDAlpha);
                 }
                 gSPDisplayList(gDisplayListHead++, battleOptions[i]);
             }
             else {
+                //disgusting ternary but this fades in the circle background
+                if ((gBattleOptionRotationTimer < 0 && (i + ((i-1) > -1 ? -1 : 6)) == gSelectedBattleCommand) ||
+                (gBattleOptionRotationTimer > 0 && (i - ((i+1) < 7 ? -1 : 6)) == gSelectedBattleCommand)) {
+                    gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, abss(gBattleOptionRotationTimer * 21));
+                }
                 gSPDisplayList(gDisplayListHead++, &selectCircle_selectCircle_mesh);
                 gDPSetPrimColor(gDisplayListHead++, 0, 0, 51, 84, 93, gPersonaHUDAlpha);
                 gSPDisplayList(gDisplayListHead++, battleOptions[i]);
