@@ -2,4 +2,5 @@
 
 #include "src/game/personaBattle.h"
 
-u8 gSelectedBattleCommand = 0;
+s8 gSelectedBattleCommand = 0;
+s16 gBattleOptionRotationTimer = 0;

@@ -1,4 +1,5 @@
 #include "src/game/hud.h"
+#include "src/game/personaBattle.h"
 
 enum PersonaBattleActions {
     PERSONA_ACT_INTRO,
@@ -70,12 +71,48 @@ void bhv_persona_battle_manager_loop(void) {
     break;
     case PERSONA_ACT_MARIO_TURN:
 
-
-        if (o->oTimer < 15) {
-            gPersonaHUDAlpha = o->oTimer * 14;
-        }
-        else {
-            gPersonaHUDAlpha = 210;
+        switch (o->oSubAction) {
+            case 0:
+                if (o->oTimer < 15) {
+                    gPersonaHUDAlpha = o->oTimer * 14;
+                }
+                else {
+                    gPersonaHUDAlpha = 210;
+                    o->oSubAction = 1;
+                }
+            break;
+            case 1:
+                if (gPlayer1Controller->rawStickY > 8) {
+                    gSelectedBattleCommand++;
+                    if (gSelectedBattleCommand == 7) {
+                        gSelectedBattleCommand = 0;
+                    }
+                    gBattleOptionRotationTimer = 1;
+                    o->oSubAction = 2;
+                }
+                if (gPlayer1Controller->rawStickY <= -8) {
+                    gSelectedBattleCommand--;
+                    if (gSelectedBattleCommand == -1) {
+                        gSelectedBattleCommand = 6;
+                    }
+                    gBattleOptionRotationTimer = -1;
+                    o->oSubAction = 3;
+                }
+            break;
+            case 2:
+                gBattleOptionRotationTimer++;
+                if (gBattleOptionRotationTimer == 10) {
+                    o->oSubAction = 1;
+                    gBattleOptionRotationTimer = 0;
+                }
+            break;
+            case 3:
+                gBattleOptionRotationTimer--;
+                if (gBattleOptionRotationTimer == -10) {
+                    o->oSubAction = 1;
+                    gBattleOptionRotationTimer = 0;
+                }
+            break;
         }
 
 

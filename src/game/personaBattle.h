@@ -1,1 +1,2 @@
-extern u8 gSelectedBattleCommand;
+extern s8 gSelectedBattleCommand;
+extern s16 gBattleOptionRotationTimer;

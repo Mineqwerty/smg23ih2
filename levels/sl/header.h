@@ -48,4 +48,16 @@ extern const LevelScript level_sl_entry[];
 
 #include "levels/sl/selectCircle/header.h"
 
+#include "levels/sl/attackIcon/header.h"
+
+#include "levels/sl/waitIcon/header.h"
+
+#include "levels/sl/tacticsIcon/header.h"
+
+#include "levels/sl/itemIcon/header.h"
+
+#include "levels/sl/fleeIcon/header.h"
+
+#include "levels/sl/personaIcon/header.h"
+
 #endif

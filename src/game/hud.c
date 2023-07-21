@@ -285,6 +285,10 @@ void render_hud_power_meter(void) {
 }
 
 void render_dl_persona() {
+
+    Gfx *battleOptions[7] = {attackIcon_attack_mesh, skillIcon_Plane_mesh, itemIcon_item_mesh, tacticsIcon_tactics_mesh, 
+                            personaIcon_persona_mesh, fleeIcon_flee_mesh, waitIcon_wait_mesh};
+
     Mtx *mtx = alloc_display_list(sizeof(Mtx));
 
     if (mtx == NULL) {
@@ -304,15 +308,35 @@ void render_dl_persona() {
         create_dl_translation_matrix(MENU_MTX_PUSH, 70, 0, 0);
         //wheel of options
         for (u8 i = 0; i < 7; i++) {
-            create_dl_translation_matrix(MENU_MTX_PUSH, -70 * coss(i * 0x2492), 70 * sins(i * 0x2492), 0);
+
+            //calculate an index offset based on the currently selected command
+            s8 battleRenderPosOffset = i - gSelectedBattleCommand;
+            if (battleRenderPosOffset > 6) battleRenderPosOffset -= 7;
+            if (battleRenderPosOffset < 0) battleRenderPosOffset += 7;
+
+            //subtract the index by 1 to account for updated battle command selection when rotating
+            if (gBattleOptionRotationTimer != 0) {
+                battleRenderPosOffset -= ((gBattleOptionRotationTimer > 0) ? -1 : 1);
+                if (battleRenderPosOffset > 6) battleRenderPosOffset -= 7;
+                if (battleRenderPosOffset < 0) battleRenderPosOffset += 7;
+            }
+
+            create_dl_translation_matrix(MENU_MTX_PUSH, -70 * coss(battleRenderPosOffset * 0x2492 + (gBattleOptionRotationTimer * -1 * 0x3A8)), 
+                                                        70 * sins(battleRenderPosOffset * 0x2492 + (gBattleOptionRotationTimer * -1 * 0x3A8)), 
+                                                        0);
             if (gSelectedBattleCommand == i) {
-                gDPSetPrimColor(gDisplayListHead++, 0, 0, 188, 99, 126, gPersonaHUDAlpha);
-                gSPDisplayList(gDisplayListHead++, &skillIcon_Plane_mesh);
+                if (gBattleOptionRotationTimer == 0) {
+                    gDPSetPrimColor(gDisplayListHead++, 0, 0, 188, 99, 126, gPersonaHUDAlpha);
+                }
+                else {
+                    gDPSetPrimColor(gDisplayListHead++, 0, 0, 51, 84, 93, gPersonaHUDAlpha);
+                }
+                gSPDisplayList(gDisplayListHead++, battleOptions[i]);
             }
             else {
                 gSPDisplayList(gDisplayListHead++, &selectCircle_selectCircle_mesh);
                 gDPSetPrimColor(gDisplayListHead++, 0, 0, 51, 84, 93, gPersonaHUDAlpha);
-                gSPDisplayList(gDisplayListHead++, &skillIcon_Plane_mesh);
+                gSPDisplayList(gDisplayListHead++, battleOptions[i]);
             }
             gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, gPersonaHUDAlpha);
             
