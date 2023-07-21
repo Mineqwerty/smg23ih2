@@ -6,19 +6,6 @@
 
 #include "make_const_nonconst.h"
 
-ALIGNED8 const Texture load_screen_0[] = {
-#include "levels/ending/load_screen_0.rgba16.inc.c"
-};
-ALIGNED8 const Texture load_screen_1[] = {
-#include "levels/ending/load_screen_1.rgba16.inc.c"
-};
-ALIGNED8 const Texture load_screen_2[] = {
-#include "levels/ending/load_screen_2.rgba16.inc.c"
-};
-ALIGNED8 const Texture load_screen_3[] = {
-#include "levels/ending/load_screen_3.rgba16.inc.c"
-};
-
 #ifdef VERSION_EU
 #include "levels/ending/cake_eu.inc.c"
 

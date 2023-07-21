@@ -2086,7 +2086,7 @@ void render_multi_image(Texture *image, s32 x, s32 y, s32 width, s32 height, s32
     cycles -= (cyclesBackOffset * 7) / 8;
 
     // Pass 1
-    for (i = (cyclesFrontOffset * 7) / 8; i < cycles; i++) {
+    for (i = ((cyclesFrontOffset * 7) + 7) / 8; i < cycles; i++) {
         posW = 0;
         posH = i * imH;
         while (posH >= peakH) {

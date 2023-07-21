@@ -238,3 +238,23 @@ ALIGNED8 const u8 sq_br_textures_dma[] = {
     ,
     #include "actors/amp/sqbr20.rgba16.inc.c"
 };
+
+ALIGNED8 const Texture load_screen_0[] = {
+#include "actors/amp/load_screen_0.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture load_screen_1[] = {
+#include "actors/amp/load_screen_1.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture load_screen_2[] = {
+#include "actors/amp/load_screen_2.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture load_screen_3[] = {
+#include "actors/amp/load_screen_3.rgba16.inc.c"
+};
+
+ALIGNED8 const Texture load_screen_4[] = {
+#include "actors/amp/load_screen_4.rgba16.inc.c"
+};

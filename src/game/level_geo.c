@@ -17,6 +17,8 @@
 
 #define CYCLE_COUNT 40
 
+#define TEXTURE_SIZE (320*240*2)
+
 #define IMG0_TRANS_START (STATIC_TIME - 30)
 #define IMG0_TRANS_END   (IMG0_TRANS_START + 60)
 #define IMG1_TRANS_START (IMG0_TRANS_END + STATIC_TIME)
@@ -25,12 +27,28 @@
 #define IMG2_TRANS_END   (IMG2_TRANS_START + 60)
 #define IMG3_TRANS_START (IMG2_TRANS_END + STATIC_TIME)
 #define IMG3_TRANS_END   (IMG3_TRANS_START + 60)
+#define IMG4_TRANS_START (IMG3_TRANS_END + STATIC_TIME + 0x10000000) // Never cycle back to 0
+#define IMG4_TRANS_END   (IMG4_TRANS_START + 60)
 
-static Texture *loadScreenImages[4] = {
+struct TextureAddrs {
+    Texture *t0Addr;
+    Texture *t1Addr;
+};
+
+struct TextureAddrs textureAddrs = {NULL, NULL};
+
+// Texture t0[TEXTURE_SIZE];
+// Texture t1[TEXTURE_SIZE];
+
+Texture *t0 = NULL;
+Texture *t1 = NULL;
+
+static Texture *loadScreenImages[5] = {
     load_screen_0,
     load_screen_1,
     load_screen_2,
     load_screen_3,
+    load_screen_4,
 };
 
 static const s32 loadScreenTransTimes[ARRAY_COUNT(loadScreenImages) * 2] = {
@@ -42,44 +60,126 @@ static const s32 loadScreenTransTimes[ARRAY_COUNT(loadScreenImages) * 2] = {
     IMG2_TRANS_END,
     IMG3_TRANS_START,
     IMG3_TRANS_END,
+    IMG4_TRANS_START,
+    IMG4_TRANS_END,
 };
+
+void init_load_screen_buffers(void) {
+    u8 *memaddr = main_pool_alloc(TEXTURE_SIZE * 2, MEMORY_POOL_LEFT);
+    if (memaddr == NULL) {
+        error("Out of memory! :(");
+    }
+
+    t0 = &memaddr[0];
+    t1 = &memaddr[320*240*2];
+
+    bzero(&textureAddrs, sizeof(struct TextureAddrs));
+}
+
+void dma_read(u8 *dest, u8 *srcStart, u8 *srcEnd);
+static void dma_images(Texture *image0, Texture *image1, struct TextureAddrs *addrs) {
+    Texture *addr0 = textureAddrs.t0Addr;
+    Texture *addr1 = textureAddrs.t1Addr;
+
+    image0 = segmented_to_virtual(image0);
+    image1 = segmented_to_virtual(image1);
+
+    s32 match0 = -1;
+    s32 match1 = -1;
+
+    if (image0 == addr0) {
+        match0 = 0;
+        addrs->t0Addr = t0;
+    } else if (image0 == addr1) {
+        match0 = 1;
+        addrs->t0Addr = t1;
+    }
+
+    if (image1 == addr0 && match0 != 0) {
+        match1 = 0;
+        addrs->t1Addr = t0;
+    } else if (image1 == addr1 && match0 != 1) {
+        match1 = 1;
+        addrs->t1Addr = t1;
+    }
+
+    if (match0 < 0 && image0 != NULL) {
+        if (match1 == 0) {
+            dma_read(t1, image0, image0 + TEXTURE_SIZE);
+            addrs->t0Addr = t1;
+            textureAddrs.t1Addr = image0;
+            match0 = 1;
+        } else {
+            dma_read(t0, image0, image0 + TEXTURE_SIZE);
+            addrs->t0Addr = t0;
+            textureAddrs.t0Addr = image0;
+            match0 = 0;
+        }
+    }
+
+    if (match1 < 0 && image1 != NULL) {
+        if (match0 == 0) {
+            dma_read(t1, image1, image1 + TEXTURE_SIZE);
+            addrs->t1Addr = t1;
+            textureAddrs.t1Addr = image1;
+            match1 = 1;
+        } else {
+            dma_read(t0, image1, image1 + TEXTURE_SIZE);
+            addrs->t1Addr = t0;
+            textureAddrs.t0Addr = image1;
+            match1 = 0;
+        }
+    }
+}
 
 // Scroll left, overlay on top of image to replace
 static void render_trans_screen_0(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
     s32 imageOffset = 320.0f * progressionPercentage;
 
-    render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
-    render_multi_image(segmented_to_virtual(tex1), 320 - imageOffset, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+    struct TextureAddrs taddrs;
+    dma_images(tex0, tex1, &taddrs);
+
+    render_multi_image(taddrs.t0Addr, 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+    render_multi_image(taddrs.t1Addr, 320 - imageOffset, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
 }
 
 // Crossfade
 static void render_trans_screen_1(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
     u8 transparency = 255.0f * progressionPercentage;
 
-    render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+    struct TextureAddrs taddrs;
+    dma_images(tex0, tex1, &taddrs);
+
+    render_multi_image(taddrs.t0Addr, 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
 
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, transparency);
-    render_multi_image(segmented_to_virtual(tex1), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+    render_multi_image(taddrs.t1Addr, 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
 
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 }
 
 // Tile replace
 static void render_trans_screen_2(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
-    s32 cycles = CYCLE_COUNT * progressionPercentage * 0.5f;
+    s32 cycles = /*(CYCLE_COUNT / 2) - (*/(CYCLE_COUNT / 2) * progressionPercentage/*)*/; // Assumes CYCLE_COUNT is even, though may potentially not matter (untestable)
+    
+    struct TextureAddrs taddrs;
+    dma_images(tex0, tex1, &taddrs);
 
-    render_multi_image(segmented_to_virtual(tex0), 0, 0, 320, 240,               cycles,               cycles, G_CYC_1CYCLE);
-    render_multi_image(segmented_to_virtual(tex1), 0, 0, 320, 240,                    0, CYCLE_COUNT - cycles, G_CYC_1CYCLE);
-    render_multi_image(segmented_to_virtual(tex1), 0, 0, 320, 240, CYCLE_COUNT - cycles,                    0, G_CYC_1CYCLE);
+    render_multi_image(taddrs.t0Addr, 0, 0, 320, 240,               cycles,               cycles, G_CYC_1CYCLE);
+    render_multi_image(taddrs.t1Addr, 0, 0, 320, 240,                    0, CYCLE_COUNT - cycles, G_CYC_1CYCLE);
+    render_multi_image(taddrs.t1Addr, 0, 0, 320, 240, CYCLE_COUNT - cycles,                    0, G_CYC_1CYCLE);
 }
 
 // Scroll up, also scroll image to replace
 static void render_trans_screen_3(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
     s32 imageOffset = 240.0f * progressionPercentage;
+    
+    struct TextureAddrs taddrs;
+    dma_images(tex0, tex1, &taddrs);
 
     // Reverse order matters here, else visual jank
-    render_multi_image(segmented_to_virtual(tex1), 0, imageOffset - 240, 320, 240, 0, 0, G_CYC_1CYCLE);
-    render_multi_image(segmented_to_virtual(tex0), 0,       imageOffset, 320, 240, 0, 0, G_CYC_1CYCLE);
+    render_multi_image(taddrs.t1Addr, 0, imageOffset - 240, 320, 240, 0, 0, G_CYC_1CYCLE);
+    render_multi_image(taddrs.t0Addr, 0,       imageOffset, 320, 240, 0, 0, G_CYC_1CYCLE);
 }
 
 static void process_load_screen(void) {
@@ -92,7 +192,9 @@ static void process_load_screen(void) {
 
     if (loadScreenTimer < 0) {
         // Not loading loading screen
-        render_multi_image(segmented_to_virtual(loadScreenImages[0]), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+        struct TextureAddrs taddrs;
+        dma_images(loadScreenImages[0], NULL, &taddrs);
+        render_multi_image(taddrs.t0Addr, 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
         return;
     }
 
@@ -108,7 +210,9 @@ static void process_load_screen(void) {
 
     if (imageIndex == transImageIndex) {
         // Not transitioning
-        render_multi_image(segmented_to_virtual(loadScreenImages[imageIndex]), 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
+        struct TextureAddrs taddrs;
+        dma_images(loadScreenImages[imageIndex], NULL, &taddrs);
+        render_multi_image(taddrs.t0Addr, 0, 0, 320, 240, 0, 0, G_CYC_1CYCLE);
         return;
     }
 
@@ -129,6 +233,9 @@ static void process_load_screen(void) {
             break;
         case 3:
             render_trans_screen_3(loadScreenImages[imageIndex], loadScreenImages[transImageIndex], progressionPercentage);
+            break;
+        case 4:
+            render_trans_screen_2(loadScreenImages[imageIndex], loadScreenImages[transImageIndex], progressionPercentage); // This should never happen
             break;
         default:
             break;
