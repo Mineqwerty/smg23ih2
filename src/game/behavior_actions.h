@@ -634,3 +634,7 @@ void bhv_gaslight_manager_init(void);
 void bhv_gaslight_manager_loop(void);
 void bhv_squid_word_init(void);
 void bhv_squid_word_loop(void);
+void bhv_float_in_place_init(void);
+void bhv_float_in_place_loop(void);
+void bhv_persona_battle_manager_init(void);
+void bhv_persona_battle_manager_loop(void);

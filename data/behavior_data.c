@@ -6345,3 +6345,23 @@ const BehaviorScript bhvSquidWord[] = {
         CALL_NATIVE(bhv_squid_word_loop),
     END_LOOP(),
 };
+
+const BehaviorScript bhvFloatInPlace[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    SET_HOME(),
+    SET_FLOAT(oDrawingDistance, 30000),
+    CALL_NATIVE(bhv_float_in_place_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_float_in_place_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvPersonaBattleManager[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    CALL_NATIVE(bhv_persona_battle_manager_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_persona_battle_manager_loop),
+    END_LOOP(),
+};

@@ -20,3 +20,5 @@
 #include "levels/sl/areas/2/geo.inc.c"
 
 #include "levels/sl/geo.inc.c"
+
+#include "levels/sl/floating_stuff_1/geo.inc.c"

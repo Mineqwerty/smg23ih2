@@ -434,15 +434,22 @@ s32 act_classic_death(struct MarioState *m) {
 
 s32 act_persona_battle_transition(struct MarioState *m) {
     gPersonaBattleTransitionTimer++;
+    m->collidedObjInteractTypes = 0;
     if (gPersonaBattleTransitionTimer == 1) {
         play_sound(SOUND_CUSTOM0_P_BATTLE_START, gGlobalSoundSource);
     }
     if (gPersonaBattleTransitionTimer == 75) {
         gChangeArea = 2;
-        set_mario_action(m, ACT_JUMP, 0);
+        set_mario_action(m, ACT_PERSONA_BATTLE, 0);
         
         gPersonaBattleTransition = FALSE;
     }
+    return FALSE;
+}
+
+s32 act_persona_battle(struct MarioState *m) {
+    vec3f_copy(m->marioObj->header.gfx.pos, m->pos);
+    vec3s_set(m->marioObj->header.gfx.angle, 0, m->faceAngle[1], 0);
     return FALSE;
 }
 
@@ -2739,6 +2746,7 @@ s32 mario_execute_cutscene_action(struct MarioState *m) {
         case ACT_WAITING_FOR_DIALOG:         cancel = act_waiting_for_dialog(m);         break;
         case ACT_CLASSIC_DEATH:              cancel = act_classic_death(m);              break;
         case ACT_PERSONA_BATTLE_TRANSITION:              cancel = act_persona_battle_transition(m);              break;
+        case ACT_PERSONA_BATTLE:              cancel = act_persona_battle(m);              break;
         case ACT_STANDING_DEATH:             cancel = act_standing_death(m);             break;
         case ACT_QUICKSAND_DEATH:            cancel = act_quicksand_death(m);            break;
         case ACT_ELECTROCUTION:              cancel = act_electrocution(m);              break;

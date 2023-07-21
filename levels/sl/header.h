@@ -40,4 +40,12 @@ extern const LevelScript level_sl_entry[];
 
 #include "levels/sl/header.inc.h"
 
+#include "levels/sl/floating_stuff_1/geo_header.h"
+
+#include "levels/sl/selectWheel/header.h"
+
+#include "levels/sl/skillIcon/header.h"
+
+#include "levels/sl/selectCircle/header.h"
+
 #endif

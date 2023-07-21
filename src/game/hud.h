@@ -49,6 +49,7 @@ enum CameraHUDLUT {
 };
 
 extern struct PowerMeterHUD sPowerMeterHUD;
+extern u8 gPersonaHUDAlpha;
 
 void set_hud_camera_status(s16 status);
 void render_hud(void);

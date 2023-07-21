@@ -17,6 +17,8 @@
 #include "engine/math_util.h"
 #include "puppycam2.h"
 #include "puppyprint.h"
+#include "levels/sl/header.h"
+#include "src/game/personaBattle.h"
 
 #include "config.h"
 
@@ -104,6 +106,8 @@ static struct PowerMeterHUD sBreathMeterHUD = {
 };
 s32 sBreathMeterVisibleTimer = 0;
 #endif
+
+u8 gPersonaHUDAlpha = 210;
 
 static struct CameraHUD sCameraHUD = { CAM_STATUS_NONE };
 
@@ -278,6 +282,46 @@ void render_hud_power_meter(void) {
     }
     render_dl_power_meter(shownHealthWedges);
     sPowerMeterVisibleTimer++;
+}
+
+void render_dl_persona() {
+    Mtx *mtx = alloc_display_list(sizeof(Mtx));
+
+    if (mtx == NULL) {
+        return;
+    }
+    
+    //selection wheel
+    guTranslate(mtx, (f32) 50, (f32) 50, 0);
+    gDPSetRenderMode(gDisplayListHead++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx++),
+              G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
+    create_dl_scale_matrix(MENU_MTX_NOPUSH, 0.4f, 0.4f, 1.0f);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, gPersonaHUDAlpha);
+    gSPDisplayList(gDisplayListHead++, &selectWheel_selectWheel_mesh);
+
+    //battle options
+        create_dl_translation_matrix(MENU_MTX_PUSH, 70, 0, 0);
+        //wheel of options
+        for (u8 i = 0; i < 7; i++) {
+            create_dl_translation_matrix(MENU_MTX_PUSH, -70 * coss(i * 0x2492), 70 * sins(i * 0x2492), 0);
+            if (gSelectedBattleCommand == i) {
+                gDPSetPrimColor(gDisplayListHead++, 0, 0, 188, 99, 126, gPersonaHUDAlpha);
+                gSPDisplayList(gDisplayListHead++, &skillIcon_Plane_mesh);
+            }
+            else {
+                gSPDisplayList(gDisplayListHead++, &selectCircle_selectCircle_mesh);
+                gDPSetPrimColor(gDisplayListHead++, 0, 0, 51, 84, 93, gPersonaHUDAlpha);
+                gSPDisplayList(gDisplayListHead++, &skillIcon_Plane_mesh);
+            }
+            gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, gPersonaHUDAlpha);
+            
+            gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+        }
+        
+        gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+
+    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
 }
 
 #ifdef BREATH_METER
@@ -556,11 +600,11 @@ void render_hud(void) {
         }
 #endif
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
+        if ((hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) && gCurrLevelNum != SMG23IH2_LEVEL_6) {
             render_hud_coins();
         }
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_STAR_COUNT) {
+        if ((hudDisplayFlags & HUD_DISPLAY_FLAG_STAR_COUNT) && gCurrLevelNum != SMG23IH2_LEVEL_6) {
             render_hud_stars();
         }
 
@@ -568,11 +612,15 @@ void render_hud(void) {
             render_hud_keys();
         }
 
+        if (gCurrLevelNum == SMG23IH2_LEVEL_6) {
+            render_dl_persona();
+        }
+
 #ifdef BREATH_METER
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_BREATH_METER) render_hud_breath_meter();
 #endif
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) {
+        if ((hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) && gCurrLevelNum != SMG23IH2_LEVEL_6) {
             render_hud_power_meter();
 #ifdef PUPPYCAM
             if (!gPuppyCam.enabled) {

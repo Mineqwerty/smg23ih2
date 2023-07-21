@@ -568,3 +568,5 @@ extern const BehaviorScript bhvSlidingFloor[];
 extern const BehaviorScript bhvGaslightBlock[];
 extern const BehaviorScript bhvGaslightManager[];
 extern const BehaviorScript bhvSquidWord[];
+extern const BehaviorScript bhvFloatInPlace[];
+extern const BehaviorScript bhvPersonaBattleManager[];

@@ -33,3 +33,8 @@
 #include "levels/sl/areas/1/movtext.inc.c"
 
 #include "levels/sl/leveldata.inc.c"
+
+#include "levels/sl/floating_stuff_1/model.inc.c"
+#include "levels/sl/selectWheel/model.inc.c"
+#include "levels/sl/skillIcon/model.inc.c"
+#include "levels/sl/selectCircle/model.inc.c"

@@ -1817,6 +1817,11 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
         set_mario_action(gMarioState, ACT_IDLE, 0);
     }
 
+    if (gPlayer1Controller->buttonPressed & R_JPAD) {
+        gChangeArea = 2;
+        set_mario_action(gMarioState, ACT_PERSONA_BATTLE, 0);
+    }
+
     if (gChangeArea > 0) {
         change_area(gChangeArea);
         gMarioState->area = gCurrentArea;
