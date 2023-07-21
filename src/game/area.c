@@ -405,6 +405,8 @@ static const char puppyprintStr6[] = "WAITING ON AUDIO DMA...";
 static const char puppyprintStr7[] = "RENDERING LEVEL...";
 static const char puppyprintStr8[] = "LOAD COMPLETE!";
 
+static const char puppyprintLoadingCourse[] = "<WAVE2>LOADING COURSE<WAVE2>";
+
 s32 adjust_load_progress_bar(void) {
     const s32 posX = 15;
     const s32 posY = 189;
@@ -422,7 +424,7 @@ s32 adjust_load_progress_bar(void) {
             dotCount = 0;
 
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-        print_small_text(SCREEN_CENTER_X, 16, "LOADING COURSE", PRINT_TEXT_ALIGN_CENTRE, PRINT_ALL, FONT_OUTLINE);
+        print_small_text(SCREEN_CENTER_X, 16, puppyprintLoadingCourse, PRINT_TEXT_ALIGN_CENTER, PRINT_ALL, FONT_OUTLINE);
 
         dotFrames = (dotFrames + 1) % 32;
 

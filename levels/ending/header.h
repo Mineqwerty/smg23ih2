@@ -7,13 +7,6 @@
 extern const GeoLayout ending_geo_area_1[];
 extern const GeoLayout ending_load_screen_geo[];
 
-// texture
-extern const Texture load_screen_0[];
-extern const Texture load_screen_1[];
-extern const Texture load_screen_2[];
-extern const Texture load_screen_3[];
-extern const Texture load_screen_4[];
-
 // leveldata
 extern const Gfx dl_cake_end_screen[];
 #ifndef EU_CUSTOM_CAKE_FIX

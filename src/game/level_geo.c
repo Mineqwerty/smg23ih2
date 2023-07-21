@@ -13,22 +13,22 @@
 #include "puppyprint.h"
 #include "debug.h"
 
-#define STATIC_TIME 195
-
+#define TEXTURE_SIZE (320*240*2)
 #define CYCLE_COUNT 40
 
-#define TEXTURE_SIZE (320*240*2)
+#define STATIC_TIME 240
+#define TRANSITION_TIME 50
 
-#define IMG0_TRANS_START (STATIC_TIME - 30)
-#define IMG0_TRANS_END   (IMG0_TRANS_START + 60)
+#define IMG0_TRANS_START (STATIC_TIME)
+#define IMG0_TRANS_END   (IMG0_TRANS_START + TRANSITION_TIME)
 #define IMG1_TRANS_START (IMG0_TRANS_END + STATIC_TIME)
-#define IMG1_TRANS_END   (IMG1_TRANS_START + 60)
+#define IMG1_TRANS_END   (IMG1_TRANS_START + TRANSITION_TIME)
 #define IMG2_TRANS_START (IMG1_TRANS_END + STATIC_TIME)
-#define IMG2_TRANS_END   (IMG2_TRANS_START + 60)
+#define IMG2_TRANS_END   (IMG2_TRANS_START + TRANSITION_TIME)
 #define IMG3_TRANS_START (IMG2_TRANS_END + STATIC_TIME)
-#define IMG3_TRANS_END   (IMG3_TRANS_START + 60)
+#define IMG3_TRANS_END   (IMG3_TRANS_START + TRANSITION_TIME)
 #define IMG4_TRANS_START (IMG3_TRANS_END + STATIC_TIME + 0x10000000) // Never cycle back to 0
-#define IMG4_TRANS_END   (IMG4_TRANS_START + 60)
+#define IMG4_TRANS_END   (IMG4_TRANS_START + TRANSITION_TIME)
 
 struct TextureAddrs {
     Texture *t0Addr;
@@ -36,10 +36,6 @@ struct TextureAddrs {
 };
 
 struct TextureAddrs textureAddrs = {NULL, NULL};
-
-// Texture t0[TEXTURE_SIZE];
-// Texture t1[TEXTURE_SIZE];
-
 Texture *t0 = NULL;
 Texture *t1 = NULL;
 
@@ -160,7 +156,7 @@ static void render_trans_screen_1(Texture *tex0, Texture *tex1, f32 progressionP
 
 // Tile replace
 static void render_trans_screen_2(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
-    s32 cycles = /*(CYCLE_COUNT / 2) - (*/(CYCLE_COUNT / 2) * progressionPercentage/*)*/; // Assumes CYCLE_COUNT is even, though may potentially not matter (untestable)
+    s32 cycles = (CYCLE_COUNT / 2) * progressionPercentage; // Assumes CYCLE_COUNT is even, though may potentially not matter (untestable)
     
     struct TextureAddrs taddrs;
     dma_images(tex0, tex1, &taddrs);

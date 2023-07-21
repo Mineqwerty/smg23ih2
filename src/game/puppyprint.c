@@ -27,6 +27,7 @@ a modern game engine's developer's console.
 
 #include "config.h"
 #include "seq_ids.h"
+#include "area.h"
 #include "game_init.h"
 #include "sound_init.h"
 #include "memory.h"
@@ -1416,6 +1417,7 @@ void render_blank_box_rounded(s32 x1, s32 y1, s32 x2, s32 y2, u8 r, u8 g, u8 b, 
 
 s8 shakeToggle = 0;
 s8 waveToggle = 0;
+s8 wave2Toggle = 0;
 s8 rainbowToggle = 0;
 f32 textSize = 1.0f; // The value that's used as a baseline multiplier before applying text size modifiers. Make sure to set it back when you're done.
 f32 textSizeTotal = 1.0f; // The value that's read to set the text size. Do not mess with this.
@@ -1542,6 +1544,7 @@ void print_small_text(s32 x, s32 y, const char *str, s32 align, s32 amount, u8 f
 
     shakeToggle = 0;
     waveToggle = 0;
+    wave2Toggle = 0;
     rainbowToggle = 0;
     textSizeTemp = 1.0f;
     set_text_size_params();
@@ -1634,6 +1637,18 @@ void print_small_text(s32 x, s32 y, const char *str, s32 align, s32 amount, u8 f
 
         if (waveToggle) {
             wavePos = ((sins((gGlobalTimer * 3000) + (j * 10000))) * 2) * textSizeTotal;
+        } else if (wave2Toggle && loadScreenTimer >= 0) {
+            s32 tmp = (loadScreenTimer - 28) - (j * 4);
+            if (tmp >= 0) {
+                tmp %= 80;
+                if (tmp >= 0 && tmp < 12) {
+                    wavePos = (sins(tmp * 0x8000 / 12) * -2.75f) * textSizeTotal;
+                } else {
+                    wavePos = 0;
+                }
+            } else {
+                wavePos = 0;
+            }
         } else {
             wavePos = 0;
         }
@@ -1858,6 +1873,11 @@ s32 text_iterate_command(const char *str, s32 i, s32 runCMD) {
             return len;
 
         waveToggle  ^= 1;
+    } else if (len == 7 && strncmp((newStr), "<WAVE2>",  7) == 0) { // Toggles text that waves around. Do it again to disable it.
+        if (!runCMD)
+            return len;
+
+        wave2Toggle  ^= 1;
     } else {
         return 0; // Invalid command string; display everything inside to make this clear to the user.
     }
