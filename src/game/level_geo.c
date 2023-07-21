@@ -172,14 +172,14 @@ static void render_trans_screen_2(Texture *tex0, Texture *tex1, f32 progressionP
 
 // Scroll up, also scroll image to replace
 static void render_trans_screen_3(Texture *tex0, Texture *tex1, f32 progressionPercentage) {
-    s32 imageOffset = 240.0f * progressionPercentage;
+    s32 imageOffset = -240.0f * progressionPercentage;
     
     struct TextureAddrs taddrs;
     dma_images(tex0, tex1, &taddrs);
 
     // Reverse order matters here, else visual jank
-    render_multi_image(taddrs.t1Addr, 0, imageOffset - 240, 320, 240, 0, 0, G_CYC_1CYCLE);
     render_multi_image(taddrs.t0Addr, 0,       imageOffset, 320, 240, 0, 0, G_CYC_1CYCLE);
+    render_multi_image(taddrs.t1Addr, 0, 240 + imageOffset, 320, 240, 0, 0, G_CYC_1CYCLE);
 }
 
 static void process_load_screen(void) {
