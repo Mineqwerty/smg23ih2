@@ -274,7 +274,7 @@ void profiler_print_times() {
 #endif
             " Mario\t\t\t%d\n"
             " Behavior\t\t%d\n"
-            " Graph\t\t%d\n"
+            " Graph+FBE\t%d\n"
             " Audio\t\t\t%d\n"
 #ifdef PUPPYPRINT_DEBUG
             " Camera\t\t%d\n"
@@ -298,7 +298,7 @@ void profiler_print_times() {
 #endif
             microseconds[PROFILER_TIME_MARIO],
             microseconds[PROFILER_TIME_BEHAVIOR_BEFORE_MARIO] + microseconds[PROFILER_TIME_BEHAVIOR_AFTER_MARIO],
-            microseconds[PROFILER_TIME_GFX],
+            microseconds[PROFILER_TIME_GFX] + microseconds[PROFILER_TIME_FBE],
             microseconds[PROFILER_TIME_AUDIO] * 2, // audio is 60Hz, so double the average
 #ifdef PUPPYPRINT_DEBUG
             microseconds[PROFILER_TIME_CAMERA],
@@ -326,7 +326,7 @@ void profiler_print_times() {
 
 void profiler_frame_setup() {
     profile_buffer_index++;
-    preempted_time = 0;
+    preempted_time = -(all_profiling_data[PROFILER_TIME_FBE].total / PROFILING_BUFFER_SIZE);
 
     if (profile_buffer_index >= PROFILING_BUFFER_SIZE) {
         profile_buffer_index = 0;

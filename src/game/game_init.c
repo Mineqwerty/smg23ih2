@@ -449,6 +449,8 @@ void display_and_vsync(void) {
     UNUSED u16 blueFade1;
     UNUSED u16 blueFade2;
 
+    PROFILER_GET_SNAPSHOT_TYPE(PROFILER_DELTA_COLLISION);
+
     if (gFuckUpScreen == 1) {
         for (int i = 1; i < 240; i+=2) {
             for (int j = 1; j < 320; j+=2) {
@@ -502,6 +504,7 @@ void display_and_vsync(void) {
         sRenderingFramebuffer = 0;
     }
 
+    profiler_update(PROFILER_TIME_FBE, profiler_get_delta(PROFILER_DELTA_COLLISION) - first);
 
 #ifndef UNLOCK_FPS
     //if (gPersonaBattleTransition == TRUE) {
