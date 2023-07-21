@@ -1637,8 +1637,8 @@ void print_small_text(s32 x, s32 y, const char *str, s32 align, s32 amount, u8 f
 
         if (waveToggle) {
             wavePos = ((sins((gGlobalTimer * 3000) + (j * 10000))) * 2) * textSizeTotal;
-        } else if (wave2Toggle && loadScreenTimer >= 0) {
-            s32 tmp = (loadScreenTimer - 28) - (j * 4);
+        } else if (wave2Toggle && loadScreenPuppyprintTimer >= 0) {
+            s32 tmp = (loadScreenPuppyprintTimer - 28) - (j * 4);
             if (tmp >= 0) {
                 tmp %= 80;
                 if (tmp >= 0 && tmp < 12) {

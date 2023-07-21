@@ -1493,10 +1493,12 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
 s32 is_loading_screen_done(s16 levelNum, UNUSED s32 arg1) {
     if (loadProgress < 1.045f) {
         loadScreenTimer++;
+        loadScreenPuppyprintTimer++;
         return FALSE;
     }
 
     loadScreenTimer = -1;
+    loadScreenPuppyprintTimer = -1;
     loadIsTransitioning = FALSE;
 
     gCurrAreaIndex = 1;
