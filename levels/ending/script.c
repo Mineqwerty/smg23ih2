@@ -8,6 +8,7 @@
 
 #include "game/area.h"
 #include "game/level_update.h"
+#include "game/level_geo.h"
 
 #include "levels/scripts.h"
 
@@ -22,16 +23,20 @@ const LevelScript level_ending_entry_loop[] = {
 };
 
 const LevelScript level_load_screen_entry[] = {
-    /*5*/ AREA(/*index*/ 1, ending_load_screen_geo),
-    /*7*/ END_AREA(),
+    CALL(/*arg*/ 0, /*func*/ init_load_screen_buffers),
+    LOAD_LEVEL_DATA(ending),
+    ALLOC_LEVEL_POOL(),
 
-    /*8*/ FREE_LEVEL_POOL(),
-    /*9*/ SLEEP(/*frames*/ 15),
-    /*10*/ BLACKOUT(/*active*/ FALSE),
-    /*11*/ LOAD_AREA(/*area*/ 1),
+    AREA(/*index*/ 1, ending_load_screen_geo),
+    END_AREA(),
+
+    FREE_LEVEL_POOL(),
+    SLEEP(/*frames*/ 15),
+    BLACKOUT(/*active*/ FALSE),
+    LOAD_AREA(/*area*/ 1),
     SET_MENU_MUSIC(/*seq*/ SEQ_SOUND_PLAYER),
-    /*12*/ TRANSITION(/*transType*/ WARP_TRANSITION_FADE_FROM_COLOR, /*time*/ 20, /*color*/ 0x00, 0x00, 0x00),
-    /*14*/ SLEEP(/*frames*/ 20),
+    TRANSITION(/*transType*/ WARP_TRANSITION_FADE_FROM_COLOR, /*time*/ 20, /*color*/ 0x00, 0x00, 0x00),
+    SLEEP(/*frames*/ 20),
     CALL_LOOP(/*arg*/ SMG23IH2_LEVEL_4, /*func*/ is_loading_screen_done),
     UNLOAD_AREA(/*area*/ 1),
     CLEAR_LEVEL(),
@@ -45,11 +50,12 @@ const LevelScript level_load_screen_entry[] = {
 
 const LevelScript level_ending_entry[] = {
     INIT_LEVEL(),
-    LOAD_LEVEL_DATA(ending),
-    ALLOC_LEVEL_POOL(),
 
     CALL(/*arg*/ 0, /*func*/ lvl_warp_type),
     JUMP_IF(OP_EQ, /*arg*/ 0x02,  level_load_screen_entry),
+
+    LOAD_LEVEL_DATA(ending),
+    ALLOC_LEVEL_POOL(),
 
     AREA(/*index*/ 1, ending_geo_area_1),
     END_AREA(),

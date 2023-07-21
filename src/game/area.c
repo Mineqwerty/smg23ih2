@@ -32,6 +32,7 @@
 
 f32 loadProgress = -0.02f;
 s32 loadScreenTimer = -1;
+s32 loadScreenPuppyprintTimer = -1;
 s32 loadIsTransitioning = FALSE;
 static s32 hasMessedUpLoad = FALSE;
 static s32 loadProgressFrameWait = 0;
@@ -395,15 +396,20 @@ void play_transition_after_delay(s16 transType, s16 time, u8 red, u8 green, u8 b
     play_transition(transType, time, red, green, blue);
 }
 
-static const char puppyprintStr0[] = "CLEARING MEMORY POOLS...";
-static const char puppyprintStr1[] = "LOADING ASSETS...";
-static const char puppyprintStr2[] = "CONFIGURING LEVEL SETTINGS...";
-static const char puppyprintStr3[] = "PLACING OBJECTS...";
-static const char puppyprintStr4[] = "MESSED SOMETHING UP, TRYING AGAIN!";
-static const char puppyprintStr5[] = "CONFIGURING SETTINGS, ATTEMPT 2...";
-static const char puppyprintStr6[] = "WAITING ON AUDIO DMA...";
-static const char puppyprintStr7[] = "RENDERING LEVEL...";
-static const char puppyprintStr8[] = "LOAD COMPLETE!";
+static const char puppyprintStr0[]  = "CLEARING MEMORY POOLS...";
+static const char puppyprintStr1[]  = "LOADING ASSETS...";
+static const char puppyprintStr2[]  = "CONFIGURING LEVEL SETTINGS...";
+static const char puppyprintStr3[]  = "PLACING OBJECTS...";
+static const char puppyprintStr4[]  = "TIMED OUT!";
+static const char puppyprintStr4b[] = "TRYING AGAIN...";
+static const char puppyprintStr5[]  = "<SHAKE>PLEASE WORK, DAMMIT!<SHAKE>";
+static const char puppyprintStr6[]  = "OKAY, THERE WE GO...";
+static const char puppyprintStr7[]  = "INITIALIZING AUDIO BUFFERS...";
+static const char puppyprintStr8[]  = "RENDERING LEVEL...";
+static const char puppyprintStr9[]  = "LOAD COMPLETE!";
+
+// static const char puppyprintLoadingCourse[] = "<WAVE2>LOADING COURSE<WAVE2>";
+static const char puppyprintLoadingCourse[] = "LOADING COURSE";
 
 s32 adjust_load_progress_bar(void) {
     const s32 posX = 15;
@@ -422,117 +428,128 @@ s32 adjust_load_progress_bar(void) {
             dotCount = 0;
 
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-        print_small_text(SCREEN_CENTER_X, 16, "LOADING COURSE", PRINT_TEXT_ALIGN_CENTRE, PRINT_ALL, FONT_OUTLINE);
+        print_small_text(SCREEN_CENTER_X, 16, puppyprintLoadingCourse, PRINT_TEXT_ALIGN_CENTER, PRINT_ALL, FONT_OUTLINE);
 
         dotFrames = (dotFrames + 1) % 32;
 
-        if (loadProgress < 0.15f && hasMessedUpLoad == FALSE) {
+        if (loadProgress < 0.15f) {
             f32 f1 = random_float();
             f32 f2 = random_float();
-            loadProgress += MIN(f1, f2) / 400.0f;
+            loadProgress += MIN(f1, f2) / 450.0f;
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
             print_small_text(posX, posY, puppyprintStr0, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr0) + dotCount - 1, FONT_OUTLINE);
             return TRUE;
         }
-        if (loadProgress < 0.33f && hasMessedUpLoad == FALSE) {
-            if (random_u16() % 8 == 0)
+        if (loadProgress < 0.33f) {
+            if (random_u16() % 10 == 0)
                 loadProgress += 0.01f;
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
             print_small_text(posX, posY, puppyprintStr1, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr1) + dotCount - 1, FONT_OUTLINE);
             return TRUE;
         }
-        if (loadProgress < 0.5f && hasMessedUpLoad != 2) {
+        if (loadProgress < 0.5f) {
             f32 f1 = random_float();
             f32 f2 = random_float();
-            loadProgress += MIN(f1, f2) / 120.0f;
+            loadProgress += MIN(f1, f2) / 150.0f;
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-            if (hasMessedUpLoad)
-                print_small_text(posX, posY, puppyprintStr5, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr5) + dotCount - 1, FONT_OUTLINE);
-            else
-                print_small_text(posX, posY, puppyprintStr2, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr2) + dotCount - 1, FONT_OUTLINE);
+            print_small_text(posX, posY, puppyprintStr2, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr2) + dotCount - 1, FONT_OUTLINE);
             if (loadProgress >= 0.5f) {
-                if (hasMessedUpLoad == FALSE)
-                    loadProgressFrameWait = 55;
-                else
-                    loadProgressFrameWait = 25;
+                loadProgressFrameWait = 25;
             }
             return TRUE;
         }
-        if ((loadProgress < 0.75f || loadProgressFrameWait > 0) && hasMessedUpLoad == FALSE) {
+        if ((loadProgress < 0.75f || loadProgressFrameWait > 0) && hasMessedUpLoad == 0) {
             if (loadProgressFrameWait > 0) {
                 loadProgressFrameWait--;
-            }
-            else {
+                if (loadProgressFrameWait <= 0 && loadProgress >= 0.667f) {
+                    hasMessedUpLoad = 1;
+                }
+            } else {
                 f32 f1 = random_float();
                 f32 f2 = random_float();
                 f1 *= f1;
                 f2 *= f2;
-                loadProgress += MAX(f1, f2) / 75.0f;
-                if (loadProgress >= 0.751f) 
-                    loadProgress = 0.751f;
-                if (loadProgress >= 0.75f)
-                    loadProgressFrameWait = 45;
-            }
-            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-            print_small_text(posX, posY, puppyprintStr3, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr3) + dotCount - 1, FONT_OUTLINE);
-            return TRUE;
-        }
-        if (loadProgress < 0.75f && hasMessedUpLoad == TRUE) {
-            if (loadProgressFrameWait > 0) {
-                loadProgressFrameWait--;
-            }
-            else {
-                f32 f1 = random_float();
-                f32 f2 = random_float();
-                f1 *= f1;
-                f2 *= f2;
-                loadProgress += MAX(f1, f2) / 75.0f;
-                if (loadProgress >= 0.751f) 
-                    loadProgress = 0.751f;
-            }
-            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-            print_small_text(posX, posY, puppyprintStr3, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr3) + dotCount - 1, FONT_OUTLINE);
-            return TRUE;
-        }
-        if ((loadProgress >= 0.75f && hasMessedUpLoad == FALSE) || hasMessedUpLoad == 2) {
-            hasMessedUpLoad = 2;
-            if (loadProgressFrameWait > 0) {
-                loadProgressFrameWait--;
-                if (loadProgressFrameWait == 0) {
-                    hasMessedUpLoad = TRUE;
-                    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-                    print_small_text(posX, posY, puppyprintStr5, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr5) + dotCount - 1, FONT_OUTLINE);
-                    return TRUE;
+                loadProgress += MAX(f1, f2) / 175.0f;
+                if (loadProgress >= 0.6675f) {
+                    loadProgress = 0.6675f;
+                }
+                if (loadProgress >= 0.667f) {
+                    loadProgressFrameWait = 110;
                 }
             }
-            else {
-                loadProgress -= 0.0045f;
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            print_small_text(posX, posY, puppyprintStr3, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr3) + dotCount - 1, FONT_OUTLINE);
+            return TRUE;
+        }
+        if (hasMessedUpLoad == 1) {
+            if (loadProgressFrameWait == 0) {
+                loadProgressFrameWait = 145;
             }
-            if (hasMessedUpLoad == 2) {
-                gDPSetEnvColor(gDisplayListHead++, 255, 127, 127, 255);
-            } else {
-                gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            if (loadProgressFrameWait > 0) {
+                loadProgressFrameWait--;
+                if (loadProgressFrameWait <= 0) {
+                    hasMessedUpLoad = 2;
+                }
             }
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 143, 255);
             print_small_text(posX, posY, puppyprintStr4, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
-            if (loadProgress < 0.33f && hasMessedUpLoad == 2 && loadProgressFrameWait <= 0)
-                loadProgressFrameWait = 12;
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 143, 255);
+            print_small_text(posX + 68, posY, puppyprintStr4b, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr4b) + dotCount - 1, FONT_OUTLINE);
+            return TRUE;
+        }
+        if (hasMessedUpLoad == 2) {
+            if (loadProgressFrameWait == 0) {
+                loadProgressFrameWait = 37;
+            }
+            if (loadProgressFrameWait > 0) {
+                loadProgressFrameWait--;
+                if (loadProgressFrameWait <= 0) {
+                    hasMessedUpLoad = 3;
+                }
+            }
+            gDPSetEnvColor(gDisplayListHead++, 255, 95, 63, 255);
+            print_small_text(posX, posY, puppyprintStr5, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
+            return TRUE;
+        }
+        if (loadProgress < 0.75f && hasMessedUpLoad == 3) {
+            f32 f1 = random_float();
+            f32 f2 = random_float();
+            f1 *= f1;
+            f2 *= f2;
+            loadProgress += MAX(f1, f2) / 400.0f;
+            if (loadProgress >= 0.751f) {
+                loadProgress = 0.751f;
+            } if (loadProgress >= 0.75f) {
+                loadProgressFrameWait = 10;
+            }
+
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+            print_small_text(posX, posY, puppyprintStr6, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr6) + dotCount - 1, FONT_OUTLINE);
             return TRUE;
         }
         if (loadProgress < 0.925f) {
-            loadProgress += 0.015f;
+            if (loadProgressFrameWait > 0) {
+                loadProgressFrameWait--;
+            } else {
+                f32 f1 = random_float();
+                f32 f2 = random_float();
+                loadProgress += 0.001f + (MAX(f1, f2) / 650.0f);
+            }
+
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-            print_small_text(posX, posY, puppyprintStr6, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr6) + dotCount - 1, FONT_OUTLINE);
+            print_small_text(posX, posY, puppyprintStr7, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr7) + dotCount - 1, FONT_OUTLINE);
             return TRUE;
         }
         if (loadProgress < 0.999f) {
             f32 f1 = random_float();
             f32 f2 = random_float();
-            loadProgress += MIN(f1, f2) / 650.0f;
+            loadProgress += MIN(f1, f2) / 700.0f;
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-            print_small_text(posX, posY, puppyprintStr7, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr7) + dotCount - 1, FONT_OUTLINE);
+            print_small_text(posX, posY, puppyprintStr8, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr8) + dotCount - 1, FONT_OUTLINE);
             if (loadProgress >= 0.999f) {
                 loadProgress = 0.9991f;
-                loadProgressFrameWait = 90;
+                loadProgressFrameWait = 125;
+                loadScreenTimer = 0x100000;
             }
             return TRUE;
         }
@@ -543,7 +560,7 @@ s32 adjust_load_progress_bar(void) {
                 loadProgress = 1.0005f;
             }
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-            print_small_text(posX, posY, puppyprintStr7, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr7) + dotCount - 1, FONT_OUTLINE);
+            print_small_text(posX, posY, puppyprintStr8, PRINT_TEXT_ALIGN_LEFT, sizeof(puppyprintStr8) + dotCount - 1, FONT_OUTLINE);
             return TRUE;
         }
     } else {
@@ -553,7 +570,7 @@ s32 adjust_load_progress_bar(void) {
 
     loadProgress += 0.001f;
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-    print_small_text(posX, posY, puppyprintStr8, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
+    print_small_text(posX, posY, puppyprintStr9, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
     return TRUE;
 }
 
@@ -578,11 +595,16 @@ void render_loading_screen(void) {
 
     sprintf(percent, "%d%%", sLoadProgress);
 
-    if (hasMessedUpLoad == 2) {
-        gDPSetEnvColor(gDisplayListHead++, 255, 191, 191, 255);
+    if (hasMessedUpLoad == 1) {
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 143, 255);
         print_small_text(percX, percY, percent, PRINT_TEXT_ALIGN_RIGHT, PRINT_ALL, FONT_OUTLINE);
-        gDPSetEnvColor(gDisplayListHead++, 255, 191, 191, 255);
-        color = 0xFDF7FDF7;
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 143, 255);
+        color = 0xFFE3FFE3;
+    } else if (hasMessedUpLoad == 2) {
+        gDPSetEnvColor(gDisplayListHead++, 255, 95, 63, 255);
+        print_small_text(percX, percY, percent, PRINT_TEXT_ALIGN_RIGHT, PRINT_ALL, FONT_OUTLINE);
+        gDPSetEnvColor(gDisplayListHead++, 255, 95, 63, 255);
+        color = 0xFACFFACF;
     } else {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
         print_small_text(percX, percY, percent, PRINT_TEXT_ALIGN_RIGHT, PRINT_ALL, FONT_OUTLINE);
@@ -726,7 +748,7 @@ void render_game(void) {
         if (adjust_load_progress_bar())
             render_loading_screen();
     } else {
-        hasMessedUpLoad = FALSE;
+        hasMessedUpLoad = 0;
         loadProgress = -0.02f;
         dotFrames = 0;
     }

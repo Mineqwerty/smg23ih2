@@ -9,6 +9,7 @@
 
 extern f32 loadProgress;
 extern s32 loadScreenTimer;
+extern s32 loadScreenPuppyprintTimer;
 extern s32 loadIsTransitioning;
 
 struct WarpNode {
