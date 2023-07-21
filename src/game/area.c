@@ -408,7 +408,8 @@ static const char puppyprintStr7[]  = "INITIALIZING AUDIO BUFFERS...";
 static const char puppyprintStr8[]  = "RENDERING LEVEL...";
 static const char puppyprintStr9[]  = "LOAD COMPLETE!";
 
-static const char puppyprintLoadingCourse[] = "<WAVE2>LOADING COURSE<WAVE2>";
+// static const char puppyprintLoadingCourse[] = "<WAVE2>LOADING COURSE<WAVE2>";
+static const char puppyprintLoadingCourse[] = "LOADING COURSE";
 
 s32 adjust_load_progress_bar(void) {
     const s32 posX = 15;
