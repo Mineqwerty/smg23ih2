@@ -314,6 +314,10 @@ void huge_goomba_weakly_attacked(void) {
 void bhv_goomba_update(void) {
     // PARTIAL_UPDATE
 
+    if (gCurrLevelNum == SMG23IH2_LEVEL_6) {
+        cur_obj_set_model(MODEL_GOOMBA_REAL);
+    }
+
     if (o->oAction == 4) {
         return;
     }

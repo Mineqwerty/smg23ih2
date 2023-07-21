@@ -570,6 +570,7 @@
 #define MODEL_SQUID_WORD                  0x12D
 #define MODEL_BABOMB_EXCIVATOIN           0x12E
 #define MODEL_FLOATING_STUFF_1            0x12F
+#define MODEL_GOOMBA_REAL            0x130
 
 
 #endif
