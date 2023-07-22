@@ -358,6 +358,7 @@ void render_dl_persona() {
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
 }
 
+void s2d_print_deferred(int x, int y, const char *str);
 void render_persona_selector_text(void) {
     s2d_init();
 	s2d_print_deferred(18, 185, optionText[gSelectedBattleCommand]);
