@@ -108,7 +108,7 @@ static struct PowerMeterHUD sBreathMeterHUD = {
 s32 sBreathMeterVisibleTimer = 0;
 #endif
 
-u8 gPersonaHUDAlpha = 210;
+u8 gPersonaHUDAlpha = 0;
 
 static struct CameraHUD sCameraHUD = { CAM_STATUS_NONE };
 
@@ -358,10 +358,11 @@ void render_dl_persona() {
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
 }
 
-void render_persona_text(void) {
+void render_persona_selector_text(void) {
     s2d_init();
+	s2d_print_deferred(18, 185, optionText[gSelectedBattleCommand]);
 
-	s2d_print_deferred(18, 185, SCALE "20" "Attack");
+    s2d_print_deferred(130, 210, optionDescriptionText[gSelectedBattleCommand]);
 	s2d_handle_deferred();
 
 	// reloads the original microcode; only needed once after all prints
@@ -656,9 +657,11 @@ void render_hud(void) {
             render_hud_keys();
         }
 
-        if (gCurrLevelNum == SMG23IH2_LEVEL_6) {
+        if (gCurrLevelNum == SMG23IH2_LEVEL_6 && gCurrAreaIndex == 2) {
             render_dl_persona();
-            render_persona_text();
+            if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_MAIN_TEXT) {
+                render_persona_selector_text();
+            }
         }
 
 #ifdef BREATH_METER
