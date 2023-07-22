@@ -119,12 +119,17 @@
             "envelope": "envelope4",
             "sound": "44_grand_piano"
         },
+        // "inst5": {
+        //     "release_rate": 53,
+        //     "normal_range_hi": 50,
+        //     "envelope": "envelope5",
+        //     "sound": "16_french_horns",
+        //     "sound_hi": "45_french_horns_lq"
+        // },
         "inst5": {
             "release_rate": 53,
-            "normal_range_hi": 50,
             "envelope": "envelope5",
-            "sound": "16_french_horns",
-            "sound_hi": "45_french_horns_lq"
+            "sound": "16b_french_horns_hq"
         },
         "inst6": {
             "release_rate": 10,
