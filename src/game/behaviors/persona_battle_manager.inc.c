@@ -72,6 +72,7 @@ void bhv_persona_battle_manager_loop(void) {
     struct Object *selectedEnemy;
     Vec3f endCameraPos = {1000.0f, 442.0f, 2300.0f};
     Vec3f endCameraFocus = {200.0f, 0.0f, 1400.0f};
+    Vec3f relEnemyPos = {0, 0, 0};
 
    switch (o->oAction) {
     case PERSONA_ACT_INTRO:
@@ -216,6 +217,11 @@ void bhv_persona_battle_manager_loop(void) {
             play_sound(SOUND_CUSTOM0_P_CANCEL, gGlobalSoundSource);
             gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_ATTACK_TEXT);
         }
+        else if (gPlayer1Controller->buttonPressed & A_BUTTON) {
+            o->oAction = PERSONA_ACT_MARIO_ATTACKING;
+            gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_MAIN_TEXT);
+            gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_ATTACK_TEXT);
+        }
         else {
             gSelectorCooldown = FALSE;
         }
@@ -229,6 +235,63 @@ void bhv_persona_battle_manager_loop(void) {
             approach_vec3f_asymptotic(gLakituState.goalFocus, enemyCameraFocus, 0.05f, 0.05f, 0.05f);
         }
         animate_mario_idle();
+    break;
+    case PERSONA_ACT_MARIO_ATTACKING:
+        switch (o->oSubAction) {
+            case 0:
+                selectedEnemy = cur_obj_find_object_with_bparam_2nd_byte(bhvCowardlyMaya, gSelectedEnemy);
+                gLakituState.goalPos[0] = selectedEnemy->oPosX + 30;
+                gLakituState.goalPos[1] = 1000;
+                gLakituState.goalPos[2] = selectedEnemy->oPosZ + 2300;
+                set_mario_anim_with_accel(gMarioState, MARIO_ANIM_RUNNING, 0x40000);
+                if (o->oTimer == 0) {
+                    vec3f_copy(gLakituState.goalFocus, gMarioState->pos);
+                }
+                else {
+                    approach_vec3f_asymptotic(gLakituState.goalFocus, gMarioState->pos, 0.05f, 0.05f, 0.05f);
+                }
+                if (o->oTimer < 40) {
+                    vec3f_copy(relEnemyPos, &selectedEnemy->oPosVec);
+                    relEnemyPos[0] += 200;
+                    relEnemyPos[2] += 200;
+
+                    approach_vec3f_asymptotic(gMarioState->pos, relEnemyPos, 0.08f, 0.08f, 0.08f);
+                }
+                if (o->oTimer == 40) {
+                    gLakituState.goalPos[0] = gMarioState->pos[0] + 90;
+                gLakituState.goalPos[1] = 200;
+                gLakituState.goalPos[2] = gMarioState->pos[2] + 300;
+                vec3f_copy(gLakituState.goalFocus, &selectedEnemy->oPosVec);
+                    set_mario_animation(gMarioState, MARIO_ANIM_FIRST_PUNCH);
+                    play_sound(SOUND_MARIO_PUNCH_YAH, gGlobalSoundSource);
+                    o->oSubAction++;
+                }
+            break;
+            case 1:
+                if (is_anim_at_end(gMarioState)) {
+                    set_mario_animation(gMarioState, MARIO_ANIM_FIRST_PUNCH_FAST);
+                    o->oSubAction++;
+                }
+            break;
+            case 2:
+                if (is_anim_at_end(gMarioState)) {
+                    set_mario_animation(gMarioState, MARIO_ANIM_SECOND_PUNCH);
+                    play_sound(SOUND_MARIO_PUNCH_WAH, gGlobalSoundSource);
+                    o->oSubAction++;
+                }
+            break;
+            case 3:
+                if (is_anim_at_end(gMarioState)) {
+                    set_mario_animation(gMarioState, MARIO_ANIM_SECOND_PUNCH_FAST);
+                    o->oSubAction++;
+                }
+            break;
+            case 4:
+                if (is_anim_at_end(gMarioState)) {
+                    o->oAction = PERSONA_ACT_MARIO_TURN;
+                }
+            break;
+        }
     break;
    }
 }

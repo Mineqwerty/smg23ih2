@@ -659,8 +659,8 @@ void render_hud(void) {
         }
 
         if (gCurrLevelNum == SMG23IH2_LEVEL_6 && gCurrAreaIndex == 2) {
-            render_dl_persona();
             if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_MAIN_TEXT) {
+                render_dl_persona();
                 render_persona_selector_text();
             }
         }
