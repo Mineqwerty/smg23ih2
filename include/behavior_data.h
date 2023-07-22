@@ -570,3 +570,4 @@ extern const BehaviorScript bhvGaslightManager[];
 extern const BehaviorScript bhvSquidWord[];
 extern const BehaviorScript bhvFloatInPlace[];
 extern const BehaviorScript bhvPersonaBattleManager[];
+extern const BehaviorScript bhvCowardlyMaya[];

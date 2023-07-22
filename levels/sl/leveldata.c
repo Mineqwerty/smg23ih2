@@ -44,3 +44,6 @@
 #include "levels/sl/itemIcon/model.inc.c"
 #include "levels/sl/fleeIcon/model.inc.c"
 #include "levels/sl/personaIcon/model.inc.c"
+#include "levels/sl/cowardly_maya/model.inc.c"
+#include "levels/sl/cowardly_maya/anims/data.inc.c"
+#include "levels/sl/cowardly_maya/anims/table.inc.c"

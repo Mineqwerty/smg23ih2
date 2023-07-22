@@ -65,6 +65,7 @@ void bhv_persona_battle_manager_loop(void) {
         }
         if (o->oTimer == 181) {
             o->oAction = PERSONA_ACT_MARIO_TURN;
+            gPersonaMenuFlags |= PERSONA_MENU_FLAGS_MAIN_TEXT;
             gMarioState->forwardVel = 0;
             set_mario_animation(gMarioState, MARIO_ANIM_IDLE_HEAD_LEFT);
         }
@@ -83,6 +84,7 @@ void bhv_persona_battle_manager_loop(void) {
             break;
             case 1:
                 if (gPlayer1Controller->rawStickY > 8) {
+                    play_sound(SOUND_CUSTOM0_P_MENU_ROTATE, gGlobalSoundSource);
                     gSelectedBattleCommand++;
                     if (gSelectedBattleCommand == 7) {
                         gSelectedBattleCommand = 0;
@@ -91,6 +93,7 @@ void bhv_persona_battle_manager_loop(void) {
                     o->oSubAction = 2;
                 }
                 if (gPlayer1Controller->rawStickY <= -8) {
+                    play_sound(SOUND_CUSTOM0_P_MENU_ROTATE, gGlobalSoundSource);
                     gSelectedBattleCommand--;
                     if (gSelectedBattleCommand == -1) {
                         gSelectedBattleCommand = 6;

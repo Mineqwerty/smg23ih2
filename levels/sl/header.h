@@ -60,4 +60,8 @@ extern const LevelScript level_sl_entry[];
 
 #include "levels/sl/personaIcon/header.h"
 
+#include "levels/sl/cowardly_maya/geo_header.h"
+
+#include "levels/sl/cowardly_maya/anim_header.h"
+
 #endif

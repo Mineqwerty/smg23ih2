@@ -9,7 +9,7 @@
  * SET YOUR FONT NAME HERE
  */
 #ifndef FONTNAME
-    #define FONTNAME impact
+    #define FONTNAME myfont
 #endif
 
 
@@ -17,7 +17,7 @@
  * Helpful defines to change
  ***********/
 
-#define BASE_SCALE 1.0f
+#define BASE_SCALE 1.1f
 
 /******************************
  *

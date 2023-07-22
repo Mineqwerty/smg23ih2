@@ -145,6 +145,11 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "26_p_battle_start"
+        },
+        "inst26": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "27_p_menu_rotate"
         }
     },
     "instrument_list": [
@@ -173,6 +178,7 @@
         "inst22",
         "inst23",
         "inst24",
-        "inst25"
+        "inst25",
+        "inst26"
     ]
 }
