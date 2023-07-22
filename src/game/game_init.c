@@ -459,20 +459,23 @@ void display_and_vsync(void) {
                 fb[(j - SCREEN_WIDTH)] = fb[j];
                 fb[(j - (SCREEN_WIDTH + 1))] = fb[j];
 
-                drawColor[0] = (fb[j] & 0xf800) >> 8;
-                drawColor[1] = (fb[j] & 0x07c0) >> 3;
-                drawColor[2] = (fb[j] & 0x003e) << 2;
+                // drawColor[0] = (fb[j] & 0xf800) >> 9;
+                drawColor[0] = (fb[j]) >> 9; // Technically UB from green, but oh well it saves instructions
+                drawColor[1] = (fb[j] & 0x07c0) >> 4;
+                drawColor[2] = (fb[j] & 0x003e) << 1;
 
-                blurColor[0] =   (fb[j - (SCREEN_WIDTH + 20)] & 0xf800) >> 8;
-                blurColor[1] =     (fb[j - (SCREEN_WIDTH*20)] & 0x07c0) >> 3;
-                blurColor[2] = (fb[j - (SCREEN_WIDTH*5 - 60)] & 0x003e) << 2;
+                // blurColor[0] =   (fb[j - (SCREEN_WIDTH + 20)] & 0xf800) >> 9;
+                blurColor[0] =   (fb[j - (SCREEN_WIDTH + 20)]) >> 9; // Technically UB from green, but oh well it saves instructions
+                blurColor[1] =     (fb[j - (SCREEN_WIDTH*20)] & 0x07c0) >> 4;
+                blurColor[2] = (fb[j - (SCREEN_WIDTH*5 - 60)] & 0x003e) << 1;
                 
                 if (j >= SCREEN_WIDTH*2) {
-                    fb[(j - SCREEN_WIDTH*2)] = GPACK_RGBA5551((drawColor[0] + blurColor[0]) >> 1, (drawColor[1] + blurColor[1]) >> 1, (drawColor[2] + blurColor[2]) >> 1, 255);
-                    blurColor[0] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0xf800) >> 8;
-                    blurColor[1] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x7c0) >> 3;
-                    blurColor[2] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x3e) << 2;
-                    fb[(j - (SCREEN_WIDTH*2 + 3))] = GPACK_RGBA5551((drawColor[0] + blurColor[0]) >> 1, (drawColor[1] + blurColor[1]) >> 1, (drawColor[2] + blurColor[2]) >> 1, 255);
+                    fb[(j - SCREEN_WIDTH*2)] = GPACK_RGBA5551(drawColor[0] + blurColor[0], drawColor[1] + blurColor[1], drawColor[2] + blurColor[2], 255);
+                    // blurColor[0] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0xf800) >> 9;
+                    blurColor[0] = (fb[j - (SCREEN_WIDTH*2 + 1)]) >> 9; // Technically UB from green, but oh well it saves instructions
+                    blurColor[1] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x07c0) >> 4;
+                    blurColor[2] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x003e) << 1;
+                    fb[(j - (SCREEN_WIDTH*2 + 3))] = GPACK_RGBA5551(drawColor[0] + blurColor[0], drawColor[1] + blurColor[1], drawColor[2] + blurColor[2], 255);
                 }
             }
         }
