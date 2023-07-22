@@ -438,10 +438,11 @@ s32 act_persona_battle_transition(struct MarioState *m) {
     if (gPersonaBattleTransitionTimer == 1) {
         play_sound(SOUND_CUSTOM0_P_BATTLE_START, gGlobalSoundSource);
     }
-    if (gPersonaBattleTransitionTimer == 75) {
+    if (gPersonaBattleTransitionTimer >= 75) {
         gChangeArea = 2;
         set_mario_action(m, ACT_PERSONA_BATTLE, 0);
         
+        gPersonaBattleTransitionTimer = 0;
         gPersonaBattleTransition = FALSE;
     }
     return FALSE;
