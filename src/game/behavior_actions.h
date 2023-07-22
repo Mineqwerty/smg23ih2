@@ -638,3 +638,5 @@ void bhv_float_in_place_init(void);
 void bhv_float_in_place_loop(void);
 void bhv_persona_battle_manager_init(void);
 void bhv_persona_battle_manager_loop(void);
+void bhv_cowardly_maya_init(void);
+void bhv_cowardly_maya_loop(void);

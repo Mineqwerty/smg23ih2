@@ -571,6 +571,7 @@
 #define MODEL_BABOMB_EXCIVATOIN           0x12E
 #define MODEL_FLOATING_STUFF_1            0x12F
 #define MODEL_GOOMBA_REAL            0x130
+#define MODEL_COWARDLY_MAYA            0x131
 
 
 #endif

@@ -44,7 +44,7 @@ const LevelScript level_sl_entry[] = {
 	LOAD_MODEL_FROM_GEO(MODEL_SL_CRACKED_ICE, sl_geo_000360), 
 	LOAD_MODEL_FROM_GEO(MODEL_SL_CRACKED_ICE_CHUNK, sl_geo_000378), 
 	LOAD_MODEL_FROM_GEO(MODEL_FLOATING_STUFF_1, floating_stuff_1_geo), 
-	// LOAD_MODEL_FROM_GEO(MODEL_GOOMBA, goomba_geo), 
+	LOAD_MODEL_FROM_GEO(MODEL_COWARDLY_MAYA, cowardly_maya_geo), 
 
 	/* Fast64 begin persistent block [level commands] */
 	/* Fast64 end persistent block [level commands] */
@@ -70,6 +70,7 @@ const LevelScript level_sl_entry[] = {
 		WARP_NODE(0xF1, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
 		OBJECT(MODEL_FLOATING_STUFF_1, -6025, 1845, -1654, 0, 0, 0, (60 << 16), bhvFloatInPlace),
 		OBJECT(MODEL_NONE, -65, 0, 67, 0, 0, 0, 0x00000000, bhvPersonaBattleManager),
+		OBJECT(MODEL_COWARDLY_MAYA, -499, 0, 882, 0, 43, 0, 0x00000000, bhvCowardlyMaya),
 		OBJECT(MODEL_NONE, -21, 0, 1403, 0, 0, 0, 0x000A0000, bhvSpinAirborneWarp),
 		TERRAIN(sl_area_2_collision),
 		MACRO_OBJECTS(sl_area_2_macro_objs),

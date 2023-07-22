@@ -22,3 +22,4 @@
 #include "levels/sl/geo.inc.c"
 
 #include "levels/sl/floating_stuff_1/geo.inc.c"
+#include "levels/sl/cowardly_maya/geo.inc.c"

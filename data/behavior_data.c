@@ -6365,3 +6365,16 @@ const BehaviorScript bhvPersonaBattleManager[] = {
         CALL_NATIVE(bhv_persona_battle_manager_loop),
     END_LOOP(),
 };
+
+const BehaviorScript bhvCowardlyMaya[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    SET_HOME(),
+    LOAD_ANIMATIONS(oAnimations, cowardly_maya_anims),
+    ANIMATE(0),
+    SET_FLOAT(oDrawingDistance, 30000),
+    CALL_NATIVE(bhv_cowardly_maya_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_cowardly_maya_loop),
+    END_LOOP(),
+};
