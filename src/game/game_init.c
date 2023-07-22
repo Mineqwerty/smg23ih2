@@ -428,6 +428,8 @@ void select_gfx_pool(void) {
     gGfxPoolEnd = (u8 *) (gGfxPool->buffer + GFX_POOL_SIZE);
 }
 
+extern int profile_buffer_index;
+extern void buffer_update(ProfileTimeData* data, u32 new, int buffer_index);
 /**
  * This function:
  * - Sends the current master display list out to be rendered.
@@ -449,38 +451,9 @@ void display_and_vsync(void) {
     UNUSED u16 blueFade1;
     UNUSED u16 blueFade2;
 
-    PROFILER_GET_SNAPSHOT_TYPE(PROFILER_DELTA_COLLISION);
+    u32 first = osGetCount();
 
-    if (gFuckUpScreen == 1) {
-        RGBA16 *fb = gFramebuffers[sRenderedFramebuffer];
-        for (int i = SCREEN_WIDTH; i < SCREEN_HEIGHT*SCREEN_WIDTH; i+=(2*SCREEN_WIDTH)) {
-            for (int j = i; j < i + SCREEN_WIDTH; j+=2) {
-                fb[(j - 1)] = fb[j];
-                fb[(j - SCREEN_WIDTH)] = fb[j];
-                fb[(j - (SCREEN_WIDTH + 1))] = fb[j];
-
-                // drawColor[0] = (fb[j] & 0xf800) >> 9;
-                drawColor[0] = (fb[j]) >> 9; // Technically UB from green, but oh well it saves instructions
-                drawColor[1] = (fb[j] & 0x07c0) >> 4;
-                drawColor[2] = (fb[j] & 0x003e) << 1;
-
-                // blurColor[0] =   (fb[j - (SCREEN_WIDTH + 20)] & 0xf800) >> 9;
-                blurColor[0] =   (fb[j - (SCREEN_WIDTH + 20)]) >> 9; // Technically UB from green, but oh well it saves instructions
-                blurColor[1] =     (fb[j - (SCREEN_WIDTH*20)] & 0x07c0) >> 4;
-                blurColor[2] = (fb[j - (SCREEN_WIDTH*5 - 60)] & 0x003e) << 1;
-                
-                if (j >= SCREEN_WIDTH*2) {
-                    fb[(j - SCREEN_WIDTH*2)] = GPACK_RGBA5551(drawColor[0] + blurColor[0], drawColor[1] + blurColor[1], drawColor[2] + blurColor[2], 255);
-                    // blurColor[0] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0xf800) >> 9;
-                    blurColor[0] = (fb[j - (SCREEN_WIDTH*2 + 1)]) >> 9; // Technically UB from green, but oh well it saves instructions
-                    blurColor[1] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x07c0) >> 4;
-                    blurColor[2] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x003e) << 1;
-                    fb[(j - (SCREEN_WIDTH*2 + 3))] = GPACK_RGBA5551(drawColor[0] + blurColor[0], drawColor[1] + blurColor[1], drawColor[2] + blurColor[2], 255);
-                }
-            }
-        }
-    }
-
+    // Should be above osRecvMesg to avoid initial flicker, does not need perf boost on console
     if (gPersonaBattleTransition == TRUE) {
         if (gIsConsole || gIsVC || gCacheEmulated) { // This somehow runs full speed on console but not emulator, which causes flickering and stuff (probably a meme with the cache)
             RGBA16 *fb = gFramebuffers[sRenderedFramebuffer];
@@ -528,8 +501,7 @@ void display_and_vsync(void) {
         sRenderingFramebuffer = 0;
     }
 
-    profiler_update(PROFILER_TIME_FBE, profiler_get_delta(PROFILER_DELTA_COLLISION) - first);
-
+    u32 second = osGetCount();
 #ifndef UNLOCK_FPS
     //if (gPersonaBattleTransition == TRUE) {
     //    osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
@@ -539,6 +511,42 @@ void display_and_vsync(void) {
     osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
     
 #endif
+
+    second = osGetCount() - second;
+
+    // Does better on console below osRecvMesg, but not the other one
+    if (gFuckUpScreen == 1) {
+        RGBA16 *fb = gFramebuffers[sRenderedFramebuffer];
+        for (int i = SCREEN_WIDTH; i < SCREEN_HEIGHT*SCREEN_WIDTH; i+=(2*SCREEN_WIDTH)) {
+            for (int j = i; j < i + SCREEN_WIDTH; j+=2) {
+                fb[(j - 1)] = fb[j];
+                fb[(j - SCREEN_WIDTH)] = fb[j];
+                fb[(j - (SCREEN_WIDTH + 1))] = fb[j];
+
+                // drawColor[0] = (fb[j] & 0xf800) >> 9;
+                drawColor[0] = (fb[j]) >> 9; // Technically UB from green, but oh well it saves instructions
+                drawColor[1] = (fb[j] & 0x07c0) >> 4;
+                drawColor[2] = (fb[j] & 0x003e) << 1;
+
+                // blurColor[0] =   (fb[j - (SCREEN_WIDTH + 20)] & 0xf800) >> 9;
+                blurColor[0] =   (fb[j - (SCREEN_WIDTH + 20)]) >> 9; // Technically UB from green, but oh well it saves instructions
+                blurColor[1] =     (fb[j - (SCREEN_WIDTH*20)] & 0x07c0) >> 4;
+                blurColor[2] = (fb[j - (SCREEN_WIDTH*5 - 60)] & 0x003e) << 1;
+                
+                if (j >= SCREEN_WIDTH*2) {
+                    fb[(j - SCREEN_WIDTH*2)] = GPACK_RGBA5551(drawColor[0] + blurColor[0], drawColor[1] + blurColor[1], drawColor[2] + blurColor[2], 255);
+                    // blurColor[0] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0xf800) >> 9;
+                    blurColor[0] = (fb[j - (SCREEN_WIDTH*2 + 1)]) >> 9; // Technically UB from green, but oh well it saves instructions
+                    blurColor[1] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x07c0) >> 4;
+                    blurColor[2] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x003e) << 1;
+                    fb[(j - (SCREEN_WIDTH*2 + 3))] = GPACK_RGBA5551(drawColor[0] + blurColor[0], drawColor[1] + blurColor[1], drawColor[2] + blurColor[2], 255);
+                }
+            }
+        }
+    }
+
+    buffer_update(&all_profiling_data[PROFILER_TIME_FBE], osGetCount() - first - second, profile_buffer_index);
+
     osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFramebuffers[sRenderedFramebuffer]));
 #ifndef UNLOCK_FPS
     osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
