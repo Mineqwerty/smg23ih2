@@ -37,7 +37,7 @@ void bhv_car_orange_number_loop(void) {
 void bhv_fazana_car_init(void) {
     o->oGravity = 1.25f;
     o->oFriction = 0.97f;
-    o->oBuoyancy = 0.5f;
+    o->oBuoyancy = 3.5f;
     o->oBounciness = 0.35f;
     obj_set_hitbox(o, &sFazanaCarHitbox);
     cur_obj_become_tangible();

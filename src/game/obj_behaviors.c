@@ -314,6 +314,7 @@ void calc_new_obj_vel_and_pos_y_underwater(struct Surface *objFloor, f32 floorY,
     f32 floor_nX = objFloor->normal.x;
     f32 floor_nY = objFloor->normal.y;
     f32 floor_nZ = objFloor->normal.z;
+    f32 objFriction;
 
     f32 netYAccel = (1.0f - o->oBuoyancy) * (-1.0f * o->oGravity);
     o->oVelY -= netYAccel;
@@ -371,8 +372,13 @@ void calc_new_obj_vel_and_pos_y_underwater(struct Surface *objFloor, f32 floorY,
 
     // Decreases both vertical velocity and forward velocity. Likely so that skips above
     // don't loop infinitely.
-    if (o->behavior == segmented_to_virtual(bhvFazanaCar) && o->oForwardVel < 0.0f) {
-        o->oForwardVel = -sqrtf(sqr(objVelX) + sqr(objVelZ)) * 0.8f;
+    if (o->behavior == segmented_to_virtual(bhvFazanaCar)) {
+        calc_obj_friction(&objFriction, floor_nY);
+        if (o->oForwardVel < 0.0f) {
+            o->oForwardVel = -sqrtf(sqr(objVelX) + sqr(objVelZ)) * (objFriction * o->oFriction);
+        } else {
+            o->oForwardVel = sqrtf(sqr(objVelX) + sqr(objVelZ)) * (objFriction * o->oFriction);
+        }
     } else {
         o->oForwardVel = sqrtf(sqr(objVelX) + sqr(objVelZ)) * 0.8f;
     }
