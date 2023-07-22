@@ -834,6 +834,33 @@ s32 cur_obj_check_frame_prior_current_frame(s16 *frame) {
     return FALSE;
 }
 
+struct Object *cur_obj_find_object_with_bparam_2nd_byte(const BehaviorScript *behavior, int bparam) {
+    uintptr_t *behaviorAddr = segmented_to_virtual(behavior);
+    struct Object *returnObj = NULL;
+    struct Object *obj;
+    struct ObjectNode *listHead;
+    
+
+    listHead = &gObjectLists[get_object_list_from_behavior(behaviorAddr)];
+    obj = (struct Object *) listHead->next;
+
+    while (obj != (struct Object *) listHead) {
+        if (obj->behavior == behaviorAddr) {
+            if (obj->activeFlags != ACTIVE_FLAG_DEACTIVATED && obj != o) {
+                f32 objDist = dist_between_objects(o, obj);
+                if (obj->oBehParams2ndByte == bparam) {
+                    returnObj = obj;
+                    
+                }
+            }
+        }
+        obj = (struct Object *) obj->header.next;
+    }
+
+    
+    return returnObj;
+}
+
 s32 mario_is_in_air_action(void) {
     return gMarioStates[0].action & ACT_FLAG_AIR;
 }

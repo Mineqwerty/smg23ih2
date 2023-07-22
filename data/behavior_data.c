@@ -6378,3 +6378,13 @@ const BehaviorScript bhvCowardlyMaya[] = {
         CALL_NATIVE(bhv_cowardly_maya_loop),
     END_LOOP(),
 };
+
+const BehaviorScript bhvEnemySelector[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    BILLBOARD(),
+    CALL_NATIVE(bhv_enemy_selector_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_enemy_selector_loop),
+    END_LOOP(),
+};

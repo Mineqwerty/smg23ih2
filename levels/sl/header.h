@@ -64,4 +64,6 @@ extern const LevelScript level_sl_entry[];
 
 #include "levels/sl/cowardly_maya/anim_header.h"
 
+#include "levels/sl/enemy_selector/geo_header.h"
+
 #endif

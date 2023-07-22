@@ -47,3 +47,4 @@
 #include "levels/sl/cowardly_maya/model.inc.c"
 #include "levels/sl/cowardly_maya/anims/data.inc.c"
 #include "levels/sl/cowardly_maya/anims/table.inc.c"
+#include "levels/sl/enemy_selector/model.inc.c"

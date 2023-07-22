@@ -5,7 +5,9 @@
 
 s8 gSelectedBattleCommand = 0;
 s16 gBattleOptionRotationTimer = 0;
-u16 gPersonaMenuFlags;
+u16 gPersonaMenuFlags = 0;
+s8 gSelectedEnemy = 0;
+u8 gSelectorCooldown = 0;
 
 char *optionText[] = {
     COLOR "160 174 186 210" SCALE "20" "Attack",

@@ -3,6 +3,8 @@ extern s16 gBattleOptionRotationTimer;
 extern char *optionText[];
 extern char *optionDescriptionText[];
 extern u16 gPersonaMenuFlags;
+extern s8 gSelectedEnemy;
+extern u8 gSelectorCooldown;
 
 enum PersonaMenuFlags {
     PERSONA_MENU_FLAGS_NONE         = /* 0x0000 */ (0 <<  0),

@@ -124,6 +124,7 @@ struct Object *cur_obj_find_nearest_object_with_behavior(const BehaviorScript * 
 struct Object *obj_find_nearest_object_with_behavior(struct Object *object, const BehaviorScript * behavior, f32 *dist);
 struct Object *find_first_object_with_behavior_and_bparams(const BehaviorScript *behavior, u32 bparams, u32 bparamMask);
 struct Object *find_unimportant_object(void);
+struct Object *cur_obj_find_object_with_bparam_2nd_byte(const BehaviorScript *behavior, int bparam);
 s32 count_unimportant_objects(void);
 s32 count_objects_with_behavior(const BehaviorScript *behavior);
 struct Object *cur_obj_find_nearby_held_actor(const BehaviorScript *behavior, f32 maxDist);

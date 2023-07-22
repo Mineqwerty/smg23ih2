@@ -4,11 +4,54 @@
 enum PersonaBattleActions {
     PERSONA_ACT_INTRO,
     PERSONA_ACT_MARIO_TURN,
+    PERSONA_ACT_SELECT_ATTACK,
+    PERSONA_ACT_MARIO_ATTACKING,
+    PERSONA_ACT_SELECT_SKILL,
+    PERSONA_ACT_SELECT_SKILL_TARGET,
+    PERSONA_ACT_USING_SKILL,
+
 };
 
 void mario_move_fvel(void) {
     gMarioState->pos[0] += gMarioState->forwardVel * sins(gMarioState->faceAngle[1]);
     gMarioState->pos[2] += gMarioState->forwardVel * coss(gMarioState->faceAngle[1]);
+}
+
+void animate_mario_idle(void) {
+    switch (gMarioState->actionState) {
+            case 0:
+                set_mario_animation(gMarioState, MARIO_ANIM_IDLE_HEAD_LEFT);
+                break;
+
+            case 1:
+                set_mario_animation(gMarioState, MARIO_ANIM_IDLE_HEAD_RIGHT);
+                break;
+
+            case 2:
+                set_mario_animation(gMarioState, MARIO_ANIM_IDLE_HEAD_CENTER);
+                break;
+        }
+
+        if (is_anim_at_end(gMarioState)) {
+            gMarioState->actionState++;
+            if (gMarioState->actionState == 3) {
+                gMarioState->actionState = 0;
+            }
+        }
+}
+
+void select_enemy(struct Object *selectedEnemy) {
+    struct Object *findEnemy = cur_obj_find_object_with_bparam_2nd_byte(bhvCowardlyMaya, gSelectedEnemy);
+    if (!findEnemy) {
+        gSelectedEnemy += 1;
+        if (gSelectedEnemy > 2) {
+            gSelectedEnemy = 0;
+        }
+        select_enemy(selectedEnemy);
+    }
+    else {
+        selectedEnemy = findEnemy;
+    }
 }
 
 void bhv_persona_battle_manager_init(void) {
@@ -25,6 +68,11 @@ void bhv_persona_battle_manager_init(void) {
 }
 
 void bhv_persona_battle_manager_loop(void) {
+
+    struct Object *selectedEnemy;
+    Vec3f endCameraPos = {1000.0f, 442.0f, 2300.0f};
+    Vec3f endCameraFocus = {200.0f, 0.0f, 1400.0f};
+
    switch (o->oAction) {
     case PERSONA_ACT_INTRO:
         //camera
@@ -38,8 +86,6 @@ void bhv_persona_battle_manager_loop(void) {
             gLakituState.goalFocus[2] = 530.0f;
         }
         else {
-            Vec3f endCameraPos = {1000.0f, 442.0f, 2300.0f};
-            Vec3f endCameraFocus = {200.0f, 0.0f, 1400.0f};
             approach_vec3f_asymptotic(gLakituState.goalPos, endCameraPos, 0.05f, 0.05f, 0.05f);
             approach_vec3f_asymptotic(gLakituState.goalFocus, endCameraFocus, 0.05f, 0.05f, 0.05f);
         }
@@ -71,7 +117,6 @@ void bhv_persona_battle_manager_loop(void) {
         }
     break;
     case PERSONA_ACT_MARIO_TURN:
-
         switch (o->oSubAction) {
             case 0:
                 if (o->oTimer < 15) {
@@ -81,9 +126,28 @@ void bhv_persona_battle_manager_loop(void) {
                     gPersonaHUDAlpha = 210;
                     o->oSubAction = 1;
                 }
+
+                
+                approach_vec3f_asymptotic(gLakituState.goalPos, endCameraPos, 0.15f, 0.15f, 0.15f);
+                approach_vec3f_asymptotic(gLakituState.goalFocus, endCameraFocus, 0.15f, 0.15f, 0.15f);
             break;
             case 1:
-                if (gPlayer1Controller->rawStickY > 8) {
+                if (gPlayer1Controller->buttonPressed & A_BUTTON) {
+                    switch (gSelectedBattleCommand) {
+                        case 0:
+                            o->oAction = PERSONA_ACT_SELECT_ATTACK;
+                            gPersonaMenuFlags |= PERSONA_MENU_FLAGS_ATTACK_TEXT;
+                            gSelectedEnemy = 0;
+                            select_enemy(selectedEnemy);
+                            spawn_object(o, MODEL_ENEMY_SELECTOR, bhvEnemySelector);
+                            
+                        break;
+                        case 1:
+                            o->oAction = PERSONA_ACT_SELECT_SKILL;
+                        break;
+                    }
+                }
+                else if (gPlayer1Controller->rawStickY > 8) {
                     play_sound(SOUND_CUSTOM0_P_MENU_ROTATE, gGlobalSoundSource);
                     gSelectedBattleCommand++;
                     if (gSelectedBattleCommand == 7) {
@@ -92,7 +156,7 @@ void bhv_persona_battle_manager_loop(void) {
                     gBattleOptionRotationTimer = 1;
                     o->oSubAction = 2;
                 }
-                if (gPlayer1Controller->rawStickY <= -8) {
+                else if (gPlayer1Controller->rawStickY <= -8) {
                     play_sound(SOUND_CUSTOM0_P_MENU_ROTATE, gGlobalSoundSource);
                     gSelectedBattleCommand--;
                     if (gSelectedBattleCommand == -1) {
@@ -121,26 +185,50 @@ void bhv_persona_battle_manager_loop(void) {
 
 
 
-        switch (gMarioState->actionState) {
-            case 0:
-                set_mario_animation(gMarioState, MARIO_ANIM_IDLE_HEAD_LEFT);
-                break;
+        animate_mario_idle();
+    break;
 
-            case 1:
-                set_mario_animation(gMarioState, MARIO_ANIM_IDLE_HEAD_RIGHT);
-                break;
-
-            case 2:
-                set_mario_animation(gMarioState, MARIO_ANIM_IDLE_HEAD_CENTER);
-                break;
-        }
-
-        if (is_anim_at_end(gMarioState)) {
-            gMarioState->actionState++;
-            if (gMarioState->actionState == 3) {
-                gMarioState->actionState = 0;
+    case PERSONA_ACT_SELECT_ATTACK:
+        if (gPlayer1Controller->rawStickX > 8) {
+            if (gSelectorCooldown == FALSE) {
+                gSelectorCooldown = TRUE;
+                gSelectedEnemy++;
+                if (gSelectedEnemy == 3) {
+                    gSelectedEnemy = 0;
+                }
+                select_enemy(selectedEnemy);
+                play_sound(SOUND_CUSTOM0_P_SELECTOR, gGlobalSoundSource);
             }
         }
+        else if (gPlayer1Controller->rawStickX < -8) {
+            if (gSelectorCooldown == FALSE) {
+                gSelectorCooldown = TRUE;
+                gSelectedEnemy--;
+                if (gSelectedEnemy == -1) {
+                    gSelectedEnemy = 2;
+                }
+                select_enemy(selectedEnemy);
+                play_sound(SOUND_CUSTOM0_P_SELECTOR, gGlobalSoundSource);
+            }
+        }
+        else if (gPlayer1Controller->buttonPressed & B_BUTTON) {
+            o->oAction = PERSONA_ACT_MARIO_TURN;
+            play_sound(SOUND_CUSTOM0_P_CANCEL, gGlobalSoundSource);
+            gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_ATTACK_TEXT);
+        }
+        else {
+            gSelectorCooldown = FALSE;
+        }
+
+        selectedEnemy = cur_obj_find_object_with_bparam_2nd_byte(bhvCowardlyMaya, gSelectedEnemy);
+
+        if (selectedEnemy) {
+            Vec3f enemyCameraPos = {selectedEnemy->oPosX + 500, 342.0f, selectedEnemy->oPosZ + 500};
+            Vec3f enemyCameraFocus = {selectedEnemy->oPosX, 42.0f, selectedEnemy->oPosZ};
+            approach_vec3f_asymptotic(gLakituState.goalPos, enemyCameraPos, 0.05f, 0.05f, 0.05f);
+            approach_vec3f_asymptotic(gLakituState.goalFocus, enemyCameraFocus, 0.05f, 0.05f, 0.05f);
+        }
+        animate_mario_idle();
     break;
    }
 }

@@ -571,3 +571,4 @@ extern const BehaviorScript bhvSquidWord[];
 extern const BehaviorScript bhvFloatInPlace[];
 extern const BehaviorScript bhvPersonaBattleManager[];
 extern const BehaviorScript bhvCowardlyMaya[];
+extern const BehaviorScript bhvEnemySelector[];

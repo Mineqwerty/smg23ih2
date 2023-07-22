@@ -8050,6 +8050,8 @@ sound_ref .sound_custom0_squid_word_scream
 sound_ref .sound_custom0_surprise_chuckya
 sound_ref .sound_custom0_p_battle_start
 sound_ref .sound_custom0_p_menu_rotate
+sound_ref .sound_custom0_p_selector
+sound_ref .sound_custom0_p_cancel
 
 .sound_custom0_mario_maker_laugh_0:
 chan_setbank 5
@@ -8146,6 +8148,30 @@ chan_end
 
 .layer_custom0_p_menu_rotate:
 layer_note1 39, 0x81, 127
+layer_end
+
+.sound_custom0_p_selector:
+chan_setbank 5
+chan_setinstr 27
+chan_setval 0x20
+chan_call .set_reverb
+chan_setlayer 0, .layer_custom0_p_selector
+chan_end
+
+.layer_custom0_p_selector:
+layer_note1 39, 0x20, 127
+layer_end
+
+.sound_custom0_p_cancel:
+chan_setbank 5
+chan_setinstr 28
+chan_setval 0x20
+chan_call .set_reverb
+chan_setlayer 0, .layer_custom0_p_cancel
+chan_end
+
+.layer_custom0_p_cancel:
+layer_note1 39, 0x38, 127
 layer_end
 
 .align 2, 0
