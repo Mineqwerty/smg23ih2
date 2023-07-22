@@ -36,6 +36,7 @@
     "21_menu_file_select": ["24"],
     "22_cutscene_lakitu": {"ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"], "banks": ["1B"]},
     "23_shit_bros_3": ["25"],
-    "24_shit_bros_1": ["25"],
-    "25_custom_mass_destruction": ["26_custom_mass_destruction"]
+    "24_shit_bros_2": ["25"],
+    "25_shit_bros_1": ["25"],
+    "26_custom_mass_destruction": ["26_custom_mass_destruction"]
 }

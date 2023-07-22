@@ -46,8 +46,9 @@ enum SeqId {
     SEQ_MENU_FILE_SELECT,             // 0x21
     SEQ_EVENT_CUTSCENE_LAKITU,        // 0x22 (not in JP)
     SEQ_SHIT_BROS_3,                  // 0x23
-    SEQ_SHIT_BROS_1,                  // 0x24
-    SEQ_STREAMED_MASS_DESTRUCTION,    // 0x25
+    SEQ_SHIT_BROS_2,                  // 0x24
+    SEQ_SHIT_BROS_1,                  // 0x25
+    SEQ_STREAMED_MASS_DESTRUCTION,    // 0x26
     SEQ_COUNT
 };
 
