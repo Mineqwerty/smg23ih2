@@ -19,6 +19,7 @@
 #include "puppyprint.h"
 #include "levels/sl/header.h"
 #include "src/game/personaBattle.h"
+#include "src/s2d_engine/s2d_engine.h"
 
 #include "config.h"
 
@@ -357,6 +358,16 @@ void render_dl_persona() {
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
 }
 
+void render_persona_text(void) {
+    s2d_init();
+
+	s2d_print_deferred(18, 185, SCALE "20" "Attack");
+	s2d_handle_deferred();
+
+	// reloads the original microcode; only needed once after all prints
+	s2d_stop();
+}
+
 #ifdef BREATH_METER
 /**
  * Renders breath meter health segment texture using a table list.
@@ -647,6 +658,7 @@ void render_hud(void) {
 
         if (gCurrLevelNum == SMG23IH2_LEVEL_6) {
             render_dl_persona();
+            render_persona_text();
         }
 
 #ifdef BREATH_METER
