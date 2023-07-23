@@ -79,8 +79,7 @@ void bhv_persona_battle_manager_init(void) {
 }
 
 void bhv_persona_battle_manager_loop(void) {
-
-    struct Object *selectedEnemy;
+    struct Object *selectedEnemy = NULL;
     Vec3f endCameraPos = {1000.0f, 442.0f, 2300.0f};
     Vec3f endCameraFocus = {200.0f, 0.0f, 1400.0f};
     Vec3f relEnemyPos = {0, 0, 0};
