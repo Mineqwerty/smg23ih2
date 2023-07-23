@@ -462,7 +462,7 @@ void display_and_vsync(void) {
                 if (iDist < 0) {
                     iDist = -iDist;
                 }
-                for (int j = i; j < i + SCREEN_WIDTH; j += 2) {
+                    for (int j = 0; j < SCREEN_WIDTH; j += 2) {
                     s32 distToCenter = j - SCREEN_CENTER_X;
                     int k = i + j;
                     distToCenter = (iDist + ABS(distToCenter) + gPersonaBattleTransitionTimer) >> 2;
