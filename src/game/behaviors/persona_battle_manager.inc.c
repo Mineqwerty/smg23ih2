@@ -10,6 +10,8 @@ enum PersonaBattleActions {
     PERSONA_ACT_SELECT_SKILL_TARGET,
     PERSONA_ACT_USING_SKILL,
 
+    PERSONA_ACT_ENEMY_TURNS,
+
 };
 
 void mario_move_fvel(void) {
@@ -52,6 +54,15 @@ void select_enemy(struct Object *selectedEnemy) {
     else {
         selectedEnemy = findEnemy;
     }
+}
+
+void transition_to_enemy_turn(void) {
+    o->oAction = PERSONA_ACT_ENEMY_TURNS;
+    gSelectedEnemy = 0;
+    gMarioState->pos[0] = 333;
+    gMarioState->pos[1] = 0;
+    gMarioState->pos[2] = 1471;
+    gMarioState->faceAngle[1] = -0x6000;
 }
 
 void bhv_persona_battle_manager_init(void) {
@@ -256,6 +267,9 @@ void bhv_persona_battle_manager_loop(void) {
                     relEnemyPos[2] += 200;
 
                     approach_vec3f_asymptotic(gMarioState->pos, relEnemyPos, 0.08f, 0.08f, 0.08f);
+                    gMarioState->faceAngle[1] = approach_s16_symmetric(gMarioState->faceAngle[1], 
+                        atan2s(selectedEnemy->oPosZ - gMarioState->pos[2], 
+                        selectedEnemy->oPosX - gMarioState->pos[0]), 0x200);
                 }
                 if (o->oTimer == 40) {
                     gLakituState.goalPos[0] = gMarioState->pos[0] + 90;
@@ -271,10 +285,11 @@ void bhv_persona_battle_manager_loop(void) {
                 if (is_anim_at_end(gMarioState)) {
                     set_mario_animation(gMarioState, MARIO_ANIM_FIRST_PUNCH_FAST);
                     o->oSubAction++;
+                    o->oTimer = 0;
                 }
             break;
             case 2:
-                if (is_anim_at_end(gMarioState)) {
+                if (is_anim_at_end(gMarioState) && o->oTimer > 20) {
                     set_mario_animation(gMarioState, MARIO_ANIM_SECOND_PUNCH);
                     play_sound(SOUND_MARIO_PUNCH_WAH, gGlobalSoundSource);
                     o->oSubAction++;
@@ -284,11 +299,60 @@ void bhv_persona_battle_manager_loop(void) {
                 if (is_anim_at_end(gMarioState)) {
                     set_mario_animation(gMarioState, MARIO_ANIM_SECOND_PUNCH_FAST);
                     o->oSubAction++;
+                    o->oTimer = 0;
                 }
             break;
             case 4:
-                if (is_anim_at_end(gMarioState)) {
-                    o->oAction = PERSONA_ACT_MARIO_TURN;
+                if (is_anim_at_end(gMarioState) && o->oTimer > 40) {
+                    transition_to_enemy_turn();
+                }
+            break;
+        }
+    break;
+    case PERSONA_ACT_ENEMY_TURNS:
+        switch (o->oSubAction) {
+            case 0:
+                gLakituState.goalPos[0] = gMarioState->pos[0] + 130;
+                gLakituState.goalPos[1] = 200;
+                gLakituState.goalPos[2] = gMarioState->pos[2] - 500;
+                gLakituState.goalFocus[0] = gMarioState->pos[0];
+                gLakituState.goalFocus[1] = gMarioState->pos[1];
+                gLakituState.goalFocus[2] = gMarioState->pos[2];
+                select_enemy(selectedEnemy);
+                selectedEnemy = cur_obj_find_object_with_bparam_2nd_byte(bhvCowardlyMaya, gSelectedEnemy);
+                selectedEnemy->oPosX = gMarioState->pos[0] - 400;
+                selectedEnemy->oPosZ = gMarioState->pos[2] - 400;
+                selectedEnemy->oAction = 2;
+                o->oSubAction++;
+
+            break;
+            case 1:
+                selectedEnemy = cur_obj_find_object_with_bparam_2nd_byte(bhvCowardlyMaya, gSelectedEnemy);
+                Vec3f enemyCameraPos = {gMarioState->pos[0] + 180, 342.0f, gMarioState->pos[2] - 530};
+                Vec3f enemyCameraFocus = {selectedEnemy->oPosX, 42.0f, selectedEnemy->oPosZ};
+                approach_vec3f_asymptotic(gLakituState.goalPos, enemyCameraPos, 0.05f, 0.05f, 0.05f);
+                approach_vec3f_asymptotic(gLakituState.goalFocus, enemyCameraFocus, 0.05f, 0.05f, 0.05f);
+
+                if (o->oTimer < 20) {
+                    selectedEnemy->oPosX += 10;
+                    selectedEnemy->oPosZ += 10;
+                    animate_mario_idle();
+                }
+                if (o->oTimer == 28) {
+                    set_mario_animation(gMarioState, MARIO_ANIM_BACKWARD_KB);
+                }
+                if (o->oTimer == 60) {
+                    selectedEnemy->oPosX = selectedEnemy->oHomeX;
+                    selectedEnemy->oPosZ = selectedEnemy->oHomeZ;
+                    selectedEnemy->oAction = 1;
+                    gSelectedEnemy++;
+                    o->oTimer = 0;
+                    o->oSubAction = 0;
+                    if (gSelectedEnemy == 3) {
+                        gSelectedEnemy = 0;
+                        gPersonaMenuFlags |= PERSONA_MENU_FLAGS_MAIN_TEXT;
+                        o->oAction = PERSONA_ACT_MARIO_TURN;
+                    }
                 }
             break;
         }

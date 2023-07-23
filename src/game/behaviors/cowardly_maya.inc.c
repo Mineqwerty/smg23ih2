@@ -17,7 +17,10 @@ void bhv_cowardly_maya_loop(void) {
         }
     }
     if (o->oAction == 1) {
-
+        cur_obj_init_animation(0);
+    }
+    if (o->oAction == 2) {
+        cur_obj_init_animation(1);
     }
 }
 
