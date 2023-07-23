@@ -462,15 +462,16 @@ void display_and_vsync(void) {
                 if (iDist < 0) {
                     iDist = -iDist;
                 }
-                for (int j = i; j < i + SCREEN_WIDTH; j++) {
-                    u32 distToCenter = j - SCREEN_CENTER_X;
+                for (int j = i; j < i + SCREEN_WIDTH; j += 2) {
+                    s32 distToCenter = j - SCREEN_CENTER_X;
+                    int k = i + j;
                     distToCenter = (iDist + ABS(distToCenter) + gPersonaBattleTransitionTimer) >> 2;
-                    s32 blue = (fb[j] & 0x003e) + distToCenter;
-                    fb[j] = (fb[j] & ~0x003e) | (blue < ((1 << 5) - 1) ? blue : ((1 << 5) - 1));
+                    s32 blue = (fb[k] & 0x003e) + distToCenter;
+                    fb[k] = (fb[k] & ~0x003e) | (blue < ((1 << 6) - 1) ? blue : ((1 << 6) - 1));
 
-                    ++j;
-                    blue = (fb[j] & 0x003e) + distToCenter;
-                    fb[j] = (fb[j] & ~0x003e) | (blue < ((1 << 5) - 1) ? blue : ((1 << 5) - 1));
+                    ++k;
+                    blue = (fb[k] & 0x003e) + distToCenter;
+                    fb[k] = (fb[k] & ~0x003e) | (blue < ((1 << 6) - 1) ? blue : ((1 << 6) - 1));
                 }
             }
         } else {
@@ -483,15 +484,16 @@ void display_and_vsync(void) {
                     if (iDist < 0) {
                         iDist = -iDist;
                     }
-                    for (int j = i; j < i + SCREEN_WIDTH; j++) {
-                        u32 distToCenter = j - SCREEN_CENTER_X;
+                    for (int j = 0; j < SCREEN_WIDTH; j += 2) {
+                        s32 distToCenter = j - SCREEN_CENTER_X;
+                        int k = i + j;
                         distToCenter = (iDist + ABS(distToCenter) + gPersonaBattleTransitionTimer) >> 2;
-                        s32 blue = (fb1[j] & 0x003e) + distToCenter;
-                        fb0[j] = (fb1[j] & ~0x003e) | (blue < ((1 << 5) - 1) ? blue : ((1 << 5) - 1));
+                        s32 blue = (fb1[k] & 0x003e) + distToCenter;
+                        fb0[k] = (fb1[k] & ~0x003e) | (blue < ((1 << 6) - 1) ? blue : ((1 << 6) - 1));
 
-                        ++j;
-                        blue = (fb1[j] & 0x003e) + distToCenter;
-                        fb0[j] = (fb1[j] & ~0x003e) | (blue < ((1 << 5) - 1) ? blue : ((1 << 5) - 1));
+                        ++k;
+                        blue = (fb1[k] & 0x003e) + distToCenter;
+                        fb0[k] = (fb1[k] & ~0x003e) | (blue < ((1 << 6) - 1) ? blue : ((1 << 6) - 1));
 
                     }
                 }

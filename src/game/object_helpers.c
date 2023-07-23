@@ -847,10 +847,9 @@ struct Object *cur_obj_find_object_with_bparam_2nd_byte(const BehaviorScript *be
     while (obj != (struct Object *) listHead) {
         if (obj->behavior == behaviorAddr) {
             if (obj->activeFlags != ACTIVE_FLAG_DEACTIVATED && obj != o) {
-                f32 objDist = dist_between_objects(o, obj);
+                // f32 objDist = dist_between_objects(o, obj);
                 if (obj->oBehParams2ndByte == bparam) {
                     returnObj = obj;
-                    
                 }
             }
         }
