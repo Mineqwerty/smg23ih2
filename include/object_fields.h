@@ -472,6 +472,8 @@
 #define /*0x0F4*/ oBreakableBoxSmallReleased            OBJECT_FIELD_S32(0x1B)
 #define /*0x0FC*/ oBreakableBoxSmallFramesSinceReleased OBJECT_FIELD_S32(0x1D)
 
+/* Blockington */
+
 /* Fazana Car */
 #define /*0x0F4*/ oFazanaCarWheelRot       OBJECT_FIELD_S32(0x1B)
 #define /*0x0F8*/ oFazanaCarWheelTurn      OBJECT_FIELD_S32(0x1C)
