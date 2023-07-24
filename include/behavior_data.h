@@ -432,6 +432,7 @@ extern const BehaviorScript bhvMarioMakerLaugh[];
 extern const BehaviorScript bhvBabombExcivatoinLetter[];
 extern const BehaviorScript bhvCarOrangeNumber[];
 extern const BehaviorScript bhvFazanaCar[];
+extern const BehaviorScript bhvTicketMuncherSound[];
 extern const BehaviorScript bhvHiddenBlock[];
 extern const BehaviorScript bhvSlidingSnowMound[];
 extern const BehaviorScript bhvSnowMoundSpawn[];

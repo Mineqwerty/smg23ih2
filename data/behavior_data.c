@@ -4923,6 +4923,14 @@ const BehaviorScript bhvFazanaCar[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvTicketMuncherSound[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_ACTIVE_FROM_AFAR),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_ticket_muncher_sound_loop),
+    END_LOOP(),
+};
+
 const BehaviorScript bhvHiddenBlock[] = {
     BEGIN(OBJ_LIST_SURFACE),
     OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_ACTIVE_FROM_AFAR)),

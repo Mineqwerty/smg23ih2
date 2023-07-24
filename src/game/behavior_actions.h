@@ -422,6 +422,7 @@ void bhv_babomb_excivatoin_letter_init(void);
 void bhv_babomb_excivatoin_letter_loop(void);
 void bhv_fazana_car_init(void);
 void bhv_fazana_car_loop(void);
+void bhv_ticket_muncher_sound_loop(void);
 void bhv_hidden_block_init(void);
 void bhv_hidden_block_loop(void);
 void bhv_sliding_snow_mound_loop(void);
