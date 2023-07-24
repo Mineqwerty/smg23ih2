@@ -642,3 +642,5 @@ void bhv_cowardly_maya_init(void);
 void bhv_cowardly_maya_loop(void);
 void bhv_enemy_selector_init(void);
 void bhv_enemy_selector_loop(void);
+void bhv_blockington_init(void);
+void bhv_blockington_loop(void);

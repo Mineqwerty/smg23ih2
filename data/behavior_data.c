@@ -6388,3 +6388,12 @@ const BehaviorScript bhvEnemySelector[] = {
         CALL_NATIVE(bhv_enemy_selector_loop),
     END_LOOP(),
 };
+
+const BehaviorScript bhvBlockington[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW)),
+    CALL_NATIVE(bhv_blockington_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_blockington_loop),
+    END_LOOP(),
+};
