@@ -1,18 +1,6 @@
-Lights1 blockington_f3dlite_material_lights = gdSPDefLights1(
-	0x69, 0x5B, 0x23,
-	0xFF, 0xE9, 0x6E, 0x28, 0x28, 0x28);
 
-Lights1 blockington_f3dlite_material_002_lights = gdSPDefLights1(
-	0x35, 0x25, 0x18,
-	0x72, 0x52, 0x3A, 0x28, 0x28, 0x28);
 
-Lights1 blockington_f3dlite_material_001_lights = gdSPDefLights1(
-	0x0, 0x0, 0x0,
-	0x0, 0x0, 0x0, 0x28, 0x28, 0x28);
 
-Lights1 blockington_f3dlite_material_003_lights = gdSPDefLights1(
-	0x59, 0x4A, 0x14,
-	0xB6, 0x99, 0x34, 0x28, 0x28, 0x28);
 
 Vtx blockington_Cube_mesh_layer_1_vtx_0[311] = {
 	{{ {23, 271, -56}, 0, {589, 837}, {25, 33, 136, 255} }},
@@ -934,7 +922,8 @@ Gfx mat_blockington_f3dlite_material[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(blockington_f3dlite_material_lights),
+    gsSPLightColor(LIGHT_1, 0xffe96eff),
+    gsSPLightColor(LIGHT_2, 0x695b23ff),
 	gsSPEndDisplayList(),
 };
 
@@ -942,7 +931,8 @@ Gfx mat_blockington_f3dlite_material_002[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(blockington_f3dlite_material_002_lights),
+    gsSPLightColor(LIGHT_1, 0x72523aff),
+    gsSPLightColor(LIGHT_2, 0x352518ff),
 	gsSPEndDisplayList(),
 };
 
@@ -950,7 +940,8 @@ Gfx mat_blockington_f3dlite_material_001[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(blockington_f3dlite_material_001_lights),
+    gsSPLightColor(LIGHT_1, 0xff),
+    gsSPLightColor(LIGHT_2, 0xff),
 	gsSPEndDisplayList(),
 };
 
@@ -958,7 +949,8 @@ Gfx mat_blockington_f3dlite_material_003[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(blockington_f3dlite_material_003_lights),
+    gsSPLightColor(LIGHT_1, 0xb69934ff),
+    gsSPLightColor(LIGHT_2, 0x594a14ff),
 	gsSPEndDisplayList(),
 };
 

@@ -23,3 +23,4 @@
 #include "levels/hmc/areas/1/geo.inc.c"
 
 #include "levels/hmc/blockington/geo.inc.c"
+#include "levels/hmc/geo.inc.c"

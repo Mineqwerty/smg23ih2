@@ -92,4 +92,7 @@ extern const LevelScript level_hmc_entry[];
 
 #include "levels/hmc/blockington/geo_header.h"
 
+
+#include "levels/hmc/header.inc.h"
+
 #endif
