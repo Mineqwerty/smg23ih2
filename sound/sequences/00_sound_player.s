@@ -4536,6 +4536,7 @@ sound_ref .sound_env_waterfall1
 sound_ref .sound_env_waterfall1
 sound_ref .sound_env_waterfall1
 sound_ref .sound_env_car_motor
+sound_ref .sound_env_ticket_muncher
 
 .sound_env_car_motor:
 chan_setbank 5
@@ -4551,6 +4552,19 @@ layer_somethingon
 .layer_car_motor_loop:
 layer_note1 39, 0x100, 82
 layer_jump .layer_car_motor_loop
+
+.sound_env_ticket_muncher:
+chan_setbank 3
+chan_setinstr 10
+chan_setenvelope .envelope_ticket_muncher
+chan_setlayer 0, .layer_ticket_muncher
+chan_end
+
+.layer_ticket_muncher:
+layer_somethingon
+.layer_ticket_muncher_loop:
+layer_note1 39, 0x1b8, 111
+layer_jump .layer_ticket_muncher_loop
 
 .sound_env_waterfall1:
 chan_setbank 5
@@ -8175,6 +8189,11 @@ layer_note1 39, 0x38, 127
 layer_end
 
 .align 2, 0
+.envelope_ticket_muncher:
+envelope_line 120 20000
+envelope_line 120 32700
+envelope_hang
+
 .envelope_32C4:
 envelope_line 7 20000
 envelope_line 6 32700
