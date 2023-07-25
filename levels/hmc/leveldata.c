@@ -63,3 +63,8 @@
 #include "levels/hmc/blockington/model.inc.c"
 #include "levels/hmc/blockington_mini/model.inc.c"
 #include "levels/hmc/leveldata.inc.c"
+
+#include "levels/hmc/cq_gate/collision.inc.c"
+#include "levels/hmc/cq_gate/model.inc.c"
+#include "levels/hmc/cq_door/model.inc.c"
+#include "levels/hmc/cq_door/collision.inc.c"

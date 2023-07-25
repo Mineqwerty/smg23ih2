@@ -575,3 +575,6 @@ extern const BehaviorScript bhvCowardlyMaya[];
 extern const BehaviorScript bhvEnemySelector[];
 extern const BehaviorScript bhvBlockington[];
 extern const BehaviorScript bhvBlockingtonMini[];
+
+extern const BehaviorScript bhvCQDoor[];
+extern const BehaviorScript bhvCQGate[];

@@ -647,3 +647,8 @@ void bhv_blockington_init(void);
 void bhv_blockington_loop(void);
 void bhv_blockington_mini_init(void);
 void bhv_blockington_mini_loop(void);
+
+void bhv_cq_door_init(void);
+void bhv_cq_door_loop(void);
+void bhv_cq_gate_init(void);
+void bhv_cq_gate_loop(void);

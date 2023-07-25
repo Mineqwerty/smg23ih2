@@ -1,0 +1,17 @@
+const Collision cq_gate_collision[] = {
+	COL_INIT(),
+	COL_VERTEX_INIT(6),
+	COL_VERTEX(-878, 1244, 0),
+	COL_VERTEX(-878, -2, 0),
+	COL_VERTEX(-293, -2, 0),
+	COL_VERTEX(293, -2, 0),
+	COL_VERTEX(878, -2, 0),
+	COL_VERTEX(878, 1244, 0),
+	COL_TRI_INIT(SURFACE_DEFAULT, 4),
+	COL_TRI(0, 1, 2),
+	COL_TRI(3, 4, 5),
+	COL_TRI(0, 2, 3),
+	COL_TRI(3, 5, 0),
+	COL_TRI_STOP(),
+	COL_END()
+};

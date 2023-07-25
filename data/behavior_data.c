@@ -6414,3 +6414,25 @@ const BehaviorScript bhvBlockingtonMini[] = {
         CALL_NATIVE(bhv_blockington_mini_loop),
     END_LOOP(),
 };
+
+const BehaviorScript bhvCQDoor[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    LOAD_COLLISION_DATA(cq_door_collision),
+    CALL_NATIVE(bhv_cq_door_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_cq_door_loop),
+        CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvCQGate[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    LOAD_COLLISION_DATA(cq_gate_collision),
+    CALL_NATIVE(bhv_cq_gate_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_cq_gate_loop),
+        CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};

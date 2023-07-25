@@ -575,6 +575,8 @@
 #define MODEL_ENEMY_SELECTOR              0x132
 #define MODEL_BLOCKINGTON                 0x133
 #define MODEL_BLOCKINGTON_MINI            0x134
+#define MODEL_CQ_GATE            0x135
+#define MODEL_CQ_DOOR            0x136
 
 
 #endif

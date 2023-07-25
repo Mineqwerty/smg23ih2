@@ -25,3 +25,6 @@
 #include "levels/hmc/blockington/geo.inc.c"
 #include "levels/hmc/blockington_mini/geo.inc.c"
 #include "levels/hmc/geo.inc.c"
+
+#include "levels/hmc/cq_gate/geo.inc.c"
+#include "levels/hmc/cq_door/geo.inc.c"
