@@ -574,3 +574,4 @@ extern const BehaviorScript bhvPersonaBattleManager[];
 extern const BehaviorScript bhvCowardlyMaya[];
 extern const BehaviorScript bhvEnemySelector[];
 extern const BehaviorScript bhvBlockington[];
+extern const BehaviorScript bhvBlockingtonMini[];

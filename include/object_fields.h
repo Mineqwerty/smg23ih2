@@ -473,6 +473,14 @@
 #define /*0x0FC*/ oBreakableBoxSmallFramesSinceReleased OBJECT_FIELD_S32(0x1D)
 
 /* Blockington */
+#define /*0x0F4*/ oBlockingtonAngleHomeVec   OBJECT_FIELD_S32(0x1B)
+#define /*0x0F4*/ oBlockingtonAngleHomePitch OBJECT_FIELD_S32(0x1B)
+#define /*0x0F8*/ oBlockingtonAngleHomeYaw   OBJECT_FIELD_S32(0x1C)
+#define /*0x0FC*/ oBlockingtonAngleHomeRoll  OBJECT_FIELD_S32(0x1D)
+#define /*0x100*/ oBlockingtonScaleHomeVec   OBJECT_FIELD_F32(0x1E)
+#define /*0x100*/ oBlockingtonScaleHomeX     OBJECT_FIELD_F32(0x1E)
+#define /*0x104*/ oBlockingtonScaleHomeY     OBJECT_FIELD_F32(0x1F)
+#define /*0x108*/ oBlockingtonScaleHomeZ     OBJECT_FIELD_F32(0x20)
 
 /* Fazana Car */
 #define /*0x0F4*/ oFazanaCarWheelRot       OBJECT_FIELD_S32(0x1B)

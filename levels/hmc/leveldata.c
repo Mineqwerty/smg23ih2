@@ -61,4 +61,5 @@
 #include "levels/hmc/areas/1/movtext.inc.c"
 
 #include "levels/hmc/blockington/model.inc.c"
+#include "levels/hmc/blockington_mini/model.inc.c"
 #include "levels/hmc/leveldata.inc.c"

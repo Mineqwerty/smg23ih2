@@ -91,6 +91,7 @@ extern const struct MovtexQuadCollection hmc_movtex_toxic_maze_mist[];
 extern const LevelScript level_hmc_entry[];
 
 #include "levels/hmc/blockington/geo_header.h"
+#include "levels/hmc/blockington_mini/geo_header.h"
 
 
 #include "levels/hmc/header.inc.h"

@@ -6405,3 +6405,12 @@ const BehaviorScript bhvBlockington[] = {
         CALL_NATIVE(bhv_blockington_loop),
     END_LOOP(),
 };
+
+const BehaviorScript bhvBlockingtonMini[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_ACTIVE_FROM_AFAR | OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    CALL_NATIVE(bhv_blockington_mini_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_blockington_mini_loop),
+    END_LOOP(),
+};

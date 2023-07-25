@@ -574,6 +574,7 @@
 #define MODEL_COWARDLY_MAYA               0x131
 #define MODEL_ENEMY_SELECTOR              0x132
 #define MODEL_BLOCKINGTON                 0x133
+#define MODEL_BLOCKINGTON_MINI            0x134
 
 
 #endif

@@ -1847,7 +1847,14 @@ s32 act_hold_freefall_land(struct MarioState *m) {
 }
 
 s32 act_long_jump_land(struct MarioState *m) {
-#if defined (VERSION_SH) || defined(DISABLE_BLJ)
+#ifndef VERSION_SH
+    // NOTE: BLJ is patched in Level 4 only to prevent cheese.
+    if (gCurrLevelNum == SMG23IH2_LEVEL_4) {
+        if (m->forwardVel < -16.0f) {
+            m->forwardVel = -16.0f; // Don't use Shindou's patch; that's a less satisfying restriction.
+        }
+    }
+#else
     // BLJ (Backwards Long Jump) speed build up fix, crushing SimpleFlips's dreams since July 1997
     if (m->forwardVel < 0.0f) {
         m->forwardVel = 0.0f;

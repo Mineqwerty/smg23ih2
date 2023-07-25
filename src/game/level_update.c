@@ -1088,6 +1088,11 @@ s32 play_mode_normal(void) {
         if (sTimerRunning && gHudDisplay.timer < 17999) {
             gHudDisplay.timer++;
         }
+
+        if (gCurrLevelNum == SMG23IH2_LEVEL_4 && gCurrentArea != NULL) {
+            update_camera(gCurrentArea->camera);
+        }
+
         area_update_objects();
     }
 #else
@@ -1107,10 +1112,14 @@ s32 play_mode_normal(void) {
 #else
     if (sPPDebugPage != PUPPYPRINT_PAGE_RAM && sPPDebugPage != PUPPYPRINT_PAGE_LEVEL_SELECT) {
 #endif
-            update_camera(gCurrentArea->camera);
+            if (gCurrLevelNum != SMG23IH2_LEVEL_4) {
+                update_camera(gCurrentArea->camera);
+            }
         }
 #else
+    if (gCurrLevelNum != SMG23IH2_LEVEL_4) {
         update_camera(gCurrentArea->camera);
+    }
 #endif
     }
 
