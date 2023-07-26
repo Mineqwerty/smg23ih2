@@ -65,7 +65,7 @@ const LevelScript level_hmc_entry[] = {
 		OBJECT(MODEL_NONE, 0, 250, 0, 0, 0, 0, (0 << 16) | (250), bhvCheckpoint),
 		OBJECT(MODEL_CQ_DOOR, 0, 231, 1107, 0, 0, 0, 0x00000000, bhvCQDoor),
 		OBJECT(MODEL_CQ_GATE, 0, 231, -2618, 0, 0, 0, 0x00000000, bhvCQGate),
-		OBJECT(MODEL_NONE, -9181, 2955, -17009, 0, 0, 0, 0x00000000, bhvHiddenRedCoinStar),
+		OBJECT(MODEL_NONE, -9181, 2955, -17009, 0, 0, 0, (1), bhvHiddenRedCoinStar),
 		OBJECT(MODEL_CQ_RED_CUBE, 59, 1171, -9756, 0, 0, 0, (0 << 16) | (1), bhvRedCoin),
 		OBJECT(MODEL_CQ_RED_CUBE, 6741, 1853, -19313, 0, 0, 0, (1 << 16) | (1), bhvRedCoin),
 		OBJECT(MODEL_CQ_RED_CUBE, 2887, 3334, -15364, 0, 0, 0, (2 << 16) | (1), bhvRedCoin),

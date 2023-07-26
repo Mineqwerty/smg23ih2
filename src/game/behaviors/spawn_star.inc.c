@@ -155,34 +155,39 @@ void spawn_no_exit_star(f32 x, f32 y, f32 z) {
 void bhv_hidden_red_coin_star_init(void) {
     struct Object *starObj = NULL;
 
-    if (gCurrCourseNum != COURSE_JRB) {
+    if (gCurrCourseNum != SMG23IH2_LEVEL_4) {
         spawn_object(o, MODEL_TRANSPARENT_STAR, bhvRedCoinStarMarker);
     }
 
-    // check if bparam2 specifies a total number of coins that should spawn the star
-    if (o->oBehParams2ndByte != 0) {
-        o->oHiddenStarTriggerTotal = o->oBehParams2ndByte;
-        o->oHiddenStarTriggerCounter = gRedCoinsCollected;
-        if (o->oHiddenStarTriggerCounter >= o->oHiddenStarTriggerTotal) {
-            starObj = spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStar, o->oPosX, o->oPosY, o->oPosZ, 0, 0, 0);
-            starObj->oBehParams = o->oBehParams;
-            o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+    if (gCurrLevelNum == SMG23IH2_LEVEL_4) {
+        // check if bparam2 specifies a total number of coins that should spawn the star
+        if (o->oBehParams2ndByte != 0) {
+            o->oHiddenStarTriggerTotal = o->oBehParams2ndByte;
+            o->oHiddenStarTriggerCounter = gRedCoinsCollected;
+            if (o->oHiddenStarTriggerCounter >= o->oHiddenStarTriggerTotal) {
+                starObj = spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStar, o->oPosX, o->oPosY, o->oPosZ, 0, 0, 0);
+                starObj->oBehParams = o->oBehParams;
+                o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+            }
         }
-    }
-    else {
-        s16 numRedCoinsRemaining = count_objects_with_behavior(bhvRedCoin);
-        if (numRedCoinsRemaining == 0) {
-            starObj = spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStar, o->oPosX, o->oPosY, o->oPosZ, 0, 0, 0);
-            starObj->oBehParams = o->oBehParams;
-            o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+        else {
+            s16 numRedCoinsRemaining = count_objects_with_behavior(bhvRedCoin);
+            if (numRedCoinsRemaining == 0) {
+                starObj = spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStar, o->oPosX, o->oPosY, o->oPosZ, 0, 0, 0);
+                starObj->oBehParams = o->oBehParams;
+                o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+            }
+            o->oHiddenStarTriggerTotal = numRedCoinsRemaining + gRedCoinsCollected;
+            o->oHiddenStarTriggerCounter = o->oHiddenStarTriggerTotal - numRedCoinsRemaining;
         }
-        o->oHiddenStarTriggerTotal = numRedCoinsRemaining + gRedCoinsCollected;
-        o->oHiddenStarTriggerCounter = o->oHiddenStarTriggerTotal - numRedCoinsRemaining;
-    }
 
-    if (gCurrLevelNum == SMG23IH2_LEVEL_1) {
-        o->oHiddenStarTriggerCounter = save_file_get_red_coin_flags_count();
-        o->oHiddenStarTriggerTotal = 8; // NOTE: Hardcoded to 8 reds
+        if (gCurrLevelNum == SMG23IH2_LEVEL_1) {
+            o->oHiddenStarTriggerCounter = save_file_get_red_coin_flags_count();
+            o->oHiddenStarTriggerTotal = 8; // NOTE: Hardcoded to 8 reds
+        }
+    } else {
+        o->oHiddenStarTriggerTotal = 12; // Hardcoded to 12 reds
+        o->oHiddenStarTriggerCounter = 0;
     }
     
 }
@@ -191,33 +196,48 @@ void bhv_hidden_red_coin_star_loop(void) {
     if (gCurrLevelNum == SMG23IH2_LEVEL_1) {
         o->oHiddenStarTriggerCounter = save_file_get_red_coin_flags_count();
     }
-    gRedCoinsCollected = o->oHiddenStarTriggerCounter;
 
-    switch (o->oAction) {
-        case HIDDEN_STAR_ACT_INACTIVE:
-            if (o->oHiddenStarTriggerCounter >= o->oHiddenStarTriggerTotal) {
-                o->oAction = HIDDEN_STAR_ACT_ACTIVE;
-            }
-            break;
+    if (gCurrLevelNum != SMG23IH2_LEVEL_4) {
+        gRedCoinsCollected = o->oHiddenStarTriggerCounter;
 
-        case HIDDEN_STAR_ACT_ACTIVE:
-            if (o->oTimer > 2) {
-                o->oHiddenStarSpawnStar = spawn_red_coin_cutscene_star(o->oPosX, o->oPosY, o->oPosZ);
-                spawn_mist_particles();
-                o->oAction = HIDDEN_STAR_ACT_WAITING_FOR_COIN_LOSS;
-            }
-            break;
-
-        case HIDDEN_STAR_ACT_WAITING_FOR_COIN_LOSS:
-            if (gCurrLevelNum == SMG23IH2_LEVEL_1 && o->oHiddenStarSpawnStar) {
-                if (o->oHiddenStarTriggerCounter < o->oHiddenStarTriggerTotal) {
-                    o->oAction = HIDDEN_STAR_ACT_INACTIVE;
-                    spawn_mist_particles();
-                    o->oHiddenStarSpawnStar->activeFlags = ACTIVE_FLAG_DEACTIVATED;
-                    o->oHiddenStarSpawnStar = NULL;
+        switch (o->oAction) {
+            case HIDDEN_STAR_ACT_INACTIVE:
+                if (o->oHiddenStarTriggerCounter >= o->oHiddenStarTriggerTotal) {
+                    o->oAction = HIDDEN_STAR_ACT_ACTIVE;
                 }
-            }
-            break;
+                break;
 
+            case HIDDEN_STAR_ACT_ACTIVE:
+                if (o->oTimer > 2) {
+                    o->oHiddenStarSpawnStar = spawn_red_coin_cutscene_star(o->oPosX, o->oPosY, o->oPosZ);
+                    spawn_mist_particles();
+                    o->oAction = HIDDEN_STAR_ACT_WAITING_FOR_COIN_LOSS;
+                }
+                break;
+
+            case HIDDEN_STAR_ACT_WAITING_FOR_COIN_LOSS:
+                if (gCurrLevelNum == SMG23IH2_LEVEL_1 && o->oHiddenStarSpawnStar) {
+                    if (o->oHiddenStarTriggerCounter < o->oHiddenStarTriggerTotal) {
+                        o->oAction = HIDDEN_STAR_ACT_INACTIVE;
+                        spawn_mist_particles();
+                        o->oHiddenStarSpawnStar->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+                        o->oHiddenStarSpawnStar = NULL;
+                    }
+                }
+                break;
+
+        }
+    } else {
+        switch (o->oAction) {
+            case HIDDEN_STAR_ACT_INACTIVE:
+                if (o->oHiddenStarTriggerCounter >= o->oHiddenStarTriggerTotal) {
+                    o->oAction = HIDDEN_STAR_ACT_ACTIVE;
+                }
+                break;
+
+            case HIDDEN_STAR_ACT_ACTIVE:
+                // TODO: Raise bridge or something
+                break;
+        }
     }
 }

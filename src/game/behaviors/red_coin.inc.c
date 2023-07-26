@@ -56,13 +56,24 @@ void red_coin_move(void) {
  */
 void bhv_red_coin_init(void) {
     // Set the red coins to have a parent of the closest red coin star.
-    struct Object *hiddenRedCoinStar = cur_obj_nearest_object_with_behavior(bhvHiddenRedCoinStar);
-    if (hiddenRedCoinStar != NULL) {
-        o->parentObj = hiddenRedCoinStar;
-    } else if ((hiddenRedCoinStar = cur_obj_nearest_object_with_behavior(bhvBowserCourseRedCoinStar)) != NULL) {
-        o->parentObj = hiddenRedCoinStar;
+    if (gCurrLevelNum == SMG23IH2_LEVEL_4) {
+        struct Object *hiddenRedCoinStar = find_first_object_with_behavior_and_bparams(bhvHiddenRedCoinStar, BPARAM4, 0xFF);
+        if (hiddenRedCoinStar != NULL) {
+            o->parentObj = hiddenRedCoinStar;
+        } else if ((hiddenRedCoinStar = find_first_object_with_behavior_and_bparams(bhvBowserCourseRedCoinStar, BPARAM4, 0xFF)) != NULL) {
+            o->parentObj = hiddenRedCoinStar;
+        } else {
+            o->parentObj = NULL;
+        }
     } else {
-        o->parentObj = NULL;
+        struct Object *hiddenRedCoinStar = cur_obj_nearest_object_with_behavior(bhvHiddenRedCoinStar);
+        if (hiddenRedCoinStar != NULL) {
+            o->parentObj = hiddenRedCoinStar;
+        } else if ((hiddenRedCoinStar = cur_obj_nearest_object_with_behavior(bhvBowserCourseRedCoinStar)) != NULL) {
+            o->parentObj = hiddenRedCoinStar;
+        } else {
+            o->parentObj = NULL;
+        }
     }
 
     obj_set_hitbox(o, &sRedCoinHitbox);
@@ -129,20 +140,28 @@ void bhv_red_coin_loop(void) {
             // For JP version, play an identical sound for all coins.
             create_sound_spawner(SOUND_GENERAL_RED_COIN);
 #else
-            s32 sound = SOUND_MENU_COLLECT_RED_COIN;
             if (gCurrLevelNum == SMG23IH2_LEVEL_4) {
-                sound = SOUND_MENU_COLLECT_RED_COIN2_0;
-            }
-
-            if (o->parentObj->oHiddenStarTriggerTotal - o->parentObj->oHiddenStarTriggerCounter > 7) {
-                // Play the first red coin sound until it gets to the final 8
-                play_sound(sound, gGlobalSoundSource);
-            }
-            else {
-                // On all versions but the JP version, each coin collected plays a higher noise.
-                play_sound(sound
-                        + (((u8) 7 - (o->parentObj->oHiddenStarTriggerTotal - o->parentObj->oHiddenStarTriggerCounter)) << 16),
-                        gGlobalSoundSource);
+                if (o->parentObj->oHiddenStarTriggerTotal - o->parentObj->oHiddenStarTriggerCounter > 11) {
+                    // Play the first red coin sound until it gets to the final 8
+                    play_sound(SOUND_MENU_COLLECT_RED_COIN2_0, gGlobalSoundSource);
+                }
+                else {
+                    // On all versions but the JP version, each coin collected plays a higher noise.
+                    play_sound(SOUND_MENU_COLLECT_RED_COIN2_0
+                            + (((u8) 11 - (o->parentObj->oHiddenStarTriggerTotal - o->parentObj->oHiddenStarTriggerCounter)) << 16),
+                            gGlobalSoundSource);
+                }
+            } else {
+                if (o->parentObj->oHiddenStarTriggerTotal - o->parentObj->oHiddenStarTriggerCounter > 7) {
+                    // Play the first red coin sound until it gets to the final 8
+                    play_sound(SOUND_MENU_COLLECT_RED_COIN, gGlobalSoundSource);
+                }
+                else {
+                    // On all versions but the JP version, each coin collected plays a higher noise.
+                    play_sound(SOUND_MENU_COLLECT_RED_COIN
+                            + (((u8) 7 - (o->parentObj->oHiddenStarTriggerTotal - o->parentObj->oHiddenStarTriggerCounter)) << 16),
+                            gGlobalSoundSource);
+                }
             }
 #endif
         }

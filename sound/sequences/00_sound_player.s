@@ -7062,6 +7062,10 @@ sound_ref .sound_menu_collect_red_coin2
 sound_ref .sound_menu_collect_red_coin2
 sound_ref .sound_menu_collect_red_coin2
 sound_ref .sound_menu_collect_red_coin2
+sound_ref .sound_menu_collect_red_coin2
+sound_ref .sound_menu_collect_red_coin2
+sound_ref .sound_menu_collect_red_coin2
+sound_ref .sound_menu_collect_red_coin2
 
 .sound_menu_change_select:
 chan_setbank 9
@@ -7935,6 +7939,10 @@ chan_end
 .byte 9
 .byte 11
 .byte 12
+.byte 14
+.byte 16
+.byte 17
+.byte 19
 
 .layer_3146_2:
 layer_delay 0x6

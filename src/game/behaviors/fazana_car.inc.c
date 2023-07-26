@@ -1,15 +1,17 @@
 // fazana_car.inc.c
 
-#define TURN_RATIO_CONSTANT 0.01f
-#define TURN_RATIO_AERIAL_CONSTANT 0.875f
-#define TURN_RATIO_AERIAL_CONTROL_CONSTANT 0.125f
-#define ROTATION_CONSTANT 0x100
+#define TURN_RATIO_CONSTANT 0.007f
+#define TURN_RATIO_AERIAL_CONSTANT 0.9f
+#define TURN_RATIO_AERIAL_CONTROL_CONSTANT 0.1f
+#define ROTATION_CONSTANT 0x120
 #define FORWARD_VELOCITY_CAP 144.0f
 
 #define MINIMUM_PITCH_IDLE 0.35f
 #define CUTOFF_PITCH 0.45f
 #define MINIMUM_PITCH_DRIVE 0.89f
 #define MAXIMUM_PITCH 3.35f
+
+static s32 madeByBlakeoramoTimer = -1;
 
 struct ObjectHitbox sFazanaCarHitbox = {
     /* interactType:      */ INTERACT_NONE,
@@ -43,6 +45,28 @@ void bhv_fazana_car_init(void) {
     cur_obj_become_tangible();
 
     o->oFazanaCarBIndicator = spawn_object_relative(0x000B, 0, 0, 0, o, MODEL_NUMBER, bhvCarOrangeNumber);
+}
+
+static void made_by_blakeoramo(void) {
+    if (madeByBlakeoramoTimer < 0 || madeByBlakeoramoTimer > 300) {
+        return;
+    }
+
+    madeByBlakeoramoTimer++;
+
+    if (madeByBlakeoramoTimer <= 120) {
+        print_text(80, 30, "CREATED");
+        print_text(80, 10, "BY BLAKEORAMO");
+        return;
+    }
+
+    if (madeByBlakeoramoTimer <= 165) {
+        print_text(80, 30, "ERR...");
+        return;
+    }
+    
+    print_text(80, 30, "CAR MODEL");
+    print_text(80, 10, "MADE BY FAZANA");
 }
 
 static void fazana_car_set_forward_velocity_and_turn_wheels(void) {
@@ -172,6 +196,9 @@ void fazana_car_idle_loop(void) {
             gMarioState->fazanaCar = o;
             set_mario_action(gMarioState, ACT_FAZANA_CAR, 0);
             o->oAction = FAZANA_CAR_ACT_DRIVE;
+            if (madeByBlakeoramoTimer < 0) {
+                madeByBlakeoramoTimer = 0;
+            }
             set_cam_angle(CAM_ANGLE_MARIO);
             gCameraMovementFlags |= CAM_MOVE_ZOOMED_OUT;
             sCameraSoundFlags = 0;
@@ -184,7 +211,11 @@ void fazana_car_idle_loop(void) {
 void fazana_car_drive_loop(void) {
     fazana_car_set_forward_velocity_and_turn_wheels();
 
+#ifdef ENABLE_DEBUG_FREE_MOVE
     if (gPlayer1Controller->buttonPressed & Z_TRIG || gMarioState->action != ACT_FAZANA_CAR) {
+#else
+    if (gMarioState->action != ACT_FAZANA_CAR) {
+#endif
         gMarioState->fazanaCar = NULL;
         o->oAction = FAZANA_CAR_ACT_IDLE;
     }
@@ -202,6 +233,7 @@ void bhv_fazana_car_loop(void) {
     }
 
     fazana_car_act_move();
+    made_by_blakeoramo();
 
     o->oInteractStatus = INT_STATUS_NONE;
 }

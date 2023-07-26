@@ -1512,6 +1512,10 @@ void print_animated_red_coin(s16 x, s16 y) {
 void render_pause_red_coins(void) {
     s8 x;
 
+    if (gCurrLevelNum == SMG23IH2_LEVEL_4) {
+        return;
+    }
+
     if (gRedCoinsCollected <= 9) {
         for (x = 0; x < gRedCoinsCollected; x++) {
             print_animated_red_coin(GFX_DIMENSIONS_FROM_RIGHT_EDGE(30) - x * 20, 16);

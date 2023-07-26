@@ -419,8 +419,12 @@ ALIGNED8 static const Texture texture_hud_char_star[] = {
 };
 
 #if defined(VERSION_JP) || defined(VERSION_SH) || defined(COMPLETE_EN_US_SEGMENT2)
+// ALIGNED8 static const Texture texture_hud_char_decimal_point[] = {
+// #include "textures/segment2/segment2.05E00.rgba16.inc.c"
+// };
+
 ALIGNED8 static const Texture texture_hud_char_decimal_point[] = {
-#include "textures/segment2/segment2.05E00.rgba16.inc.c"
+#include "textures/segment2/segment2.custom_decimal_point.rgba16.inc.c"
 };
 
 ALIGNED8 static const Texture texture_hud_char_beta_key[] = {
