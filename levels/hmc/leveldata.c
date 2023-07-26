@@ -68,3 +68,4 @@
 #include "levels/hmc/cq_gate/model.inc.c"
 #include "levels/hmc/cq_door/model.inc.c"
 #include "levels/hmc/cq_door/collision.inc.c"
+#include "levels/hmc/cq_red_cube/model.inc.c"

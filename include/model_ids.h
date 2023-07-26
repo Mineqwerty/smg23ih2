@@ -577,7 +577,7 @@
 #define MODEL_BLOCKINGTON_MINI            0x134
 #define MODEL_CQ_GATE            0x135
 #define MODEL_CQ_DOOR            0x136
-
+#define MODEL_CQ_RED_CUBE            0x137
 
 #endif
 

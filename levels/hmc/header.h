@@ -104,4 +104,6 @@ extern const LevelScript level_hmc_entry[];
 
 #include "levels/hmc/cq_door/collision_header.h"
 
+#include "levels/hmc/cq_red_cube/geo_header.h"
+
 #endif
