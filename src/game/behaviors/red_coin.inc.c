@@ -129,13 +129,18 @@ void bhv_red_coin_loop(void) {
             // For JP version, play an identical sound for all coins.
             create_sound_spawner(SOUND_GENERAL_RED_COIN);
 #else
+            s32 sound = SOUND_MENU_COLLECT_RED_COIN;
+            if (gCurrLevelNum == SMG23IH2_LEVEL_4) {
+                sound = SOUND_MENU_COLLECT_RED_COIN2_0;
+            }
+
             if (o->parentObj->oHiddenStarTriggerTotal - o->parentObj->oHiddenStarTriggerCounter > 7) {
                 // Play the first red coin sound until it gets to the final 8
-                play_sound(SOUND_MENU_COLLECT_RED_COIN, gGlobalSoundSource);
+                play_sound(sound, gGlobalSoundSource);
             }
             else {
                 // On all versions but the JP version, each coin collected plays a higher noise.
-                play_sound(SOUND_MENU_COLLECT_RED_COIN
+                play_sound(sound
                         + (((u8) 7 - (o->parentObj->oHiddenStarTriggerTotal - o->parentObj->oHiddenStarTriggerCounter)) << 16),
                         gGlobalSoundSource);
             }

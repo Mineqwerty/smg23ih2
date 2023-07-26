@@ -7054,6 +7054,14 @@ sound_ref .chan_2D18
 sound_ref .sound_menu_power_meter
 sound_ref .sound_menu_camera_buzz
 sound_ref .sound_menu_camera_turn
+sound_ref .sound_menu_collect_red_coin2
+sound_ref .sound_menu_collect_red_coin2
+sound_ref .sound_menu_collect_red_coin2
+sound_ref .sound_menu_collect_red_coin2
+sound_ref .sound_menu_collect_red_coin2
+sound_ref .sound_menu_collect_red_coin2
+sound_ref .sound_menu_collect_red_coin2
+sound_ref .sound_menu_collect_red_coin2
 
 .sound_menu_change_select:
 chan_setbank 9
@@ -7898,6 +7906,69 @@ layer_note0 53, 0x10, (15 - RED_COIN_NOTE_VELOCITY_SUB), 80
 layer_end
 
 .transpose_by_coin_index:
+layer_transpose 0
+layer_end
+
+
+.sound_menu_collect_red_coin2:
+chan_setinstr 128
+chan_setnotepriority 14
+chan_setval 40
+chan_call .set_reverb
+chan_setpanmix 0
+chan_setenvelope .envelope_3378
+chan_ioreadval 4
+chan_subtract 0x40
+chan_readseq .major_scale_2
+chan_writeseq 0, .transpose_by_coin_index_2, 1
+chan_setlayer 0, .layer_3146_2
+chan_setlayer 1, .layer_3168_2
+chan_setlayer 2, .layer_3148_2
+chan_end
+
+.major_scale_2:
+.byte 0
+.byte 2
+.byte 4
+.byte 5
+.byte 7
+.byte 9
+.byte 11
+.byte 12
+
+.layer_3146_2:
+layer_delay 0x6
+
+#ifdef VERSION_SH
+  .set RED_COIN_NOTE_VELOCITY_SUB_2, 10
+#else
+  .set RED_COIN_NOTE_VELOCITY_SUB_2, 0
+#endif
+
+.layer_3148_2:
+layer_call .transpose_by_coin_index_2
+layer_note0 46, 0xc, (75 - RED_COIN_NOTE_VELOCITY_SUB_2), 20
+layer_note0 45, 0xc, (75 - RED_COIN_NOTE_VELOCITY_SUB_2), 20
+layer_note0 46, 0xc, (75 - RED_COIN_NOTE_VELOCITY_SUB_2), 20
+layer_note0 58, 0x10, (80 - RED_COIN_NOTE_VELOCITY_SUB_2), 80
+layer_note0 58, 0x10, (45 - RED_COIN_NOTE_VELOCITY_SUB_2), 80
+layer_note0 58, 0x10, (20 - RED_COIN_NOTE_VELOCITY_SUB_2), 80
+layer_note0 58, 0x10, (15 - RED_COIN_NOTE_VELOCITY_SUB_2), 80
+
+layer_end
+
+.layer_3168_2:
+layer_call .transpose_by_coin_index_2
+layer_note0 41, 0xc, (75 - RED_COIN_NOTE_VELOCITY_SUB_2), 20
+layer_note0 40, 0xc, (75 - RED_COIN_NOTE_VELOCITY_SUB_2), 20
+layer_note0 41, 0xc, (75 - RED_COIN_NOTE_VELOCITY_SUB_2), 20
+layer_note0 53, 0x10, (80 - RED_COIN_NOTE_VELOCITY_SUB_2), 80
+layer_note0 53, 0x10, (45 - RED_COIN_NOTE_VELOCITY_SUB_2), 80
+layer_note0 53, 0x10, (20 - RED_COIN_NOTE_VELOCITY_SUB_2), 80
+layer_note0 53, 0x10, (15 - RED_COIN_NOTE_VELOCITY_SUB_2), 80
+layer_end
+
+.transpose_by_coin_index_2:
 layer_transpose 0
 layer_end
 

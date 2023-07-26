@@ -2,6 +2,7 @@
 
 #include "area.h"
 #include "engine/math_util.h"
+#include "game_init.h"
 #include "geo_misc.h"
 #include "gfx_dimensions.h"
 #include "level_update.h"
@@ -180,6 +181,13 @@ static s32 get_top_left_tile_idx(s8 player) {
     return tileRow * SKYBOX_COLS + tileCol;
 }
 
+#define COLORS 3
+#define FRAMES_PER_UPDATE 4
+#define COLOR_LIMIT 32
+#define LEVEL_4_TIMER_LIMIT (COLOR_LIMIT * COLORS)
+static Color level4Cols[COLORS*2] = {255, 255 - COLOR_LIMIT, 255 - COLOR_LIMIT, COLOR_LIMIT, COLOR_LIMIT*2, 0};
+static s32 level4Timer = -1;
+
 /**
  * Generates vertices for the skybox tile.
  *
@@ -193,14 +201,36 @@ Vtx *make_skybox_rect(s32 tileIndex, s8 colorIndex) {
     s16 y = SKYBOX_HEIGHT - tileIndex / SKYBOX_COLS * SKYBOX_TILE_HEIGHT;
 
     if (verts != NULL) {
-        make_vertex(verts, 0, x, y, -1, 0, 0, sSkyboxColors[colorIndex][0], sSkyboxColors[colorIndex][1],
-                    sSkyboxColors[colorIndex][2], 255);
-        make_vertex(verts, 1, x, y - SKYBOX_TILE_HEIGHT, -1, 0, 31 << 5, sSkyboxColors[colorIndex][0], sSkyboxColors[colorIndex][1],
-                    sSkyboxColors[colorIndex][2], 255);
-        make_vertex(verts, 2, x + SKYBOX_TILE_WIDTH, y - SKYBOX_TILE_HEIGHT, -1, 31 << 5, 31 << 5, sSkyboxColors[colorIndex][0],
-                    sSkyboxColors[colorIndex][1], sSkyboxColors[colorIndex][2], 255);
-        make_vertex(verts, 3, x + SKYBOX_TILE_WIDTH, y, -1, 31 << 5, 0, sSkyboxColors[colorIndex][0], sSkyboxColors[colorIndex][1],
-                    sSkyboxColors[colorIndex][2], 255);
+        if (gCurrLevelNum == SMG23IH2_LEVEL_4) {
+            if (gGlobalTimer % FRAMES_PER_UPDATE == 0) {
+                level4Timer = (level4Timer + 1) % LEVEL_4_TIMER_LIMIT;
+                s32 colorIndex = level4Timer / COLOR_LIMIT;
+
+                level4Cols[colorIndex]--;
+                colorIndex = (colorIndex + 1) % COLORS;
+                level4Cols[colorIndex]++;
+                colorIndex = (colorIndex + 2) % COLORS;
+                level4Cols[colorIndex + COLORS]--;
+                colorIndex = (colorIndex + 1) % COLORS;
+                level4Cols[colorIndex + COLORS]--;
+                colorIndex = (colorIndex + 1) % COLORS;
+                level4Cols[colorIndex + COLORS] += 2;
+            }
+
+            make_vertex(verts, 0, x, y, -1, 0, 0, level4Cols[0], level4Cols[1], level4Cols[2], 255);
+            make_vertex(verts, 1, x, y - SKYBOX_HEIGHT, -1, 0, 63 << 5, level4Cols[3], level4Cols[4], level4Cols[5], 255);
+            make_vertex(verts, 2, x + SKYBOX_WIDTH, y - SKYBOX_HEIGHT, -1, 31 << 5, 63 << 5, level4Cols[3], level4Cols[4], level4Cols[5], 255);
+            make_vertex(verts, 3, x + SKYBOX_WIDTH, y, -1, 31 << 5, 0, level4Cols[0], level4Cols[1], level4Cols[2], 255);
+        } else {
+            make_vertex(verts, 0, x, y, -1, 0, 0, sSkyboxColors[colorIndex][0], sSkyboxColors[colorIndex][1],
+                        sSkyboxColors[colorIndex][2], 255);
+            make_vertex(verts, 1, x, y - SKYBOX_TILE_HEIGHT, -1, 0, 31 << 5, sSkyboxColors[colorIndex][0], sSkyboxColors[colorIndex][1],
+                        sSkyboxColors[colorIndex][2], 255);
+            make_vertex(verts, 2, x + SKYBOX_TILE_WIDTH, y - SKYBOX_TILE_HEIGHT, -1, 31 << 5, 31 << 5, sSkyboxColors[colorIndex][0],
+                        sSkyboxColors[colorIndex][1], sSkyboxColors[colorIndex][2], 255);
+            make_vertex(verts, 3, x + SKYBOX_TILE_WIDTH, y, -1, 31 << 5, 0, sSkyboxColors[colorIndex][0], sSkyboxColors[colorIndex][1],
+                        sSkyboxColors[colorIndex][2], 255);
+        }
     }
     return verts;
 }
@@ -214,20 +244,31 @@ void draw_skybox_tile_grid(Gfx **dlist, s8 background, s8 player, s8 colorIndex)
     s32 row;
     s32 col;
 
-    for (row = 0; row < (3 * SKYBOX_SIZE); row++) {
-        for (col = 0; col < (3 * SKYBOX_SIZE); col++) {
-            s32 tileIndex = sSkyBoxInfo[player].upperLeftTile + row * SKYBOX_COLS + col;
-            if (tileIndex >= SKYBOX_ROWS * SKYBOX_COLS) {
-                continue;
+    if (gCurrLevelNum == SMG23IH2_LEVEL_4) {
+        s32 tileIndex = 0;
+        const Texture *const texture =
+            (*(SkyboxTexture *) segmented_to_virtual(sSkyboxTextures[background]))[tileIndex];
+        Vtx *vertices = make_skybox_rect(tileIndex, colorIndex);
+
+        gLoadBlockTexture((*dlist)++, 32, 64, G_IM_FMT_RGBA, texture);
+        gSPVertex((*dlist)++, VIRTUAL_TO_PHYSICAL(vertices), 4, 0);
+        gSPDisplayList((*dlist)++, dl_draw_quad_verts_0123);
+    } else {
+        for (row = 0; row < (3 * SKYBOX_SIZE); row++) {
+            for (col = 0; col < (3 * SKYBOX_SIZE); col++) {
+                s32 tileIndex = sSkyBoxInfo[player].upperLeftTile + row * SKYBOX_COLS + col;
+                if (tileIndex >= SKYBOX_ROWS * SKYBOX_COLS) {
+                    continue;
+                }
+
+                const Texture *const texture =
+                    (*(SkyboxTexture *) segmented_to_virtual(sSkyboxTextures[background]))[tileIndex];
+                Vtx *vertices = make_skybox_rect(tileIndex, colorIndex);
+
+                gLoadBlockTexture((*dlist)++, 32, 32, G_IM_FMT_RGBA, texture);
+                gSPVertex((*dlist)++, VIRTUAL_TO_PHYSICAL(vertices), 4, 0);
+                gSPDisplayList((*dlist)++, dl_draw_quad_verts_0123);
             }
-
-            const Texture *const texture =
-                (*(SkyboxTexture *) segmented_to_virtual(sSkyboxTextures[background]))[tileIndex];
-            Vtx *vertices = make_skybox_rect(tileIndex, colorIndex);
-
-            gLoadBlockTexture((*dlist)++, 32, 32, G_IM_FMT_RGBA, texture);
-            gSPVertex((*dlist)++, VIRTUAL_TO_PHYSICAL(vertices), 4, 0);
-            gSPDisplayList((*dlist)++, dl_draw_quad_verts_0123);
         }
     }
 }
@@ -250,7 +291,11 @@ void *create_skybox_ortho_matrix(s8 player) {
 #endif
 
     if (mtx != NULL) {
-        guOrtho(mtx, left, right, bottom, top, 0.0f, 3.0f, 1.0f);
+        if (gCurrLevelNum == SMG23IH2_LEVEL_4) {
+            guOrtho(mtx, 0, SCREEN_WIDTH, bottom, top, 0.0f, 3.0f, 1.0f);
+        } else {
+            guOrtho(mtx, left, right, bottom, top, 0.0f, 3.0f, 1.0f);
+        }
     }
 
     return mtx;
