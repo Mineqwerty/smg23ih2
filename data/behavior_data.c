@@ -6444,5 +6444,6 @@ const BehaviorScript bhvCQBridge[] = {
     CALL_NATIVE(bhv_cq_bridge_init),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_cq_bridge_loop),
+        CALL_NATIVE(load_object_collision_model),
     END_LOOP(),
 };
