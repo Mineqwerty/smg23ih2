@@ -578,3 +578,4 @@ extern const BehaviorScript bhvBlockingtonMini[];
 
 extern const BehaviorScript bhvCQDoor[];
 extern const BehaviorScript bhvCQGate[];
+extern const BehaviorScript bhvCQBridge[];

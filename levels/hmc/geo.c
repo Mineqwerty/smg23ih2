@@ -29,3 +29,4 @@
 #include "levels/hmc/cq_gate/geo.inc.c"
 #include "levels/hmc/cq_door/geo.inc.c"
 #include "levels/hmc/cq_red_cube/geo.inc.c"
+#include "levels/hmc/cq_bridge/geo.inc.c"

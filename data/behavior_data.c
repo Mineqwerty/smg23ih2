@@ -6436,3 +6436,13 @@ const BehaviorScript bhvCQGate[] = {
         CALL_NATIVE(load_object_collision_model),
     END_LOOP(),
 };
+
+const BehaviorScript bhvCQBridge[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    LOAD_COLLISION_DATA(cq_bridge_collision),
+    CALL_NATIVE(bhv_cq_bridge_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_cq_bridge_loop),
+    END_LOOP(),
+};

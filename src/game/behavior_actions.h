@@ -652,3 +652,5 @@ void bhv_cq_door_init(void);
 void bhv_cq_door_loop(void);
 void bhv_cq_gate_init(void);
 void bhv_cq_gate_loop(void);
+void bhv_cq_bridge_init(void);
+void bhv_cq_bridge_loop(void);
