@@ -1818,8 +1818,9 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
     }
 
     if (gPlayer1Controller->buttonPressed & R_JPAD) {
-        gChangeArea = 2;
-        set_mario_action(gMarioState, ACT_PERSONA_BATTLE, 0);
+        //gChangeArea = 2;
+        //set_mario_action(gMarioState, ACT_PERSONA_BATTLE, 0);
+        spawn_object_relative(0, 0, 0, 0, o, MODEL_CUSTOM_FAZANA_CAR, bhvFazanaCar);
     }
 
     if (gChangeArea > 0) {
