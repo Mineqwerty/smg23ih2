@@ -66,4 +66,10 @@ extern const LevelScript level_sl_entry[];
 
 #include "levels/sl/enemy_selector/geo_header.h"
 
+#include "levels/sl/selectBox/header.h"
+
+#include "levels/sl/skillWheel/header.h"
+
+#include "levels/sl/generalSkillIcon/header.h"
+
 #endif

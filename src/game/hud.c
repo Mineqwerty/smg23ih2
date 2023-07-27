@@ -358,12 +358,72 @@ void render_dl_persona() {
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
 }
 
+void render_dl_skill_menu() {
+
+    Mtx *mtx = alloc_display_list(sizeof(Mtx));
+
+    if (mtx == NULL) {
+        return;
+    }
+    
+    //selection wheel
+    guTranslate(mtx, (f32) 50, (f32) 50, 0);
+    gDPSetRenderMode(gDisplayListHead++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx++),
+              G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
+    create_dl_scale_matrix(MENU_MTX_NOPUSH, 0.4f, 0.4f, 1.0f);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, gPersonaHUDAlpha);
+    gSPDisplayList(gDisplayListHead++, &skillWheel_selectWheel_001_mesh);
+
+    //battle options
+        create_dl_translation_matrix(MENU_MTX_PUSH, 240, 158 - (gSelectedSkillIndex * 40), 0);
+            gSPDisplayList(gDisplayListHead++, &selectBox_selectWheel_002_mesh);
+        gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+
+        create_dl_translation_matrix(MENU_MTX_NOPUSH, 50, 158, 0);
+        if (gSelectedSkillIndex == 1) {
+            gDPSetPrimColor(gDisplayListHead++, 0, 0, 0, 0, 0, gPersonaHUDAlpha);
+        }
+        gSPDisplayList(gDisplayListHead++, &generalSkillIcon_generalSkill_mesh);
+        gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, gPersonaHUDAlpha);
+
+        create_dl_translation_matrix(MENU_MTX_NOPUSH, 0, -40, 0);
+        if (gSelectedSkillIndex == 0) {
+            gDPSetPrimColor(gDisplayListHead++, 0, 0, 0, 0, 0, gPersonaHUDAlpha);
+        }
+        gSPDisplayList(gDisplayListHead++, &generalSkillIcon_generalSkill_mesh);
+        gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, gPersonaHUDAlpha);
+
+
+        gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+}
+
 void s2d_print_deferred(int x, int y, const char *str);
 void render_persona_selector_text(void) {
     s2d_init();
 	s2d_print_deferred(18, 185, optionText[gSelectedBattleCommand]);
 
     s2d_print_deferred(130, 210, optionDescriptionText[gSelectedBattleCommand]);
+	s2d_handle_deferred();
+
+	// reloads the original microcode; only needed once after all prints
+	s2d_stop();
+}
+
+void render_persona_skill_text(void) {
+    s2d_init();
+	s2d_print_deferred(70, 185, optionText[7]);
+
+    if (gSelectedSkillIndex == 0) {
+        s2d_print_deferred(90, 128, COLOR "255 255 255 210" SCALE "20" "Bash");
+        s2d_print_deferred(90, 143, COLOR "20 20 20 210" SCALE "20" "Agi");
+    }
+    else {
+        s2d_print_deferred(90, 128, COLOR "20 20 20 210" SCALE "20" "Bash");
+        s2d_print_deferred(90, 143, COLOR "255 255 255 210" SCALE "20" "Agi");
+    }
+
+    s2d_print_deferred(130, 210, optionDescriptionText[gSelectedSkillIndex + 7]);
 	s2d_handle_deferred();
 
 	// reloads the original microcode; only needed once after all prints
@@ -662,6 +722,10 @@ void render_hud(void) {
             if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_MAIN_TEXT) {
                 render_dl_persona();
                 render_persona_selector_text();
+            }
+            if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_SKILL_TEXT) {
+                render_dl_skill_menu();
+                render_persona_skill_text();
             }
         }
 

@@ -155,6 +155,9 @@ void bhv_persona_battle_manager_loop(void) {
                         break;
                         case 1:
                             o->oAction = PERSONA_ACT_SELECT_SKILL;
+                            gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_MAIN_TEXT);
+                            gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_ATTACK_TEXT);
+                            gPersonaMenuFlags |= PERSONA_MENU_FLAGS_SKILL_TEXT;
                         break;
                     }
                 }
@@ -307,6 +310,71 @@ void bhv_persona_battle_manager_loop(void) {
                 }
             break;
         }
+    break;
+    case PERSONA_ACT_SELECT_SKILL:
+        switch (o->oSubAction) {
+            case 0:
+                if (o->oTimer < 15) {
+                    gPersonaHUDAlpha = o->oTimer * 14;
+                }
+                else {
+                    gPersonaHUDAlpha = 210;
+                    o->oSubAction = 1;
+                }
+            break;
+            case 1:
+                if (gPlayer1Controller->buttonPressed & A_BUTTON) {
+                    switch (gSelectedSkillIndex) {
+                        case 0:
+                            
+                            
+                        break;
+                        case 1:
+                            
+                        break;
+                    }
+                }
+                else if (gPlayer1Controller->buttonPressed & B_BUTTON) {
+                    o->oAction = PERSONA_ACT_MARIO_TURN;
+                    play_sound(SOUND_CUSTOM0_P_CANCEL, gGlobalSoundSource);
+                    gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_SKILL_TEXT);
+                    gPersonaMenuFlags |= PERSONA_MENU_FLAGS_MAIN_TEXT;
+                }
+                else if (gPlayer1Controller->rawStickY > 8) {
+                    play_sound(SOUND_CUSTOM0_P_SELECTOR, gGlobalSoundSource);
+                    gSelectedSkillIndex++;
+                    if (gSelectedSkillIndex == 2) {
+                        gSelectedSkillIndex = 0;
+                    }
+                    gBattleOptionRotationTimer = 1;
+                    o->oSubAction = 2;
+                }
+                else if (gPlayer1Controller->rawStickY <= -8) {
+                    play_sound(SOUND_CUSTOM0_P_SELECTOR, gGlobalSoundSource);
+                    gSelectedSkillIndex--;
+                    if (gSelectedSkillIndex == -1) {
+                        gSelectedSkillIndex = 1;
+                    }
+                    gBattleOptionRotationTimer = -1;
+                    o->oSubAction = 3;
+                }
+            break;
+            case 2:
+                gBattleOptionRotationTimer++;
+                if (gBattleOptionRotationTimer == 10) {
+                    o->oSubAction = 1;
+                    gBattleOptionRotationTimer = 0;
+                }
+            break;
+            case 3:
+                gBattleOptionRotationTimer--;
+                if (gBattleOptionRotationTimer == -10) {
+                    o->oSubAction = 1;
+                    gBattleOptionRotationTimer = 0;
+                }
+            break;
+        }
+        animate_mario_idle();
     break;
     case PERSONA_ACT_ENEMY_TURNS:
         switch (o->oSubAction) {

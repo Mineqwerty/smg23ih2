@@ -48,3 +48,6 @@
 #include "levels/sl/cowardly_maya/anims/data.inc.c"
 #include "levels/sl/cowardly_maya/anims/table.inc.c"
 #include "levels/sl/enemy_selector/model.inc.c"
+#include "levels/sl/selectBox/model.inc.c"
+#include "levels/sl/skillWheel/model.inc.c"
+#include "levels/sl/generalSkillIcon/model.inc.c"
