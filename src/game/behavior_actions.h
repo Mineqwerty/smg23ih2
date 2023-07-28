@@ -641,6 +641,8 @@ void bhv_persona_battle_manager_init(void);
 void bhv_persona_battle_manager_loop(void);
 void bhv_cowardly_maya_init(void);
 void bhv_cowardly_maya_loop(void);
+void bhv_agi_particle_init(void);
+void bhv_agi_particle_loop(void);
 void bhv_enemy_selector_init(void);
 void bhv_enemy_selector_loop(void);
 void bhv_blockington_init(void);
