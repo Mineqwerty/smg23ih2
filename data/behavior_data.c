@@ -973,6 +973,12 @@ const BehaviorScript bhvCoinFormation[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvFakeRedCoinCube[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, (OBJ_FLAG_ACTIVE_FROM_AFAR)),
+    GOTO(bhvYellowCoin + 1),
+};
+
 const BehaviorScript bhvOneCoin[] = {
     BEGIN(OBJ_LIST_LEVEL),
     SET_INT(oBehParams2ndByte, YELLOW_COIN_BP_ONE_COIN),
@@ -6440,7 +6446,7 @@ const BehaviorScript bhvCQGate[] = {
 
 const BehaviorScript bhvCQBridge[] = {
     BEGIN(OBJ_LIST_SURFACE),
-    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_DONT_CALC_COLL_DIST)),
     LOAD_COLLISION_DATA(cq_bridge_collision),
     SET_FLOAT(oDrawingDistance, 30000),
     SET_FLOAT(oCollisionDistance, 30000),

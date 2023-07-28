@@ -1,8 +1,10 @@
 // fazana_car.inc.c
 
-#define TURN_RATIO_CONSTANT 0.007f
+#define TURN_RATIO_CONSTANT 0.0325f
+#define SLOW_TURN_MULT 2.0f
 #define TURN_RATIO_AERIAL_CONSTANT 0.9f
 #define TURN_RATIO_AERIAL_CONTROL_CONSTANT 0.1f
+#define LAUNCH_CONST 0.667f
 #define ROTATION_CONSTANT 0x120
 #define FORWARD_VELOCITY_CAP 144.0f
 
@@ -37,14 +39,15 @@ void bhv_car_orange_number_loop(void) {
 }
 
 void bhv_fazana_car_init(void) {
-    o->oGravity = 1.25f;
+    o->oGravity = 2.0f;
     o->oFriction = 0.97f;
     o->oBuoyancy = 3.5f;
-    o->oBounciness = 0.35f;
+    o->oBounciness = 0.225f;
     obj_set_hitbox(o, &sFazanaCarHitbox);
     cur_obj_become_tangible();
 
     o->oFazanaCarBIndicator = spawn_object_relative(0x000B, 0, 0, 0, o, MODEL_NUMBER, bhvCarOrangeNumber);
+    o->oFazanaCarLastGroundedY = o->oPosY;
 }
 
 static void made_by_blakeoramo(void) {
@@ -106,11 +109,18 @@ static void fazana_car_set_forward_velocity_and_turn_wheels(void) {
         o->oFazanaCarAerialRotation *= 0.3f;
     }
 
-    o->oFaceAngleYaw = (s16) (o->oFaceAngleYaw + (s32) (o->oFazanaCarAerialRotation * o->oForwardVel * TURN_RATIO_CONSTANT));
+    s32 rotation = o->oFazanaCarAerialRotation * sqrtf(ABS(o->oForwardVel) * (1.0f / SLOW_TURN_MULT)) * SLOW_TURN_MULT * TURN_RATIO_CONSTANT;
+    if (o->oForwardVel <= 0.0f) {
+        rotation = -rotation;
+    }
+
+    o->oFaceAngleYaw = (s16) (o->oFaceAngleYaw + rotation);
     o->oMoveAngleYaw = o->oFaceAngleYaw;
 }
 
 void fazana_car_act_move(void) {
+    f32 lastY = o->oPosY;
+
     s16 collisionFlags = object_step_without_floor_orient();
 
     s32 collidedObjects = o->numCollidedObjs;
@@ -131,16 +141,34 @@ void fazana_car_act_move(void) {
     }
 
     if (collisionFlags & OBJ_COL_FLAG_GROUNDED) {
-        o->oFazanaCarGroundedLast = TRUE;
         if (o->oVelY > 0.0f) {
             o->oVelY *= 2.0f * o->oBounciness;
+        } else {
+            o->oFazanaCarGroundedLast = TRUE;
+
+            if (o->oFloor != NULL && ((lastY - o->oFazanaCarLastGroundedY) - (o->oPosY - lastY) > 32.0f)) {
+                o->oFazanaCarGroundedLast = FALSE;
+                o->oVelY = (lastY - o->oFazanaCarLastGroundedY) * LAUNCH_CONST;
+                if (o->oPosY < lastY + o->oVelY) {
+                    o->oPosY = lastY + o->oVelY;
+                }
+            } else {
+                o->oFazanaCarLastGroundedY = lastY;
+            }
         }
 
         if (o->oFloor != NULL) {
             o->oFazanaCarLastFloor = o->oFloor;
         }
     } else {
+        if (o->oFazanaCarGroundedLast) {
+            o->oVelY = (lastY - o->oFazanaCarLastGroundedY) * LAUNCH_CONST;
+            if (o->oPosY < lastY + o->oVelY) {
+                o->oPosY = lastY + o->oVelY;
+            }
+        }
         o->oFazanaCarGroundedLast = FALSE;
+        o->oFazanaCarLastGroundedY = o->oPosY;
     }
 
     if (o->oFazanaCarLastFloor) {

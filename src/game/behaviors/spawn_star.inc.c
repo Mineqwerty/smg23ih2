@@ -153,13 +153,11 @@ void spawn_no_exit_star(f32 x, f32 y, f32 z) {
 }
 
 void bhv_hidden_red_coin_star_init(void) {
-    struct Object *starObj = NULL;
-
     if (gCurrLevelNum != SMG23IH2_LEVEL_4) {
-        spawn_object(o, MODEL_TRANSPARENT_STAR, bhvRedCoinStarMarker);
-    }
+        struct Object *starObj = NULL;
 
-    if (gCurrLevelNum == SMG23IH2_LEVEL_4) {
+        spawn_object(o, MODEL_TRANSPARENT_STAR, bhvRedCoinStarMarker);
+
         // check if bparam2 specifies a total number of coins that should spawn the star
         if (o->oBehParams2ndByte != 0) {
             o->oHiddenStarTriggerTotal = o->oBehParams2ndByte;
@@ -189,7 +187,6 @@ void bhv_hidden_red_coin_star_init(void) {
         o->oHiddenStarTriggerTotal = 12; // Hardcoded to 12 reds
         o->oHiddenStarTriggerCounter = 0;
     }
-    
 }
 
 void bhv_hidden_red_coin_star_loop(void) {
