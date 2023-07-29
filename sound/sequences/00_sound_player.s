@@ -4550,7 +4550,7 @@ chan_end
 .layer_car_motor:
 layer_somethingon
 .layer_car_motor_loop:
-layer_note1 39, 0x100, 82
+layer_note1 39, 0x100, 76
 layer_jump .layer_car_motor_loop
 
 .sound_env_ticket_muncher:

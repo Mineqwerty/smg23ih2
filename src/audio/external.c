@@ -2443,12 +2443,16 @@ void play_peachs_jingle(void) {
  * Called from threads: thread5_game_loop
  */
 void play_puzzle_jingle(void) {
-    seq_player_play_sequence(SEQ_PLAYER_ENV, SEQ_EVENT_SOLVE_PUZZLE, 0);
-    sBackgroundMusicMaxTargetVolume = TARGET_VOLUME_IS_PRESENT_FLAG | 20;
+    if (gCurrLevelNum == SMG23IH2_LEVEL_4) {
+        seq_player_play_sequence(SEQ_PLAYER_ENV, SEQ_EVENT_OOT_SECRET_SOUND, 0);
+    } else {
+        sBackgroundMusicMaxTargetVolume = TARGET_VOLUME_IS_PRESENT_FLAG | 20;
+        seq_player_play_sequence(SEQ_PLAYER_ENV, SEQ_EVENT_SOLVE_PUZZLE, 0);
 #if defined(VERSION_EU) || defined(VERSION_SH)
-    D_EU_80300558 = 2;
+        D_EU_80300558 = 2;
 #endif
-    begin_background_music_fade(50);
+        begin_background_music_fade(50);
+    }
 }
 
 /**
@@ -2519,6 +2523,7 @@ void sound_reset(u8 reverbPresetId) {
 #endif
     osWritebackDCacheAll();
     if (reverbPresetId != 7) {
+        preload_sequence(SEQ_EVENT_OOT_SECRET_SOUND, PRELOAD_BANKS | PRELOAD_SEQUENCE);
         preload_sequence(SEQ_EVENT_SOLVE_PUZZLE, PRELOAD_BANKS | PRELOAD_SEQUENCE);
         preload_sequence(SEQ_EVENT_PEACH_MESSAGE, PRELOAD_BANKS | PRELOAD_SEQUENCE);
         preload_sequence(SEQ_EVENT_CUTSCENE_STAR_SPAWN, PRELOAD_BANKS | PRELOAD_SEQUENCE);

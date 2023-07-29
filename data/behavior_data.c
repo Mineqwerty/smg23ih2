@@ -973,6 +973,12 @@ const BehaviorScript bhvCoinFormation[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvFakeRedCoinCube[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, (OBJ_FLAG_ACTIVE_FROM_AFAR)),
+    GOTO(bhvYellowCoin + 1),
+};
+
 const BehaviorScript bhvOneCoin[] = {
     BEGIN(OBJ_LIST_LEVEL),
     SET_INT(oBehParams2ndByte, YELLOW_COIN_BP_ONE_COIN),
@@ -6435,6 +6441,7 @@ const BehaviorScript bhvCQDoor[] = {
     BEGIN(OBJ_LIST_SURFACE),
     OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
     LOAD_COLLISION_DATA(cq_door_collision),
+    SET_HOME(),
     SET_FLOAT(oDrawingDistance, 30000),
     CALL_NATIVE(bhv_cq_door_init),
     BEGIN_LOOP(),
@@ -6447,6 +6454,7 @@ const BehaviorScript bhvCQGate[] = {
     BEGIN(OBJ_LIST_SURFACE),
     OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
     LOAD_COLLISION_DATA(cq_gate_collision),
+    SET_HOME(),
     CALL_NATIVE(bhv_cq_gate_init),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_cq_gate_loop),
@@ -6456,14 +6464,14 @@ const BehaviorScript bhvCQGate[] = {
 
 const BehaviorScript bhvCQBridge[] = {
     BEGIN(OBJ_LIST_SURFACE),
-    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_DONT_CALC_COLL_DIST)),
     LOAD_COLLISION_DATA(cq_bridge_collision),
+    SET_HOME(),
     SET_FLOAT(oDrawingDistance, 30000),
     SET_FLOAT(oCollisionDistance, 30000),
     CALL_NATIVE(bhv_cq_bridge_init),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_cq_bridge_loop),
-        CALL_NATIVE(load_object_collision_model),
     END_LOOP(),
 };
 

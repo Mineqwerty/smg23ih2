@@ -170,7 +170,7 @@
 #define /*0x1C0*/ oFloor                      OBJECT_FIELD_SURFACE(0x4E)
 #define /*0x1C4*/ oDeathSound                 OBJECT_FIELD_S32(0x4F)
 #ifdef PUPPYLIGHTS
-#define /*0x1C4*/ oLightID                                      OBJECT_FIELD_S32(0x50)
+#define /*0x1CC*/ oLightID                                      OBJECT_FIELD_S32(0x51)
 #endif
 
 /* Pathed (see obj_follow_path) */
@@ -472,7 +472,7 @@
 #define /*0x0F4*/ oBreakableBoxSmallReleased            OBJECT_FIELD_S32(0x1B)
 #define /*0x0FC*/ oBreakableBoxSmallFramesSinceReleased OBJECT_FIELD_S32(0x1D)
 
-/* Blockington */
+/* Blockington (BOTH) */
 #define /*0x0F4*/ oBlockingtonAngleHomeVec   OBJECT_FIELD_S32(0x1B)
 #define /*0x0F4*/ oBlockingtonAngleHomePitch OBJECT_FIELD_S32(0x1B)
 #define /*0x0F8*/ oBlockingtonAngleHomeYaw   OBJECT_FIELD_S32(0x1C)
@@ -482,6 +482,13 @@
 #define /*0x104*/ oBlockingtonScaleHomeY     OBJECT_FIELD_F32(0x1F)
 #define /*0x108*/ oBlockingtonScaleHomeZ     OBJECT_FIELD_F32(0x20)
 
+/* CQ Bridge */
+#define /*0x0F4*/ oCQBridgeCamPosVec OBJECT_FIELD_F32(0x1B)
+#define /*0x0F4*/ oCQBridgeCamPosX   OBJECT_FIELD_F32(0x1B)
+#define /*0x0F8*/ oCQBridgeCamPosY   OBJECT_FIELD_F32(0x1C)
+#define /*0x0FC*/ oCQBridgeCamPosZ   OBJECT_FIELD_F32(0x1D)
+#define /*0x100*/ oCQBridgePanFrames OBJECT_FIELD_S32(0x1E)
+
 /* Fazana Car */
 #define /*0x0F4*/ oFazanaCarWheelRot       OBJECT_FIELD_S32(0x1B)
 #define /*0x0F8*/ oFazanaCarWheelTurn      OBJECT_FIELD_S32(0x1C)
@@ -490,8 +497,9 @@
 #define /*0x104*/ oFazanaCarBIndicator     OBJECT_FIELD_OBJ(0x1F)
 #define /*0x108*/ oFazanaCarGroundedLast   OBJECT_FIELD_S32(0x20)
 #define /*0x10C*/ oFazanaCarAerialRotation OBJECT_FIELD_S32(0x21)
-#define /*0x10C*/ oFazanaCarSoundPitch     OBJECT_FIELD_F32(0x49)
-#define /*0x10C*/ oFazanaCarLastFloor      OBJECT_FIELD_SURFACE(0x4A)
+#define /*0x1AC*/ oFazanaCarSoundPitch     OBJECT_FIELD_F32(0x49)
+#define /*0x1B0*/ oFazanaCarLastFloor      OBJECT_FIELD_SURFACE(0x4A)
+#define /*0x1C8*/ oFazanaCarLastGroundedY  OBJECT_FIELD_F32(0x50)
 
 /* Mario Maker Laugh */
 #define /*0x0F4*/ oMarioMakerLaughScale OBJECT_FIELD_F32(0x1B)

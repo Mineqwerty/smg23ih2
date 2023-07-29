@@ -1,7 +1,7 @@
 #include "src/game/envfx_snow.h"
 
 const GeoLayout cq_bridge_geo[] = {
-	GEO_NODE_START(),
+	GEO_CULLING_RADIUS(32767),
 	GEO_OPEN_NODE(),
 		GEO_RENDER_RANGE(0, 32767),
 		GEO_OPEN_NODE(),

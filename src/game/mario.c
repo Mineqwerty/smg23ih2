@@ -1425,7 +1425,9 @@ void update_mario_geometry_inputs(struct MarioState *m) {
         }
 
     } else {
-        level_trigger_warp(m, WARP_OP_DEATH);
+        if (m->action != ACT_FAZANA_CAR) {
+            level_trigger_warp(m, WARP_OP_DEATH);
+        }
     }
 }
 
@@ -1817,11 +1819,13 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
         set_mario_action(gMarioState, ACT_IDLE, 0);
     }
 
-    if (gPlayer1Controller->buttonPressed & R_JPAD) {
-        //gChangeArea = 2;
-        //set_mario_action(gMarioState, ACT_PERSONA_BATTLE, 0);
-        spawn_object_relative(0, 0, 0, 0, o, MODEL_CUSTOM_FAZANA_CAR, bhvFazanaCar);
-    }
+#ifdef ENABLE_DEBUG_FREE_MOVE
+    // if (gPlayer1Controller->buttonPressed & R_JPAD) {
+    //     gChangeArea = 2;
+    //     set_mario_action(gMarioState, ACT_PERSONA_BATTLE, 0);
+    //     spawn_object_relative(0, 0, 0, 0, o, MODEL_CUSTOM_FAZANA_CAR, bhvFazanaCar);
+    // }
+#endif
 
     if (gChangeArea > 0) {
         change_area(gChangeArea);
