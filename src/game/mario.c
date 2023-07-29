@@ -1820,11 +1820,12 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
     }
 
 #ifdef ENABLE_DEBUG_FREE_MOVE
-    // if (gPlayer1Controller->buttonPressed & R_JPAD) {
+     if (gPlayer1Controller->buttonPressed & R_JPAD) {
     //     gChangeArea = 2;
     //     set_mario_action(gMarioState, ACT_PERSONA_BATTLE, 0);
     //     spawn_object_relative(0, 0, 0, 0, o, MODEL_CUSTOM_FAZANA_CAR, bhvFazanaCar);
-    // }
+    initiate_warp(SMG23IH2_LEVEL_6, 1, 10, 0);
+     }
 #endif
 
     if (gChangeArea > 0) {

@@ -582,3 +582,4 @@ extern const BehaviorScript bhvCQDoor[];
 extern const BehaviorScript bhvCQGate[];
 extern const BehaviorScript bhvCQBridge[];
 extern const BehaviorScript bhvJumpman[];
+extern const BehaviorScript bhvWhompChecker[];

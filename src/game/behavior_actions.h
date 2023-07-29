@@ -658,3 +658,5 @@ void bhv_cq_bridge_init(void);
 void bhv_cq_bridge_loop(void);
 void bhv_jumpman_init(void);
 void bhv_jumpman_loop(void);
+void bhv_whomp_checker_init(void);
+void bhv_whomp_checker_loop(void);

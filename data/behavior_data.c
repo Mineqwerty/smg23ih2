@@ -6483,3 +6483,12 @@ const BehaviorScript bhvJumpman[] = {
         CALL_NATIVE(bhv_jumpman_loop),
     END_LOOP(),
 };
+
+const BehaviorScript bhvWhompChecker[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    CALL_NATIVE(bhv_whomp_checker_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_whomp_checker_loop),
+    END_LOOP(),
+};
