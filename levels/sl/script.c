@@ -46,6 +46,7 @@ const LevelScript level_sl_entry[] = {
 	LOAD_MODEL_FROM_GEO(MODEL_FLOATING_STUFF_1, floating_stuff_1_geo), 
 	LOAD_MODEL_FROM_GEO(MODEL_COWARDLY_MAYA, cowardly_maya_geo), 
 	LOAD_MODEL_FROM_GEO(MODEL_ENEMY_SELECTOR, enemy_selector_geo), 
+	LOAD_MODEL_FROM_GEO(MODEL_JUMPMAN, jumpman_geo), 
 
 	/* Fast64 begin persistent block [level commands] */
 	/* Fast64 end persistent block [level commands] */

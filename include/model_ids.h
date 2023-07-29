@@ -579,6 +579,7 @@
 #define MODEL_CQ_DOOR            0x136
 #define MODEL_CQ_RED_CUBE            0x137
 #define MODEL_CQ_BRIDGE            0x138
+#define MODEL_JUMPMAN            0x139
 
 #endif
 

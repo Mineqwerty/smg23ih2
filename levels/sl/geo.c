@@ -24,3 +24,4 @@
 #include "levels/sl/floating_stuff_1/geo.inc.c"
 #include "levels/sl/cowardly_maya/geo.inc.c"
 #include "levels/sl/enemy_selector/geo.inc.c"
+#include "levels/sl/jumpman/geo.inc.c"

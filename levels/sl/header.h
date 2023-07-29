@@ -72,4 +72,6 @@ extern const LevelScript level_sl_entry[];
 
 #include "levels/sl/generalSkillIcon/header.h"
 
+#include "levels/sl/jumpman/geo_header.h"
+
 #endif

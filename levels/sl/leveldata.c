@@ -51,3 +51,4 @@
 #include "levels/sl/selectBox/model.inc.c"
 #include "levels/sl/skillWheel/model.inc.c"
 #include "levels/sl/generalSkillIcon/model.inc.c"
+#include "levels/sl/jumpman/model.inc.c"

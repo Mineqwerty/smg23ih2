@@ -436,10 +436,15 @@ void bhv_persona_battle_manager_loop(void) {
     Vec3f marioFront = {gMarioState->pos[0] - 300, 300, gMarioState->pos[2] - 300};
             approach_vec3f_asymptotic(gLakituState.goalPos, marioFront, 0.05f, 0.05f, 0.05f);
             approach_vec3f_asymptotic(gLakituState.goalFocus, gMarioState->pos, 0.05f, 0.05f, 0.05f);
+            gPersonaMenuFlags |= PERSONA_MENU_FLAGS_USING_SKILL_BATTLE_TEXT;
 
-            if (o->oTimer == 120) {
+            if (o->oTimer == 60) {
                 o->oSubAction++;
                 o->oTimer = 0;
+                gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_USING_SKILL_BATTLE_TEXT);
+                select_enemy(selectedEnemy);
+                selectedEnemy = cur_obj_find_object_with_bparam_2nd_byte(bhvCowardlyMaya, gSelectedEnemy);
+                spawn_object_relative(gSelectedSkillIndex, 200, 30, 200, selectedEnemy, MODEL_JUMPMAN, bhvJumpman);
             }
     }
     else {
@@ -454,6 +459,11 @@ void bhv_persona_battle_manager_loop(void) {
             for (int i = 0; i < 10; i++) {
                 spawn_object_relative(0, 0, i * 5, 0, selectedEnemy, MODEL_RED_FLAME, bhvAgiParticle);
             }
+        }
+
+        if (o->oTimer == 45 && gSelectedSkillIndex == 0) {
+            selectedEnemy->oAction = 3;
+            
         }
 
         if (o->oTimer == 90) {

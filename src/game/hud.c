@@ -428,6 +428,38 @@ void render_persona_skill_text(void) {
 
 	// reloads the original microcode; only needed once after all prints
 	s2d_stop();
+    
+}
+
+void render_using_skill_text(void) {
+    Mtx *mtx = alloc_display_list(sizeof(Mtx));
+
+    if (mtx == NULL) {
+        return;
+    }
+    guTranslate(mtx, (f32) 50, (f32) 50, 0);
+    gDPSetRenderMode(gDisplayListHead++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
+    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx++),
+              G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
+
+    create_dl_scale_matrix(MENU_MTX_NOPUSH, 0.4f, 0.4f, 1.0f);
+    create_dl_translation_matrix(MENU_MTX_PUSH, 280, 380, 0);
+            gSPDisplayList(gDisplayListHead++, &selectBox_selectWheel_002_mesh);
+        gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+    s2d_init();
+
+    if (gSelectedSkillIndex == 0) {
+        s2d_print_deferred(160, 40, COLOR "255 255 255 210" SCALE "20" "Bash");
+    }
+    else {
+        s2d_print_deferred(160, 40, COLOR "255 255 255 210" SCALE "20" "Agi");
+    }
+    
+	s2d_handle_deferred();
+
+	// reloads the original microcode; only needed once after all prints
+	s2d_stop();
 }
 
 #ifdef BREATH_METER
@@ -726,6 +758,9 @@ void render_hud(void) {
             if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_SKILL_TEXT) {
                 render_dl_skill_menu();
                 render_persona_skill_text();
+            }
+            if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_USING_SKILL_BATTLE_TEXT) {
+                render_using_skill_text();
             }
         }
 
