@@ -482,6 +482,13 @@
 #define /*0x104*/ oBlockingtonScaleHomeY     OBJECT_FIELD_F32(0x1F)
 #define /*0x108*/ oBlockingtonScaleHomeZ     OBJECT_FIELD_F32(0x20)
 
+/* CQ Bridge */
+#define /*0x0F4*/ oCQBridgeCamPosVec OBJECT_FIELD_F32(0x1B)
+#define /*0x0F4*/ oCQBridgeCamPosX   OBJECT_FIELD_F32(0x1B)
+#define /*0x0F8*/ oCQBridgeCamPosY   OBJECT_FIELD_F32(0x1C)
+#define /*0x0FC*/ oCQBridgeCamPosZ   OBJECT_FIELD_F32(0x1D)
+#define /*0x100*/ oCQBridgePanFrames OBJECT_FIELD_S32(0x1E)
+
 /* Fazana Car */
 #define /*0x0F4*/ oFazanaCarWheelRot       OBJECT_FIELD_S32(0x1B)
 #define /*0x0F8*/ oFazanaCarWheelTurn      OBJECT_FIELD_S32(0x1C)

@@ -49,6 +49,7 @@ enum SeqId {
     SEQ_SHIT_BROS_2,                  // 0x24
     SEQ_SHIT_BROS_1,                  // 0x25
     SEQ_STREAMED_MASS_DESTRUCTION,    // 0x26
+    SEQ_EVENT_OOT_SECRET_SOUND,       // 0x27
     SEQ_COUNT
 };
 

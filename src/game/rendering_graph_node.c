@@ -1099,6 +1099,10 @@ s32 obj_is_in_view(struct GraphNodeObject *node) {
 
     if (geo != NULL && geo->type == GRAPH_NODE_TYPE_CULLING_RADIUS) {
         cullingRadius = ((struct GraphNodeCullingRadius *) geo)->cullingRadius;
+
+        if (cullingRadius == 32767) {
+            return TRUE;
+        }
     } else {
         cullingRadius = DEFAULT_CULLING_RADIUS;
     }
