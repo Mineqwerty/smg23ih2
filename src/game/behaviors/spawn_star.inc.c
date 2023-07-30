@@ -231,9 +231,17 @@ void bhv_hidden_red_coin_star_loop(void) {
                     o->oAction = HIDDEN_STAR_ACT_ACTIVE;
                 }
                 break;
-
             case HIDDEN_STAR_ACT_ACTIVE:
-                // TODO: Raise bridge or something
+                if (o->oTimer > 2) {
+                    struct Object *obj = find_first_object_with_behavior_and_bparams(bhvCQBridge, BPARAM4 << 16, 0x00FF0000);
+                    if (obj) {
+                        obj->oAction++;
+                        o->oAction = HIDDEN_STAR_ACT_WAITING_FOR_COIN_LOSS;
+                    }
+                }
+                break;
+            case HIDDEN_STAR_ACT_WAITING_FOR_COIN_LOSS:
+            default:
                 break;
         }
     }

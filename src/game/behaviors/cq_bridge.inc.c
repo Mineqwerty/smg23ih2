@@ -1,13 +1,14 @@
 // cq_bridge.inc.c
 
 #define CQ_BRIDGE_DIST_CAM_XZ 11000.0f
-#define CQ_BRIDGE_DIST_CAM_Y 7500.0f
+#define CQ_BRIDGE_DIST_CAM_Y 6500.0f
 #define CQ_BRIDGE_CUTSCENE_POS_SMOOTHSTEPXZ 0.12f
 #define CQ_BRIDGE_CUTSCENE_POS_SMOOTHSTEPY 0.20f
-#define CQ_BRIDGE_CUTSCENE_FOCUS_SMOOTHSTEPXZ 0.55f
-#define CQ_BRIDGE_CUTSCENE_FOCUS_SMOOTHSTEPY 0.55f
+#define CQ_BRIDGE_CUTSCENE_FOCUS_SMOOTHSTEPXZ 0.50f
+#define CQ_BRIDGE_CUTSCENE_FOCUS_SMOOTHSTEPY 0.50f
 
 enum CQBridgeActions {
+    ACT_CQBRIDGE_WAITING,
     ACT_CQBRIDGE_HIDDEN,
     ACT_CQBRIDGE_ANIMATING,
     ACT_CQBRIDGE_VISIBLE,
@@ -29,10 +30,6 @@ static void bhv_cq_bridge_hidden(void) {
     Vec3f tmp;
     f32 dist1;
     f32 dist2;
-
-    if (!(gPlayer1Controller->buttonPressed & L_TRIG)) {
-        return;
-    }
 
     if (gCamera->cutscene == FALSE && !(gTimeStopState & TIME_STOP_ENABLED) && (mario_ready_to_speak() || gMarioState->action == ACT_FAZANA_CAR)) {
         gTimeStopState |= TIME_STOP_ENABLED;
@@ -95,7 +92,7 @@ static void bhv_cq_bridge_animating(void) {
             cur_obj_unhide();
 
             // TODO: object raising
-            o->oPosY = lerpf(o->oPosY, o->oHomeY, 0.035f) + 4.0f;
+            o->oPosY = lerpf(o->oPosY, o->oHomeY, 0.031f) + 12.0f;
             diff = o->oHomeY - o->oPosY;
 
             if (ABS(diff) < 5.0f) {
@@ -146,6 +143,9 @@ void bhv_cq_bridge_init(void) {
 
 void bhv_cq_bridge_loop(void) {
     switch (o->oAction) {
+        case ACT_CQBRIDGE_WAITING:
+            // Triggered externally
+            break;
         case ACT_CQBRIDGE_HIDDEN:
             bhv_cq_bridge_hidden();
             break;

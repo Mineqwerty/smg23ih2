@@ -47,6 +47,7 @@ OSContPadEx gControllerPads[4];
 u8 gControllerBits;
 s8 gGamecubeControllerPort = -1; // HackerSM64: This is set to -1 if there's no GC controller, 0 if there's one in the first port and 1 if there's one in the second port.
 u8 gIsConsole = TRUE; // Needs to be initialized before audio_reset_session is called
+u8 gInstantInput = FALSE;
 u8 gCacheEmulated = TRUE;
 u8 gBorderHeight;
 u8 gShitMusic;
@@ -411,7 +412,7 @@ void render_init(void) {
     // Skip incrementing the initial framebuffer index on emulators so that they display immediately as the Gfx task finishes
     // VC probably emulates osViSwapBuffer accurately so instant patch breaks VC compatibility
     // Currently, Ares passes the cache emulation test and has issues with single buffering so disable it there as well.
-    if (gIsConsole || gIsVC || gCacheEmulated) {
+    if (!gInstantInput) {
         sRenderingFramebuffer++;
     }
     gGlobalTimer++;
@@ -445,17 +446,11 @@ void display_and_vsync(void) {
     }
     exec_display_list(&gGfxPool->spTask);
 
-    u8 blurColor[3];
-    u8 drawColor[3];
-
-    UNUSED u16 blueFade1;
-    UNUSED u16 blueFade2;
-
     u32 first = osGetCount();
 
     // Should be above osRecvMesg to avoid initial flicker, does not need perf boost on console
     if (gPersonaBattleTransition == TRUE) {
-        if (gIsConsole || gIsVC || gCacheEmulated) { // This somehow runs full speed on console but not emulator, which causes flickering and stuff (probably a meme with the cache)
+        if (!gInstantInput) { // This somehow runs full speed on console but not emulator, which causes flickering and stuff (probably a meme with the cache)
             RGBA16 *fb = gFramebuffers[sRenderedFramebuffer];
             for (int i = 0; i < SCREEN_HEIGHT*SCREEN_WIDTH; i+=SCREEN_WIDTH) {
                 s32 iDist = (i / SCREEN_WIDTH) - SCREEN_CENTER_Y;
@@ -499,62 +494,75 @@ void display_and_vsync(void) {
                 }
             }
         }
-    } else if (!(gIsConsole || gIsVC || gCacheEmulated)) {
+    } else if (gInstantInput) {
         sRenderingFramebuffer = 0;
     }
 
     u32 second = osGetCount();
-#ifndef UNLOCK_FPS
-    //if (gPersonaBattleTransition == TRUE) {
-    //    osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
-    //    osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
-    //    osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
-    //}
-    osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
-    
-#endif
 
     second = osGetCount() - second;
 
     // Does better on console below osRecvMesg, but not the other one
+    // if (gFuckUpScreen == 1) {
+    //     RGBA16 *fb = gFramebuffers[sRenderedFramebuffer];
+    //     u8 blurColor[3];
+    //     u8 drawColor[3];
+    //     for (int i = SCREEN_WIDTH; i < SCREEN_HEIGHT*SCREEN_WIDTH; i+=(2*SCREEN_WIDTH)) {
+    //         for (int j = i; j < i + SCREEN_WIDTH; j+=2) {
+    //             fb[(j - 1)] = fb[j];
+    //             fb[(j - SCREEN_WIDTH)] = fb[j];
+    //             fb[(j - (SCREEN_WIDTH + 1))] = fb[j];
+
+    //             // drawColor[0] = (fb[j] & 0xf800) >> 9;
+    //             drawColor[0] = (fb[j]) >> 9; // Technically UB from green, but oh well it saves instructions
+    //             drawColor[1] = (fb[j] & 0x07c0) >> 4;
+    //             drawColor[2] = (fb[j] & 0x003e) << 1;
+
+    //             // blurColor[0] =   (fb[j - (SCREEN_WIDTH + 20)] & 0xf800) >> 9;
+    //             blurColor[0] =   (fb[j - (SCREEN_WIDTH + 20)]) >> 9; // Technically UB from green, but oh well it saves instructions
+    //             blurColor[1] =     (fb[j - (SCREEN_WIDTH*20)] & 0x07c0) >> 4;
+    //             blurColor[2] = (fb[j - (SCREEN_WIDTH*5 - 60)] & 0x003e) << 1;
+                
+    //             if (j >= SCREEN_WIDTH*2) {
+    //                 fb[(j - SCREEN_WIDTH*2)] = GPACK_RGBA5551(drawColor[0] + blurColor[0], drawColor[1] + blurColor[1], drawColor[2] + blurColor[2], 255);
+    //                 // blurColor[0] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0xf800) >> 9;
+    //                 blurColor[0] = (fb[j - (SCREEN_WIDTH*2 + 1)]) >> 9; // Technically UB from green, but oh well it saves instructions
+    //                 blurColor[1] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x07c0) >> 4;
+    //                 blurColor[2] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x003e) << 1;
+    //                 fb[(j - (SCREEN_WIDTH*2 + 3))] = GPACK_RGBA5551(drawColor[0] + blurColor[0], drawColor[1] + blurColor[1], drawColor[2] + blurColor[2], 255);
+    //             }
+    //         }
+    //     }
+    // }
+
+#define FB_PIXEL_SPREAD (SCREEN_WIDTH/2)
     if (gFuckUpScreen == 1) {
         RGBA16 *fb = gFramebuffers[sRenderedFramebuffer];
-        for (int i = SCREEN_WIDTH; i < SCREEN_HEIGHT*SCREEN_WIDTH; i+=(2*SCREEN_WIDTH)) {
-            for (int j = i; j < i + SCREEN_WIDTH; j+=2) {
-                fb[(j - 1)] = fb[j];
-                fb[(j - SCREEN_WIDTH)] = fb[j];
-                fb[(j - (SCREEN_WIDTH + 1))] = fb[j];
+        s32 checkerboard = 0;
 
-                // drawColor[0] = (fb[j] & 0xf800) >> 9;
-                drawColor[0] = (fb[j]) >> 9; // Technically UB from green, but oh well it saves instructions
-                drawColor[1] = (fb[j] & 0x07c0) >> 4;
-                drawColor[2] = (fb[j] & 0x003e) << 1;
-
-                // blurColor[0] =   (fb[j - (SCREEN_WIDTH + 20)] & 0xf800) >> 9;
-                blurColor[0] =   (fb[j - (SCREEN_WIDTH + 20)]) >> 9; // Technically UB from green, but oh well it saves instructions
-                blurColor[1] =     (fb[j - (SCREEN_WIDTH*20)] & 0x07c0) >> 4;
-                blurColor[2] = (fb[j - (SCREEN_WIDTH*5 - 60)] & 0x003e) << 1;
-                
-                if (j >= SCREEN_WIDTH*2) {
-                    fb[(j - SCREEN_WIDTH*2)] = GPACK_RGBA5551(drawColor[0] + blurColor[0], drawColor[1] + blurColor[1], drawColor[2] + blurColor[2], 255);
-                    // blurColor[0] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0xf800) >> 9;
-                    blurColor[0] = (fb[j - (SCREEN_WIDTH*2 + 1)]) >> 9; // Technically UB from green, but oh well it saves instructions
-                    blurColor[1] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x07c0) >> 4;
-                    blurColor[2] = (fb[j - (SCREEN_WIDTH*2 + 1)] & 0x003e) << 1;
-                    fb[(j - (SCREEN_WIDTH*2 + 3))] = GPACK_RGBA5551(drawColor[0] + blurColor[0], drawColor[1] + blurColor[1], drawColor[2] + blurColor[2], 255);
-                }
+        for (s32 i = SCREEN_WIDTH*SCREEN_HEIGHT - FB_PIXEL_SPREAD - 2; i >= SCREEN_WIDTH*(SCREEN_HEIGHT-1); i-=2) {
+            fb[i + FB_PIXEL_SPREAD] = fb[i];
+        }
+        for (s32 i = SCREEN_WIDTH*(SCREEN_HEIGHT-1); i >= SCREEN_WIDTH; i-=SCREEN_WIDTH) {
+            for (s32 j = i - 1 - checkerboard; j >= i - SCREEN_WIDTH - checkerboard; j-=2) {
+                fb[j + FB_PIXEL_SPREAD] = fb[j];
             }
+            checkerboard ^= 1;
         }
     }
 
     buffer_update(&all_profiling_data[PROFILER_TIME_FBE], osGetCount() - first - second, profile_buffer_index);
+
+#ifndef UNLOCK_FPS
+    osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
+#endif
 
     osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFramebuffers[sRenderedFramebuffer]));
 #ifndef UNLOCK_FPS
     osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);
 #endif
     // Skip swapping buffers on inaccurate emulators other than VC so that they display immediately as the Gfx task finishes
-    if ((gIsConsole || gIsVC || gCacheEmulated)){
+    if (!gInstantInput) {
         if (++sRenderedFramebuffer == 3) {
             sRenderedFramebuffer = 0;
         }

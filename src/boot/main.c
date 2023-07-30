@@ -403,6 +403,12 @@ void thread3_main(UNUSED void *arg) {
         gIsConsole = TRUE;
         gBorderHeight = BORDER_HEIGHT_CONSOLE;
     }
+
+    if (gIsConsole || gIsVC || gCacheEmulated) {
+        gInstantInput = FALSE;
+    } else {
+        gInstantInput = TRUE;
+    }
 #ifdef DEBUG
     gIdleThreadStack[0] = 0;
     gIdleThreadStack[THREAD1_STACK - 1] = 0;
