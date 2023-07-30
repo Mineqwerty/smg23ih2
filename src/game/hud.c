@@ -792,18 +792,19 @@ void render_hud(void) {
             if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT) {
                 render_strike_attack_text();
             }
-#ifdef BREATH_METER
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_BREATH_METER) render_hud_breath_meter();
-#endif
-
-        if ((hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) && gCurrLevelNum != SMG23IH2_LEVEL_6) {
-            render_hud_power_meter();
+        } else {
+            if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) {
+                render_hud_power_meter();
 #ifdef PUPPYCAM
-            if (!gPuppyCam.enabled) {
+                if (!gPuppyCam.enabled) {
 #endif
-            render_hud_camera_status();
+                render_hud_camera_status();
 #ifdef PUPPYCAM
+                }
+#endif
             }
+#ifdef BREATH_METER
+            if (hudDisplayFlags & HUD_DISPLAY_FLAG_BREATH_METER) render_hud_breath_meter();
 #endif
         }
 
@@ -817,5 +818,4 @@ void render_hud(void) {
         }
 #endif
     }
-}
 }
