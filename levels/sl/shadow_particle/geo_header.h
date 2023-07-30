@@ -1,0 +1,10 @@
+extern const GeoLayout shadow_particle_geo[];
+extern Lights1 shadow_particle_f3dlite_material_004_lights;
+extern u8 shadow_particle_shadowparticle_ci8[];
+extern u8 shadow_particle_shadowparticle_pal_rgba16[];
+extern Vtx shadow_particle_Plane_002_mesh_layer_4_vtx_0[4];
+extern Gfx shadow_particle_Plane_002_mesh_layer_4_tri_0[];
+extern Gfx mat_shadow_particle_f3dlite_material_004[];
+extern Gfx mat_revert_shadow_particle_f3dlite_material_004[];
+extern Gfx shadow_particle_Plane_002_mesh_layer_4[];
+extern Gfx shadow_particle_material_revert_render_settings[];

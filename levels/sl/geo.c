@@ -25,3 +25,4 @@
 #include "levels/sl/cowardly_maya/geo.inc.c"
 #include "levels/sl/enemy_selector/geo.inc.c"
 #include "levels/sl/jumpman/geo.inc.c"
+#include "levels/sl/shadow_particle/geo.inc.c"

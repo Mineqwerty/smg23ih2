@@ -24,6 +24,18 @@ void bhv_cowardly_maya_loop(void) {
     }
     if (o->oAction == 3) {
         cur_obj_init_animation(2);
+        if (o->oTimer == 5) {
+            for (int i = 0; i < 10; i++) {
+                spawn_object_relative(0, 0, i * 5, 0, o, MODEL_SHADOW_PARTICLE, bhvAgiParticle);
+            }
+            cur_obj_hide();
+        }
+    }
+    if (o->oAction == 4) {
+        cur_obj_init_animation(2);
+        if (o->oTimer == 30) {
+            cur_obj_init_animation(0);
+        }
     }
 }
 

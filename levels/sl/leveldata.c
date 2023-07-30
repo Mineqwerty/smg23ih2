@@ -52,3 +52,4 @@
 #include "levels/sl/skillWheel/model.inc.c"
 #include "levels/sl/generalSkillIcon/model.inc.c"
 #include "levels/sl/jumpman/model.inc.c"
+#include "levels/sl/shadow_particle/model.inc.c"

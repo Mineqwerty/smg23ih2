@@ -6,6 +6,8 @@ extern char *optionDescriptionText[];
 extern u16 gPersonaMenuFlags;
 extern s8 gSelectedEnemy;
 extern u8 gSelectorCooldown;
+extern u8 gEnemyCount;
+extern u8 gNumEnemyTurns;
 
 enum PersonaMenuFlags {
     PERSONA_MENU_FLAGS_NONE         = /* 0x0000 */ (0 <<  0),

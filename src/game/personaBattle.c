@@ -8,6 +8,8 @@ s8 gSelectedSkillIndex = 0;
 s16 gBattleOptionRotationTimer = 0;
 u16 gPersonaMenuFlags = 0;
 s8 gSelectedEnemy = 0;
+u8 gEnemyCount = 3;
+u8 gNumEnemyTurns = 0;
 u8 gSelectorCooldown = 0;
 
 char *optionText[] = {

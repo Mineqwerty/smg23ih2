@@ -11,6 +11,7 @@ enum PersonaBattleActions {
     PERSONA_ACT_USING_SKILL,
 
     PERSONA_ACT_ENEMY_TURNS,
+    PERSONA_ACT_VICTORY
 
 };
 
@@ -288,6 +289,8 @@ void bhv_persona_battle_manager_loop(void) {
                     set_mario_animation(gMarioState, MARIO_ANIM_FIRST_PUNCH_FAST);
                     o->oSubAction++;
                     o->oTimer = 0;
+                    selectedEnemy = cur_obj_find_object_with_bparam_2nd_byte(bhvCowardlyMaya, gSelectedEnemy);
+                    selectedEnemy->oAction = 4;
                 }
             break;
             case 2:
@@ -302,11 +305,22 @@ void bhv_persona_battle_manager_loop(void) {
                     set_mario_animation(gMarioState, MARIO_ANIM_SECOND_PUNCH_FAST);
                     o->oSubAction++;
                     o->oTimer = 0;
+                    selectedEnemy = cur_obj_find_object_with_bparam_2nd_byte(bhvCowardlyMaya, gSelectedEnemy);
+                    selectedEnemy->oAction = 3;
+                    gEnemyCount--;
                 }
             break;
             case 4:
                 if (is_anim_at_end(gMarioState) && o->oTimer > 40) {
+                    selectedEnemy = cur_obj_find_object_with_bparam_2nd_byte(bhvCowardlyMaya, gSelectedEnemy);
+                    obj_mark_for_deletion(selectedEnemy);
+                if (gEnemyCount == 0) {
+                    o->oAction = PERSONA_ACT_VICTORY;
+                }
+                else {
                     transition_to_enemy_turn();
+                }
+                    
                 }
             break;
         }
@@ -467,8 +481,14 @@ void bhv_persona_battle_manager_loop(void) {
         }
 
         if (o->oTimer == 90) {
-            selectedEnemy->oAction = 1;
-            o->oAction = PERSONA_ACT_ENEMY_TURNS;
+            obj_mark_for_deletion(selectedEnemy);
+            gEnemyCount--;
+            if (gEnemyCount == 0) {
+                o->oAction = PERSONA_ACT_VICTORY;
+            }
+            else {
+                o->oAction = PERSONA_ACT_ENEMY_TURNS;
+            }
             gSelectedEnemy = 0;
         }
     }
@@ -512,8 +532,10 @@ void bhv_persona_battle_manager_loop(void) {
                     gSelectedEnemy++;
                     o->oTimer = 0;
                     o->oSubAction = 0;
-                    if (gSelectedEnemy == 3) {
+                    gNumEnemyTurns++;
+                    if (gNumEnemyTurns == gEnemyCount) {
                         gSelectedEnemy = 0;
+                        gNumEnemyTurns = 0;
                         gPersonaMenuFlags |= PERSONA_MENU_FLAGS_MAIN_TEXT;
                         o->oAction = PERSONA_ACT_MARIO_TURN;
                     }

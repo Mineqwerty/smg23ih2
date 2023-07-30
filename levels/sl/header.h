@@ -74,4 +74,6 @@ extern const LevelScript level_sl_entry[];
 
 #include "levels/sl/jumpman/geo_header.h"
 
+#include "levels/sl/shadow_particle/geo_header.h"
+
 #endif
