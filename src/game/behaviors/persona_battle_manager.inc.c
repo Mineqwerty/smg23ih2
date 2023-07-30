@@ -258,6 +258,7 @@ void bhv_persona_battle_manager_loop(void) {
                 gLakituState.goalPos[1] = 1000;
                 gLakituState.goalPos[2] = selectedEnemy->oPosZ + 2300;
                 set_mario_anim_with_accel(gMarioState, MARIO_ANIM_RUNNING, 0x40000);
+                gPersonaMenuFlags |= PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT;
                 if (o->oTimer == 0) {
                     vec3f_copy(gLakituState.goalFocus, gMarioState->pos);
                 }
@@ -281,6 +282,7 @@ void bhv_persona_battle_manager_loop(void) {
                 vec3f_copy(gLakituState.goalFocus, &selectedEnemy->oPosVec);
                     set_mario_animation(gMarioState, MARIO_ANIM_FIRST_PUNCH);
                     play_sound(SOUND_MARIO_PUNCH_YAH, gGlobalSoundSource);
+                    gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT);
                     o->oSubAction++;
                 }
             break;
@@ -496,6 +498,7 @@ void bhv_persona_battle_manager_loop(void) {
     case PERSONA_ACT_ENEMY_TURNS:
         switch (o->oSubAction) {
             case 0:
+                gPersonaMenuFlags |= PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT;
                 gLakituState.goalPos[0] = gMarioState->pos[0] + 130;
                 gLakituState.goalPos[1] = 200;
                 gLakituState.goalPos[2] = gMarioState->pos[2] - 500;
@@ -524,6 +527,8 @@ void bhv_persona_battle_manager_loop(void) {
                 }
                 if (o->oTimer == 28) {
                     set_mario_animation(gMarioState, MARIO_ANIM_BACKWARD_KB);
+                    gMarioState->health -= 256;
+                    gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT);
                 }
                 if (o->oTimer == 60) {
                     selectedEnemy->oPosX = selectedEnemy->oHomeX;
@@ -542,6 +547,27 @@ void bhv_persona_battle_manager_loop(void) {
                 }
             break;
         }
+    break;
+    case PERSONA_ACT_VICTORY:
+        gLakituState.goalPos[0] = gMarioState->pos[0] - 200;
+            gLakituState.goalPos[1] = 200;
+            gLakituState.goalPos[2] = gMarioState->pos[2] - 200;
+
+            gLakituState.goalFocus[0] = gMarioState->pos[0];
+            gLakituState.goalFocus[1] = 100;
+            gLakituState.goalFocus[2] = gMarioState->pos[2];
+
+            gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_SKILL_TEXT);
+            gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_ATTACK_TEXT);
+            gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT);
+
+            if (o->oTimer == 0) {
+                set_mario_animation(gMarioState, MARIO_ANIM_STAR_DANCE);
+            }
+
+            if (o->oTimer == 90) {
+                initiate_warp(LEVEL_ENDING, 1, 0x0A, 0);
+            }
     break;
    }
 }

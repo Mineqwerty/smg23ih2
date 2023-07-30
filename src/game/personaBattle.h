@@ -15,5 +15,6 @@ enum PersonaMenuFlags {
     PERSONA_MENU_FLAGS_ATTACK_TEXT  = /* 0x0002 */ (1 <<  1),
     PERSONA_MENU_FLAGS_SKILL_TEXT  = /* 0x0004 */ (1 <<  2),
     PERSONA_MENU_FLAGS_USING_SKILL_BATTLE_TEXT  = /* 0x0004 */ (1 <<  3),
+    PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT  = /* 0x0004 */ (1 <<  4),
 
 };
