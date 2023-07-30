@@ -1,3 +1,6 @@
+#ifndef PERSONA_BATTLE_H
+#define PERSONA_BATTLE_H
+
 extern s8 gSelectedBattleCommand;
 extern s8 gSelectedSkillIndex;
 extern s16 gBattleOptionRotationTimer;
@@ -18,3 +21,5 @@ enum PersonaMenuFlags {
     PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT  = /* 0x0004 */ (1 <<  4),
 
 };
+
+#endif
