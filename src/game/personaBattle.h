@@ -22,4 +22,4 @@ enum PersonaMenuFlags {
 
 };
 
-#endif
+#endif // PERSONA_BATTLE_H

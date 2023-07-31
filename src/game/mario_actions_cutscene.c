@@ -436,7 +436,7 @@ s32 act_persona_battle_transition(struct MarioState *m) {
     gPersonaBattleTransitionTimer++;
     m->collidedObjInteractTypes = 0;
     if (gPersonaBattleTransitionTimer == 1) {
-        play_sound(SOUND_CUSTOM0_P_BATTLE_START, gGlobalSoundSource);
+        play_sound(SOUND_CUSTOM_MISC_P_BATTLE_START, gGlobalSoundSource);
     }
     if (gPersonaBattleTransitionTimer >= 75) {
         gChangeArea = 2;

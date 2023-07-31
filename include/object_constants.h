@@ -295,6 +295,17 @@ enum FazanaCarActions {
     FAZANA_CAR_ACT_DRIVE,
 };
 
+/* Blockington Mini Actions */
+enum BlockingtonMiniActions {
+    ACT_BMINI_WAITING,
+    ACT_BMINI_APPEARING,
+    ACT_BMINI_WAITING_TO_TALK,
+    ACT_BMINI_TALK,
+    ACT_BMINI_WAITING_TO_DISAPPEAR,
+    ACT_BMINI_DISAPPEARING,
+    ACT_BMINI_WAITING_TO_DESPAWN,
+};
+
 /* Hidden Block Actions */
 enum HiddenBlockActionStates {
     HIDDEN_BLOCK_ACT_HIDDEN,

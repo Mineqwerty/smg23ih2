@@ -29,7 +29,7 @@ static void bhv_squid_word_idle(void) {
         cur_obj_unhide();
         o->oAction = SQUID_WORD_ACT_BECOME_ACTIVE;
         o->oPosY = o->oHomeY - (SQUID_WORD_UPWARD_DISTANCE_PER_FRAME * SQUID_WORD_SPAWN_FRAMES);
-        cur_obj_play_sound_2(SOUND_CUSTOM0_SQUID_WORD_SCREAM);
+        cur_obj_play_sound_2(SOUND_CUSTOM_MISC_SQUID_WORD_SCREAM);
     }
 }
 
@@ -63,7 +63,7 @@ static void bhv_squid_word_active(void) {
         o->oAction = SQUID_WORD_ACT_DEAD;
         o->oVelY = 90.0f;
         o->oMoveAngleRoll = 0x1800;
-        cur_obj_play_sound_2(SOUND_CUSTOM0_KICK_SHELL);
+        cur_obj_play_sound_2(SOUND_CUSTOM_MISC_KICK_SHELL);
 
         load_object_collision_model();
     }

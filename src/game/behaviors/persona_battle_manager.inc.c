@@ -163,7 +163,7 @@ void bhv_persona_battle_manager_loop(void) {
                     }
                 }
                 else if (gPlayer1Controller->rawStickY > 8) {
-                    play_sound(SOUND_CUSTOM0_P_MENU_ROTATE, gGlobalSoundSource);
+                    play_sound(SOUND_CUSTOM_MISC_P_MENU_ROTATE, gGlobalSoundSource);
                     gSelectedBattleCommand++;
                     if (gSelectedBattleCommand == 7) {
                         gSelectedBattleCommand = 0;
@@ -172,7 +172,7 @@ void bhv_persona_battle_manager_loop(void) {
                     o->oSubAction = 2;
                 }
                 else if (gPlayer1Controller->rawStickY <= -8) {
-                    play_sound(SOUND_CUSTOM0_P_MENU_ROTATE, gGlobalSoundSource);
+                    play_sound(SOUND_CUSTOM_MISC_P_MENU_ROTATE, gGlobalSoundSource);
                     gSelectedBattleCommand--;
                     if (gSelectedBattleCommand == -1) {
                         gSelectedBattleCommand = 6;
@@ -212,7 +212,7 @@ void bhv_persona_battle_manager_loop(void) {
                     gSelectedEnemy = 0;
                 }
                 select_enemy(selectedEnemy);
-                play_sound(SOUND_CUSTOM0_P_SELECTOR, gGlobalSoundSource);
+                play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
             }
         }
         else if (gPlayer1Controller->rawStickX < -8) {
@@ -223,12 +223,12 @@ void bhv_persona_battle_manager_loop(void) {
                     gSelectedEnemy = 2;
                 }
                 select_enemy(selectedEnemy);
-                play_sound(SOUND_CUSTOM0_P_SELECTOR, gGlobalSoundSource);
+                play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
             }
         }
         else if (gPlayer1Controller->buttonPressed & B_BUTTON) {
             o->oAction = PERSONA_ACT_MARIO_TURN;
-            play_sound(SOUND_CUSTOM0_P_CANCEL, gGlobalSoundSource);
+            play_sound(SOUND_CUSTOM_MISC_P_CANCEL, gGlobalSoundSource);
             gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_ATTACK_TEXT);
         }
         else if (gPlayer1Controller->buttonPressed & A_BUTTON) {
@@ -351,12 +351,12 @@ void bhv_persona_battle_manager_loop(void) {
                 }
                 else if (gPlayer1Controller->buttonPressed & B_BUTTON) {
                     o->oAction = PERSONA_ACT_MARIO_TURN;
-                    play_sound(SOUND_CUSTOM0_P_CANCEL, gGlobalSoundSource);
+                    play_sound(SOUND_CUSTOM_MISC_P_CANCEL, gGlobalSoundSource);
                     gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_SKILL_TEXT);
                     gPersonaMenuFlags |= PERSONA_MENU_FLAGS_MAIN_TEXT;
                 }
                 else if (gPlayer1Controller->rawStickY > 8) {
-                    play_sound(SOUND_CUSTOM0_P_SELECTOR, gGlobalSoundSource);
+                    play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
                     gSelectedSkillIndex++;
                     if (gSelectedSkillIndex == 2) {
                         gSelectedSkillIndex = 0;
@@ -365,7 +365,7 @@ void bhv_persona_battle_manager_loop(void) {
                     o->oSubAction = 2;
                 }
                 else if (gPlayer1Controller->rawStickY <= -8) {
-                    play_sound(SOUND_CUSTOM0_P_SELECTOR, gGlobalSoundSource);
+                    play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
                     gSelectedSkillIndex--;
                     if (gSelectedSkillIndex == -1) {
                         gSelectedSkillIndex = 1;
@@ -400,7 +400,7 @@ void bhv_persona_battle_manager_loop(void) {
                     gSelectedEnemy = 0;
                 }
                 select_enemy(selectedEnemy);
-                play_sound(SOUND_CUSTOM0_P_SELECTOR, gGlobalSoundSource);
+                play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
             }
         }
         else if (gPlayer1Controller->rawStickX < -8) {
@@ -411,12 +411,12 @@ void bhv_persona_battle_manager_loop(void) {
                     gSelectedEnemy = 2;
                 }
                 select_enemy(selectedEnemy);
-                play_sound(SOUND_CUSTOM0_P_SELECTOR, gGlobalSoundSource);
+                play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
             }
         }
         else if (gPlayer1Controller->buttonPressed & B_BUTTON) {
             o->oAction = PERSONA_ACT_SELECT_SKILL;
-            play_sound(SOUND_CUSTOM0_P_CANCEL, gGlobalSoundSource);
+            play_sound(SOUND_CUSTOM_MISC_P_CANCEL, gGlobalSoundSource);
             gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_ATTACK_TEXT);
         }
         else if (gPlayer1Controller->buttonPressed & A_BUTTON) {

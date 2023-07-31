@@ -12,7 +12,7 @@ seq_setmutescale 0
   seq_setvol 127
 #endif
 seq_settempo 120
-seq_initchannels 0x7ff
+seq_initchannels 0xfff
 seq_startchannel 0, .channel0
 seq_startchannel 1, .channel1
 seq_startchannel 2, .channel2
@@ -24,6 +24,7 @@ seq_startchannel 7, .channel7
 seq_startchannel 8, .channel38
 seq_startchannel 9, .channel59
 seq_startchannel 10, .channelA
+seq_startchannel 11, .channelB
 .seq_loop:
 seq_delay 20000
 seq_jump .seq_loop
@@ -81,6 +82,17 @@ chan_setval 0
 chan_iowriteval 5
 chan_stereoheadseteffects 1
 chan_setdyntable .channelA_table
+chan_jump .main_loop_023589
+
+.channelB:
+chan_largenoteson
+chan_setinstr 0
+chan_setpanmix 127
+chan_setnotepriority 14
+chan_setval 0
+chan_iowriteval 5
+chan_stereoheadseteffects 1
+chan_setdyntable .channelB_table
 chan_jump .main_loop_023589
 
 // Main loop for standard, non-continuous sound effects
@@ -8135,136 +8147,233 @@ layer_delay 0x2a
 layer_jump .layer_32B7
 
 .channelA_table:
-sound_ref .sound_custom0_mario_maker_laugh_0
-sound_ref .sound_custom0_mario_maker_laugh_1
-sound_ref .sound_custom0_mario_maker_laugh_2
-sound_ref .sound_custom0_kick_shell
-sound_ref .sound_custom0_squid_word_scream
-sound_ref .sound_custom0_surprise_chuckya
-sound_ref .sound_custom0_p_battle_start
-sound_ref .sound_custom0_p_menu_rotate
-sound_ref .sound_custom0_p_selector
-sound_ref .sound_custom0_p_cancel
+sound_ref .sound_custom_misc_mario_maker_laugh_0
+sound_ref .sound_custom_misc_mario_maker_laugh_1
+sound_ref .sound_custom_misc_mario_maker_laugh_2
+sound_ref .sound_custom_misc_kick_shell
+sound_ref .sound_custom_misc_squid_word_scream
+sound_ref .sound_custom_misc_surprise_chuckya
+sound_ref .sound_custom_misc_p_battle_start
+sound_ref .sound_custom_misc_p_menu_rotate
+sound_ref .sound_custom_misc_p_selector
+sound_ref .sound_custom_misc_p_cancel
 
-.sound_custom0_mario_maker_laugh_0:
+.sound_custom_misc_mario_maker_laugh_0:
 chan_setbank 5
 chan_setinstr 19
 chan_setval 0x10
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_mario_maker_laugh_0
+chan_setlayer 0, .layer_custom_misc_mario_maker_laugh_0
 chan_end
 
-.layer_custom0_mario_maker_laugh_0:
+.layer_custom_misc_mario_maker_laugh_0:
 layer_note1 39, 0xb3, 95
 layer_end
 
-.sound_custom0_mario_maker_laugh_1:
+.sound_custom_misc_mario_maker_laugh_1:
 chan_setbank 5
 chan_setinstr 20
 chan_setval 0x10
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_mario_maker_laugh_1
+chan_setlayer 0, .layer_custom_misc_mario_maker_laugh_1
 chan_end
 
-.layer_custom0_mario_maker_laugh_1:
+.layer_custom_misc_mario_maker_laugh_1:
 layer_note1 39, 0xa4, 95
 layer_end
 
-.sound_custom0_mario_maker_laugh_2:
+.sound_custom_misc_mario_maker_laugh_2:
 chan_setbank 5
 chan_setinstr 21
 chan_setval 0x10
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_mario_maker_laugh_2
+chan_setlayer 0, .layer_custom_misc_mario_maker_laugh_2
 chan_end
 
-.layer_custom0_mario_maker_laugh_2:
+.layer_custom_misc_mario_maker_laugh_2:
 layer_note1 39, 0x9b, 95
 layer_end
 
-.sound_custom0_kick_shell:
+.sound_custom_misc_kick_shell:
 chan_setbank 5
 chan_setinstr 22
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_kick_shell
+chan_setlayer 0, .layer_custom_misc_kick_shell
 chan_end
 
-.layer_custom0_kick_shell:
+.layer_custom_misc_kick_shell:
 layer_note1 39, 0x17, 111
 layer_end
 
-.sound_custom0_squid_word_scream:
+.sound_custom_misc_squid_word_scream:
 chan_setbank 5
 chan_setinstr 23
 chan_setval 0x14
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_squid_word_scream
+chan_setlayer 0, .layer_custom_misc_squid_word_scream
 chan_end
 
-.layer_custom0_squid_word_scream:
+.layer_custom_misc_squid_word_scream:
 layer_note1 39, 0x135, 71
 layer_end
 
-.sound_custom0_surprise_chuckya:
+.sound_custom_misc_surprise_chuckya:
 chan_setbank 5
 chan_setinstr 24
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_surprise_chuckya
+chan_setlayer 0, .layer_custom_misc_surprise_chuckya
 chan_end
 
-.layer_custom0_surprise_chuckya:
+.layer_custom_misc_surprise_chuckya:
 layer_delay 12
 layer_note1 39, 0x8d, 127
 layer_end
 
-.sound_custom0_p_battle_start:
+.sound_custom_misc_p_battle_start:
 chan_setbank 5
 chan_setinstr 25
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_p_battle_start
+chan_setlayer 0, .layer_custom_misc_p_battle_start
 chan_end
 
-.layer_custom0_p_battle_start:
+.layer_custom_misc_p_battle_start:
 layer_note1 39, 0x150, 127
 layer_end
 
-.sound_custom0_p_menu_rotate:
+.sound_custom_misc_p_menu_rotate:
 chan_setbank 5
 chan_setinstr 26
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_p_menu_rotate
+chan_setlayer 0, .layer_custom_misc_p_menu_rotate
 chan_end
 
-.layer_custom0_p_menu_rotate:
+.layer_custom_misc_p_menu_rotate:
 layer_note1 39, 0x81, 127
 layer_end
 
-.sound_custom0_p_selector:
+.sound_custom_misc_p_selector:
 chan_setbank 5
 chan_setinstr 27
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_p_selector
+chan_setlayer 0, .layer_custom_misc_p_selector
 chan_end
 
-.layer_custom0_p_selector:
+.layer_custom_misc_p_selector:
 layer_note1 39, 0x20, 127
 layer_end
 
-.sound_custom0_p_cancel:
+.sound_custom_misc_p_cancel:
 chan_setbank 5
 chan_setinstr 28
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_p_cancel
+chan_setlayer 0, .layer_custom_misc_p_cancel
 chan_end
 
-.layer_custom0_p_cancel:
+.layer_custom_misc_p_cancel:
 layer_note1 39, 0x38, 127
+layer_end
+
+.channelB_table:
+sound_ref .sound_blockington_temporary_dialog_1
+sound_ref .sound_blockington_temporary_dialog_2
+sound_ref .sound_blockington_temporary_dialog_3
+sound_ref .sound_blockington_temporary_dialog_4
+sound_ref .sound_blockington_temporary_dialog_5
+
+.sound_blockington_temporary_dialog_1:
+chan_setbank 11
+chan_setinstr 0
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_blockington_temporary_dialog_1_echo
+chan_setlayer 1, .layer_blockington_temporary_dialog_1
+chan_end
+
+.layer_blockington_temporary_dialog_1_echo:
+layer_delay 0x10
+layer_note1 39, 0x9d, 55
+layer_end
+
+.layer_blockington_temporary_dialog_1:
+layer_note1 39, 0x9d, 127
+layer_end
+
+.sound_blockington_temporary_dialog_2:
+chan_setbank 11
+chan_setinstr 1
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_blockington_temporary_dialog_2_echo
+chan_setlayer 1, .layer_blockington_temporary_dialog_2
+chan_end
+
+.layer_blockington_temporary_dialog_2_echo:
+layer_delay 0x10
+layer_note1 39, 0x9e, 55
+layer_end
+
+.layer_blockington_temporary_dialog_2:
+layer_note1 39, 0x9e, 127
+layer_end
+
+.sound_blockington_temporary_dialog_3:
+chan_setbank 11
+chan_setinstr 2
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_blockington_temporary_dialog_3_echo
+chan_setlayer 1, .layer_blockington_temporary_dialog_3
+chan_end
+
+.layer_blockington_temporary_dialog_3_echo:
+layer_delay 0x10
+layer_note1 39, 0x165, 55
+layer_end
+
+.layer_blockington_temporary_dialog_3:
+layer_note1 39, 0x165, 127
+layer_end
+
+.sound_blockington_temporary_dialog_4:
+chan_setbank 11
+chan_setinstr 3
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_blockington_temporary_dialog_4_echo
+chan_setlayer 1, .layer_blockington_temporary_dialog_4
+chan_end
+
+.layer_blockington_temporary_dialog_4_echo:
+layer_delay 0x10
+layer_note1 39, 0xa0, 55
+layer_end
+
+.layer_blockington_temporary_dialog_4:
+layer_note1 39, 0xa0, 127
+layer_end
+
+.sound_blockington_temporary_dialog_5:
+chan_setbank 11
+chan_setinstr 4
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_blockington_temporary_dialog_5_echo
+chan_setlayer 1, .layer_blockington_temporary_dialog_5
+chan_end
+
+.layer_blockington_temporary_dialog_5_echo:
+layer_delay 0x10
+layer_note1 39, 0xa6, 55
+layer_end
+
+.layer_blockington_temporary_dialog_5:
+layer_note1 39, 0xa6, 127
 layer_end
 
 .align 2, 0

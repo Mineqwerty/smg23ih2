@@ -102,6 +102,7 @@ const LevelScript level_hmc_entry[] = {
 		STOP_MUSIC(0),
 		TERRAIN_TYPE(TERRAIN_GRASS),
 		/* Fast64 begin persistent block [area commands] */
+		OBJECT(MODEL_BLOCKINGTON, 0, 400, -1500, 0, 0, 0, 0x00000000, bhvBlockington),
 		SET_BACKGROUND_MUSIC_WITH_REVERB(0, SEQ_LEVEL_UNDERGROUND, 4, 4),
 		SET_ECHO(0x18, 0x18),
 		/* Fast64 end persistent block [area commands] */

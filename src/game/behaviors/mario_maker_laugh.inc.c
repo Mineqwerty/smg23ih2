@@ -45,8 +45,8 @@ void bhv_mario_maker_laugh_loop(void) {
 }
 
 void bhv_mario_maker_laugh_spawner_init(void) {
-    play_sound(SOUND_CUSTOM0_MARIO_MAKER_LAUGH_0 + ((u32) (random_u16() % 3) << 16), gGlobalSoundSource);
-    // cur_obj_play_sound_2(SOUND_CUSTOM0_MARIO_MAKER_LAUGH_0 + ((u32) (random_u16() % 3) << 16));
+    play_sound(SOUND_CUSTOM_MISC_MARIO_MAKER_LAUGH_0 + ((u32) (random_u16() % 3) << 16), gGlobalSoundSource);
+    // cur_obj_play_sound_2(SOUND_CUSTOM_MISC_MARIO_MAKER_LAUGH_0 + ((u32) (random_u16() % 3) << 16));
 }
 
 void bhv_mario_maker_laugh_spawner_loop(void) {

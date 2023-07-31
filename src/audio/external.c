@@ -287,6 +287,7 @@ u8 sMaxChannelsForSoundBank[SOUND_BANK_COUNT] = {[0 ... SOUND_BANK_COUNT - 1] = 
 f32 gGlobalSoundSource[3] = { 0.0f, 0.0f, 0.0f };
 u8 sSoundBankDisabled[16] = { 0 };
 u8 sHasStartedFadeOut = FALSE;
+u8 sIsBlockingtonStillTalking = FALSE;
 u16 sSoundBanksThatLowerBackgroundMusic = 0;
 u8 sBackgroundMusicMaxTargetVolume = TARGET_VOLUME_UNSET;
 u8 D_80332120 = 0;
@@ -807,6 +808,10 @@ static void update_background_music_after_sound(u8 bank, u8 soundIndex) {
         sSoundBanksThatLowerBackgroundMusic &= (1 << bank) ^ 0xffff;
         begin_background_music_fade(50);
     }
+
+    if (((sSoundBanks[bank][soundIndex].soundBits & SOUNDARGS_MASK_BANK) >> SOUNDARGS_SHIFT_BANK) == SOUND_BANK_CUSTOM_BLOCKINGTON) {
+        sIsBlockingtonStillTalking = FALSE;
+    }
 }
 
 /**
@@ -1207,6 +1212,10 @@ static void update_game_sound(void) {
                         begin_background_music_fade(50);
                     }
 
+                    if (((sSoundBanks[bank][soundIndex].soundBits & SOUNDARGS_MASK_BANK) >> SOUNDARGS_SHIFT_BANK) == SOUND_BANK_CUSTOM_BLOCKINGTON) {
+                        sIsBlockingtonStillTalking = TRUE;
+                    }
+
                     // Set sound status to PLAYING
                     sSoundBanks[bank][soundIndex].soundBits++;
                     sSoundBanks[bank][soundIndex].soundStatus = SOUND_STATUS_PLAYING;
@@ -1324,6 +1333,8 @@ static void update_game_sound(void) {
                         case SOUND_BANK_AIR:
                         case SOUND_BANK_GENERAL2:
                         case SOUND_BANK_OBJ2:
+                        case SOUND_BANK_CUSTOM_MISC:
+                        case SOUND_BANK_CUSTOM_BLOCKINGTON:
 #if defined(VERSION_EU) || defined(VERSION_SH)
                             func_802ad770(0x05020000 | ((channelIndex & 0xff) << 8),
                                           get_sound_reverb(bank, soundIndex, channelIndex));
@@ -1494,6 +1505,8 @@ static void update_game_sound(void) {
                         case SOUND_BANK_AIR:
                         case SOUND_BANK_GENERAL2:
                         case SOUND_BANK_OBJ2:
+                        case SOUND_BANK_CUSTOM_MISC:
+                        case SOUND_BANK_CUSTOM_BLOCKINGTON:
 #if defined(VERSION_EU) || defined(VERSION_SH)
                             func_802ad770(0x05020000 | ((channelIndex & 0xff) << 8),
                                           get_sound_reverb(bank, soundIndex, channelIndex));

@@ -1,6 +1,6 @@
 {
     "comment": "This file lists all sequences together with the sound banks they use. If a sequence uses multiple banks, the first bank will be used by default, and it can switch between them using the chan_setbank command; e.g. chan_setbank 0 will switch to the first bank in the given list.",
-    "00_sound_player": ["00", "01_terrain", "02_water", "03", "04", "05", "06", "07", "08_mario", "09", "0A_mario_peach"],
+    "00_sound_player": ["00", "01_terrain", "02_water", "03", "04", "05", "06", "07", "08_mario", "09", "0A_mario_peach", "0B_blockington"],
     "01_cutscene_collect_star": ["22"],
     "02_menu_title_screen": ["11"],
     "03_level_grass": ["22"],
@@ -8,7 +8,7 @@
     "05_level_water": ["13"],
     "06_level_hot": ["0F"],
     "07_level_boss_koopa": ["12"],
-    "08_level_snow": ["0B"],
+    "08_level_snow": ["26"],
     "09_level_slide": ["0D"],
     "0A_level_spooky": ["10", "21"],
     "0B_event_piranha_plant": ["14_piranha_music_box"],
@@ -38,6 +38,6 @@
     "23_shit_bros_3": ["25"],
     "24_shit_bros_2": ["25"],
     "25_shit_bros_1": ["25"],
-    "26_custom_mass_destruction": ["26_custom_mass_destruction"],
+    "26_custom_mass_destruction": ["27_custom_mass_destruction"],
     "27_oot_secret_sound": ["14_piranha_music_box"]
 }

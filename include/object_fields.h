@@ -482,6 +482,9 @@
 #define /*0x104*/ oBlockingtonScaleHomeY     OBJECT_FIELD_F32(0x1F)
 #define /*0x108*/ oBlockingtonScaleHomeZ     OBJECT_FIELD_F32(0x20)
 
+/* Blockington Mini */
+#define /*0x108*/ oBMiniDialogIndex        OBJECT_FIELD_S32(0x21)
+
 /* CQ Bridge */
 #define /*0x0F4*/ oCQBridgeCamPosVec OBJECT_FIELD_F32(0x1B)
 #define /*0x0F4*/ oCQBridgeCamPosX   OBJECT_FIELD_F32(0x1B)
