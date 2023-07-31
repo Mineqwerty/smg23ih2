@@ -1,6 +1,6 @@
 // blockington.inc.c
 
-#include "blockington.inc.h"
+#include "blockington.h"
 
 #define PITCH_VARIANCE 0x1200
 #define YAW_VARIANCE 0x0C00

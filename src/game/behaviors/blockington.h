@@ -12,13 +12,15 @@ struct BlockingtonStates {
 };
 
 struct BlockingtonMiniDialog {
-    s32 dialogID;
-    s32 soundID;
+      u8  lineCount;
+     s32  soundID;
+    char *dialogStr;
 };
 
 struct BlockingtonMiniDialogEntries {
     struct BlockingtonMiniDialog *startAddr;
     u8 dialogCount;
+    u8 shouldRender;
     u8 allowRepeat;
     u8 hasSpawned;
 };

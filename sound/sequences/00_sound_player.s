@@ -92,6 +92,7 @@ chan_setnotepriority 14
 chan_setval 0
 chan_iowriteval 5
 chan_stereoheadseteffects 1
+chan_setmutebhv 0x00
 chan_setdyntable .channelB_table
 chan_jump .main_loop_023589
 

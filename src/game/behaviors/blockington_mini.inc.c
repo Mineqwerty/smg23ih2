@@ -1,41 +1,16 @@
 // blockington_mini.inc.c
 
-#include "blockington.inc.h"
+#include "blockington.h"
+
+#include "blockington_dialogs.inc.c"
 
 #define BMINI_DIST 10000.0f
 #define BMINI_ANIM_DUR 30
 #define BMINI_ANIM_WAIT 10
-#define BMINI_MAX_ANIM_CAMERA_PITCH -0x400
-#define BMINI_MAX_ANIM_CAMERA_YAW 0x800
+#define BMINI_MAX_ANIM_CAMERA_PITCH -0x300
+#define BMINI_MAX_ANIM_CAMERA_YAW 0x700
 #define BMINI_MAX_ANIM_PITCH 0xC00
 #define BMINI_MAX_ANIM_YAW 0x1800
-
-struct BlockingtonMiniDialog bMiniDia0[] = {
-    {.dialogID = DIALOG_000, .soundID = SOUND_BLOCKINGTON_TEMPORARY_DIALOG_1},
-};
-struct BlockingtonMiniDialog bMiniDia1[] = {
-    {.dialogID = DIALOG_001, .soundID = SOUND_BLOCKINGTON_TEMPORARY_DIALOG_2},
-};
-struct BlockingtonMiniDialog bMiniDia2[] = {
-    {.dialogID = DIALOG_002, .soundID = SOUND_BLOCKINGTON_TEMPORARY_DIALOG_3},
-};
-struct BlockingtonMiniDialog bMiniDia3[] = {
-    {.dialogID = DIALOG_003, .soundID = SOUND_BLOCKINGTON_TEMPORARY_DIALOG_4},
-    {.dialogID = DIALOG_003, .soundID = SOUND_BLOCKINGTON_TEMPORARY_DIALOG_4},
-};
-struct BlockingtonMiniDialog bMiniDia4[] = {
-    {.dialogID = DIALOG_004, .soundID = SOUND_BLOCKINGTON_TEMPORARY_DIALOG_5},
-};
-
-struct BlockingtonMiniDialogEntries bMiniDialogs[] = {
-    {.startAddr = bMiniDia0, .dialogCount = ARRAY_COUNT(bMiniDia0), .allowRepeat = FALSE, .hasSpawned = FALSE},
-    {.startAddr = bMiniDia1, .dialogCount = ARRAY_COUNT(bMiniDia1), .allowRepeat = FALSE, .hasSpawned = FALSE},
-    {.startAddr = bMiniDia2, .dialogCount = ARRAY_COUNT(bMiniDia2), .allowRepeat = FALSE, .hasSpawned = FALSE},
-    {.startAddr = bMiniDia3, .dialogCount = ARRAY_COUNT(bMiniDia3), .allowRepeat = FALSE, .hasSpawned = FALSE},
-    {.startAddr = bMiniDia4, .dialogCount = ARRAY_COUNT(bMiniDia4), .allowRepeat = FALSE, .hasSpawned = FALSE},
-};
-
-const u32 bMiniDialogsCount = ARRAY_COUNT(bMiniDialogs);
 
 void bhv_blockington_mini_init(void) {
     u32 bparam2 = BPARAM2;
@@ -43,6 +18,8 @@ void bhv_blockington_mini_init(void) {
         obj_mark_for_deletion(o);
         return;
     }
+
+    o->oBehParams2ndByte = bparam2;
 
     o->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
 
@@ -109,8 +86,8 @@ static void bhv_blockington_mini_set_obj_pos(void) {
 
     vec3f_get_angle(gCamera->pos, gCamera->focus, &pitch, &yaw);
 
-    pitch -= 0x600;
-    yaw += 0x1000;
+    pitch -= 0x800;
+    yaw += 0x1100;
 
     bhv_blockington_mini_calculate_additional_rotation_and_set_scale(&pitch, &yaw);
 
@@ -160,6 +137,11 @@ static void bhv_blockington_mini_act_appearing(void) {
 }
 
 static void bhv_blockington_mini_act_waiting_to_talk(void) {
+    if (bMiniDialogs[o->oBehParams2ndByte].shouldRender) {
+        u8 transparency = 255.0f * (f32) ((f32) o->oTimer / (f32) BMINI_ANIM_WAIT);
+        set_blockington_dialog_entry(&bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oBMiniDialogIndex], transparency);
+    }
+
     if (o->oTimer >= BMINI_ANIM_WAIT) {
         o->oTimer = 0;
         o->oAction = ACT_BMINI_TALK;
@@ -168,8 +150,12 @@ static void bhv_blockington_mini_act_waiting_to_talk(void) {
 }
 
 static void bhv_blockington_mini_act_talk(void) {
+    if (bMiniDialogs[o->oBehParams2ndByte].shouldRender) {
+        set_blockington_dialog_entry(&bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oBMiniDialogIndex], 255);
+    }
+
     if (o->oTimer == 0) {
-        play_sound(bMiniDialogs[BPARAM2].startAddr[o->oSubAction].soundID, gGlobalSoundSource);
+        play_sound(bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oSubAction].soundID, gGlobalSoundSource);
         return;
     }
 
@@ -188,9 +174,14 @@ static void bhv_blockington_mini_act_talk(void) {
 }
 
 static void bhv_blockington_mini_act_waiting_to_disappear(void) {
+    if (bMiniDialogs[o->oBehParams2ndByte].shouldRender) {
+        u8 transparency = 255.0f * (f32) ((f32) (BMINI_ANIM_WAIT - o->oTimer) / (f32) BMINI_ANIM_WAIT);
+        set_blockington_dialog_entry(&bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oBMiniDialogIndex], transparency);
+    }
+
     if (o->oTimer >= BMINI_ANIM_WAIT) {
         o->oTimer = 0;
-        if (o->oBMiniDialogIndex + 1 >= bMiniDialogs[BPARAM2].dialogCount) {
+        if (o->oBMiniDialogIndex + 1 >= bMiniDialogs[o->oBehParams2ndByte].dialogCount) {
             o->oAction = ACT_BMINI_DISAPPEARING;
         } else {
             o->oBMiniDialogIndex++;

@@ -47,6 +47,7 @@
 #include "spawn_sound.h"
 #include "rumble_init.h"
 #include "puppylights.h"
+#include "puppyprint.h"
 
 extern void geo_append_display_list(void *displayList, s32 layer);
 
