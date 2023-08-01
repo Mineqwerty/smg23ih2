@@ -93,7 +93,7 @@ struct BlockingtonMiniDialog bMiniDiaCringePath1[] = {
 
 // Cringe Path 2
 struct BlockingtonMiniDialog bMiniDiaCringePath2[] = {
-    {.lineCount = 2, .soundID = SOUND_BLOCKINGTON_CRINGE_PATH_2, .dialogStr = "You're a real piece of work, kid.\nThis next section seems imblockssible anyway!"},
+    {.lineCount = 3, .soundID = SOUND_BLOCKINGTON_CRINGE_PATH_2, .dialogStr = "You're a real piece of work, kid.\nThis next section seems imblockssible\nanyway!"},
 };
 
 // Cringe Path Collect

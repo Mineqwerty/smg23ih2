@@ -123,18 +123,16 @@ void fazana_car_act_move(void) {
 
     s16 collisionFlags = object_step_without_floor_orient();
 
-    if (o->oFazanaCarNoFloorTime >= 0) {
-        if (o->oFloor == NULL) {
-            o->oFazanaCarNoFloorTime++;
-        } else {
-            o->oFazanaCarNoFloorTime = 0;
-        }
+    if (o->oFloor == NULL) {
+        o->oFazanaCarNoFloorTime++;
+    } else {
+        o->oFazanaCarNoFloorTime = 0;
+    }
 
-        if (o->oFazanaCarNoFloorTime == 120) {
-            struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
-            if (obj) {
-                obj->oBehParams = (BKTN_DIA_OOB) << 16;
-            }
+    if (o->oFazanaCarNoFloorTime == 120) {
+        struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+        if (obj) {
+            obj->oBehParams = ((BKTN_DIA_OOB) << 16) | 1; // Higher priority
         }
     }
 

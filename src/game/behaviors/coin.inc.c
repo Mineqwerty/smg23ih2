@@ -36,6 +36,20 @@ s32 bhv_coin_sparkles_init(void) {
     if (o->oInteractStatus & INT_STATUS_INTERACTED
         && !(o->oInteractStatus & INT_STATUS_TOUCHED_BOB_OMB)) {
         spawn_object(o, MODEL_SPARKLES, bhvCoinSparklesSpawner);
+
+        if (BPARAM4 == 1) {
+            struct Object *obj = spawn_object_abs_with_rot(o, 0, MODEL_NONE, bhvMarioMakerLaughSpawner, o->oPosX, o->oPosY, o->oPosZ, 0, 0, 0);
+            if (obj) {
+                obj->oBehParams2ndByte = 9;
+                obj->oBehParams = 9 << 16;
+            }
+
+            obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+            if (obj) {
+                obj->oBehParams = (BKTN_DIA_CRINGE_PATH_COLLECT) << 16;
+            }
+        }
+
         obj_mark_for_deletion(o);
         return TRUE;
     }
@@ -46,6 +60,9 @@ s32 bhv_coin_sparkles_init(void) {
 }
 
 void bhv_yellow_coin_init(void) {
+    if (o->behavior == segmented_to_virtual(bhvFakeRedCoinCube)) {
+        SET_BPARAM4(o->oBehParams, 1);
+    }
     cur_obj_set_behavior(bhvYellowCoin);
     obj_set_hitbox(o, &sYellowCoinHitbox);
     cur_obj_update_floor_height();

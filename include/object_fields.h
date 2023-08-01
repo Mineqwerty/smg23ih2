@@ -483,7 +483,13 @@
 #define /*0x108*/ oBlockingtonScaleHomeZ     OBJECT_FIELD_F32(0x20)
 
 /* Blockington Mini */
-#define /*0x108*/ oBMiniDialogIndex        OBJECT_FIELD_S32(0x21)
+#define /*0x108*/ oBMiniDialogIndex          OBJECT_FIELD_S32(0x21)
+
+/* Blockington Trigger */
+#define /*0x0F4*/ oBTrigRedCollected         OBJECT_FIELD_S32(0x1B)
+#define /*0x0F8*/ oBTrigMissCounter          OBJECT_FIELD_S32(0x1C)
+#define /*0x0FC*/ oBTrigBridgeRaised         OBJECT_FIELD_S32(0x1D)
+#define /*0x100*/ oBTrigHitOffGround         OBJECT_FIELD_S32(0x1E)
 
 /* CQ Bridge */
 #define /*0x0F4*/ oCQBridgeCamPosVec OBJECT_FIELD_F32(0x1B)

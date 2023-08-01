@@ -265,6 +265,7 @@ void set_obj_anim_with_accel_and_sound(s16 frame1, s16 frame2, s32 sound) {
 #include "behaviors/persona_battle_manager.inc.c"
 #include "behaviors/cowardly_maya.inc.c"
 #include "behaviors/enemy_selector.inc.c"
+#include "behaviors/blockington_trigger.inc.c"
 #include "behaviors/blockington_mini.inc.c"
 #include "behaviors/blockington.inc.c"
 

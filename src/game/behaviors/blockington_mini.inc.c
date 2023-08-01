@@ -123,10 +123,13 @@ static void bhv_blockington_mini_act_waiting(void) {
     // Nothing active or of higher priority in queue
     o->oAction = ACT_BMINI_APPEARING;
     o->oTimer = 0;
-    cur_obj_unhide();
 }
 
 static void bhv_blockington_mini_act_appearing(void) {
+    if (o->oTimer == 0) {
+        cur_obj_unhide();
+    }
+
     if (o->oTimer >= BMINI_ANIM_DUR - 1) {
         o->oTimer = 0;
         o->oAction = ACT_BMINI_WAITING_TO_TALK;
@@ -153,7 +156,7 @@ static void bhv_blockington_mini_act_talk(void) {
     }
 
     if (o->oTimer == 0) {
-        play_sound(bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oSubAction].soundID, gGlobalSoundSource);
+        play_sound(bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oBMiniDialogIndex].soundID, gGlobalSoundSource);
         return;
     }
 
@@ -181,6 +184,16 @@ static void bhv_blockington_mini_act_waiting_to_disappear(void) {
         o->oTimer = 0;
         if (o->oBMiniDialogIndex + 1 >= bMiniDialogs[o->oBehParams2ndByte].dialogCount) {
             o->oAction = ACT_BMINI_DISAPPEARING;
+
+            if (o->oBehParams2ndByte == BKTN_DIA_PITY_BRIDGE) {
+                struct Object *obj = find_first_object_with_behavior_and_bparams(bhvCQBridge, (3) << 16, 0x00FF0000);
+                if (obj) {
+                    if (o->parentObj) {
+                        obj->parentObj = o->parentObj;
+                    }
+                    obj->oAction++;
+                }
+            }
         } else {
             o->oBMiniDialogIndex++;
             o->oAction = ACT_BMINI_WAITING_TO_TALK;

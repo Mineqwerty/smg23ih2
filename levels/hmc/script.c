@@ -6,6 +6,7 @@
 #include "dialog_ids.h"
 #include "segment_symbols.h"
 #include "level_commands.h"
+#include "game/behaviors/blockington.h"
 
 #include "game/level_update.h"
 
@@ -103,6 +104,11 @@ const LevelScript level_hmc_entry[] = {
 		TERRAIN_TYPE(TERRAIN_GRASS),
 		/* Fast64 begin persistent block [area commands] */
 		OBJECT(MODEL_BLOCKINGTON, 0, 400, -1500, 0, 0, 0, 0x00000000, bhvBlockington),
+		OBJECT(MODEL_NONE, 2266, 5080, 18239, 0, 0, 0, (BKTN_DIA_CRINGE_PATH_0 << 16) | (256), bhvBlockingtonTrigger),
+		OBJECT(MODEL_NONE, 654, 5819, 19901, 0, 0, 0, (BKTN_DIA_CRINGE_PATH_1 << 16) | (256), bhvBlockingtonTrigger),
+		OBJECT(MODEL_NONE, -230, 6548, 15196, 0, 0, 0, (BKTN_DIA_CRINGE_PATH_2 << 16) | (256), bhvBlockingtonTrigger),
+		OBJECT(MODEL_NONE, 18600, 5423, 14000, 0, 0, 0, (BKTN_DIA_PITY_BRIDGE << 16) | (512), bhvBlockingtonTrigger),
+		OBJECT(MODEL_CQ_BRIDGE, 23729, 4268, 14270, 0, 180, 0, (3 << 16), bhvCQBridge),
 		SET_BACKGROUND_MUSIC_WITH_REVERB(0, SEQ_LEVEL_UNDERGROUND, 4, 4),
 		SET_ECHO(0x18, 0x18),
 		/* Fast64 end persistent block [area commands] */

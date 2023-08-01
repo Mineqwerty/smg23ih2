@@ -173,7 +173,7 @@ void bhv_red_coin_loop(void) {
                         newBparam2 = BKTN_DIA_COIN_10;
                         break;
                     case 12:
-                        newBparam2 = BKTN_DIA_COIN_12_NORMAL;
+                        // Do nothing, handled elsewhere
                         break;
                     case 13:
                         newBparam2 = BKTN_DIA_COIN_13;

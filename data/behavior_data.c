@@ -6434,6 +6434,15 @@ const BehaviorScript bhvBlockingtonMini[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvBlockingtonTrigger[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, (OBJ_FLAG_ACTIVE_FROM_AFAR)),
+    CALL_NATIVE(bhv_blockington_trigger_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_blockington_trigger_loop),
+    END_LOOP(),
+};
+
 const BehaviorScript bhvCQDoor[] = {
     BEGIN(OBJ_LIST_SURFACE),
     OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
