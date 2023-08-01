@@ -1,7 +1,5 @@
 // blockington.inc.c
 
-#include "blockington.h"
-
 #define PITCH_VARIANCE 0x1200
 #define YAW_VARIANCE 0x0C00
 #define ROLL_VARIANCE 0x0C00
@@ -30,7 +28,7 @@ void bhv_blockington_init(void) {
 
     o->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
 
-    for (u32 i = 0; i < bMiniDialogsCount; i++) {
+    for (u32 i = 0; i < BKTN_DIA_COUNT; i++) {
         bMiniDialogs[i].hasSpawned = FALSE;
     }
 }
@@ -98,13 +96,6 @@ static void bhv_blockington_set_angle_scale(void) {
 }
 
 void bhv_blockington_loop(void) {
-    if (gPlayer1Controller->buttonPressed == L_TRIG) {
-        struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
-        if (obj) {
-            obj->oBehParams = (random_u16() % 5) << 16;
-        }
-    }
-
     bhv_blockington_calculate_angle_scale_all();
     bhv_blockington_set_angle_scale();
 }

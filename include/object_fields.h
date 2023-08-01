@@ -170,7 +170,7 @@
 #define /*0x1C0*/ oFloor                      OBJECT_FIELD_SURFACE(0x4E)
 #define /*0x1C4*/ oDeathSound                 OBJECT_FIELD_S32(0x4F)
 #ifdef PUPPYLIGHTS
-#define /*0x1CC*/ oLightID                                      OBJECT_FIELD_S32(0x51)
+#define /*0x1C8*/ oLightID                                      OBJECT_FIELD_S32(0x52)
 #endif
 
 /* Pathed (see obj_follow_path) */
@@ -503,6 +503,7 @@
 #define /*0x1AC*/ oFazanaCarSoundPitch     OBJECT_FIELD_F32(0x49)
 #define /*0x1B0*/ oFazanaCarLastFloor      OBJECT_FIELD_SURFACE(0x4A)
 #define /*0x1C8*/ oFazanaCarLastGroundedY  OBJECT_FIELD_F32(0x50)
+#define /*0x1C8*/ oFazanaCarNoFloorTime    OBJECT_FIELD_S32(0x51)
 
 /* Mario Maker Laugh */
 #define /*0x0F4*/ oMarioMakerLaughScale OBJECT_FIELD_F32(0x1B)

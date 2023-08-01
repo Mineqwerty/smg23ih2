@@ -1,7 +1,5 @@
 // blockington_mini.inc.c
 
-#include "blockington.h"
-
 #include "blockington_dialogs.inc.c"
 
 #define BMINI_DIST 10000.0f
@@ -14,7 +12,7 @@
 
 void bhv_blockington_mini_init(void) {
     u32 bparam2 = BPARAM2;
-    if (bparam2 >= bMiniDialogsCount || (bMiniDialogs[bparam2].allowRepeat == FALSE && bMiniDialogs[bparam2].hasSpawned == TRUE)) {
+    if (bparam2 >= BKTN_DIA_COUNT || (bMiniDialogs[bparam2].allowRepeat == FALSE && bMiniDialogs[bparam2].hasSpawned == TRUE)) {
         obj_mark_for_deletion(o);
         return;
     }

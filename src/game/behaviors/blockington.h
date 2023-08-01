@@ -1,6 +1,34 @@
 #ifndef BLOCKINGTON_INC_H
 #define BLOCKINGTON_INC_H
 
+enum BlockingtonDialogIDs {
+    BKTN_DIA_OOB,
+    BKTN_DIA_COIN_00,
+    BKTN_DIA_COIN_02,
+    BKTN_DIA_COIN_03,
+    BKTN_DIA_COIN_06,
+    BKTN_DIA_COIN_07,
+    BKTN_DIA_COIN_10,
+    BKTN_DIA_COIN_12_NORMAL,
+    BKTN_DIA_COIN_12_PITY,
+    BKTN_DIA_COIN_13,
+    BKTN_DIA_COIN_JACKPOT,
+    BKTN_DIA_COIN_23,
+    BKTN_DIA_PITY_BRIDGE,
+    BKTN_DIA_CRINGE_PATH_0,
+    BKTN_DIA_CRINGE_PATH_1,
+    BKTN_DIA_CRINGE_PATH_2,
+    BKTN_DIA_CRINGE_PATH_COLLECT,
+    BKTN_DIA_CS_MARIO,
+    BKTN_DIA_CS_CAR,
+    BKTN_DIA_CS_FIRST_AREA,
+    BKTN_DIA_CS_SECOND_AREA,
+    BKTN_DIA_CS_FINAL_0,
+    BKTN_DIA_CS_FINAL_1,
+
+    BKTN_DIA_COUNT,
+};
+
 struct BlockingtonStates {
     Vec3i goalAngle;
     Vec3i approachAngle;
@@ -27,7 +55,6 @@ struct BlockingtonMiniDialogEntries {
 
 extern struct BlockingtonStates sBlockington;
 extern struct BlockingtonMiniDialogEntries bMiniDialogs[];
-extern const u32 bMiniDialogsCount;
 
 void bhv_blockington_calculate_angle_scale_all(void);
 

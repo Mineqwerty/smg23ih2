@@ -281,9 +281,9 @@ struct PuppyLight {
 // whether some of these pointers point to ObjectNode or Object.
 
 #ifdef PUPPYLIGHTS
-#define MAX_OBJECT_FIELDS 0x52
+#define MAX_OBJECT_FIELDS 0x53
 #else
-#define MAX_OBJECT_FIELDS 0x51
+#define MAX_OBJECT_FIELDS 0x52
 #endif
 
 struct Object {
