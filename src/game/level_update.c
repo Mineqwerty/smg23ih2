@@ -1112,6 +1112,10 @@ s32 play_mode_normal(void) {
         area_update_objects();
     }
 #else
+    if (gCurrLevelNum == SMG23IH2_LEVEL_4 && gCurrentArea != NULL) {
+        update_camera(gCurrentArea->camera);
+    }
+
     if (sTimerRunning && gHudDisplay.timer < 17999) {
         gHudDisplay.timer++;
     }

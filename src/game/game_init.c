@@ -448,7 +448,9 @@ void display_and_vsync(void) {
     }
     exec_display_list(&gGfxPool->spTask);
 
+#ifdef PUPPYPRINT_DEBUG
     PROFILER_GET_SNAPSHOT();
+#endif
 
     // Should be above osRecvMesg to avoid initial flicker, does not need perf boost on console
     if (gPersonaBattleTransition == TRUE) {
