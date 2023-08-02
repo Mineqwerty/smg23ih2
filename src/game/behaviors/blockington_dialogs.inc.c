@@ -34,7 +34,7 @@ struct BlockingtonMiniDialog bMiniDiaCoin06[] = {
 
 // Coin 07: Coin on top of high block (need to launch from coin 11 to reach)
 struct BlockingtonMiniDialog bMiniDiaCoin07[] = {
-    {.lineCount = 2, .soundID = SOUND_BLOCKINGTON_COIN_07, .dialogStr = "Blocktacular! I cannot believe\nyou retrieved that artifact!"},
+    {.lineCount = 2, .soundID = SOUND_BLOCKINGTON_COIN_07, .dialogStr = "Unblockevable aim! That artifact must\nhave been challenging to reach!"},
 };
 
 // Coin 08: Coin on top of brown square
@@ -42,7 +42,7 @@ struct BlockingtonMiniDialog bMiniDiaCoin07[] = {
 
 // Coin 10: Coin on block in middle of brown square on block
 struct BlockingtonMiniDialog bMiniDiaCoin10[] = {
-    {.lineCount = 2, .soundID = SOUND_BLOCKINGTON_COIN_10, .dialogStr = "Unblockevable aim! That artifact must\nhave been challenging to reach!"},
+    {.lineCount = 2, .soundID = SOUND_BLOCKINGTON_COIN_10, .dialogStr = "Blocktacular! I cannot believe\nyou retrieved that artifact!"},
 };
 
 // Coin 11: Coin at top of highest ramp

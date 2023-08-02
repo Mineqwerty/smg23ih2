@@ -114,9 +114,11 @@ void fazana_car_act_move(void) {
     }
 
     if (o->oFazanaCarNoFloorTime == 120) {
-        struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
-        if (obj) {
-            obj->oBehParams = ((BKTN_DIA_OOB) << 16) | 1; // Higher priority
+        if (!find_first_object_with_behavior_and_bparams(bhvCQGate, 0, 0)) {
+            struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+            if (obj) {
+                obj->oBehParams = ((BKTN_DIA_OOB) << 16) | 1; // Higher priority
+            }
         }
     }
 

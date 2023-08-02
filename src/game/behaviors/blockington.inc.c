@@ -41,6 +41,12 @@ struct BlockingtonStates sBlockington;
 
 const Vec3i angleLimitFactors = {0x3000, 0x1800, 0x1800};
 
+const Vec3f coordDests[3] = {
+    {0.0f, 1750.0f + 351.0f, -7500.0f},
+    {1000.0f, 4750.0f + 351.0f, 11250.0f},
+    {-27502.0f, 5768.0f + 351.0f, 22944.0f},
+};
+
 void bhv_blockington_init(void) {
     cur_obj_scale(1.6f);
     vec3f_copy(&o->oHomeVec, &o->oPosVec);
@@ -123,16 +129,19 @@ static void bhv_blockington_set_angle_scale(void) {
 }
 
 static void bhv_blockington_approach_camera_goal(void) {
-
-    gLakituState.goalFocus[0] = smoothstep(gLakituState.goalFocus[0], o->oHomeX, BKTN_CUTSCENE_FOCUS_SMOOTHSTEPXZ);
-    gLakituState.goalFocus[1] = smoothstep(gLakituState.goalFocus[1], o->oHomeY, BKTN_CUTSCENE_FOCUS_SMOOTHSTEPY);
-    gLakituState.goalFocus[2] = smoothstep(gLakituState.goalFocus[2], o->oHomeZ, BKTN_CUTSCENE_FOCUS_SMOOTHSTEPXZ);
+    gLakituState.goalFocus[0] = smoothstep(gLakituState.goalFocus[0], o->oPosX, BKTN_CUTSCENE_FOCUS_SMOOTHSTEPXZ);
+    gLakituState.goalFocus[1] = smoothstep(gLakituState.goalFocus[1], o->oPosY, BKTN_CUTSCENE_FOCUS_SMOOTHSTEPY);
+    gLakituState.goalFocus[2] = smoothstep(gLakituState.goalFocus[2], o->oPosZ, BKTN_CUTSCENE_FOCUS_SMOOTHSTEPXZ);
 
     s16 yaw = atan2s(sCameraStoreCutscene.pos[2] - o->oPosZ, sCameraStoreCutscene.pos[0] - o->oPosX);
 
     gLakituState.goalPos[0] = smoothstep(gLakituState.goalPos[0], o->oPosX + (BKTN_DIST_CAM_XZ * sins((s16) (yaw))), BKTN_CUTSCENE_POS_SMOOTHSTEPXZ);
-    gLakituState.goalPos[1] = smoothstep(gLakituState.goalPos[1], o->oPosY + BKTN_DIST_CAM_Y, BKTN_CUTSCENE_POS_SMOOTHSTEPY);
     gLakituState.goalPos[2] = smoothstep(gLakituState.goalPos[2], o->oPosZ + (BKTN_DIST_CAM_XZ * coss((s16) (yaw))), BKTN_CUTSCENE_POS_SMOOTHSTEPXZ);
+    if (o->oAction == BLOCKINGTON_ACT_MOVE_AREA_1) {
+        gLakituState.goalPos[1] = smoothstep(gLakituState.goalPos[1], o->oPosY - BKTN_DIST_CAM_Y, BKTN_CUTSCENE_POS_SMOOTHSTEPY * 0.5f);
+    } else {
+        gLakituState.goalPos[1] = smoothstep(gLakituState.goalPos[1], o->oPosY + BKTN_DIST_CAM_Y, BKTN_CUTSCENE_POS_SMOOTHSTEPY);
+    }
 }
 
 static void blockington_act_spawn_wait(void) {
@@ -154,7 +163,6 @@ static void blockington_act_spawn_wait(void) {
         vec3f_copy(sCameraStoreCutscene.pos, gLakituState.goalPos);
 
         o->oAction++;
-        o->oSubAction = 0;
 
         bhv_blockington_approach_camera_goal();
     }
@@ -205,7 +213,6 @@ static void blockington_act_wait_car(void) {
         vec3f_copy(sCameraStoreCutscene.pos, gLakituState.goalPos);
 
         o->oAction++;
-        o->oSubAction = 0;
 
         bhv_blockington_approach_camera_goal();
     }
@@ -241,9 +248,13 @@ static void blockington_act_wait_for_gate(void) {
         return;
     }
 
+    
+    s16 angle = atan2s(coordDests[0][2] - o->oPosZ, coordDests[0][0] - o->oPosX);
+    o->oFaceAngleYaw = approach_s16_symmetric(o->oFaceAngleYaw, angle, 0xA00);
+
     struct Object *obj = find_first_object_with_behavior_and_bparams(bhvCQGate, 0, 0);
 
-    if (obj == NULL || (obj->oAction == ACT_CQGATE_ANIMATING && obj->oSubAction == 2 && obj->oTimer >= 10)) {
+    if (obj == NULL || (obj->oAction == ACT_CQGATE_ANIMATING && obj->oSubAction == 2 && obj->oTimer >= 15)) {
         obj->oCQGateCamShouldUpdate = FALSE;
         o->oAction++;
         bhv_blockington_approach_camera_goal();
@@ -251,8 +262,52 @@ static void blockington_act_wait_for_gate(void) {
 }
 
 static void blockington_act_move_area_1(void) {
-    if (o->oTimer >= 60) {
-        o->oAction++;
+    s16 angle;
+    f32 ratio;
+
+    bhv_blockington_approach_camera_goal();
+
+    switch (o->oSubAction) {
+        case 0:
+            angle = atan2s(coordDests[0][2] - o->oPosZ, coordDests[0][0] - o->oPosX);
+            o->oFaceAngleYaw = approach_s16_symmetric(o->oFaceAngleYaw, angle, 0xA00);
+            if (angle == o->oFaceAngleYaw) {
+                o->oSubAction++;
+                o->oTimer = 0;
+            }
+            break;
+        case 1:
+            if (o->oTimer < 5) {
+                break;
+            }
+
+            ratio = (f32) (o->oTimer + 5) / 105.0f;
+
+            if (ratio >= 1.0f) {
+                vec3f_copy(&o->oPosVec, coordDests[0]);
+                vec3f_copy(&o->oHomeVec, coordDests[0]);
+                o->oSubAction++;
+                break;
+            }
+
+            o->oPosX = coordDests[0][0] * ratio + o->oHomeX * (1.0f - ratio);
+            o->oPosY = coordDests[0][1] * ratio + o->oHomeY * (1.0f - ratio);
+            o->oPosZ = coordDests[0][2] * ratio + o->oHomeZ * (1.0f - ratio);
+
+            break;
+        case 2:
+            angle = atan2s(gMarioState->pos[2] - o->oPosZ, gMarioState->pos[0] - o->oPosX);
+            o->oFaceAngleYaw = approach_s16_symmetric(o->oFaceAngleYaw, angle, 0xA00);
+            if (angle == o->oFaceAngleYaw) {
+                o->oSubAction++;
+                o->oTimer = 0;
+            }
+            break;
+        case 3:
+            if (o->oTimer >= 45) {
+                o->oAction++;
+            }
+            break;
     }
 }
 
@@ -272,7 +327,7 @@ static void blockington_act_wait_area_1(void) {
     }
 
     if (
-        o->oDistanceToMario <= 800.0f &&
+        (o->oDistanceToMario <= 1500.0f || gMarioState->pos[1] > 1499.0f) &&
         gCamera->cutscene == FALSE &&
         !(gTimeStopState & TIME_STOP_ENABLED) &&
         (mario_ready_to_speak() || gMarioState->action == ACT_FAZANA_CAR)
@@ -288,7 +343,6 @@ static void blockington_act_wait_area_1(void) {
         vec3f_copy(sCameraStoreCutscene.pos, gLakituState.goalPos);
 
         o->oAction++;
-        o->oSubAction = 0;
 
         bhv_blockington_approach_camera_goal();
     }
@@ -311,6 +365,9 @@ static void blockington_act_talk_area_1(void) {
 }
 
 static void blockington_act_move_area_2(void) {
+    s16 angle;
+    f32 ratio;
+
     if (o->oTimer == 0) {
         vec3f_copy(gLakituState.goalFocus, sCameraStoreCutscene.focus);
         vec3f_copy(gLakituState.goalPos, sCameraStoreCutscene.pos);
@@ -324,22 +381,174 @@ static void blockington_act_move_area_2(void) {
             set_mario_action(gMarioState, ACT_IDLE, 0);
         }
     }
+
+    switch (o->oSubAction) {
+        case 0:
+            if (o->oTimer < 20) {
+                break;
+            }
+
+            angle = atan2s(coordDests[1][2] - o->oPosZ, coordDests[1][0] - o->oPosX);
+            o->oFaceAngleYaw = approach_s16_symmetric(o->oFaceAngleYaw, angle, 0xA00);
+            if (angle == o->oFaceAngleYaw) {
+                o->oSubAction++;
+                o->oTimer = 0;
+            }
+            break;
+        case 1:
+            if (o->oTimer < 5) {
+                break;
+            }
+
+            ratio = (f32) (o->oTimer - 5) / 105.0f;
+
+            if (ratio >= 1.0f) {
+                vec3f_copy(&o->oPosVec, coordDests[1]);
+                vec3f_copy(&o->oHomeVec, coordDests[1]);
+                o->oSubAction++;
+                break;
+            }
+
+            o->oPosX = coordDests[1][0] * ratio + o->oHomeX * (1.0f - ratio);
+            o->oPosY = coordDests[1][1] * ratio + o->oHomeY * (1.0f - ratio);
+            o->oPosZ = coordDests[1][2] * ratio + o->oHomeZ * (1.0f - ratio);
+
+            break;
+        case 2:
+            angle = atan2s(gMarioState->pos[2] - o->oPosZ, gMarioState->pos[0] - o->oPosX);
+            o->oFaceAngleYaw = approach_s16_symmetric(o->oFaceAngleYaw, angle, 0xA00);
+            if (ABS(angle - o->oFaceAngleYaw) < 0xA00) {
+                o->oSubAction++;
+                o->oTimer = 0;
+            }
+            break;
+        case 3:
+            if (o->oTimer >= 10) {
+                o->oAction++;
+            }
+            break;
+    }
 }
 
 static void blockington_act_wait_area_2(void) {
+    if (
+        (o->oDistanceToMario <= 1200.0f || (gMarioState->pos[1] > 4317.0f && gMarioState->pos[2] > 7500.0f)) &&
+        gCamera->cutscene == FALSE &&
+        !(gTimeStopState & TIME_STOP_ENABLED) &&
+        (mario_ready_to_speak() || 
+            (gMarioState->action == ACT_FAZANA_CAR && gMarioState->fazanaCar && gMarioState->fazanaCar->oFloor != NULL))
+    ) {
+        gTimeStopState |= TIME_STOP_ENABLED;
+        gCamera->cutscene = TRUE;
 
+        if (gMarioState->action != ACT_FAZANA_CAR) {
+            set_mario_action(gMarioState, ACT_WAITING_FOR_DIALOG, 0);
+        }
+
+        vec3f_copy(sCameraStoreCutscene.focus, gLakituState.goalFocus);
+        vec3f_copy(sCameraStoreCutscene.pos, gLakituState.goalPos);
+
+        o->oAction++;
+
+        bhv_blockington_approach_camera_goal();
+    }
 }
 
 static void blockington_act_talk_area_2(void) {
+    bhv_blockington_approach_camera_goal();
 
+    if (o->oTimer == 0) {
+        struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+        if (obj) {
+            obj->oBehParams = (BKTN_DIA_CS_SECOND_AREA) << 16;
+            obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+        } else {
+            o->oAction++;
+        }
+    }
+
+    // BlockingtonMini should update the next action
 }
 
 static void blockington_act_move_area_3(void) {
+    s16 angle;
+    f32 ratio;
 
+    if (o->oTimer == 0) {
+        vec3f_copy(gLakituState.goalFocus, sCameraStoreCutscene.focus);
+        vec3f_copy(gLakituState.goalPos, sCameraStoreCutscene.pos);
+        // vec3f_copy(gLakituState.curFocus, sCameraStoreCutscene.focus);
+        // vec3f_copy(gLakituState.curPos, sCameraStoreCutscene.pos);
+
+        gTimeStopState &= ~TIME_STOP_ENABLED;
+        gCamera->cutscene = FALSE;
+
+        if (gMarioState->action != ACT_FAZANA_CAR) {
+            set_mario_action(gMarioState, ACT_IDLE, 0);
+        }
+    }
+
+    switch (o->oSubAction) {
+        case 0:
+            if (o->oTimer < 20) {
+                break;
+            }
+
+            angle = atan2s(coordDests[2][2] - o->oPosZ, coordDests[2][0] - o->oPosX);
+            o->oFaceAngleYaw = approach_s16_symmetric(o->oFaceAngleYaw, angle, 0xA00);
+            if (angle == o->oFaceAngleYaw) {
+                o->oSubAction++;
+                o->oTimer = 0;
+            }
+            break;
+        case 1:
+            if (o->oTimer < 5) {
+                break;
+            }
+
+            ratio = (f32) (o->oTimer - 5) / 105.0f;
+
+            if (ratio >= 1.0f) {
+                vec3f_copy(&o->oPosVec, coordDests[2]);
+                vec3f_copy(&o->oHomeVec, coordDests[2]);
+                o->oSubAction++;
+                break;
+            }
+
+            o->oPosX = coordDests[2][0] * ratio + o->oHomeX * (1.0f - ratio);
+            o->oPosY = coordDests[2][1] * ratio + o->oHomeY * (1.0f - ratio);
+            o->oPosZ = coordDests[2][2] * ratio + o->oHomeZ * (1.0f - ratio);
+
+            break;
+        case 2:
+            angle = atan2s(gMarioState->pos[2] - o->oPosZ, gMarioState->pos[0] - o->oPosX);
+            o->oFaceAngleYaw = approach_s16_symmetric(o->oFaceAngleYaw, angle, 0xA00);
+            if (ABS(angle - o->oFaceAngleYaw) < 0xA00) {
+                o->oSubAction++;
+                o->oTimer = 0;
+            }
+            break;
+        case 3:
+            if (o->oTimer >= 10) {
+                o->oAction++;
+            }
+            break;
+    }
 }
 
 static void blockington_act_wait_area_3(void) {
+    if (
+        o->oDistanceToMario <= 1600.0f &&
+        gCamera->cutscene == FALSE &&
+        !(gTimeStopState & TIME_STOP_ENABLED) &&
+        (mario_ready_to_speak() || 
+            (gMarioState->action == ACT_FAZANA_CAR && gMarioState->fazanaCar && gMarioState->fazanaCar->oFloor != NULL))
+    ) {
+        // TODO: final cutscene shit
 
+        FORCE_CRASH; // TODO: remove (obviously), but crashing here means success for now
+        o->oAction++;
+    }
 }
 
 static void blockington_act_final_cutscene_todo(void) {

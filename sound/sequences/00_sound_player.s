@@ -8421,11 +8421,11 @@ chan_end
 
 .layer_bktn_coin_07_echo:
 layer_delay 0x10
-layer_note1 39, 0x245, 55
+layer_note1 39, 0x24d, 55
 layer_end
 
 .layer_bktn_coin_07:
-layer_note1 39, 0x245, 127
+layer_note1 39, 0x24d, 127
 layer_end
 
 .sound_bktn_coin_10:
@@ -8439,11 +8439,11 @@ chan_end
 
 .layer_bktn_coin_10_echo:
 layer_delay 0x10
-layer_note1 39, 0x24d, 55
+layer_note1 39, 0x245, 55
 layer_end
 
 .layer_bktn_coin_10:
-layer_note1 39, 0x24d, 127
+layer_note1 39, 0x245, 127
 layer_end
 
 .sound_bktn_coin_12_normal:
