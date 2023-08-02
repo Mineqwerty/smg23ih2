@@ -4,7 +4,7 @@ extern const Collision bbh_area_1_collision[];
 extern const MacroObject bbh_area_1_macro_objs[];
 extern Lights1 bbh_dl_f3dlite_material_lights;
 extern u8 bbh_dl_susser_monk_rgba16[];
-extern Vtx bbh_dl_Circle_mesh_layer_1_vtx_0[448];
+extern Vtx bbh_dl_Circle_mesh_layer_1_vtx_0[496];
 extern Gfx bbh_dl_Circle_mesh_layer_1_tri_0[];
 extern Gfx mat_bbh_dl_f3dlite_material[];
 extern Gfx bbh_dl_Circle_mesh_layer_1[];
