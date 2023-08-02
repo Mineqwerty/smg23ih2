@@ -759,17 +759,38 @@ void render_hud(void) {
             render_hud_cannon_reticle();
         }
 
+        if (gCurrLevelNum == SMG23IH2_LEVEL_6) {
+            if (gCurrAreaIndex == 2) {
+                if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_MAIN_TEXT) {
+                    render_dl_persona();
+                    render_persona_selector_text();
+                }
+                if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_SKILL_TEXT) {
+                    render_dl_skill_menu();
+                    render_persona_skill_text();
+                }
+                if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_USING_SKILL_BATTLE_TEXT) {
+                    render_using_skill_text();
+                }
+                if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT) {
+                    render_strike_attack_text();
+                }
+            }
+
+            return; // Don't render the other things below
+        }
+
 #ifdef ENABLE_LIVES
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_LIVES) {
             render_hud_mario_lives();
         }
 #endif
 
-        if ((hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) && gCurrLevelNum != SMG23IH2_LEVEL_6) {
+        if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
             render_hud_coins();
         }
 
-        if ((hudDisplayFlags & HUD_DISPLAY_FLAG_STAR_COUNT) && gCurrLevelNum != SMG23IH2_LEVEL_6) {
+        if (hudDisplayFlags & HUD_DISPLAY_FLAG_STAR_COUNT) {
             render_hud_stars();
         }
 
@@ -777,26 +798,7 @@ void render_hud(void) {
             render_hud_keys();
         }
 
-        if (gCurrLevelNum == SMG23IH2_LEVEL_6 && gCurrAreaIndex == 2) {
-            if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_MAIN_TEXT) {
-                render_dl_persona();
-                render_persona_selector_text();
-            }
-            if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_SKILL_TEXT) {
-                render_dl_skill_menu();
-                render_persona_skill_text();
-            }
-            if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_USING_SKILL_BATTLE_TEXT) {
-                render_using_skill_text();
-            }
-            if (gPersonaMenuFlags & PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT) {
-                render_strike_attack_text();
-            }
-#ifdef BREATH_METER
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_BREATH_METER) render_hud_breath_meter();
-#endif
-
-        if ((hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) && gCurrLevelNum != SMG23IH2_LEVEL_6) {
+        if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) {
             render_hud_power_meter();
 #ifdef PUPPYCAM
             if (!gPuppyCam.enabled) {
@@ -806,6 +808,9 @@ void render_hud(void) {
             }
 #endif
         }
+#ifdef BREATH_METER
+        if (hudDisplayFlags & HUD_DISPLAY_FLAG_BREATH_METER) render_hud_breath_meter();
+#endif
 
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_TIMER) {
             render_hud_timer();
@@ -817,5 +822,4 @@ void render_hud(void) {
         }
 #endif
     }
-}
 }

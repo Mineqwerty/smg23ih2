@@ -26,6 +26,7 @@
 #include "config.h"
 #include "puppycam2.h"
 #include "main.h"
+#include "puppyprint.h"
 
 #ifdef VERSION_EU
 #undef LANGUAGE_FUNCTION
@@ -1125,6 +1126,56 @@ u8 *gEndCutsceneStringsEn[] = {
     NULL
 };
 
+struct BlockingtonDialogEntry {
+    struct BlockingtonMiniDialog *dialogEntry;
+    u8 transparency;
+    u8 shouldOffset;
+
+} sBlockingtonDialogEntry;
+
+#define BLOCKINGTON_DIALOG_BOX_WIDTH 220
+#define BLOCKINGTON_DIALOG_BOX_WIDTH_NO_RENDER 270
+#define BLOCKINGTON_DIALOG_BOX_WIDTH_OFFSET (BLOCKINGTON_DIALOG_BOX_WIDTH / 5)
+#define BLOCKINGTON_DIALOG_LINE_HEIGHT 12
+#define BLOCKINGTON_DIALOG_WIDTH_MARGIN 8
+#define BLOCKINGTON_DIALOG_HEIGHT_MARGIN 8
+void render_blockington_dialog_entry(void) {
+    if (sBlockingtonDialogEntry.dialogEntry == NULL || sBlockingtonDialogEntry.transparency == 0) {
+        return;
+    }
+
+    s32 lineCount = MAX(3, sBlockingtonDialogEntry.dialogEntry->lineCount);
+
+    s32 y1 = SCREEN_HEIGHT - 28 - (lineCount * BLOCKINGTON_DIALOG_LINE_HEIGHT);
+    s32 y2 = y1 + (2 * BLOCKINGTON_DIALOG_HEIGHT_MARGIN) + (lineCount * BLOCKINGTON_DIALOG_LINE_HEIGHT);
+
+    s32 x1;
+    s32 x2;
+    if (sBlockingtonDialogEntry.shouldOffset) {
+        x1 = (SCREEN_CENTER_X + BLOCKINGTON_DIALOG_BOX_WIDTH_OFFSET - (BLOCKINGTON_DIALOG_BOX_WIDTH / 2));
+        x2 = (x1 + BLOCKINGTON_DIALOG_BOX_WIDTH);
+    } else {
+        x1 = (SCREEN_CENTER_X - (BLOCKINGTON_DIALOG_BOX_WIDTH_NO_RENDER / 2));
+        x2 = (x1 + BLOCKINGTON_DIALOG_BOX_WIDTH_NO_RENDER);
+    }
+
+    prepare_blank_box();
+    render_blank_box_rounded(x1, y1, x2, y2, 0x00, 0x00, 0x00, sBlockingtonDialogEntry.transparency / 2);
+    finish_blank_box();
+
+    print_set_envcolour(255, 255, 255, sBlockingtonDialogEntry.transparency);
+    print_small_text(x1 + BLOCKINGTON_DIALOG_WIDTH_MARGIN, y1 + BLOCKINGTON_DIALOG_HEIGHT_MARGIN, sBlockingtonDialogEntry.dialogEntry->dialogStr, PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_OUTLINE);
+}
+
+void set_blockington_dialog_entry(struct BlockingtonMiniDialog *dialogEntry, u8 transparency, u8 shouldOffset) {
+    sBlockingtonDialogEntry.dialogEntry = dialogEntry;
+    sBlockingtonDialogEntry.transparency = transparency;
+    sBlockingtonDialogEntry.shouldOffset = shouldOffset;
+}
+
+void clear_blockington_dialog_entry(void) {
+    sBlockingtonDialogEntry.dialogEntry = NULL;
+}
 
 u16 gCutsceneMsgFade        =  0;
 s16 gCutsceneMsgIndex       = -1;

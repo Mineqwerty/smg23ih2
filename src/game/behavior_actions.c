@@ -8,6 +8,7 @@
 #include "audio/external.h"
 #include "behavior_actions.h"
 #include "behavior_data.h"
+#include "behaviors/blockington.h"
 #include "camera.h"
 #include "debug.h"
 #include "dialog_ids.h"
@@ -47,7 +48,9 @@
 #include "spawn_sound.h"
 #include "rumble_init.h"
 #include "puppylights.h"
+#include "puppyprint.h"
 
+extern void dma_read_dma_seg(u8 *dest, u8 *srcStart, u8 *srcEnd);
 extern void geo_append_display_list(void *displayList, s32 layer);
 
 #include "behaviors/star_door.inc.c"
@@ -263,8 +266,9 @@ void set_obj_anim_with_accel_and_sound(s16 frame1, s16 frame2, s32 sound) {
 #include "behaviors/persona_battle_manager.inc.c"
 #include "behaviors/cowardly_maya.inc.c"
 #include "behaviors/enemy_selector.inc.c"
-#include "behaviors/blockington.inc.c"
+#include "behaviors/blockington_trigger.inc.c"
 #include "behaviors/blockington_mini.inc.c"
+#include "behaviors/blockington.inc.c"
 
 #include "behaviors/cq_door.inc.c"
 #include "behaviors/cq_gate.inc.c"

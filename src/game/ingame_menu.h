@@ -2,6 +2,7 @@
 #define INGAME_MENU_H
 
 #include <PR/ultratypes.h>
+#include "behaviors/blockington.h"
 
 #define ASCII_TO_DIALOG(asc)                                       \
     (((asc) >= '0' && (asc) <= '9') ? ((asc) - '0') :              \
@@ -176,5 +177,8 @@ void do_cutscene_handler(void);
 void render_hud_cannon_reticle(void);
 void reset_red_coins_collected(void);
 s32 render_menus_and_dialogs(void);
+void render_blockington_dialog_entry(void);
+void set_blockington_dialog_entry(struct BlockingtonMiniDialog *dialogEntry, u8 transparency, u8 shouldOffset);
+void clear_blockington_dialog_entry(void);
 
 #endif // INGAME_MENU_H

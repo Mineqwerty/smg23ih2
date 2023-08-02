@@ -429,8 +429,10 @@ void select_gfx_pool(void) {
     gGfxPoolEnd = (u8 *) (gGfxPool->buffer + GFX_POOL_SIZE);
 }
 
+#ifdef PUPPYPRINT_DEBUG
 extern int profile_buffer_index;
 extern void buffer_update(ProfileTimeData* data, u32 new, int buffer_index);
+#endif
 /**
  * This function:
  * - Sends the current master display list out to be rendered.
@@ -446,7 +448,7 @@ void display_and_vsync(void) {
     }
     exec_display_list(&gGfxPool->spTask);
 
-    u32 first = osGetCount();
+    PROFILER_GET_SNAPSHOT();
 
     // Should be above osRecvMesg to avoid initial flicker, does not need perf boost on console
     if (gPersonaBattleTransition == TRUE) {
@@ -498,10 +500,6 @@ void display_and_vsync(void) {
         sRenderingFramebuffer = 0;
     }
 
-    u32 second = osGetCount();
-
-    second = osGetCount() - second;
-
     // Does better on console below osRecvMesg, but not the other one
     // if (gFuckUpScreen == 1) {
     //     RGBA16 *fb = gFramebuffers[sRenderedFramebuffer];
@@ -551,7 +549,9 @@ void display_and_vsync(void) {
         }
     }
 
-    buffer_update(&all_profiling_data[PROFILER_TIME_FBE], osGetCount() - first - second, profile_buffer_index);
+#ifdef PUPPYPRINT_DEBUG
+    buffer_update(&all_profiling_data[PROFILER_TIME_FBE], osGetCount() - first, profile_buffer_index);
+#endif
 
 #ifndef UNLOCK_FPS
     osRecvMesg(&gGameVblankQueue, &gMainReceivedMesg, OS_MESG_BLOCK);

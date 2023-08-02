@@ -29,6 +29,7 @@ struct SequenceQueueItem {
     u8 priority;
 }; // size = 0x2
 
+extern u8 sIsBlockingtonStillTalking;
 extern s32 gAudioErrorFlags;
 extern f32 gGlobalSoundSource[3];
 

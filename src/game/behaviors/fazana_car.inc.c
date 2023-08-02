@@ -13,8 +13,6 @@
 #define MINIMUM_PITCH_DRIVE 0.89f
 #define MAXIMUM_PITCH 3.35f
 
-static s32 madeByBlakeoramoTimer = -1;
-
 struct ObjectHitbox sFazanaCarHitbox = {
     /* interactType:      */ INTERACT_NONE,
     /* downOffset:        */ 0,
@@ -48,28 +46,14 @@ void bhv_fazana_car_init(void) {
 
     o->oFazanaCarBIndicator = spawn_object_relative(0x000B, 0, 0, 0, o, MODEL_NUMBER, bhvCarOrangeNumber);
     o->oFazanaCarLastGroundedY = o->oPosY;
-}
 
-static void made_by_blakeoramo(void) {
-    if (madeByBlakeoramoTimer < 0 || madeByBlakeoramoTimer > 300) {
-        return;
+    if (BPARAM4 == 1) {
+        o->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+    } else {
+        if (find_first_object_with_behavior_and_bparams(bhvCQDoor, 0, 0)) {
+            cur_obj_hide();
+        }
     }
-
-    madeByBlakeoramoTimer++;
-
-    if (madeByBlakeoramoTimer <= 120) {
-        print_text(80, 30, "CREATED");
-        print_text(80, 10, "BY BLAKEORAMO");
-        return;
-    }
-
-    if (madeByBlakeoramoTimer <= 165) {
-        print_text(80, 30, "ERR...");
-        return;
-    }
-    
-    print_text(80, 30, "CAR MODEL");
-    print_text(80, 10, "MADE BY FAZANA");
 }
 
 static void fazana_car_set_forward_velocity_and_turn_wheels(void) {
@@ -122,6 +106,19 @@ void fazana_car_act_move(void) {
     f32 lastY = o->oPosY;
 
     s16 collisionFlags = object_step_without_floor_orient();
+
+    if (o->oFloor == NULL) {
+        o->oFazanaCarNoFloorTime++;
+    } else {
+        o->oFazanaCarNoFloorTime = 0;
+    }
+
+    if (o->oFazanaCarNoFloorTime == 120) {
+        struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+        if (obj) {
+            obj->oBehParams = ((BKTN_DIA_OOB) << 16) | 1; // Higher priority
+        }
+    }
 
     s32 collidedObjects = o->numCollidedObjs;
     while (collidedObjects > 0) {
@@ -216,7 +213,7 @@ void fazana_car_idle_loop(void) {
     o->oFazanaCarWheelRot = (s32) (o->oFazanaCarWheelRot + (ROTATION_CONSTANT * o->oForwardVel)) & 0xFFFF;
     o->oFazanaCarWheelTurn = 0;
 
-    if (o->oDistanceToMario < 300.0f) {
+    if (o->oDistanceToMario < 300.0f && !(gTimeStopState & TIME_STOP_ENABLED)) {
         o->oFazanaCarBIndicator->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
 
         if (gPlayer1Controller->buttonPressed & B_BUTTON) {
@@ -224,8 +221,8 @@ void fazana_car_idle_loop(void) {
             gMarioState->fazanaCar = o;
             set_mario_action(gMarioState, ACT_FAZANA_CAR, 0);
             o->oAction = FAZANA_CAR_ACT_DRIVE;
-            if (madeByBlakeoramoTimer < 0) {
-                madeByBlakeoramoTimer = 0;
+            if (gMadeByBlakeoramoTimer < 0) {
+                gMadeByBlakeoramoTimer = 0;
             }
             set_cam_angle(CAM_ANGLE_MARIO);
             gCameraMovementFlags |= CAM_MOVE_ZOOMED_OUT;
@@ -261,7 +258,6 @@ void bhv_fazana_car_loop(void) {
     }
 
     fazana_car_act_move();
-    made_by_blakeoramo();
 
     o->oInteractStatus = INT_STATUS_NONE;
 }

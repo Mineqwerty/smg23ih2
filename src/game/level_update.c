@@ -32,6 +32,7 @@
 #include "course_table.h"
 #include "rumble_init.h"
 #include "puppycam2.h"
+#include "print.h"
 #include "puppyprint.h"
 #include "puppylights.h"
 #include "level_commands.h"
@@ -151,6 +152,7 @@ u8 g100CoinStarSpawned = FALSE;
 
 struct MarioState *gMarioState = &gMarioStates[0];
 s8 sWarpCheckpointActive = FALSE;
+s16 gMadeByBlakeoramoTimer = -1;
 
 u16 level_control_timer(s32 timerOp) {
     switch (timerOp) {
@@ -1075,6 +1077,20 @@ s32 play_mode_normal(void) {
         }
     }
 #endif
+
+    if (gMadeByBlakeoramoTimer >= 0 && gMadeByBlakeoramoTimer <= 300) {
+        gMadeByBlakeoramoTimer++;
+
+        if (gMadeByBlakeoramoTimer <= 120) {
+            print_text(80, 30, "CREATED");
+            print_text(80, 10, "BY BLAKEORAMO");
+        } else if (gMadeByBlakeoramoTimer <= 165) {
+            print_text(80, 30, "ERR...");
+        } else {
+            print_text(80, 30, "CAR MODEL");
+            print_text(80, 10, "MADE BY FAZANA");
+        }
+    }
 
     warp_area();
     check_instant_warp();

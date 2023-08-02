@@ -151,6 +151,54 @@ void bhv_red_coin_loop(void) {
                             + (((u8) 11 - (o->parentObj->oHiddenStarTriggerTotal - o->parentObj->oHiddenStarTriggerCounter)) << 16),
                             gGlobalSoundSource);
                 }
+
+                s32 newBparam2 = -1;
+                switch (o->oBehParams2ndByte) {
+                    case 0:
+                        newBparam2 = BKTN_DIA_COIN_00;
+                        break;
+                    case 2:
+                        newBparam2 = BKTN_DIA_COIN_02;
+                        break;
+                    case 3:
+                        newBparam2 = BKTN_DIA_COIN_03;
+                        break;
+                    case 6:
+                        newBparam2 = BKTN_DIA_COIN_06;
+                        break;
+                    case 7:
+                        newBparam2 = BKTN_DIA_COIN_07;
+                        break;
+                    case 10:
+                        newBparam2 = BKTN_DIA_COIN_10;
+                        break;
+                    case 12:
+                        // Do nothing, handled elsewhere
+                        break;
+                    case 13:
+                        newBparam2 = BKTN_DIA_COIN_13;
+                        break;
+                    case 14:
+                    case 15:
+                    case 16:
+                    case 17:
+                    case 18:
+                    case 19:
+                        newBparam2 = BKTN_DIA_COIN_JACKPOT;
+                        break;
+                    case 23:
+                        newBparam2 = BKTN_DIA_COIN_23;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (newBparam2 > 0) {
+                    struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+                    if (obj) {
+                        obj->oBehParams = (((u32) newBparam2 & 0xFF) << 16) | 0x00;
+                    }
+                }
             } else {
                 if (o->parentObj->oHiddenStarTriggerTotal - o->parentObj->oHiddenStarTriggerCounter > 7) {
                     // Play the first red coin sound until it gets to the final 8

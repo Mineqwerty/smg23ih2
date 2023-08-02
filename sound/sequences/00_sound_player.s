@@ -12,7 +12,7 @@ seq_setmutescale 0
   seq_setvol 127
 #endif
 seq_settempo 120
-seq_initchannels 0x7ff
+seq_initchannels 0xfff
 seq_startchannel 0, .channel0
 seq_startchannel 1, .channel1
 seq_startchannel 2, .channel2
@@ -24,6 +24,7 @@ seq_startchannel 7, .channel7
 seq_startchannel 8, .channel38
 seq_startchannel 9, .channel59
 seq_startchannel 10, .channelA
+seq_startchannel 11, .channelB
 .seq_loop:
 seq_delay 20000
 seq_jump .seq_loop
@@ -81,6 +82,18 @@ chan_setval 0
 chan_iowriteval 5
 chan_stereoheadseteffects 1
 chan_setdyntable .channelA_table
+chan_jump .main_loop_023589
+
+.channelB:
+chan_largenoteson
+chan_setinstr 0
+chan_setpanmix 127
+chan_setnotepriority 14
+chan_setval 0
+chan_iowriteval 5
+chan_stereoheadseteffects 1
+chan_setmutebhv 0x00
+chan_setdyntable .channelB_table
 chan_jump .main_loop_023589
 
 // Main loop for standard, non-continuous sound effects
@@ -8135,136 +8148,860 @@ layer_delay 0x2a
 layer_jump .layer_32B7
 
 .channelA_table:
-sound_ref .sound_custom0_mario_maker_laugh_0
-sound_ref .sound_custom0_mario_maker_laugh_1
-sound_ref .sound_custom0_mario_maker_laugh_2
-sound_ref .sound_custom0_kick_shell
-sound_ref .sound_custom0_squid_word_scream
-sound_ref .sound_custom0_surprise_chuckya
-sound_ref .sound_custom0_p_battle_start
-sound_ref .sound_custom0_p_menu_rotate
-sound_ref .sound_custom0_p_selector
-sound_ref .sound_custom0_p_cancel
+sound_ref .sound_custom_misc_mario_maker_laugh_0
+sound_ref .sound_custom_misc_mario_maker_laugh_1
+sound_ref .sound_custom_misc_mario_maker_laugh_2
+sound_ref .sound_custom_misc_kick_shell
+sound_ref .sound_custom_misc_squid_word_scream
+sound_ref .sound_custom_misc_surprise_chuckya
+sound_ref .sound_custom_misc_p_battle_start
+sound_ref .sound_custom_misc_p_menu_rotate
+sound_ref .sound_custom_misc_p_selector
+sound_ref .sound_custom_misc_p_cancel
 
-.sound_custom0_mario_maker_laugh_0:
+.sound_custom_misc_mario_maker_laugh_0:
 chan_setbank 5
 chan_setinstr 19
 chan_setval 0x10
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_mario_maker_laugh_0
+chan_setlayer 0, .layer_custom_misc_mario_maker_laugh_0
 chan_end
 
-.layer_custom0_mario_maker_laugh_0:
+.layer_custom_misc_mario_maker_laugh_0:
 layer_note1 39, 0xb3, 95
 layer_end
 
-.sound_custom0_mario_maker_laugh_1:
+.sound_custom_misc_mario_maker_laugh_1:
 chan_setbank 5
 chan_setinstr 20
 chan_setval 0x10
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_mario_maker_laugh_1
+chan_setlayer 0, .layer_custom_misc_mario_maker_laugh_1
 chan_end
 
-.layer_custom0_mario_maker_laugh_1:
+.layer_custom_misc_mario_maker_laugh_1:
 layer_note1 39, 0xa4, 95
 layer_end
 
-.sound_custom0_mario_maker_laugh_2:
+.sound_custom_misc_mario_maker_laugh_2:
 chan_setbank 5
 chan_setinstr 21
 chan_setval 0x10
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_mario_maker_laugh_2
+chan_setlayer 0, .layer_custom_misc_mario_maker_laugh_2
 chan_end
 
-.layer_custom0_mario_maker_laugh_2:
+.layer_custom_misc_mario_maker_laugh_2:
 layer_note1 39, 0x9b, 95
 layer_end
 
-.sound_custom0_kick_shell:
+.sound_custom_misc_kick_shell:
 chan_setbank 5
 chan_setinstr 22
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_kick_shell
+chan_setlayer 0, .layer_custom_misc_kick_shell
 chan_end
 
-.layer_custom0_kick_shell:
+.layer_custom_misc_kick_shell:
 layer_note1 39, 0x17, 111
 layer_end
 
-.sound_custom0_squid_word_scream:
+.sound_custom_misc_squid_word_scream:
 chan_setbank 5
 chan_setinstr 23
 chan_setval 0x14
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_squid_word_scream
+chan_setlayer 0, .layer_custom_misc_squid_word_scream
 chan_end
 
-.layer_custom0_squid_word_scream:
+.layer_custom_misc_squid_word_scream:
 layer_note1 39, 0x135, 71
 layer_end
 
-.sound_custom0_surprise_chuckya:
+.sound_custom_misc_surprise_chuckya:
 chan_setbank 5
 chan_setinstr 24
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_surprise_chuckya
+chan_setlayer 0, .layer_custom_misc_surprise_chuckya
 chan_end
 
-.layer_custom0_surprise_chuckya:
+.layer_custom_misc_surprise_chuckya:
 layer_delay 12
 layer_note1 39, 0x8d, 127
 layer_end
 
-.sound_custom0_p_battle_start:
+.sound_custom_misc_p_battle_start:
 chan_setbank 5
 chan_setinstr 25
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_p_battle_start
+chan_setlayer 0, .layer_custom_misc_p_battle_start
 chan_end
 
-.layer_custom0_p_battle_start:
+.layer_custom_misc_p_battle_start:
 layer_note1 39, 0x150, 127
 layer_end
 
-.sound_custom0_p_menu_rotate:
+.sound_custom_misc_p_menu_rotate:
 chan_setbank 5
 chan_setinstr 26
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_p_menu_rotate
+chan_setlayer 0, .layer_custom_misc_p_menu_rotate
 chan_end
 
-.layer_custom0_p_menu_rotate:
+.layer_custom_misc_p_menu_rotate:
 layer_note1 39, 0x81, 127
 layer_end
 
-.sound_custom0_p_selector:
+.sound_custom_misc_p_selector:
 chan_setbank 5
 chan_setinstr 27
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_p_selector
+chan_setlayer 0, .layer_custom_misc_p_selector
 chan_end
 
-.layer_custom0_p_selector:
+.layer_custom_misc_p_selector:
 layer_note1 39, 0x20, 127
 layer_end
 
-.sound_custom0_p_cancel:
+.sound_custom_misc_p_cancel:
 chan_setbank 5
 chan_setinstr 28
 chan_setval 0x20
 chan_call .set_reverb
-chan_setlayer 0, .layer_custom0_p_cancel
+chan_setlayer 0, .layer_custom_misc_p_cancel
 chan_end
 
-.layer_custom0_p_cancel:
+.layer_custom_misc_p_cancel:
 layer_note1 39, 0x38, 127
+layer_end
+
+.channelB_table:
+sound_ref .sound_bktn_oob
+sound_ref .sound_bktn_coin_00
+sound_ref .sound_bktn_coin_02
+sound_ref .sound_bktn_coin_03
+sound_ref .sound_bktn_coin_06
+sound_ref .sound_bktn_coin_07
+sound_ref .sound_bktn_coin_10
+sound_ref .sound_bktn_coin_12_normal
+sound_ref .sound_bktn_coin_12_pity
+sound_ref .sound_bktn_coin_13
+sound_ref .sound_bktn_coin_jackpot
+sound_ref .sound_bktn_coin_23
+sound_ref .sound_bktn_pity_bridge
+sound_ref .sound_bktn_cringe_path_0
+sound_ref .sound_bktn_cringe_path_1_0
+sound_ref .sound_bktn_cringe_path_1_1
+sound_ref .sound_bktn_cringe_path_2
+sound_ref .sound_bktn_cringe_path_collect
+sound_ref .sound_bktn_cs_mario_0
+sound_ref .sound_bktn_cs_mario_1
+sound_ref .sound_bktn_cs_car_0
+sound_ref .sound_bktn_cs_car_1
+sound_ref .sound_bktn_cs_car_2
+sound_ref .sound_bktn_cs_first_area_0
+sound_ref .sound_bktn_cs_first_area_1
+sound_ref .sound_bktn_cs_first_area_2
+sound_ref .sound_bktn_cs_first_area_3
+sound_ref .sound_bktn_cs_first_area_4
+sound_ref .sound_bktn_cs_second_area_0
+sound_ref .sound_bktn_cs_second_area_1
+sound_ref .sound_bktn_cs_second_area_2
+sound_ref .sound_bktn_cs_final_0_0
+sound_ref .sound_bktn_cs_final_0_1
+sound_ref .sound_bktn_cs_final_0_2
+sound_ref .sound_bktn_cs_final_1_0
+sound_ref .sound_bktn_cs_final_1_1
+sound_ref .sound_bktn_cs_final_1_2
+sound_ref .sound_bktn_cs_final_1_3
+
+.sound_bktn_oob:
+chan_setbank 11
+chan_setinstr 0
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_oob_echo
+chan_setlayer 1, .layer_bktn_oob
+chan_end
+
+.layer_bktn_oob_echo:
+layer_delay 0x10
+layer_note1 39, 0x2c0, 55
+layer_end
+
+.layer_bktn_oob:
+layer_note1 39, 0x2c0, 127
+layer_end
+
+.sound_bktn_coin_00:
+chan_setbank 11
+chan_setinstr 1
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_coin_00_echo
+chan_setlayer 1, .layer_bktn_coin_00
+chan_end
+
+.layer_bktn_coin_00_echo:
+layer_delay 0x10
+layer_note1 39, 0x477, 55
+layer_end
+
+.layer_bktn_coin_00:
+layer_note1 39, 0x477, 127
+layer_end
+
+.sound_bktn_coin_02:
+chan_setbank 11
+chan_setinstr 2
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_coin_02_echo
+chan_setlayer 1, .layer_bktn_coin_02
+chan_end
+
+.layer_bktn_coin_02_echo:
+layer_delay 0x10
+layer_note1 39, 0x24b, 55
+layer_end
+
+.layer_bktn_coin_02:
+layer_note1 39, 0x24b, 127
+layer_end
+
+.sound_bktn_coin_03:
+chan_setbank 11
+chan_setinstr 3
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_coin_03_echo
+chan_setlayer 1, .layer_bktn_coin_03
+chan_end
+
+.layer_bktn_coin_03_echo:
+layer_delay 0x10
+layer_note1 39, 0x5b, 55
+layer_end
+
+.layer_bktn_coin_03:
+layer_note1 39, 0x5b, 127
+layer_end
+
+.sound_bktn_coin_06:
+chan_setbank 11
+chan_setinstr 4
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_coin_06_echo
+chan_setlayer 1, .layer_bktn_coin_06
+chan_end
+
+.layer_bktn_coin_06_echo:
+layer_delay 0x10
+layer_note1 39, 0x260, 55
+layer_end
+
+.layer_bktn_coin_06:
+layer_note1 39, 0x260, 127
+layer_end
+
+.sound_bktn_coin_07:
+chan_setbank 11
+chan_setinstr 5
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_coin_07_echo
+chan_setlayer 1, .layer_bktn_coin_07
+chan_end
+
+.layer_bktn_coin_07_echo:
+layer_delay 0x10
+layer_note1 39, 0x245, 55
+layer_end
+
+.layer_bktn_coin_07:
+layer_note1 39, 0x245, 127
+layer_end
+
+.sound_bktn_coin_10:
+chan_setbank 11
+chan_setinstr 6
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_coin_10_echo
+chan_setlayer 1, .layer_bktn_coin_10
+chan_end
+
+.layer_bktn_coin_10_echo:
+layer_delay 0x10
+layer_note1 39, 0x24d, 55
+layer_end
+
+.layer_bktn_coin_10:
+layer_note1 39, 0x24d, 127
+layer_end
+
+.sound_bktn_coin_12_normal:
+chan_setbank 11
+chan_setinstr 7
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_coin_12_normal_echo
+chan_setlayer 1, .layer_bktn_coin_12_normal
+chan_end
+
+.layer_bktn_coin_12_normal_echo:
+layer_delay 0x10
+layer_note1 39, 0x17a, 55
+layer_end
+
+.layer_bktn_coin_12_normal:
+layer_note1 39, 0x17a, 127
+layer_end
+
+.sound_bktn_coin_12_pity:
+chan_setbank 11
+chan_setinstr 8
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_coin_12_pity_echo
+chan_setlayer 1, .layer_bktn_coin_12_pity
+chan_end
+
+.layer_bktn_coin_12_pity_echo:
+layer_delay 0x10
+layer_note1 39, 0x1fa, 55
+layer_end
+
+.layer_bktn_coin_12_pity:
+layer_note1 39, 0x1fa, 127
+layer_end
+
+.sound_bktn_coin_13:
+chan_setbank 11
+chan_setinstr 9
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_coin_13_echo
+chan_setlayer 1, .layer_bktn_coin_13
+chan_end
+
+.layer_bktn_coin_13_echo:
+layer_delay 0x10
+layer_note1 39, 0x174, 55
+layer_end
+
+.layer_bktn_coin_13:
+layer_note1 39, 0x174, 127
+layer_end
+
+.sound_bktn_coin_jackpot:
+chan_setbank 11
+chan_setinstr 10
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_coin_jackpot_echo
+chan_setlayer 1, .layer_bktn_coin_jackpot
+chan_end
+
+.layer_bktn_coin_jackpot_echo:
+layer_delay 0x10
+layer_note1 39, 0x1a2, 55
+layer_end
+
+.layer_bktn_coin_jackpot:
+layer_note1 39, 0x1a2, 127
+layer_end
+
+.sound_bktn_coin_23:
+chan_setbank 11
+chan_setinstr 11
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_coin_23_echo
+chan_setlayer 1, .layer_bktn_coin_23
+chan_end
+
+.layer_bktn_coin_23_echo:
+layer_delay 0x10
+layer_note1 39, 0x19d, 55
+layer_end
+
+.layer_bktn_coin_23:
+layer_note1 39, 0x19d, 127
+layer_end
+
+.sound_bktn_pity_bridge:
+chan_setbank 11
+chan_setinstr 12
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_pity_bridge_echo
+chan_setlayer 1, .layer_bktn_pity_bridge
+chan_end
+
+.layer_bktn_pity_bridge_echo:
+layer_delay 0x10
+layer_note1 39, 0x44d, 55
+layer_end
+
+.layer_bktn_pity_bridge:
+layer_note1 39, 0x44d, 127
+layer_end
+
+.sound_bktn_cringe_path_0:
+chan_setbank 11
+chan_setinstr 13
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cringe_path_0_echo
+chan_setlayer 1, .layer_bktn_cringe_path_0
+chan_end
+
+.layer_bktn_cringe_path_0_echo:
+layer_delay 0x10
+layer_note1 39, 0x2aa, 55
+layer_end
+
+.layer_bktn_cringe_path_0:
+layer_note1 39, 0x2aa, 127
+layer_end
+
+.sound_bktn_cringe_path_1_0:
+chan_setbank 11
+chan_setinstr 14
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cringe_path_1_0_echo
+chan_setlayer 1, .layer_bktn_cringe_path_1_0
+chan_end
+
+.layer_bktn_cringe_path_1_0_echo:
+layer_delay 0x10
+layer_note1 39, 0x154, 55
+layer_end
+
+.layer_bktn_cringe_path_1_0:
+layer_note1 39, 0x154, 127
+layer_end
+
+.sound_bktn_cringe_path_1_1:
+chan_setbank 11
+chan_setinstr 15
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cringe_path_1_1_echo
+chan_setlayer 1, .layer_bktn_cringe_path_1_1
+chan_end
+
+.layer_bktn_cringe_path_1_1_echo:
+layer_delay 0x10
+layer_note1 39, 0x13e, 55
+layer_end
+
+.layer_bktn_cringe_path_1_1:
+layer_note1 39, 0x13e, 127
+layer_end
+
+.sound_bktn_cringe_path_2:
+chan_setbank 11
+chan_setinstr 16
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cringe_path_2_echo
+chan_setlayer 1, .layer_bktn_cringe_path_2
+chan_end
+
+.layer_bktn_cringe_path_2_echo:
+layer_delay 0x10
+layer_note1 39, 0x28f, 55
+layer_end
+
+.layer_bktn_cringe_path_2:
+layer_note1 39, 0x28f, 127
+layer_end
+
+.sound_bktn_cringe_path_collect:
+chan_setbank 11
+chan_setinstr 17
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cringe_path_collect_echo
+chan_setlayer 1, .layer_bktn_cringe_path_collect
+chan_end
+
+.layer_bktn_cringe_path_collect_echo:
+layer_delay 0x10
+layer_note1 39, 0x2e1, 55
+layer_end
+
+.layer_bktn_cringe_path_collect:
+layer_note1 39, 0x2e1, 127
+layer_end
+
+.sound_bktn_cs_mario_0:
+chan_setbank 11
+chan_setinstr 18
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_mario_0_echo
+chan_setlayer 1, .layer_bktn_cs_mario_0
+chan_end
+
+.layer_bktn_cs_mario_0_echo:
+layer_delay 0x10
+layer_note1 39, 0x487, 55
+layer_end
+
+.layer_bktn_cs_mario_0:
+layer_note1 39, 0x487, 127
+layer_end
+
+.sound_bktn_cs_mario_1:
+chan_setbank 11
+chan_setinstr 19
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_mario_1_echo
+chan_setlayer 1, .layer_bktn_cs_mario_1
+chan_end
+
+.layer_bktn_cs_mario_1_echo:
+layer_delay 0x10
+layer_note1 39, 0x286, 55
+layer_end
+
+.layer_bktn_cs_mario_1:
+layer_note1 39, 0x286, 127
+layer_end
+
+.sound_bktn_cs_car_0:
+chan_setbank 11
+chan_setinstr 20
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_car_0_echo
+chan_setlayer 1, .layer_bktn_cs_car_0
+chan_end
+
+.layer_bktn_cs_car_0_echo:
+layer_delay 0x10
+layer_note1 39, 0x36b, 55
+layer_end
+
+.layer_bktn_cs_car_0:
+layer_note1 39, 0x36b, 127
+layer_end
+
+.sound_bktn_cs_car_1:
+chan_setbank 11
+chan_setinstr 21
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_car_1_echo
+chan_setlayer 1, .layer_bktn_cs_car_1
+chan_end
+
+.layer_bktn_cs_car_1_echo:
+layer_delay 0x10
+layer_note1 39, 0x2d1, 55
+layer_end
+
+.layer_bktn_cs_car_1:
+layer_note1 39, 0x2d1, 127
+layer_end
+
+.sound_bktn_cs_car_2:
+chan_setbank 11
+chan_setinstr 22
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_car_2_echo
+chan_setlayer 1, .layer_bktn_cs_car_2
+chan_end
+
+.layer_bktn_cs_car_2_echo:
+layer_delay 0x10
+layer_note1 39, 0x315, 55
+layer_end
+
+.layer_bktn_cs_car_2:
+layer_note1 39, 0x315, 127
+layer_end
+
+.sound_bktn_cs_first_area_0:
+chan_setbank 11
+chan_setinstr 23
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_first_area_0_echo
+chan_setlayer 1, .layer_bktn_cs_first_area_0
+chan_end
+
+.layer_bktn_cs_first_area_0_echo:
+layer_delay 0x10
+layer_note1 39, 0x18a, 55
+layer_end
+
+.layer_bktn_cs_first_area_0:
+layer_note1 39, 0x18a, 127
+layer_end
+
+.sound_bktn_cs_first_area_1:
+chan_setbank 11
+chan_setinstr 24
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_first_area_1_echo
+chan_setlayer 1, .layer_bktn_cs_first_area_1
+chan_end
+
+.layer_bktn_cs_first_area_1_echo:
+layer_delay 0x10
+layer_note1 39, 0x33d, 55
+layer_end
+
+.layer_bktn_cs_first_area_1:
+layer_note1 39, 0x33d, 127
+layer_end
+
+.sound_bktn_cs_first_area_2:
+chan_setbank 11
+chan_setinstr 25
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_first_area_2_echo
+chan_setlayer 1, .layer_bktn_cs_first_area_2
+chan_end
+
+.layer_bktn_cs_first_area_2_echo:
+layer_delay 0x10
+layer_note1 39, 0x409, 55
+layer_end
+
+.layer_bktn_cs_first_area_2:
+layer_note1 39, 0x409, 127
+layer_end
+
+.sound_bktn_cs_first_area_3:
+chan_setbank 11
+chan_setinstr 26
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_first_area_3_echo
+chan_setlayer 1, .layer_bktn_cs_first_area_3
+chan_end
+
+.layer_bktn_cs_first_area_3_echo:
+layer_delay 0x10
+layer_note1 39, 0x2b9, 55
+layer_end
+
+.layer_bktn_cs_first_area_3:
+layer_note1 39, 0x2b9, 127
+layer_end
+
+.sound_bktn_cs_first_area_4:
+chan_setbank 11
+chan_setinstr 27
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_first_area_4_echo
+chan_setlayer 1, .layer_bktn_cs_first_area_4
+chan_end
+
+.layer_bktn_cs_first_area_4_echo:
+layer_delay 0x10
+layer_note1 39, 0x2d6, 55
+layer_end
+
+.layer_bktn_cs_first_area_4:
+layer_note1 39, 0x2d6, 127
+layer_end
+
+.sound_bktn_cs_second_area_0:
+chan_setbank 11
+chan_setinstr 28
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_second_area_0_echo
+chan_setlayer 1, .layer_bktn_cs_second_area_0
+chan_end
+
+.layer_bktn_cs_second_area_0_echo:
+layer_delay 0x10
+layer_note1 39, 0x26d, 55
+layer_end
+
+.layer_bktn_cs_second_area_0:
+layer_note1 39, 0x26d, 127
+layer_end
+
+.sound_bktn_cs_second_area_1:
+chan_setbank 11
+chan_setinstr 29
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_second_area_1_echo
+chan_setlayer 1, .layer_bktn_cs_second_area_1
+chan_end
+
+.layer_bktn_cs_second_area_1_echo:
+layer_delay 0x10
+layer_note1 39, 0x1ff, 55
+layer_end
+
+.layer_bktn_cs_second_area_1:
+layer_note1 39, 0x1ff, 127
+layer_end
+
+.sound_bktn_cs_second_area_2:
+chan_setbank 11
+chan_setinstr 30
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_second_area_2_echo
+chan_setlayer 1, .layer_bktn_cs_second_area_2
+chan_end
+
+.layer_bktn_cs_second_area_2_echo:
+layer_delay 0x10
+layer_note1 39, 0x1d3, 55
+layer_end
+
+.layer_bktn_cs_second_area_2:
+layer_note1 39, 0x1d3, 127
+layer_end
+
+.sound_bktn_cs_final_0_0:
+chan_setbank 11
+chan_setinstr 31
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_final_0_0_echo
+chan_setlayer 1, .layer_bktn_cs_final_0_0
+chan_end
+
+.layer_bktn_cs_final_0_0_echo:
+layer_delay 0x10
+layer_note1 39, 0x24c, 55
+layer_end
+
+.layer_bktn_cs_final_0_0:
+layer_note1 39, 0x24c, 127
+layer_end
+
+.sound_bktn_cs_final_0_1:
+chan_setbank 11
+chan_setinstr 32
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_final_0_1_echo
+chan_setlayer 1, .layer_bktn_cs_final_0_1
+chan_end
+
+.layer_bktn_cs_final_0_1_echo:
+layer_delay 0x10
+layer_note1 39, 0x183, 55
+layer_end
+
+.layer_bktn_cs_final_0_1:
+layer_note1 39, 0x183, 127
+layer_end
+
+.sound_bktn_cs_final_0_2:
+chan_setbank 11
+chan_setinstr 33
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_final_0_2_echo
+chan_setlayer 1, .layer_bktn_cs_final_0_2
+chan_end
+
+.layer_bktn_cs_final_0_2_echo:
+layer_delay 0x10
+layer_note1 39, 0x302, 55
+layer_end
+
+.layer_bktn_cs_final_0_2:
+layer_note1 39, 0x302, 127
+layer_end
+
+.sound_bktn_cs_final_1_0:
+chan_setbank 11
+chan_setinstr 34
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_final_1_0_echo
+chan_setlayer 1, .layer_bktn_cs_final_1_0
+chan_end
+
+.layer_bktn_cs_final_1_0_echo:
+layer_delay 0x10
+layer_note1 39, 0xd5, 55
+layer_end
+
+.layer_bktn_cs_final_1_0:
+layer_note1 39, 0xd5, 127
+layer_end
+
+.sound_bktn_cs_final_1_1:
+chan_setbank 11
+chan_setinstr 35
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_final_1_1_echo
+chan_setlayer 1, .layer_bktn_cs_final_1_1
+chan_end
+
+.layer_bktn_cs_final_1_1_echo:
+layer_delay 0x10
+layer_note1 39, 0xc0, 55
+layer_end
+
+.layer_bktn_cs_final_1_1:
+layer_note1 39, 0xc0, 127
+layer_end
+
+.sound_bktn_cs_final_1_2:
+chan_setbank 11
+chan_setinstr 36
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_final_1_2_echo
+chan_setlayer 1, .layer_bktn_cs_final_1_2
+chan_end
+
+.layer_bktn_cs_final_1_2_echo:
+layer_delay 0x10
+layer_note1 39, 0x283, 55
+layer_end
+
+.layer_bktn_cs_final_1_2:
+layer_note1 39, 0x283, 127
+layer_end
+
+.sound_bktn_cs_final_1_3:
+chan_setbank 11
+chan_setinstr 37
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_final_1_3_echo
+chan_setlayer 1, .layer_bktn_cs_final_1_3
+chan_end
+
+.layer_bktn_cs_final_1_3_echo:
+layer_delay 0x10
+layer_note1 39, 0x26e, 55
+layer_end
+
+.layer_bktn_cs_final_1_3:
+layer_note1 39, 0x26e, 127
 layer_end
 
 .align 2, 0

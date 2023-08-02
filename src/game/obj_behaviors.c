@@ -5,6 +5,7 @@
 #include "audio/external.h"
 #include "behavior_actions.h"
 #include "behavior_data.h"
+#include "behaviors/blockington.h"
 #include "camera.h"
 #include "course_table.h"
 #include "dialog_ids.h"

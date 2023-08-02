@@ -72,7 +72,7 @@ void init_load_screen_buffers(void) {
     bzero(&textureAddrs, sizeof(struct TextureAddrs));
 }
 
-void dma_read(u8 *dest, u8 *srcStart, u8 *srcEnd);
+void dma_read_dma_seg(u8 *dest, u8 *srcStart, u8 *srcEnd);
 static void dma_images(Texture *image0, Texture *image1, struct TextureAddrs *addrs) {
     Texture *addr0 = textureAddrs.t0Addr;
     Texture *addr1 = textureAddrs.t1Addr;
@@ -101,12 +101,12 @@ static void dma_images(Texture *image0, Texture *image1, struct TextureAddrs *ad
 
     if (match0 < 0 && image0 != NULL) {
         if (match1 == 0) {
-            dma_read(t1, image0, image0 + TEXTURE_SIZE);
+            dma_read_dma_seg(t1, image0, image0 + TEXTURE_SIZE);
             addrs->t0Addr = t1;
             textureAddrs.t1Addr = image0;
             match0 = 1;
         } else {
-            dma_read(t0, image0, image0 + TEXTURE_SIZE);
+            dma_read_dma_seg(t0, image0, image0 + TEXTURE_SIZE);
             addrs->t0Addr = t0;
             textureAddrs.t0Addr = image0;
             match0 = 0;
@@ -115,12 +115,12 @@ static void dma_images(Texture *image0, Texture *image1, struct TextureAddrs *ad
 
     if (match1 < 0 && image1 != NULL) {
         if (match0 == 0) {
-            dma_read(t1, image1, image1 + TEXTURE_SIZE);
+            dma_read_dma_seg(t1, image1, image1 + TEXTURE_SIZE);
             addrs->t1Addr = t1;
             textureAddrs.t1Addr = image1;
             match1 = 1;
         } else {
-            dma_read(t0, image1, image1 + TEXTURE_SIZE);
+            dma_read_dma_seg(t0, image1, image1 + TEXTURE_SIZE);
             addrs->t1Addr = t0;
             textureAddrs.t0Addr = image1;
             match1 = 0;

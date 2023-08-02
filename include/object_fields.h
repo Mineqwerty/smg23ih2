@@ -170,7 +170,7 @@
 #define /*0x1C0*/ oFloor                      OBJECT_FIELD_SURFACE(0x4E)
 #define /*0x1C4*/ oDeathSound                 OBJECT_FIELD_S32(0x4F)
 #ifdef PUPPYLIGHTS
-#define /*0x1CC*/ oLightID                                      OBJECT_FIELD_S32(0x51)
+#define /*0x1C8*/ oLightID                                      OBJECT_FIELD_S32(0x52)
 #endif
 
 /* Pathed (see obj_follow_path) */
@@ -273,6 +273,7 @@
 #define /*0x100*/ oBobombExpBubGfxScaleFacY OBJECT_FIELD_S32(0x1E)
 #define /*0x104*/ oBobombExpBubGfxExpRateX  OBJECT_FIELD_S32(0x1F)
 #define /*0x108*/ oBobombExpBubGfxExpRateY  OBJECT_FIELD_S32(0x20)
+#define /*0x108*/ oBobombExpBubGfxScale     OBJECT_FIELD_F32(0x21)
 
 /* Bomp (Small) */
 #define /*0x100*/ oSmallBompInitX OBJECT_FIELD_F32(0x1E)
@@ -482,12 +483,33 @@
 #define /*0x104*/ oBlockingtonScaleHomeY     OBJECT_FIELD_F32(0x1F)
 #define /*0x108*/ oBlockingtonScaleHomeZ     OBJECT_FIELD_F32(0x20)
 
+/* Blockington Mini */
+#define /*0x108*/ oBMiniDialogIndex          OBJECT_FIELD_S32(0x21)
+
+/* Blockington Trigger */
+#define /*0x0F4*/ oBTrigRedCollected         OBJECT_FIELD_S32(0x1B)
+#define /*0x0F8*/ oBTrigMissCounter          OBJECT_FIELD_S32(0x1C)
+#define /*0x0FC*/ oBTrigBridgeRaised         OBJECT_FIELD_S32(0x1D)
+#define /*0x100*/ oBTrigHitOffGround         OBJECT_FIELD_S32(0x1E)
+
 /* CQ Bridge */
 #define /*0x0F4*/ oCQBridgeCamPosVec OBJECT_FIELD_F32(0x1B)
 #define /*0x0F4*/ oCQBridgeCamPosX   OBJECT_FIELD_F32(0x1B)
 #define /*0x0F8*/ oCQBridgeCamPosY   OBJECT_FIELD_F32(0x1C)
 #define /*0x0FC*/ oCQBridgeCamPosZ   OBJECT_FIELD_F32(0x1D)
-#define /*0x100*/ oCQBridgePanFrames OBJECT_FIELD_S32(0x1E)
+
+/* CQ Door */
+#define /*0x0F4*/ oCQDoorCamPosVec OBJECT_FIELD_F32(0x1B)
+#define /*0x0F4*/ oCQDoorCamPosX   OBJECT_FIELD_F32(0x1B)
+#define /*0x0F8*/ oCQDoorCamPosY   OBJECT_FIELD_F32(0x1C)
+#define /*0x0FC*/ oCQDoorCamPosZ   OBJECT_FIELD_F32(0x1D)
+
+/* CQ Gate */
+#define /*0x0F4*/ oCQGateCamPosVec       OBJECT_FIELD_F32(0x1B)
+#define /*0x0F4*/ oCQGateCamPosX         OBJECT_FIELD_F32(0x1B)
+#define /*0x0F8*/ oCQGateCamPosY         OBJECT_FIELD_F32(0x1C)
+#define /*0x0FC*/ oCQGateCamPosZ         OBJECT_FIELD_F32(0x1D)
+#define /*0x100*/ oCQGateCamShouldUpdate OBJECT_FIELD_S32(0x1E)
 
 /* Fazana Car */
 #define /*0x0F4*/ oFazanaCarWheelRot       OBJECT_FIELD_S32(0x1B)
@@ -500,6 +522,7 @@
 #define /*0x1AC*/ oFazanaCarSoundPitch     OBJECT_FIELD_F32(0x49)
 #define /*0x1B0*/ oFazanaCarLastFloor      OBJECT_FIELD_SURFACE(0x4A)
 #define /*0x1C8*/ oFazanaCarLastGroundedY  OBJECT_FIELD_F32(0x50)
+#define /*0x1C8*/ oFazanaCarNoFloorTime    OBJECT_FIELD_S32(0x51)
 
 /* Mario Maker Laugh */
 #define /*0x0F4*/ oMarioMakerLaughScale OBJECT_FIELD_F32(0x1B)

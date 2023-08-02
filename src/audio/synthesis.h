@@ -37,7 +37,7 @@ enum ChannelIndexes {
 // The default value can be increased or decreased in conjunction with the values in delaysL/R.
 // This can be significantly decreased if a downsample rate of 1 is not being used or if filter count is less than NUM_ALLPASS,
 // as this default is configured to handle the emulator RCVI settings.
-#define BETTER_REVERB_SIZE ALIGN16(0xEDE0 + BETTER_REVERB_PTR_SIZE)
+#define BETTER_REVERB_SIZE ALIGN16(0x1D20 + BETTER_REVERB_PTR_SIZE)
 
 
 /* ------ BETTER REVERB LIGHTWEIGHT PARAMETER OVERRIDES ------ */

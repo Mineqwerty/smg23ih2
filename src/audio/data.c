@@ -163,9 +163,9 @@ struct BetterReverbSettings gBetterReverbSettings[] = {
         .filterCount = (NUM_ALLPASS - 9),   // Ignored with lightweight settings
 
         .windowSize = 0x1200,
-        .gain = 0x37FF,
+        .gain = 0x36FF,
         .gainIndex = 0xA0,                  // Ignored with lightweight settings
-        .reverbIndex = 0x30,                // Ignored with lightweight settings
+        .reverbIndex = 0x40,                // Ignored with lightweight settings
 
         .delaysL = sReverbDelaysArr[1],
         .delaysR = sReverbDelaysArr[2],

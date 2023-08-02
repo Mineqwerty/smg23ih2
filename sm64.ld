@@ -509,9 +509,10 @@ SECTIONS
       KEEP(BUILD_DIR/sound/sound_data.o(.data*));
    }
    END_SEG(assets)
-   BEGIN_SEG(dma, __romPos)
+   BEGIN_SEG(dma, 0x1A000000)
    {
       KEEP(BUILD_DIR/bin/dma/dma_data.o(.data*));
+      KEEP(BUILD_DIR/bin/dma/dma_data.o(.rodata*));
    }
    END_SEG(dma)
 #ifdef HVQM

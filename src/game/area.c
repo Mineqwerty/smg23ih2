@@ -686,6 +686,11 @@ void render_game(void) {
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         render_text_labels();
+
+        if (sCurrPlayMode == PLAY_MODE_NORMAL) {
+            render_blockington_dialog_entry();
+        }
+        clear_blockington_dialog_entry();
 #ifdef PUPPYPRINT
         puppyprint_print_deferred();
 #endif

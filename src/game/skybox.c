@@ -218,9 +218,9 @@ Vtx *make_skybox_rect(s32 tileIndex, s8 colorIndex) {
             }
 
             make_vertex(verts, 0, x, y, -1, 0, 0, level4Cols[0], level4Cols[1], level4Cols[2], 255);
-            make_vertex(verts, 1, x, y - SKYBOX_HEIGHT, -1, 0, 63 << 5, level4Cols[3], level4Cols[4], level4Cols[5], 255);
+            make_vertex(verts, 1, x, y - SKYBOX_HEIGHT, -1, 0, 63 << 5, level4Cols[4], level4Cols[5], level4Cols[3], 255);
             make_vertex(verts, 2, x + SKYBOX_WIDTH, y - SKYBOX_HEIGHT, -1, 31 << 5, 63 << 5, level4Cols[3], level4Cols[4], level4Cols[5], 255);
-            make_vertex(verts, 3, x + SKYBOX_WIDTH, y, -1, 31 << 5, 0, level4Cols[0], level4Cols[1], level4Cols[2], 255);
+            make_vertex(verts, 3, x + SKYBOX_WIDTH, y, -1, 31 << 5, 0, level4Cols[2], level4Cols[0], level4Cols[1], 255);
         } else {
             make_vertex(verts, 0, x, y, -1, 0, 0, sSkyboxColors[colorIndex][0], sSkyboxColors[colorIndex][1],
                         sSkyboxColors[colorIndex][2], 255);

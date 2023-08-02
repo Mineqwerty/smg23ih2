@@ -1,5 +1,7 @@
 // blockington.inc.c
 
+#include "blockington.h"
+
 #define PITCH_VARIANCE 0x1200
 #define YAW_VARIANCE 0x0C00
 #define ROLL_VARIANCE 0x0C00
@@ -10,32 +12,76 @@
 
 #define APPROACH_FRAMES 3
 
-enum BlockingtonActions {
-    ACT_BLOCKINGTON_IDLE,
-    ACT_BLOCKINGTON_TALK,
+
+#define BKTN_DIST_CAM_XZ 1600.0f
+#define BKTN_DIST_CAM_Y 250.0f
+#define BKTN_CUTSCENE_POS_SMOOTHSTEPXZ 0.12f
+#define BKTN_CUTSCENE_POS_SMOOTHSTEPY 0.20f
+#define BKTN_CUTSCENE_FOCUS_SMOOTHSTEPXZ 0.20f
+#define BKTN_CUTSCENE_FOCUS_SMOOTHSTEPY 0.20f
+
+enum ActBlockington {
+    BLOCKINGTON_ACT_SPAWN_WAIT,
+    BLOCKINGTON_ACT_TALK_MARIO,
+    BLOCKINGTON_ACT_WAIT_CAR,
+    BLOCKINGTON_ACT_TALK_CAR,
+    BLOCKINGTON_ACT_WAIT_FOR_GATE,
+    BLOCKINGTON_ACT_MOVE_AREA_1,
+    BLOCKINGTON_ACT_WAIT_AREA_1,
+    BLOCKINGTON_ACT_TALK_AREA_1,
+    BLOCKINGTON_ACT_MOVE_AREA_2,
+    BLOCKINGTON_ACT_WAIT_AREA_2,
+    BLOCKINGTON_ACT_TALK_AREA_2,
+    BLOCKINGTON_ACT_MOVE_AREA_3,
+    BLOCKINGTON_ACT_WAIT_AREA_3,
+    BLOCKINGTON_ACT_FINAL_CUTSCENE_TODO,
 };
 
-struct BlockingtonStates {
-    Vec3i goalAngle;
-    Vec3i approachAngle;
-    Vec3i curAngle;
-    Vec3f goalScale;
-    Vec3f approachScale;
-    Vec3f curScale;
-      u32 updateVar;
-} sBlockington;
+struct BlockingtonStates sBlockington;
 
 const Vec3i angleLimitFactors = {0x3000, 0x1800, 0x1800};
 
-static void bhv_blockington_calculate_angle_scale_all(void) {
+void bhv_blockington_init(void) {
+    cur_obj_scale(1.6f);
+    vec3f_copy(&o->oHomeVec, &o->oPosVec);
+    vec3i_copy(&o->oBlockingtonAngleHomeVec, &o->oFaceAngleVec);
+    vec3i_copy(sBlockington.curAngle, &o->oFaceAngleVec);
+    vec3_same(sBlockington.goalAngle, 0);
+    vec3_same(sBlockington.approachAngle, 0);
+    vec3f_copy(&o->oBlockingtonScaleHomeVec, o->header.gfx.scale);
+    vec3f_copy(sBlockington.curScale, o->header.gfx.scale);
+    vec3_same(sBlockington.goalScale, 1.0f);
+    vec3_same(sBlockington.approachScale, 0.0f);
+
+    o->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+
+    for (u32 i = 0; i < BKTN_DIA_COUNT; i++) {
+        bMiniDialogs[i].hasSpawned = FALSE;
+    }
+}
+
+void bhv_blockington_calculate_angle_scale_all(void) {
+    s32 isTalking;
+
     if (gGlobalTimer == sBlockington.updateVar) {
         return;
+    }
+
+    // Only run as main blockington if blockington mini doesn't exist
+    if (o->behavior == segmented_to_virtual(bhvBlockington)) {
+        if (find_first_object_with_behavior_and_bparams(bhvBlockingtonMini, 0, 0)) {
+            return;
+        }
+
+        isTalking = FALSE;
+    } else {
+        isTalking = (o->oAction == ACT_BMINI_TALK);
     }
 
     sBlockington.updateVar = gGlobalTimer;
 
     if (o->oTimer % APPROACH_FRAMES == 0) {
-        if (o->oAction == ACT_BLOCKINGTON_TALK) {
+        if (isTalking) {
             sBlockington.goalAngle[0] = ((random_float() * 2.0f - 1.0f) * PITCH_VARIANCE);
             sBlockington.goalAngle[1] = ((random_float() * 2.0f - 1.0f) * YAW_VARIANCE);
             sBlockington.goalAngle[2] = ((random_float() * 2.0f - 1.0f) * ROLL_VARIANCE);
@@ -76,21 +122,258 @@ static void bhv_blockington_set_angle_scale(void) {
     o->header.gfx.scale[2] = o->oBlockingtonScaleHomeZ * sBlockington.curScale[2];
 }
 
-void bhv_blockington_init(void) {
-    cur_obj_scale(1.6f);
-    vec3f_copy(&o->oHomeVec, &o->oPosVec);
-    vec3i_copy(&o->oBlockingtonAngleHomeVec, &o->oFaceAngleVec);
-    vec3i_copy(sBlockington.curAngle, &o->oFaceAngleVec);
-    vec3_same(sBlockington.goalAngle, 0);
-    vec3_same(sBlockington.approachAngle, 0);
-    vec3f_copy(&o->oBlockingtonScaleHomeVec, o->header.gfx.scale);
-    vec3f_copy(sBlockington.curScale, o->header.gfx.scale);
-    vec3_same(sBlockington.goalScale, 1.0f);
-    vec3_same(sBlockington.approachScale, 0.0f);
+static void bhv_blockington_approach_camera_goal(void) {
+
+    gLakituState.goalFocus[0] = smoothstep(gLakituState.goalFocus[0], o->oHomeX, BKTN_CUTSCENE_FOCUS_SMOOTHSTEPXZ);
+    gLakituState.goalFocus[1] = smoothstep(gLakituState.goalFocus[1], o->oHomeY, BKTN_CUTSCENE_FOCUS_SMOOTHSTEPY);
+    gLakituState.goalFocus[2] = smoothstep(gLakituState.goalFocus[2], o->oHomeZ, BKTN_CUTSCENE_FOCUS_SMOOTHSTEPXZ);
+
+    s16 yaw = atan2s(sCameraStoreCutscene.pos[2] - o->oPosZ, sCameraStoreCutscene.pos[0] - o->oPosX);
+
+    gLakituState.goalPos[0] = smoothstep(gLakituState.goalPos[0], o->oPosX + (BKTN_DIST_CAM_XZ * sins((s16) (yaw))), BKTN_CUTSCENE_POS_SMOOTHSTEPXZ);
+    gLakituState.goalPos[1] = smoothstep(gLakituState.goalPos[1], o->oPosY + BKTN_DIST_CAM_Y, BKTN_CUTSCENE_POS_SMOOTHSTEPY);
+    gLakituState.goalPos[2] = smoothstep(gLakituState.goalPos[2], o->oPosZ + (BKTN_DIST_CAM_XZ * coss((s16) (yaw))), BKTN_CUTSCENE_POS_SMOOTHSTEPXZ);
 }
+
+static void blockington_act_spawn_wait(void) {
+    if (
+        o->oDistanceToMario <= 800.0f &&
+        gCamera->cutscene == FALSE &&
+        !(gTimeStopState & TIME_STOP_ENABLED) &&
+        (mario_ready_to_speak() || gMarioState->action == ACT_FAZANA_CAR)
+    ) {
+        gTimeStopState |= TIME_STOP_ENABLED;
+        gCamera->cutscene = TRUE;
+
+        if (gMarioState->action != ACT_FAZANA_CAR) {
+            set_mario_action(gMarioState, ACT_WAITING_FOR_DIALOG, 0);
+            gMarioState->faceAngle[1] = atan2s(o->oPosZ - gMarioState->pos[2], o->oPosX - gMarioState->pos[0]);
+        }
+
+        vec3f_copy(sCameraStoreCutscene.focus, gLakituState.goalFocus);
+        vec3f_copy(sCameraStoreCutscene.pos, gLakituState.goalPos);
+
+        o->oAction++;
+        o->oSubAction = 0;
+
+        bhv_blockington_approach_camera_goal();
+    }
+}
+
+static void blockington_act_talk_mario(void) {
+    bhv_blockington_approach_camera_goal();
+
+    if (o->oTimer == 0) {
+        struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+        if (obj) {
+            obj->oBehParams = (BKTN_DIA_CS_MARIO) << 16;
+            obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+        } else {
+            o->oAction++;
+        }
+    }
+
+    // BlockingtonMini should update the next action
+}
+
+static void blockington_act_wait_car(void) {
+    if (o->oTimer == 0) {
+        bhv_blockington_approach_camera_goal();
+        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvCQDoor, 0, 0);
+        if (obj) {
+            obj->oAction++;
+            obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+        }
+
+        return;
+    }
+
+    if (
+        o->oDistanceToMario <= 800.0f &&
+        gCamera->cutscene == FALSE &&
+        !(gTimeStopState & TIME_STOP_ENABLED) &&
+        gMarioState->action == ACT_FAZANA_CAR
+    ) {
+        gTimeStopState |= TIME_STOP_ENABLED;
+        gCamera->cutscene = TRUE;
+
+        if (gMarioState->action != ACT_FAZANA_CAR) {
+            set_mario_action(gMarioState, ACT_WAITING_FOR_DIALOG, 0);
+        }
+
+        vec3f_copy(sCameraStoreCutscene.focus, gLakituState.goalFocus);
+        vec3f_copy(sCameraStoreCutscene.pos, gLakituState.goalPos);
+
+        o->oAction++;
+        o->oSubAction = 0;
+
+        bhv_blockington_approach_camera_goal();
+    }
+}
+
+static void blockington_act_talk_car(void) {
+    bhv_blockington_approach_camera_goal();
+
+    if (o->oTimer == 0) {
+        struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+        if (obj) {
+            obj->oBehParams = (BKTN_DIA_CS_CAR) << 16;
+            obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+        } else {
+            o->oAction++;
+        }
+    }
+
+    // BlockingtonMini should update the next action
+}
+
+static void blockington_act_wait_for_gate(void) {
+    if (o->oTimer == 0) {
+        bhv_blockington_approach_camera_goal();
+        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvCQGate, 0, 0);
+        if (obj) {
+            obj->oAction++;
+            obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+        } else {
+            o->oAction++;
+        }
+
+        return;
+    }
+
+    struct Object *obj = find_first_object_with_behavior_and_bparams(bhvCQGate, 0, 0);
+
+    if (obj == NULL || (obj->oAction == ACT_CQGATE_ANIMATING && obj->oSubAction == 2 && obj->oTimer >= 10)) {
+        obj->oCQGateCamShouldUpdate = FALSE;
+        o->oAction++;
+        bhv_blockington_approach_camera_goal();
+    }
+}
+
+static void blockington_act_move_area_1(void) {
+    if (o->oTimer >= 60) {
+        o->oAction++;
+    }
+}
+
+static void blockington_act_wait_area_1(void) {
+    if (o->oTimer == 0) {
+        vec3f_copy(gLakituState.goalFocus, sCameraStoreCutscene.focus);
+        vec3f_copy(gLakituState.goalPos, sCameraStoreCutscene.pos);
+        // vec3f_copy(gLakituState.curFocus, sCameraStoreCutscene.focus);
+        // vec3f_copy(gLakituState.curPos, sCameraStoreCutscene.pos);
+
+        gTimeStopState &= ~TIME_STOP_ENABLED;
+        gCamera->cutscene = FALSE;
+
+        if (gMarioState->action != ACT_FAZANA_CAR) {
+            set_mario_action(gMarioState, ACT_IDLE, 0);
+        }
+    }
+
+    if (
+        o->oDistanceToMario <= 800.0f &&
+        gCamera->cutscene == FALSE &&
+        !(gTimeStopState & TIME_STOP_ENABLED) &&
+        (mario_ready_to_speak() || gMarioState->action == ACT_FAZANA_CAR)
+    ) {
+        gTimeStopState |= TIME_STOP_ENABLED;
+        gCamera->cutscene = TRUE;
+
+        if (gMarioState->action != ACT_FAZANA_CAR) {
+            set_mario_action(gMarioState, ACT_WAITING_FOR_DIALOG, 0);
+        }
+
+        vec3f_copy(sCameraStoreCutscene.focus, gLakituState.goalFocus);
+        vec3f_copy(sCameraStoreCutscene.pos, gLakituState.goalPos);
+
+        o->oAction++;
+        o->oSubAction = 0;
+
+        bhv_blockington_approach_camera_goal();
+    }
+}
+
+static void blockington_act_talk_area_1(void) {
+    bhv_blockington_approach_camera_goal();
+
+    if (o->oTimer == 0) {
+        struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+        if (obj) {
+            obj->oBehParams = (BKTN_DIA_CS_FIRST_AREA) << 16;
+            obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+        } else {
+            o->oAction++;
+        }
+    }
+
+    // BlockingtonMini should update the next action
+}
+
+static void blockington_act_move_area_2(void) {
+    if (o->oTimer == 0) {
+        vec3f_copy(gLakituState.goalFocus, sCameraStoreCutscene.focus);
+        vec3f_copy(gLakituState.goalPos, sCameraStoreCutscene.pos);
+        // vec3f_copy(gLakituState.curFocus, sCameraStoreCutscene.focus);
+        // vec3f_copy(gLakituState.curPos, sCameraStoreCutscene.pos);
+
+        gTimeStopState &= ~TIME_STOP_ENABLED;
+        gCamera->cutscene = FALSE;
+
+        if (gMarioState->action != ACT_FAZANA_CAR) {
+            set_mario_action(gMarioState, ACT_IDLE, 0);
+        }
+    }
+}
+
+static void blockington_act_wait_area_2(void) {
+
+}
+
+static void blockington_act_talk_area_2(void) {
+
+}
+
+static void blockington_act_move_area_3(void) {
+
+}
+
+static void blockington_act_wait_area_3(void) {
+
+}
+
+static void blockington_act_final_cutscene_todo(void) {
+
+}
+
+ObjActionFunc sBlockingtonActions[] = {
+    [BLOCKINGTON_ACT_SPAWN_WAIT]          = blockington_act_spawn_wait,
+    [BLOCKINGTON_ACT_TALK_MARIO]          = blockington_act_talk_mario,
+    [BLOCKINGTON_ACT_WAIT_CAR]            = blockington_act_wait_car,
+    [BLOCKINGTON_ACT_TALK_CAR]            = blockington_act_talk_car,
+    [BLOCKINGTON_ACT_WAIT_FOR_GATE]       = blockington_act_wait_for_gate,
+    [BLOCKINGTON_ACT_MOVE_AREA_1]         = blockington_act_move_area_1,
+    [BLOCKINGTON_ACT_WAIT_AREA_1]         = blockington_act_wait_area_1,
+    [BLOCKINGTON_ACT_TALK_AREA_1]         = blockington_act_talk_area_1,
+    [BLOCKINGTON_ACT_MOVE_AREA_2]         = blockington_act_move_area_2,
+    [BLOCKINGTON_ACT_WAIT_AREA_2]         = blockington_act_wait_area_2,
+    [BLOCKINGTON_ACT_TALK_AREA_2]         = blockington_act_talk_area_2,
+    [BLOCKINGTON_ACT_MOVE_AREA_3]         = blockington_act_move_area_3,
+    [BLOCKINGTON_ACT_WAIT_AREA_3]         = blockington_act_wait_area_3,
+    [BLOCKINGTON_ACT_FINAL_CUTSCENE_TODO] = blockington_act_final_cutscene_todo,
+};
 
 void bhv_blockington_loop(void) {
-    bhv_blockington_calculate_angle_scale_all();
-    bhv_blockington_set_angle_scale();
-}
+    cur_obj_call_action_function(sBlockingtonActions);
 
+    bhv_blockington_calculate_angle_scale_all();
+    switch (o->oAction) {
+        case BLOCKINGTON_ACT_WAIT_FOR_GATE:
+        case BLOCKINGTON_ACT_MOVE_AREA_1:
+        case BLOCKINGTON_ACT_MOVE_AREA_2:
+        case BLOCKINGTON_ACT_MOVE_AREA_3:
+            break;
+        default:
+            bhv_blockington_set_angle_scale();
+    }
+}
