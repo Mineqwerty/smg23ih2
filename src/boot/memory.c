@@ -272,6 +272,14 @@ void dma_read(u8 *dest, u8 *srcStart, u8 *srcEnd) {
 }
 
 /**
+ * Perform a DMA read from ROM. The transfer is split into 4KB blocks, and this
+ * function blocks until completion. Assumes RAM segment addresses
+ */
+void dma_read_dma_seg(u8 *dest, u8 *srcStart, u8 *srcEnd) {
+    dma_read(dest, (u8 *) ((size_t) srcStart + (size_t) _dmaSegmentRomStart), (u8 *) ((size_t) srcEnd + (size_t) _dmaSegmentRomStart));
+}
+
+/**
  * Perform a DMA read from ROM, allocating space in the memory pool to write to.
  * Return the destination address.
  */

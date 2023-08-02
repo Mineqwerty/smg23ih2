@@ -50,6 +50,7 @@
 #include "puppylights.h"
 #include "puppyprint.h"
 
+extern void dma_read_dma_seg(u8 *dest, u8 *srcStart, u8 *srcEnd);
 extern void geo_append_display_list(void *displayList, s32 layer);
 
 #include "behaviors/star_door.inc.c"
