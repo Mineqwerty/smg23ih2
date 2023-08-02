@@ -10,6 +10,10 @@
 #define BMINI_MAX_ANIM_PITCH 0xC00
 #define BMINI_MAX_ANIM_YAW 0x1800
 
+u8 sBlockingtonCameraOverridden = FALSE;
+Vec3f sBlockingtonCameraBackupPos;
+Vec3f sBlockingtonCameraBackupFocus;
+
 void bhv_blockington_mini_init(void) {
     u32 bparam2 = BPARAM2;
     if (bparam2 >= BKTN_DIA_COUNT || (bMiniDialogs[bparam2].allowRepeat == FALSE && bMiniDialogs[bparam2].hasSpawned == TRUE)) {
@@ -85,7 +89,7 @@ static void bhv_blockington_mini_set_obj_pos(void) {
     vec3f_get_angle(gCamera->pos, gCamera->focus, &pitch, &yaw);
 
     pitch -= 0x800;
-    yaw += 0x1100;
+    yaw += (gConfig.widescreen ? (0x1100 * 4 / 3) : 0x1100);
 
     bhv_blockington_mini_calculate_additional_rotation_and_set_scale(&pitch, &yaw);
 
@@ -97,6 +101,64 @@ static void bhv_blockington_mini_set_obj_pos(void) {
     o->oPosZ = gCamera->pos[2] + coss((u16) yaw) * coss((u16) -pitch) * BMINI_DIST;
 
     bhv_blockington_mini_set_angle_scale();
+}
+
+static void bhv_blockington_mini_set_special_camera_overrides(void) {
+    u8 cameraOverride = FALSE;
+    Vec3f focus;
+    Vec3f pos;
+
+    if (o->oAction == ACT_BMINI_WAITING_TO_TALK || o->oAction == ACT_BMINI_TALK || o->oAction == ACT_BMINI_WAITING_TO_DISAPPEAR) {
+        switch(o->oBehParams2ndByte) {
+            case BKTN_DIA_CS_FIRST_AREA:
+                if (o->oBMiniDialogIndex == 1) {
+                    struct Object *obj = find_first_object_with_behavior_and_bparams(bhvCQBridge, 0x01 << 16, 0x00FF0000);
+                    if (obj) {
+                        cameraOverride = TRUE;
+                        focus[0] = obj->oHomeX;
+                        focus[1] = obj->oHomeY;
+                        focus[2] = obj->oHomeZ;
+                        pos[0] = obj->oHomeX;
+                        pos[1] = obj->oHomeY + 7000.0f;
+                        pos[2] = obj->oHomeZ - 11000.0f;
+                    }
+                }
+                break;
+            case BKTN_DIA_CS_SECOND_AREA:
+                if (o->oBMiniDialogIndex == 1) {
+                    struct Object *obj = find_first_object_with_behavior_and_bparams(bhvCQBridge, 0x02 << 16, 0x00FF0000);
+                    if (obj) {
+                        cameraOverride = TRUE;
+                        focus[0] = obj->oHomeX;
+                        focus[1] = obj->oHomeY;
+                        focus[2] = obj->oHomeZ;
+                        pos[0] = obj->oHomeX + 11000.0f;
+                        pos[1] = obj->oHomeY + 7000.0f;
+                        pos[2] = obj->oHomeZ;
+                    }
+                }
+                break;
+        }
+    }
+
+    if (cameraOverride) {
+        if (!sBlockingtonCameraOverridden) {
+            vec3f_copy(sBlockingtonCameraBackupFocus, gLakituState.goalFocus);
+            vec3f_copy(sBlockingtonCameraBackupPos, gLakituState.goalPos);
+            sBlockingtonCameraOverridden = TRUE;
+        }
+
+        vec3f_copy(gLakituState.curFocus, focus);
+        vec3f_copy(gLakituState.goalFocus, focus);
+        vec3f_copy(gLakituState.curPos, pos);
+        vec3f_copy(gLakituState.goalPos, pos);
+    } else if (sBlockingtonCameraOverridden) {
+        sBlockingtonCameraOverridden = FALSE;
+        vec3f_copy(gLakituState.curFocus, sBlockingtonCameraBackupFocus);
+        vec3f_copy(gLakituState.goalFocus, sBlockingtonCameraBackupFocus);
+        vec3f_copy(gLakituState.curPos, sBlockingtonCameraBackupPos);
+        vec3f_copy(gLakituState.goalPos, sBlockingtonCameraBackupPos);
+    }
 }
 
 static void bhv_blockington_mini_act_waiting(void) {
@@ -126,7 +188,7 @@ static void bhv_blockington_mini_act_waiting(void) {
 }
 
 static void bhv_blockington_mini_act_appearing(void) {
-    if (o->oTimer == 0) {
+    if (o->oTimer == 0 && bMiniDialogs[o->oBehParams2ndByte].shouldRender) {
         cur_obj_unhide();
     }
 
@@ -138,10 +200,8 @@ static void bhv_blockington_mini_act_appearing(void) {
 }
 
 static void bhv_blockington_mini_act_waiting_to_talk(void) {
-    if (bMiniDialogs[o->oBehParams2ndByte].shouldRender) {
-        u8 transparency = 255.0f * (f32) ((f32) o->oTimer / (f32) BMINI_ANIM_WAIT);
-        set_blockington_dialog_entry(&bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oBMiniDialogIndex], transparency);
-    }
+    u8 transparency = 255.0f * (f32) ((f32) o->oTimer / (f32) BMINI_ANIM_WAIT);
+    set_blockington_dialog_entry(&bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oBMiniDialogIndex], transparency, bMiniDialogs[o->oBehParams2ndByte].shouldRender);
 
     if (o->oTimer >= BMINI_ANIM_WAIT) {
         o->oTimer = 0;
@@ -151,9 +211,7 @@ static void bhv_blockington_mini_act_waiting_to_talk(void) {
 }
 
 static void bhv_blockington_mini_act_talk(void) {
-    if (bMiniDialogs[o->oBehParams2ndByte].shouldRender) {
-        set_blockington_dialog_entry(&bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oBMiniDialogIndex], 255);
-    }
+    set_blockington_dialog_entry(&bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oBMiniDialogIndex], 255, bMiniDialogs[o->oBehParams2ndByte].shouldRender);
 
     if (o->oTimer == 0) {
         play_sound(bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oBMiniDialogIndex].soundID, gGlobalSoundSource);
@@ -175,10 +233,8 @@ static void bhv_blockington_mini_act_talk(void) {
 }
 
 static void bhv_blockington_mini_act_waiting_to_disappear(void) {
-    if (bMiniDialogs[o->oBehParams2ndByte].shouldRender) {
-        u8 transparency = 255.0f * (f32) ((f32) (BMINI_ANIM_WAIT - o->oTimer) / (f32) BMINI_ANIM_WAIT);
-        set_blockington_dialog_entry(&bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oBMiniDialogIndex], transparency);
-    }
+    u8 transparency = 255.0f * (f32) ((f32) (BMINI_ANIM_WAIT - o->oTimer) / (f32) BMINI_ANIM_WAIT);
+    set_blockington_dialog_entry(&bMiniDialogs[o->oBehParams2ndByte].startAddr[o->oBMiniDialogIndex], transparency, bMiniDialogs[o->oBehParams2ndByte].shouldRender);
 
     if (o->oTimer >= BMINI_ANIM_WAIT) {
         o->oTimer = 0;
@@ -193,6 +249,10 @@ static void bhv_blockington_mini_act_waiting_to_disappear(void) {
                     }
                     obj->oAction++;
                 }
+            }
+
+            if (o->parentObj && o->parentObj->behavior == segmented_to_virtual(bhvBlockington)) {
+                o->parentObj->oAction++;
             }
         } else {
             o->oBMiniDialogIndex++;
@@ -240,6 +300,7 @@ void bhv_blockington_mini_loop(void) {
             break;
     }
 
+    bhv_blockington_mini_set_special_camera_overrides();
     bhv_blockington_calculate_angle_scale_all();
     bhv_blockington_mini_set_obj_pos();
 }

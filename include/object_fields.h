@@ -273,6 +273,7 @@
 #define /*0x100*/ oBobombExpBubGfxScaleFacY OBJECT_FIELD_S32(0x1E)
 #define /*0x104*/ oBobombExpBubGfxExpRateX  OBJECT_FIELD_S32(0x1F)
 #define /*0x108*/ oBobombExpBubGfxExpRateY  OBJECT_FIELD_S32(0x20)
+#define /*0x108*/ oBobombExpBubGfxScale     OBJECT_FIELD_F32(0x21)
 
 /* Bomp (Small) */
 #define /*0x100*/ oSmallBompInitX OBJECT_FIELD_F32(0x1E)
@@ -496,7 +497,19 @@
 #define /*0x0F4*/ oCQBridgeCamPosX   OBJECT_FIELD_F32(0x1B)
 #define /*0x0F8*/ oCQBridgeCamPosY   OBJECT_FIELD_F32(0x1C)
 #define /*0x0FC*/ oCQBridgeCamPosZ   OBJECT_FIELD_F32(0x1D)
-#define /*0x100*/ oCQBridgePanFrames OBJECT_FIELD_S32(0x1E)
+
+/* CQ Door */
+#define /*0x0F4*/ oCQDoorCamPosVec OBJECT_FIELD_F32(0x1B)
+#define /*0x0F4*/ oCQDoorCamPosX   OBJECT_FIELD_F32(0x1B)
+#define /*0x0F8*/ oCQDoorCamPosY   OBJECT_FIELD_F32(0x1C)
+#define /*0x0FC*/ oCQDoorCamPosZ   OBJECT_FIELD_F32(0x1D)
+
+/* CQ Gate */
+#define /*0x0F4*/ oCQGateCamPosVec       OBJECT_FIELD_F32(0x1B)
+#define /*0x0F4*/ oCQGateCamPosX         OBJECT_FIELD_F32(0x1B)
+#define /*0x0F8*/ oCQGateCamPosY         OBJECT_FIELD_F32(0x1C)
+#define /*0x0FC*/ oCQGateCamPosZ         OBJECT_FIELD_F32(0x1D)
+#define /*0x100*/ oCQGateCamShouldUpdate OBJECT_FIELD_S32(0x1E)
 
 /* Fazana Car */
 #define /*0x0F4*/ oFazanaCarWheelRot       OBJECT_FIELD_S32(0x1B)

@@ -178,7 +178,7 @@ void render_hud_cannon_reticle(void);
 void reset_red_coins_collected(void);
 s32 render_menus_and_dialogs(void);
 void render_blockington_dialog_entry(void);
-void set_blockington_dialog_entry(struct BlockingtonMiniDialog *dialogEntry, u8 transparency);
+void set_blockington_dialog_entry(struct BlockingtonMiniDialog *dialogEntry, u8 transparency, u8 shouldOffset);
 void clear_blockington_dialog_entry(void);
 
 #endif // INGAME_MENU_H

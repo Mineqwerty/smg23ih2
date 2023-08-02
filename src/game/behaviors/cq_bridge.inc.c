@@ -7,16 +7,9 @@
 #define CQ_BRIDGE_CUTSCENE_FOCUS_SMOOTHSTEPXZ 0.50f
 #define CQ_BRIDGE_CUTSCENE_FOCUS_SMOOTHSTEPY 0.50f
 
-enum CQBridgeActions {
-    ACT_CQBRIDGE_WAITING,
-    ACT_CQBRIDGE_HIDDEN,
-    ACT_CQBRIDGE_ANIMATING,
-    ACT_CQBRIDGE_VISIBLE,
-};
-
 static void bhv_cq_bridge_approach_camera_goal(void) {
     gLakituState.goalFocus[0] = smoothstep(gLakituState.goalFocus[0], o->oHomeX, CQ_BRIDGE_CUTSCENE_FOCUS_SMOOTHSTEPXZ);
-    gLakituState.goalFocus[1] = smoothstep(gLakituState.goalFocus[1], o->oHomeY, CQ_BRIDGE_CUTSCENE_FOCUS_SMOOTHSTEPXZ);
+    gLakituState.goalFocus[1] = smoothstep(gLakituState.goalFocus[1], o->oHomeY, CQ_BRIDGE_CUTSCENE_FOCUS_SMOOTHSTEPY);
     gLakituState.goalFocus[2] = smoothstep(gLakituState.goalFocus[2], o->oHomeZ, CQ_BRIDGE_CUTSCENE_FOCUS_SMOOTHSTEPXZ);
 
     gLakituState.goalPos[0] = smoothstep(gLakituState.goalPos[0], o->oCQBridgeCamPosX, CQ_BRIDGE_CUTSCENE_POS_SMOOTHSTEPXZ);
@@ -50,7 +43,6 @@ static void bhv_cq_bridge_hidden(void) {
         }
         o->oAction = ACT_CQBRIDGE_ANIMATING;
         o->oSubAction = 0;
-        o->oCQBridgePanFrames = 0;
         
         // Calculate camera positions
         vec3f_copy(&o->oCQBridgeCamPosVec, &o->oHomeVec);
@@ -145,12 +137,9 @@ static void bhv_cq_bridge_animating(void) {
                 bhv_cq_bridge_approach_camera_goal();
             }
             break;
-        case 3:
         default:
             break;
     }
-
-    o->oCQBridgePanFrames++;
 }
 
 void bhv_cq_bridge_init(void) {

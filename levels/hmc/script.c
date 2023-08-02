@@ -6,7 +6,6 @@
 #include "dialog_ids.h"
 #include "segment_symbols.h"
 #include "level_commands.h"
-#include "game/behaviors/blockington.h"
 
 #include "game/level_update.h"
 
@@ -15,6 +14,7 @@
 #include "actors/common1.h"
 
 /* Fast64 begin persistent block [includes] */
+#include "game/behaviors/blockington.h"
 /* Fast64 end persistent block [includes] */
 
 #include "make_const_nonconst.h"
@@ -63,8 +63,14 @@ const LevelScript level_hmc_entry[] = {
 		WARP_NODE(0x0A, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0xF0, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0xF1, LEVEL_SL, 0x01, 0x0A, WARP_NO_CHECKPOINT),
+		OBJECT(MODEL_BLOCKINGTON, 350, 580, -1750, 0, 0, 0, 0x00000000, bhvBlockington),
+		OBJECT(MODEL_NONE, 2266, 5080, 18239, 0, 0, 0, (BKTN_DIA_CRINGE_PATH_0 << 16) | (256), bhvBlockingtonTrigger),
+		OBJECT(MODEL_NONE, 654, 5819, 19901, 0, 0, 0, (BKTN_DIA_CRINGE_PATH_1 << 16) | (256), bhvBlockingtonTrigger),
+		OBJECT(MODEL_NONE, -230, 6548, 15196, 0, 0, 0, (BKTN_DIA_CRINGE_PATH_2 << 16) | (256), bhvBlockingtonTrigger),
+		OBJECT(MODEL_NONE, 18600, 5423, 14000, 0, 0, 0, (BKTN_DIA_PITY_BRIDGE << 16) | (512), bhvBlockingtonTrigger),
 		OBJECT(MODEL_CQ_BRIDGE, 1030, 2653, 7111, 0, 0, 0, (1 << 16), bhvCQBridge),
 		OBJECT(MODEL_CQ_BRIDGE, -21387, 4209, 23266, 0, -90, 0, (2 << 16), bhvCQBridge),
+		OBJECT(MODEL_CQ_BRIDGE, 23729, 4268, 14270, 0, -180, 0, (3 << 16), bhvCQBridge),
 		OBJECT(MODEL_CUSTOM_FAZANA_CAR, -3, 231, 2115, 0, -180, 0, 0x00000000, bhvFazanaCar),
 		OBJECT(MODEL_NONE, 0, 250, 0, 0, 0, 0, (0 << 16) | (250), bhvCheckpoint),
 		OBJECT(MODEL_CQ_DOOR, 0, 231, 1107, 0, 0, 0, 0x00000000, bhvCQDoor),
@@ -74,7 +80,7 @@ const LevelScript level_hmc_entry[] = {
 		OBJECT(MODEL_NONE, -21387, 4209, 23266, 0, 0, 0, (2), bhvHiddenRedCoinStar),
 		OBJECT(MODEL_CQ_RED_CUBE, 59, 1171, -9756, 0, 0, 0, (0 << 16) | (1), bhvRedCoin),
 		OBJECT(MODEL_CQ_RED_CUBE, 6741, 1853, -19313, 0, 0, 0, (1 << 16) | (1), bhvRedCoin),
-		OBJECT(MODEL_CQ_RED_CUBE, 2887, 3684, -15364, 0, 0, 0, (2 << 16) | (1), bhvRedCoin),
+		OBJECT(MODEL_CQ_RED_CUBE, 2887, 3534, -15364, 0, 0, 0, (2 << 16) | (1), bhvRedCoin),
 		OBJECT(MODEL_CQ_RED_CUBE, 15078, 3227, -16274, 0, 0, 0, (3 << 16) | (1), bhvRedCoin),
 		OBJECT(MODEL_CQ_RED_CUBE, -388, 2183, -2536, 0, 0, 0, (4 << 16) | (1), bhvRedCoin),
 		OBJECT(MODEL_CQ_RED_CUBE, -7439, 4958, -11959, 0, 0, 0, (5 << 16) | (1), bhvRedCoin),
@@ -96,26 +102,20 @@ const LevelScript level_hmc_entry[] = {
 		OBJECT(MODEL_CQ_RED_CUBE, -6155, 5371, 24626, 0, 0, 0, (21 << 16) | (2), bhvRedCoin),
 		OBJECT(MODEL_CQ_RED_CUBE, -14906, 4318, 22980, 0, 0, 0, (22 << 16) | (2), bhvRedCoin),
 		OBJECT(MODEL_CQ_RED_CUBE, 10080, 5151, 23030, 0, 0, 0, (23 << 16) | (2), bhvRedCoin),
-		OBJECT(MODEL_NONE, 0, 250, 0, 0, 0, 0, 0x000A0000, bhvSpinAirborneWarp),
-		MARIO_POS(0x01, 0, 0, 250, 0),
+		OBJECT(MODEL_NONE, 0, 231, -200, 0, 0, 0, 0x000A0000, bhvSpinAirborneWarp),
+		MARIO_POS(0x01, 0, 0, 231, -200),
 		TERRAIN(hmc_area_1_collision),
 		MACRO_OBJECTS(hmc_area_1_macro_objs),
 		STOP_MUSIC(0),
 		TERRAIN_TYPE(TERRAIN_GRASS),
 		/* Fast64 begin persistent block [area commands] */
-		OBJECT(MODEL_BLOCKINGTON, 0, 400, -1500, 0, 0, 0, 0x00000000, bhvBlockington),
-		OBJECT(MODEL_NONE, 2266, 5080, 18239, 0, 0, 0, (BKTN_DIA_CRINGE_PATH_0 << 16) | (256), bhvBlockingtonTrigger),
-		OBJECT(MODEL_NONE, 654, 5819, 19901, 0, 0, 0, (BKTN_DIA_CRINGE_PATH_1 << 16) | (256), bhvBlockingtonTrigger),
-		OBJECT(MODEL_NONE, -230, 6548, 15196, 0, 0, 0, (BKTN_DIA_CRINGE_PATH_2 << 16) | (256), bhvBlockingtonTrigger),
-		OBJECT(MODEL_NONE, 18600, 5423, 14000, 0, 0, 0, (BKTN_DIA_PITY_BRIDGE << 16) | (512), bhvBlockingtonTrigger),
-		OBJECT(MODEL_CQ_BRIDGE, 23729, 4268, 14270, 0, 180, 0, (3 << 16), bhvCQBridge),
 		SET_BACKGROUND_MUSIC_WITH_REVERB(0, SEQ_LEVEL_UNDERGROUND, 4, 4),
 		SET_ECHO(0x18, 0x18),
 		/* Fast64 end persistent block [area commands] */
 	END_AREA(),
 
 	FREE_LEVEL_POOL(),
-	MARIO_POS(0x01, 0, 0, 250, 0),
+	MARIO_POS(0x01, 0, 0, 231, -200),
 	CALL(0, lvl_init_or_update),
 	CALL_LOOP(1, lvl_init_or_update),
 	CLEAR_LEVEL(),

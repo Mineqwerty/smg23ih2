@@ -306,6 +306,25 @@ enum BlockingtonMiniActions {
     ACT_BMINI_WAITING_TO_DESPAWN,
 };
 
+enum CQBridgeActions {
+    ACT_CQBRIDGE_WAITING,
+    ACT_CQBRIDGE_HIDDEN,
+    ACT_CQBRIDGE_ANIMATING,
+    ACT_CQBRIDGE_VISIBLE,
+};
+
+enum CQGateActions {
+    ACT_CQGATE_WAITING,
+    ACT_CQGATE_HIDDEN,
+    ACT_CQGATE_ANIMATING,
+};
+
+enum CQDoorActions {
+    ACT_CQDOOR_WAITING,
+    ACT_CQDOOR_HIDDEN,
+    ACT_CQDOOR_ANIMATING,
+};
+
 /* Hidden Block Actions */
 enum HiddenBlockActionStates {
     HIDDEN_BLOCK_ACT_HIDDEN,
