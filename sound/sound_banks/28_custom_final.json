@@ -2,26 +2,15 @@
     "date": "1996-03-19",
     "sample_bank": "streamed_audio",
     "envelopes": {
-        "envelope": [
-            [
-                6,
-                32700
-            ],
-            [
-                6,
-                32700
-            ],
-            [
-                32700,
-                29430
-            ],
+        "envelope0": [
+            [1, 32700],
             "hang"
         ]
     },
     "instruments": {
         "inst0": {
             "release_rate": 10,
-            "envelope": "envelope",
+            "envelope": "envelope0",
             "sound": "28_custom_final"
         }
     },
