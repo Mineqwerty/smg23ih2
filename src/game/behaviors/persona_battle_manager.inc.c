@@ -566,7 +566,7 @@ void bhv_persona_battle_manager_loop(void) {
             }
 
             if (o->oTimer == 90) {
-                initiate_warp(LEVEL_ENDING, 1, 0x0A, 0);
+                initiate_warp(LEVEL_RR, 1, 0x0A, 0);
             }
     break;
    }

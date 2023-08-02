@@ -936,26 +936,10 @@ Exercise.\n\
 Me: Dessert Mario 64"))
 
 DEFINE_DIALOG(DIALOG_082, 1, 4, 30, 200, _("\
-Hold on to your hat! If\n\
-you lose it, you'll be\n\
-injured easily.\n\
-\n\
-If you do lose your Cap,\n\
-you'll have to find it in\n\
-the course where you\n\
-lost it.\n\
-Oh, boy, it's not looking\n\
-good for Peach. She's\n\
-still trapped somewhere\n\
-inside the walls.\n\
-Please, Mario, you have\n\
-to help her! Did you know\n\
-that there are enemy\n\
-worlds inside the walls?\n\
-Yup. It's true. Bowser's\n\
-troops are there, too.\n\
-Oh, here, take this. I've\n\
-been keeping it for you."))
+THE FINAL LEVBEL!\n\
+if you die in yhe\n\
+game....\n\
+OU DIE IN REAL LIFE!"))
 
 DEFINE_DIALOG(DIALOG_083, 1, 6, 30, 200, _("\
 There's something strange\n\

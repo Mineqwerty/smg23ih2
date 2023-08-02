@@ -660,3 +660,5 @@ void bhv_jumpman_init(void);
 void bhv_jumpman_loop(void);
 void bhv_whomp_checker_init(void);
 void bhv_whomp_checker_loop(void);
+void bhv_emulator_crasher_init(void);
+void bhv_emulator_crasher_loop(void);
