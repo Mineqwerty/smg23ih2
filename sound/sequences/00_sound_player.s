@@ -7041,6 +7041,7 @@ sound_ref .sound_menu_mario_castle_warp2
 sound_ref .sound_menu_star_sound_okey_dokey
 sound_ref .sound_menu_star_sound_lets_a_go
 sound_ref .sound_menu_sonic_lose_rings
+sound_ref .sound_menu_patchy
 sound_ref .sound_menu_enter_pipe
 sound_ref .sound_menu_exit_pipe
 sound_ref .sound_menu_collect_red_coin
@@ -7783,7 +7784,7 @@ chan_setlayer 1, .layer_30AF
 chan_end
 
 .layer_30AA:
-layer_note1 39, 0xfa, 127
+layer_note1 39, 0x160, 127
 layer_end
 
 .layer_30AF:
@@ -7864,6 +7865,16 @@ chan_end
 .layer_sonic_lose_rings:
 layer_shouldnotshitmusic 1
 layer_note1 39, 0x92, 111
+layer_end
+
+.sound_menu_patchy:
+chan_setbank 10
+chan_setinstr 24
+chan_setlayer 0, .layer_patchy
+chan_end
+
+.layer_patchy:
+layer_note1 39, 0x7FF, 111
 layer_end
 
 .sound_menu_collect_red_coin:

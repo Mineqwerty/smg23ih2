@@ -56,6 +56,7 @@ u8 gFuckUpScreen;
 u8 gPersonaBattleTransition;
 u8 gPersonaBattleTransitionTimer;
 u8 gChangeArea;
+u8 gPatchy;
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
 u8 gCustomDebugMode;
 #endif

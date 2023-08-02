@@ -65,8 +65,10 @@ const LevelScript level_ending_entry[] = {
     BLACKOUT(/*active*/ FALSE),
     LOAD_AREA(/*area*/ 1),
     TRANSITION(/*transType*/ WARP_TRANSITION_FADE_FROM_COLOR, /*time*/ 75, /*color*/ 0x00, 0x00, 0x00),
-    SLEEP(/*frames*/ 120),
+    SLEEP(/*frames*/ 20),
     CALL(/*arg*/ 0, /*func*/ lvl_play_the_end_screen_sound),
 
-    JUMP(level_ending_entry_loop), // (loop sleep 1 forever)
+    SLEEP(/*frames*/ 130),
+    CALL(/*arg*/ 0, /*func*/ lvl_play_patchy),
+    JUMP(level_ending_entry_loop), // patchy is here now
 };

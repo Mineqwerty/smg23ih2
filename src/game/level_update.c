@@ -1553,3 +1553,9 @@ s32 lvl_play_the_end_screen_sound(UNUSED s16 initOrUpdate, UNUSED s32 levelNum) 
     play_sound(SOUND_MENU_THANK_YOU_PLAYING_MY_GAME, gGlobalSoundSource);
     return TRUE;
 }
+
+s32 lvl_play_patchy(UNUSED s16 initOrUpdate, UNUSED s32 levelNum) {
+    gPatchy = TRUE;
+    play_sound(SOUND_MENU_PATCHY, gGlobalSoundSource);
+    return TRUE;
+}
