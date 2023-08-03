@@ -515,6 +515,12 @@ SECTIONS
       KEEP(BUILD_DIR/bin/dma/dma_data.o(.rodata*));
    }
    END_SEG(dma)
+   BEGIN_SEG(patchy, 0x1F000000)
+   {
+      KEEP(lib/patchy.o(.data*));
+      KEEP(lib/patchy.o(.rodata*));
+   }
+   END_SEG(patchy)
 #ifdef HVQM
    BEGIN_SEG(capcom, __romPos) SUBALIGN(2)
    {
