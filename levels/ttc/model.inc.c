@@ -1,11 +1,6 @@
-
-
-
-
-
-
-
-
+ALIGNED8 const Texture texture_glag[] = {
+	#include "levels/ttc/glaggle_frown.rgba16.inc.c" 
+};
 
 Gfx ttc_dl_oh_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 ttc_dl_oh_rgba16[] = {

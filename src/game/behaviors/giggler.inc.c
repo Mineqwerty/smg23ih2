@@ -1,12 +1,13 @@
 #include "src/engine/math_util.h"
 
+extern s16 object_step();
+
 void bhv_giggler_init(void) {
     o->oGravity = 3.0f;
     o->oFloatF4 = 1.0f;
 }
 
 void bhv_giggler_loop(void) {
-
     elastic_approach_i_stole_from_cozies(&o->oFloatF4, &o->oFloatF8, absf(o->oVelY / 50.0f), 0.1f,
                                          0.3f);
 

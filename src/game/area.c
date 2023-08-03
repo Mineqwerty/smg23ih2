@@ -645,6 +645,15 @@ void render_loading_screen(void) {
     gDPFillRectangle(gDisplayListHead++, curX, curY, progressX - 1, curY + height - 1);
 }
 
+extern const Texture texture_glag[];
+void render_glaggle(void) {
+    if (gCurrLevelNum == SMG32IH2_LEVEL_FBE && gGlaggleMad == TRUE) {
+        gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+        render_multi_image(segmented_to_virtual(texture_glag), 0, 0, 320, 240, 0, 0, G_CYC_COPY);
+        gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
+    }
+}
+
 void render_game(void) {
     if (gCurrLevelNum == SMG23IH2_LEVEL_5) {
         gFuckUpScreen = TRUE;
@@ -691,6 +700,9 @@ void render_game(void) {
             render_blockington_dialog_entry();
         }
         clear_blockington_dialog_entry();
+
+        render_glaggle();
+
 #ifdef PUPPYPRINT
         puppyprint_print_deferred();
 #endif

@@ -817,13 +817,6 @@ void render_hud(void) {
             render_hud_timer();
         }
 
-        if (gCurrLevelNum == SMG32IH2_LEVEL_FBE && gGlaggleMad == TRUE) {
-            ALIGNED8 static const Texture texture_glag[] = {
-                #include "actors/amp/glaggle_frown.rgba16.inc.c" 
-            };
-            render_multi_image(texture_glag, 0, 0, 320, 240, 0, 0, G_CYC_COPY);
-        }
-
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
         if (gCustomDebugMode) {
             render_debug_mode();

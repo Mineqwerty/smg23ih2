@@ -39,16 +39,17 @@
 #include "object_list_processor.h"
 #include "paintings.h"
 #include "platform_displacement.h"
+#include "print.h"
+#include "puppylights.h"
+#include "puppyprint.h"
 #include "rendering_graph_node.h"
+#include "rumble_init.h"
 #include "save_file.h"
 #include "seq_ids.h"
 #include "sm64.h"
 #include "sound_init.h"
 #include "spawn_object.h"
 #include "spawn_sound.h"
-#include "rumble_init.h"
-#include "puppylights.h"
-#include "puppyprint.h"
 
 extern void dma_read_dma_seg(u8 *dest, u8 *srcStart, u8 *srcEnd);
 extern void geo_append_display_list(void *displayList, s32 layer);

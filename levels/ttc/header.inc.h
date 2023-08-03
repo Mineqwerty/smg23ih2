@@ -11,6 +11,7 @@ extern Lights1 ttc_dl_f3dlite_material_006_lights;
 extern Lights1 ttc_dl_f3dlite_material_008_lights;
 extern Lights1 ttc_dl_f3dlite_material_010_lights;
 extern Lights1 ttc_dl_f3dlite_material_011_lights;
+extern const Texture texture_glag[];
 extern u8 ttc_dl_oh_rgba16[];
 extern u8 ttc_dl_giggly_rgba16[];
 extern u8 ttc_dl_gigl_ci8[];
