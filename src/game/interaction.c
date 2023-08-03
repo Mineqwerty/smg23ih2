@@ -1837,6 +1837,10 @@ void mario_process_interactions(struct MarioState *m) {
 
                 m->collidedObjInteractTypes &= ~interactType;
 
+                if (!object) {
+                    continue;
+                }
+
                 if (!(object->oInteractStatus & INT_STATUS_INTERACTED)) {
                     if (sInteractionHandlers[i].handler(m, interactType, object)) {
                         break;
