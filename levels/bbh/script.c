@@ -74,6 +74,8 @@ const LevelScript level_bbh_entry[] = {
 		SET_BACKGROUND_MUSIC(0x00, SEQ_SHIT_BROS_1),
 		TERRAIN_TYPE(TERRAIN_GRASS),
 		/* Fast64 begin persistent block [area commands] */
+        SHOW_DIALOG(/*index*/ 0x00, DIALOG_000),
+		OBJECT(MODEL_WHOMP, -1200, 0, -1200, 0, 0, 0, DIALOG_001 << 16, bhvBobombBuddy),
 		SET_BACKGROUND_MUSIC_WITH_REVERB(0x00, SEQ_SHIT_BROS_1, 3, 3),
 		/* Fast64 end persistent block [area commands] */
 	END_AREA(),
