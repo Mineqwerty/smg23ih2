@@ -9,7 +9,7 @@
     },
     "instruments": {
         "inst0": {
-            "release_rate": 10,
+            "release_rate": 208,
             "envelope": "envelope0",
             "sound": "28_custom_final"
         }

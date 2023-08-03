@@ -50,8 +50,8 @@ enum SeqId {
     SEQ_SHIT_BROS_1,                  // 0x25
     SEQ_STREAMED_MASS_DESTRUCTION,    // 0x26
     SEQ_EVENT_OOT_SECRET_SOUND,       // 0x27
-    SEQ_STREAMED_FINAL,
-    SEQ_STREAMED_GLAGGLELAND,
+    SEQ_STREAMED_FINAL,               // 0x28
+    SEQ_STREAMED_GLAGGLELAND,         // 0x29
     SEQ_COUNT
 };
 
