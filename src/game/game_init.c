@@ -56,7 +56,9 @@ u8 gFuckUpScreen;
 u8 gPersonaBattleTransition;
 u8 gPersonaBattleTransitionTimer;
 u8 gChangeArea;
-u8 gPatchy;
+u8 gPatchy = FALSE;
+u8 gCrashmaAudioThread = FALSE;
+u16 gPatchyTimer = 0;
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
 u8 gCustomDebugMode;
 #endif

@@ -23,7 +23,7 @@ const LevelScript level_ending_entry_loop[] = {
 };
 
 const LevelScript level_load_screen_entry[] = {
-    CALL(/*arg*/ 0, /*func*/ init_load_screen_buffers),
+    CALL(/*arg*/ 2, /*func*/ init_load_screen_buffers),
     LOAD_LEVEL_DATA(ending),
     ALLOC_LEVEL_POOL(),
 
@@ -54,6 +54,8 @@ const LevelScript level_ending_entry[] = {
     CALL(/*arg*/ 0, /*func*/ lvl_warp_type),
     JUMP_IF(OP_EQ, /*arg*/ 0x02,  level_load_screen_entry),
 
+    CALL(/*arg*/ 0, /*func*/ lvl_save_file_do_save),
+
     LOAD_LEVEL_DATA(ending),
     ALLOC_LEVEL_POOL(),
 
@@ -61,6 +63,7 @@ const LevelScript level_ending_entry[] = {
     END_AREA(),
 
     FREE_LEVEL_POOL(),
+    SET_MENU_MUSIC(/*seq*/ SEQ_SOUND_PLAYER),
     SLEEP(/*frames*/ 60),
     BLACKOUT(/*active*/ FALSE),
     LOAD_AREA(/*area*/ 1),
@@ -68,7 +71,22 @@ const LevelScript level_ending_entry[] = {
     SLEEP(/*frames*/ 20),
     CALL(/*arg*/ 0, /*func*/ lvl_play_the_end_screen_sound),
 
-    SLEEP(/*frames*/ 130),
+    SLEEP(/*frames*/ 110),
+
+    UNLOAD_AREA(/*area*/ 1),
+    CLEAR_LEVEL(),
+
+    INIT_LEVEL(),
+    CALL(/*arg*/ 1, /*func*/ init_load_screen_buffers),
+    LOAD_LEVEL_DATA(ending),
+    ALLOC_LEVEL_POOL(),
+
+    AREA(/*index*/ 1, ending_geo_patchy),
+    END_AREA(),
+
+    FREE_LEVEL_POOL(),
+    LOAD_AREA(/*area*/ 1),
+
     CALL(/*arg*/ 0, /*func*/ lvl_play_patchy),
     JUMP(level_ending_entry_loop), // patchy is here now
 };

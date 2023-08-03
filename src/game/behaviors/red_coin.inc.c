@@ -155,7 +155,8 @@ void bhv_red_coin_loop(void) {
                 s32 newBparam2 = -1;
                 switch (o->oBehParams2ndByte) {
                     case 0:
-                        newBparam2 = BKTN_DIA_COIN_00;
+                        // Cut content
+                        // newBparam2 = BKTN_DIA_COIN_00;
                         break;
                     case 2:
                         newBparam2 = BKTN_DIA_COIN_02;

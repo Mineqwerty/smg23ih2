@@ -977,6 +977,12 @@ void initiate_delayed_warp(void) {
                     initiate_warp(gCurrCreditsEntry->levelNum, gCurrCreditsEntry->areaIndex, destWarpNode, WARP_FLAGS_NONE);
                     break;
 
+                case WARP_OP_DEATH:
+                case WARP_OP_WARP_FLOOR:
+                    if (gCurrLevelNum == SMG23IH2_LEVEL_7) {
+                        gCrashmaAudioThread = TRUE;
+                    }
+                    FALL_THROUGH;
                 default:
                     warpNode = area_get_warp_node(sSourceWarpNodeId);
 
@@ -1546,6 +1552,11 @@ s32 lvl_warp_type(UNUSED s16 initOrUpdate, UNUSED s32 levelNum) {
     return ret;
 }
 
+s32 lvl_save_file_do_save(UNUSED s16 arg0, UNUSED s32 arg1) {
+    save_file_do_save(gCurrSaveFileNum - 1);
+    return TRUE;
+}
+
 /**
  * Play the "thank you so much for to playing my game" sound.
  */
@@ -1556,6 +1567,7 @@ s32 lvl_play_the_end_screen_sound(UNUSED s16 initOrUpdate, UNUSED s32 levelNum) 
 
 s32 lvl_play_patchy(UNUSED s16 initOrUpdate, UNUSED s32 levelNum) {
     gPatchy = TRUE;
+    gPatchyTimer = 0;
     play_sound(SOUND_MENU_PATCHY, gGlobalSoundSource);
     return TRUE;
 }

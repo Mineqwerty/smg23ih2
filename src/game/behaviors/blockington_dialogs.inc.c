@@ -149,7 +149,7 @@ struct BlockingtonMiniDialog bMiniDiaCSFinal1[] = {
 
 struct BlockingtonMiniDialogEntries bMiniDialogs[] = {
     [BKTN_DIA_OOB]                 = {.startAddr = bMiniDiaOOB,               .dialogCount = ARRAY_COUNT(bMiniDiaOOB),               .shouldRender = TRUE,  .allowRepeat = FALSE, .hasSpawned = FALSE},
-    [BKTN_DIA_COIN_00]             = {.startAddr = bMiniDiaCoin00,            .dialogCount = ARRAY_COUNT(bMiniDiaCoin00),            .shouldRender = TRUE,  .allowRepeat = FALSE, .hasSpawned = FALSE},
+    [BKTN_DIA_COIN_00]             = {.startAddr = bMiniDiaCoin00,            .dialogCount = ARRAY_COUNT(bMiniDiaCoin00),            .shouldRender = TRUE,  .allowRepeat = FALSE, .hasSpawned = FALSE}, // unused
     [BKTN_DIA_COIN_02]             = {.startAddr = bMiniDiaCoin02,            .dialogCount = ARRAY_COUNT(bMiniDiaCoin02),            .shouldRender = TRUE,  .allowRepeat = FALSE, .hasSpawned = FALSE},
     [BKTN_DIA_COIN_03]             = {.startAddr = bMiniDiaCoin03,            .dialogCount = ARRAY_COUNT(bMiniDiaCoin03),            .shouldRender = TRUE,  .allowRepeat = FALSE, .hasSpawned = FALSE},
     [BKTN_DIA_COIN_06]             = {.startAddr = bMiniDiaCoin06,            .dialogCount = ARRAY_COUNT(bMiniDiaCoin06),            .shouldRender = TRUE,  .allowRepeat = FALSE, .hasSpawned = FALSE},
@@ -165,12 +165,12 @@ struct BlockingtonMiniDialogEntries bMiniDialogs[] = {
     [BKTN_DIA_CRINGE_PATH_1]       = {.startAddr = bMiniDiaCringePath1,       .dialogCount = ARRAY_COUNT(bMiniDiaCringePath1),       .shouldRender = TRUE,  .allowRepeat = FALSE, .hasSpawned = FALSE},
     [BKTN_DIA_CRINGE_PATH_2]       = {.startAddr = bMiniDiaCringePath2,       .dialogCount = ARRAY_COUNT(bMiniDiaCringePath2),       .shouldRender = TRUE,  .allowRepeat = FALSE, .hasSpawned = FALSE},
     [BKTN_DIA_CRINGE_PATH_COLLECT] = {.startAddr = bMiniDiaCringePathCollect, .dialogCount = ARRAY_COUNT(bMiniDiaCringePathCollect), .shouldRender = TRUE,  .allowRepeat = FALSE, .hasSpawned = FALSE},
-    [BKTN_DIA_CS_MARIO]            = {.startAddr = bMiniDiaCSMario,           .dialogCount = ARRAY_COUNT(bMiniDiaCSMario),           .shouldRender = FALSE, .allowRepeat = FALSE, .hasSpawned = FALSE},
-    [BKTN_DIA_CS_CAR]              = {.startAddr = bMiniDiaCSCar,             .dialogCount = ARRAY_COUNT(bMiniDiaCSCar),             .shouldRender = FALSE, .allowRepeat = FALSE, .hasSpawned = FALSE},
-    [BKTN_DIA_CS_FIRST_AREA]       = {.startAddr = bMiniDiaCSFirstArea,       .dialogCount = ARRAY_COUNT(bMiniDiaCSFirstArea),       .shouldRender = FALSE, .allowRepeat = FALSE, .hasSpawned = FALSE},
-    [BKTN_DIA_CS_SECOND_AREA]      = {.startAddr = bMiniDiaCSSecondArea,      .dialogCount = ARRAY_COUNT(bMiniDiaCSSecondArea),      .shouldRender = FALSE, .allowRepeat = FALSE, .hasSpawned = FALSE},
-    [BKTN_DIA_CS_FINAL_0]          = {.startAddr = bMiniDiaCSFinal0,          .dialogCount = ARRAY_COUNT(bMiniDiaCSFinal0),          .shouldRender = FALSE, .allowRepeat = FALSE, .hasSpawned = FALSE},
-    [BKTN_DIA_CS_FINAL_1]          = {.startAddr = bMiniDiaCSFinal1,          .dialogCount = ARRAY_COUNT(bMiniDiaCSFinal1),          .shouldRender = FALSE, .allowRepeat = FALSE, .hasSpawned = FALSE},
+    [BKTN_DIA_CS_MARIO]            = {.startAddr = bMiniDiaCSMario,           .dialogCount = ARRAY_COUNT(bMiniDiaCSMario),           .shouldRender = FALSE, .allowRepeat = TRUE,  .hasSpawned = FALSE},
+    [BKTN_DIA_CS_CAR]              = {.startAddr = bMiniDiaCSCar,             .dialogCount = ARRAY_COUNT(bMiniDiaCSCar),             .shouldRender = FALSE, .allowRepeat = TRUE,  .hasSpawned = FALSE},
+    [BKTN_DIA_CS_FIRST_AREA]       = {.startAddr = bMiniDiaCSFirstArea,       .dialogCount = ARRAY_COUNT(bMiniDiaCSFirstArea),       .shouldRender = FALSE, .allowRepeat = TRUE,  .hasSpawned = FALSE},
+    [BKTN_DIA_CS_SECOND_AREA]      = {.startAddr = bMiniDiaCSSecondArea,      .dialogCount = ARRAY_COUNT(bMiniDiaCSSecondArea),      .shouldRender = FALSE, .allowRepeat = TRUE,  .hasSpawned = FALSE},
+    [BKTN_DIA_CS_FINAL_0]          = {.startAddr = bMiniDiaCSFinal0,          .dialogCount = ARRAY_COUNT(bMiniDiaCSFinal0),          .shouldRender = FALSE, .allowRepeat = TRUE,  .hasSpawned = FALSE},
+    [BKTN_DIA_CS_FINAL_1]          = {.startAddr = bMiniDiaCSFinal1,          .dialogCount = ARRAY_COUNT(bMiniDiaCSFinal1),          .shouldRender = FALSE, .allowRepeat = TRUE,  .hasSpawned = FALSE},
 };
 
 STATIC_ASSERT(BKTN_DIA_COUNT == ARRAY_COUNT(bMiniDialogs), "MISSED A BLOCKINGTON DIALOG!");

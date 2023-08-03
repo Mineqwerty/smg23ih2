@@ -4,7 +4,7 @@
 
 #define BMINI_DIST 10000.0f
 #define BMINI_ANIM_DUR 30
-#define BMINI_ANIM_WAIT 10
+#define BMINI_ANIM_WAIT 9
 #define BMINI_MAX_ANIM_CAMERA_PITCH -0x300
 #define BMINI_MAX_ANIM_CAMERA_YAW 0x700
 #define BMINI_MAX_ANIM_PITCH 0xC00
@@ -25,7 +25,7 @@ void bhv_blockington_mini_init(void) {
 
     o->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
 
-    bMiniDialogs[bparam2].hasSpawned = TRUE; // TODO: set to FALSE in the special cases
+    bMiniDialogs[bparam2].hasSpawned = TRUE;
 
     cur_obj_scale(5.0f);
     o->oBlockingtonAngleHomePitch = 0;
@@ -182,6 +182,17 @@ static void bhv_blockington_mini_act_waiting(void) {
         obj = (struct Object *) obj->header.next;
     }
 
+    switch(o->oBehParams2ndByte) {
+        case BKTN_DIA_OOB:
+            if (gMarioState->fazanaCar && gMarioState->fazanaCar->oFloor != NULL) {
+                bMiniDialogs[o->oBehParams2ndByte].hasSpawned = FALSE;
+                obj_mark_for_deletion(o);
+            }
+            break;
+        default:
+            break;
+    }
+
     // Nothing active or of higher priority in queue
     o->oAction = ACT_BMINI_APPEARING;
     o->oTimer = 0;
@@ -301,6 +312,8 @@ void bhv_blockington_mini_loop(void) {
     }
 
     bhv_blockington_mini_set_special_camera_overrides();
-    bhv_blockington_calculate_angle_scale_all();
+    if (o->oAction != ACT_BMINI_WAITING) {
+        bhv_blockington_calculate_angle_scale_all();
+    }
     bhv_blockington_mini_set_obj_pos();
 }
