@@ -644,7 +644,7 @@ struct SPTask *create_next_audio_frame_task(void) {
                 gPatchyTimer++;
             }
 
-            aggress(gCrashmaAudioThread == FALSE, "LMAO GIT GUD\nNOOOOOOOOOOOOOOOOB");
+            aggress(gCrashmaAudioThread == FALSE, "U R DIED!\n\nSADGE");
 
             gAudioCmd = synthesis_execute(gAudioCmd, &writtenCmds, gCurrAiBuffer, gAiBufferLengths[index]);
             gAudioRandom = ((gAudioRandom + gAudioFrameCount) * gAudioFrameCount);

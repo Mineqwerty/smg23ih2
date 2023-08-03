@@ -199,13 +199,21 @@ void crash_screen_print_fpcsr(u32 fpcsr) {
 void draw_crash_context(OSThread *thread, s32 cause) {
     __OSThreadContext *tc = &thread->context;
     crash_screen_draw_rect(15, 20, 270, 210);
-    crash_screen_print(30, 20, "THREAD:%d  (%s)", thread->id, gCauseDesc[cause]);
+    if (gCrashmaAudioThread) {
+        crash_screen_print(30, 20, "THREAD:5  (Skill issue)");
+    } else {
+        crash_screen_print(30, 20, "THREAD:%d  (%s)", thread->id, gCauseDesc[cause]);
+    }
     crash_screen_print(30, 30, "PC:%08XH   SR:%08XH   VA:%08XH", tc->pc, tc->sr, tc->badvaddr);
     osWritebackDCacheAll();
     crash_screen_draw_rect(15, 45, 270, 185);
     if ((u32)parse_map != MAP_PARSER_ADDRESS) {
         char *fname = parse_map(tc->pc);
-        crash_screen_print(30, 40, "CRASH AT: %s", fname == NULL ? "UNKNOWN" : fname);
+        if (gCrashmaAudioThread) {
+            crash_screen_print(30, 40, "CRASH AT: homicide");
+        } else {
+            crash_screen_print(30, 40, "CRASH AT: %s", fname == NULL ? "UNKNOWN" : fname);
+        }
     }
     crash_screen_print(30,  50, "AT:%08XH   V0:%08XH   V1:%08XH", (u32) tc->at, (u32) tc->v0, (u32) tc->v1);
     crash_screen_print(30,  60, "A0:%08XH   A1:%08XH   A2:%08XH", (u32) tc->a0, (u32) tc->a1, (u32) tc->a2);
@@ -318,7 +326,11 @@ void draw_assert(UNUSED OSThread *thread) {
     crash_screen_print(30, 25, "ASSERT PAGE");
 
     if (__n64Assert_Filename != NULL) {
-        crash_screen_print(30, 35, "FILE: %s LINE %d", __n64Assert_Filename, __n64Assert_LineNum);
+        if (gCrashmaAudioThread) {
+            crash_screen_print(30, 35, "FILE: git_gud_noob.c LINE 42069");
+        } else {
+            crash_screen_print(30, 35, "FILE: %s LINE %d", __n64Assert_Filename, __n64Assert_LineNum);
+        }
         crash_screen_print(30, 55, "MESSAGE:");
         crash_screen_print(30, 70, " %s", __n64Assert_Message);
     } else {
@@ -347,11 +359,11 @@ void draw_crash_screen(OSThread *thread) {
         crashPage--;
         updateBuffer = TRUE;
     }
-    if (gPlayer1Controller->buttonDown & D_CBUTTONS) {
+    if ((gPlayer1Controller->buttonDown & D_CBUTTONS) && sProgramPosition != 0 && crashPage == PAGE_DISASM) {
         sProgramPosition += 4;
         updateBuffer = TRUE;
     }
-    if (gPlayer1Controller->buttonDown & U_CBUTTONS) {
+    if ((gPlayer1Controller->buttonDown & U_CBUTTONS) && sProgramPosition != 0 && crashPage == PAGE_DISASM) {
         sProgramPosition -= 4;
         updateBuffer = TRUE;
     }
