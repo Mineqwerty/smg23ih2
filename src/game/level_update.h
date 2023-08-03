@@ -188,6 +188,7 @@ void basic_update(void);
 void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags);
 
 s32 lvl_warp_type(UNUSED s16 initOrUpdate, UNUSED s32 levelNum);
+s32 lvl_save_file_do_save(UNUSED s16 arg0, UNUSED s32 arg1);
 s32 is_loading_screen_done(s16 frames, UNUSED s32 arg1);
 
 #endif // LEVEL_UPDATE_H

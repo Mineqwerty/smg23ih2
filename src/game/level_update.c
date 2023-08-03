@@ -1552,6 +1552,11 @@ s32 lvl_warp_type(UNUSED s16 initOrUpdate, UNUSED s32 levelNum) {
     return ret;
 }
 
+s32 lvl_save_file_do_save(UNUSED s16 arg0, UNUSED s32 arg1) {
+    save_file_do_save(gCurrSaveFileNum - 1);
+    return TRUE;
+}
+
 /**
  * Play the "thank you so much for to playing my game" sound.
  */

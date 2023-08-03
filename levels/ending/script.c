@@ -54,6 +54,8 @@ const LevelScript level_ending_entry[] = {
     CALL(/*arg*/ 0, /*func*/ lvl_warp_type),
     JUMP_IF(OP_EQ, /*arg*/ 0x02,  level_load_screen_entry),
 
+    CALL(/*arg*/ 0, /*func*/ lvl_save_file_do_save),
+
     LOAD_LEVEL_DATA(ending),
     ALLOC_LEVEL_POOL(),
 
@@ -69,7 +71,7 @@ const LevelScript level_ending_entry[] = {
     SLEEP(/*frames*/ 20),
     CALL(/*arg*/ 0, /*func*/ lvl_play_the_end_screen_sound),
 
-    SLEEP(/*frames*/ 130),
+    SLEEP(/*frames*/ 110),
 
     UNLOAD_AREA(/*area*/ 1),
     CLEAR_LEVEL(),
