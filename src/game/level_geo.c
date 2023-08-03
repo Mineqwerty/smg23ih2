@@ -85,7 +85,7 @@ void init_load_screen_buffers(s16 numTextures, UNUSED s32 arg1) {
     bzero(&textureAddrs, sizeof(struct TextureAddrs));
 }
 
-void dma_read_dma_seg(u8 *dest, u8 *srcStart, u8 *srcEnd);
+extern void dma_read_dma_seg(u8 *dest, u8 *srcStart, u8 *srcEnd);
 static void dma_images(Texture *image0, Texture *image1, struct TextureAddrs *addrs) {
     Texture *addr0 = textureAddrs.t0Addr;
     Texture *addr1 = textureAddrs.t1Addr;
@@ -270,6 +270,7 @@ Gfx *geo_load_screen(s32 state, UNUSED struct GraphNode *node, UNUSED void *cont
 #define PATCHY_DELAY_FRAMES 4 // 60FPS
 #define PATCHY_DURATION (852 + PATCHY_DELAY_FRAMES) // 60FPS
 extern const Texture patchy_textures_dma[];
+extern void dma_read(u8 *dest, u8 *srcStart, u8 *srcEnd);
 Gfx *geo_patchy(s32 state, struct GraphNode *node, UNUSED void *context) {
     if (state == GEO_CONTEXT_RENDER && gPatchy) {
         size_t offset;
@@ -298,8 +299,8 @@ Gfx *geo_patchy(s32 state, struct GraphNode *node, UNUSED void *context) {
         gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
 
         if (lastSegment != offset) {
-            dma_read_dma_seg(t0, (u8 *) offset + (size_t) segmented_to_virtual(patchy_textures_dma),
-                        (u8 *) (offset + (size_t) segmented_to_virtual(patchy_textures_dma) + TEXTURE_SIZE));
+            dma_read(t0, (u8 *) ((size_t) _patchySegmentRomStart + (size_t) offset + (size_t) segmented_to_virtual(patchy_textures_dma)),
+                        (u8 *) ((size_t) _patchySegmentRomStart + (size_t) offset + (size_t) segmented_to_virtual(patchy_textures_dma) + TEXTURE_SIZE));
         }
         render_multi_image(t0, 0, 0, 320, 240, 0, 0, G_CYC_COPY);
 

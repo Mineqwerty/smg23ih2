@@ -44,7 +44,7 @@
 #define SEGMENT_UNKNOWN_28           0x1C // | Segment 28 | Unknown/Unused?
 #define SEGMENT_UNKNOWN_29           0x1D // | Segment 29 | Unknown/Unused?
 #define SEGMENT_UNKNOWN_30           0x1E // | Segment 30 | Unknown/Unused?
-#define SEGMENT_UNKNOWN_31           0x1F // | Segment 31 | Unknown/Unused?
+#define SEGMENT_PATCHY               0x1F // | Segment 31 | Custom Patchy
 
 #define SEG_ADDRESS(segment) ((segment) << 24)
 
