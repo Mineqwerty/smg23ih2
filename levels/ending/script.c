@@ -61,6 +61,7 @@ const LevelScript level_ending_entry[] = {
     END_AREA(),
 
     FREE_LEVEL_POOL(),
+    SET_MENU_MUSIC(/*seq*/ SEQ_SOUND_PLAYER),
     SLEEP(/*frames*/ 60),
     BLACKOUT(/*active*/ FALSE),
     LOAD_AREA(/*area*/ 1),
