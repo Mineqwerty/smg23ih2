@@ -977,6 +977,12 @@ void initiate_delayed_warp(void) {
                     initiate_warp(gCurrCreditsEntry->levelNum, gCurrCreditsEntry->areaIndex, destWarpNode, WARP_FLAGS_NONE);
                     break;
 
+                case WARP_OP_DEATH:
+                case WARP_OP_WARP_FLOOR:
+                    if (gCurrLevelNum == SMG23IH2_LEVEL_7) {
+                        gCrashmaAudioThread = TRUE;
+                    }
+                    FALL_THROUGH;
                 default:
                     warpNode = area_get_warp_node(sSourceWarpNodeId);
 

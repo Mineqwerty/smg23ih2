@@ -36,6 +36,8 @@ u8 gCrashScreenCharToGlyph[128] = {
     23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1,
 };
 
+char crashScreenPrintBuf[0x400];
+
 // A height of seven pixels for each Character * nine rows of characters + one row unused.
 u32 gCrashScreenFont[7 * 9 + 1] = {
     #include "textures/crash_custom/crash_screen_font.ia1.inc.c"
@@ -133,26 +135,30 @@ void crash_screen_print(s32 x, s32 y, const char *fmt, ...) {
     char *ptr;
     u32 glyph;
     s32 size;
-    char buf[0x108];
-    bzero(&buf, sizeof(buf));
+    bzero(&crashScreenPrintBuf, sizeof(crashScreenPrintBuf));
 
     va_list args;
     va_start(args, fmt);
 
-    size = _Printf(write_to_buf, buf, fmt, args);
+    size = _Printf(write_to_buf, crashScreenPrintBuf, fmt, args);
+
+    s32 xCurrent = x;
 
     if (size > 0) {
-        ptr = buf;
+        ptr = crashScreenPrintBuf;
 
         while (*ptr) {
             glyph = gCrashScreenCharToGlyph[*ptr & 0x7f];
 
-            if (glyph != 0xff) {
-                crash_screen_draw_glyph(x, y, glyph);
+            if (*ptr == '\n') {
+                y += 10;
+                xCurrent = x;
+            } else if (glyph != 0xff) {
+                crash_screen_draw_glyph(xCurrent, y, glyph);
             }
 
             ptr++;
-            x += 6;
+            xCurrent += 6;
         }
     }
 
@@ -418,6 +424,12 @@ void thread2_crash_screen(UNUSED void *arg) {
                 play_sound(SOUND_MARIO_WAAAOOOW, gGlobalSoundSource);
                 audio_signal_game_loop_tick();
                 crash_screen_sleep(200);
+
+                draw_crash_screen(thread);
+                if (gCrashmaAudioThread) {
+                    crashPage = PAGE_ASSERTS;
+                    updateBuffer = TRUE;
+                }
                 continue;
             }
         } else {
