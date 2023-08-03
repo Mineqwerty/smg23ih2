@@ -25,7 +25,7 @@ void bhv_blockington_mini_init(void) {
 
     o->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
 
-    bMiniDialogs[bparam2].hasSpawned = TRUE; // TODO: set to FALSE in the special cases
+    bMiniDialogs[bparam2].hasSpawned = TRUE;
 
     cur_obj_scale(5.0f);
     o->oBlockingtonAngleHomePitch = 0;
@@ -180,6 +180,17 @@ static void bhv_blockington_mini_act_waiting(void) {
         }
 
         obj = (struct Object *) obj->header.next;
+    }
+
+    switch(o->oBehParams2ndByte) {
+        case BKTN_DIA_OOB:
+            if (gMarioState->fazanaCar && gMarioState->fazanaCar->oFloor != NULL) {
+                bMiniDialogs[o->oBehParams2ndByte].hasSpawned = FALSE;
+                obj_mark_for_deletion(o);
+            }
+            break;
+        default:
+            break;
     }
 
     // Nothing active or of higher priority in queue
