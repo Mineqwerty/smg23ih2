@@ -79,6 +79,7 @@ const LevelScript level_rr_entry[] = {
 		WARP_NODE(0x0A, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0xF0, LEVEL_ENDING, 0x01, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0xF1, LEVEL_ENDING, 0x01, 0x0A, WARP_NO_CHECKPOINT),
+		OBJECT(MODEL_NONE, 0, 0, 3, 0, 0, 0, (1 << 16) | (3 << 8) | (255), bhvCheckpoint),
 		OBJECT(MODEL_NONE, 625, -1011, 1125, 0, 0, 0, 0x00000000, bhvEmulatorCrasher),
 		OBJECT(MODEL_STAR, 3101, 426, 699, 0, 0, 0, 0x00000000, bhvStar),
 		OBJECT(MODEL_WOODEN_SIGNPOST, -218, 0, -1260, 0, 0, 0, (82 << 24) | (82 << 16), bhvMessagePanel),
