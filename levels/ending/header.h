@@ -5,6 +5,7 @@
 
 // geo
 extern const GeoLayout ending_geo_area_1[];
+extern const GeoLayout ending_geo_patchy[];
 extern const GeoLayout ending_load_screen_geo[];
 
 // leveldata

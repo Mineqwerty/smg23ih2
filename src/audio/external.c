@@ -9,6 +9,7 @@
 #include "playback.h"
 #include "synthesis.h"
 #include "game/debug.h"
+#include "game/game_init.h"
 #include "game/main.h"
 #include "game/level_update.h"
 #include "game/object_list_processor.h"
@@ -639,6 +640,10 @@ struct SPTask *create_next_audio_frame_task(void) {
         flags = 0;
         if (gAudioEnabled)
         {
+            if (gPatchy) {
+                gPatchyTimer++;
+            }
+
             gAudioCmd = synthesis_execute(gAudioCmd, &writtenCmds, gCurrAiBuffer, gAiBufferLengths[index]);
             gAudioRandom = ((gAudioRandom + gAudioFrameCount) * gAudioFrameCount);
         }

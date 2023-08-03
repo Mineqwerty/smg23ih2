@@ -1,6 +1,7 @@
 #include <ultra64.h>
 
 #include "sm64.h"
+#include "audio/data.h"
 #include "rendering_graph_node.h"
 #include "mario_misc.h"
 #include "skybox.h"
@@ -39,6 +40,8 @@ struct TextureAddrs textureAddrs = {NULL, NULL};
 Texture *t0 = NULL;
 Texture *t1 = NULL;
 
+size_t lastSegment = -1;
+
 static Texture *loadScreenImages[5] = {
     load_screen_0,
     load_screen_1,
@@ -60,14 +63,24 @@ static const s32 loadScreenTransTimes[ARRAY_COUNT(loadScreenImages) * 2] = {
     IMG4_TRANS_END,
 };
 
-void init_load_screen_buffers(void) {
-    u8 *memaddr = main_pool_alloc(TEXTURE_SIZE * 2, MEMORY_POOL_LEFT);
+void init_load_screen_buffers(s16 numTextures, UNUSED s32 arg1) {
+    if (numTextures != 1 && numTextures != 2) {
+        error("numTextures must be 1 or 2!");
+    }
+
+    u8 *memaddr = main_pool_alloc(TEXTURE_SIZE * numTextures, MEMORY_POOL_LEFT);
     if (memaddr == NULL) {
         error("Out of memory! :(");
     }
 
     t0 = &memaddr[0];
-    t1 = &memaddr[320*240*2];
+    if (numTextures == 1) {
+        t1 = &memaddr[TEXTURE_SIZE];
+    } else {
+        t1 = NULL;
+    }
+
+    lastSegment = -1;
 
     bzero(&textureAddrs, sizeof(struct TextureAddrs));
 }
@@ -249,6 +262,48 @@ Gfx *geo_load_screen(s32 state, UNUSED struct GraphNode *node, UNUSED void *cont
 
         gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
         gDPSetCombineMode(gDisplayListHead++, G_CC_SHADE, G_CC_SHADE);
+    }
+
+    return NULL;
+}
+
+#define PATCHY_DELAY_FRAMES 4 // 60FPS
+#define PATCHY_DURATION (852 + PATCHY_DELAY_FRAMES) // 60FPS
+extern const Texture patchy_textures_dma[];
+Gfx *geo_patchy(s32 state, struct GraphNode *node, UNUSED void *context) {
+    if (state == GEO_CONTEXT_RENDER && gPatchy) {
+        size_t offset;
+        if (gPatchyTimer < PATCHY_DELAY_FRAMES) {
+            offset = 0;
+        } else if (gPatchyTimer > PATCHY_DURATION) {
+            offset = TEXTURE_SIZE * ((PATCHY_DURATION - PATCHY_DELAY_FRAMES) / 4);
+        } else {
+            offset = TEXTURE_SIZE * ((gPatchyTimer - PATCHY_DELAY_FRAMES) / 4);
+        }
+
+        if (gPatchyTimer >= PATCHY_DURATION + 20) {
+            // Crash as many emulators as possible
+            gAudioLoadLock = AUDIO_LOCK_LOADING;
+            bzero(&gAiBuffers[0][0], (AIBUFFER_LEN * NUMAIBUFFERS));
+
+            // Crash as many emulators as possible and console hardware (Ares is too good for this)
+            geo_crashma_parallel_launcher_lmao(state, node, NULL);
+            __asm__("SYNC");
+        }
+
+        if (gPatchyTimer >= PATCHY_DURATION + 24) {
+            FORCE_CRASH; // Just in case
+        }
+
+        gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+
+        if (lastSegment != offset) {
+            dma_read_dma_seg(t0, (u8 *) offset + (size_t) segmented_to_virtual(patchy_textures_dma),
+                        (u8 *) (offset + (size_t) segmented_to_virtual(patchy_textures_dma) + TEXTURE_SIZE));
+        }
+        render_multi_image(t0, 0, 0, 320, 240, 0, 0, G_CYC_COPY);
+
+        gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
     }
 
     return NULL;

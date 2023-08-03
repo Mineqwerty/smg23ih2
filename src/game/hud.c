@@ -98,8 +98,6 @@ struct PowerMeterHUD sPowerMeterHUD = {
 // when the power meter is hidden.
 s32 sPowerMeterVisibleTimer = 0;
 
-u16 sPatchyTimer = 0;
-
 #ifdef BREATH_METER
 static s16 sBreathMeterStoredValue;
 static struct PowerMeterHUD sBreathMeterHUD = {
@@ -728,8 +726,6 @@ void render_hud_camera_status(void) {
  * excluding the cannon reticle which detects a camera preset for it.
  */
 
-extern const Texture patchy_textures_dma[];
-    static Texture *imageRender[153600];
 void render_hud(void) {
     s16 hudDisplayFlags = gHudDisplay.flags;
 
@@ -828,26 +824,5 @@ void render_hud(void) {
 #endif
 
 
-    }
-
-    if (gPatchy == TRUE) {
-        ALIGNED8 static const Texture balls[] = {
-            #include "actors/amp/patchy1.rgba16.inc.c"
-        };
-    
-    
-    size_t offset = 153600 * (sPatchyTimer/2);
-    dma_read_dma_seg(imageRender, (u8 *) offset + (size_t) segmented_to_virtual(patchy_textures_dma),
-                 (u8 *) (offset + (size_t) segmented_to_virtual(patchy_textures_dma) + 153600));
-
-        gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
-    render_multi_image(imageRender, 0, 0, 320, 240, 0, 0, G_CYC_COPY);
-    gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
-    sPatchyTimer++;
-
-    if (sPatchyTimer >= 428) {
-        //crashma emulator
-        *(volatile int *) 0 = 0;
-    }
     }
 }

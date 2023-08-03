@@ -174,7 +174,7 @@ static void blockington_act_talk_mario(void) {
     if (o->oTimer == 0) {
         struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
         if (obj) {
-            obj->oBehParams = (BKTN_DIA_CS_MARIO) << 16;
+            obj->oBehParams = ((BKTN_DIA_CS_MARIO) << 16) | 10; // Top priority
             obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
         } else {
             o->oAction++;
@@ -224,7 +224,7 @@ static void blockington_act_talk_car(void) {
     if (o->oTimer == 0) {
         struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
         if (obj) {
-            obj->oBehParams = (BKTN_DIA_CS_CAR) << 16;
+            obj->oBehParams = ((BKTN_DIA_CS_CAR) << 16) | 10; // Top priority
             obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
         } else {
             o->oAction++;
@@ -354,7 +354,7 @@ static void blockington_act_talk_area_1(void) {
     if (o->oTimer == 0) {
         struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
         if (obj) {
-            obj->oBehParams = (BKTN_DIA_CS_FIRST_AREA) << 16;
+            obj->oBehParams = ((BKTN_DIA_CS_FIRST_AREA) << 16) | 10; // Top priority
             obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
         } else {
             o->oAction++;
@@ -460,7 +460,7 @@ static void blockington_act_talk_area_2(void) {
     if (o->oTimer == 0) {
         struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
         if (obj) {
-            obj->oBehParams = (BKTN_DIA_CS_SECOND_AREA) << 16;
+            obj->oBehParams = ((BKTN_DIA_CS_SECOND_AREA) << 16) | 10; // Top priority
             obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
         } else {
             o->oAction++;
@@ -541,8 +541,7 @@ static void blockington_act_wait_area_3(void) {
         o->oDistanceToMario <= 1600.0f &&
         gCamera->cutscene == FALSE &&
         !(gTimeStopState & TIME_STOP_ENABLED) &&
-        (mario_ready_to_speak() || 
-            (gMarioState->action == ACT_FAZANA_CAR && gMarioState->fazanaCar && gMarioState->fazanaCar->oFloor != NULL))
+        (gMarioState->action == ACT_FAZANA_CAR && gMarioState->fazanaCar && gMarioState->fazanaCar->oFloor != NULL)
     ) {
         // TODO: final cutscene shit
 

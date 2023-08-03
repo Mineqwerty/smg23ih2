@@ -16,8 +16,9 @@ enum EnvFxMode {
     /*14*/ ENVFX_JETSTREAM_BUBBLES  // JRB, DDD (submarine area)
 };
 
-void init_load_screen_buffers(void);
+void init_load_screen_buffers(s16 numTextures, UNUSED s32 arg1);
 Gfx *geo_load_screen(s32 state, UNUSED struct GraphNode *node, UNUSED void *context);
+Gfx *geo_patchy(s32 state, struct GraphNode *node, UNUSED void *context);
 Gfx *geo_envfx_main(s32 callContext, struct GraphNode *node, Mat4 mtxf);
 Gfx *geo_skybox_main(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
 

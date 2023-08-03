@@ -69,6 +69,21 @@ const LevelScript level_ending_entry[] = {
     CALL(/*arg*/ 0, /*func*/ lvl_play_the_end_screen_sound),
 
     SLEEP(/*frames*/ 130),
+
+    UNLOAD_AREA(/*area*/ 1),
+    CLEAR_LEVEL(),
+
+    INIT_LEVEL(),
+    CALL(/*arg*/ 1, /*func*/ init_load_screen_buffers),
+    LOAD_LEVEL_DATA(ending),
+    ALLOC_LEVEL_POOL(),
+
+    AREA(/*index*/ 1, ending_geo_patchy),
+    END_AREA(),
+
+    FREE_LEVEL_POOL(),
+    LOAD_AREA(/*area*/ 1),
+
     CALL(/*arg*/ 0, /*func*/ lvl_play_patchy),
     JUMP(level_ending_entry_loop), // patchy is here now
 };

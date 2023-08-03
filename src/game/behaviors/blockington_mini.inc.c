@@ -4,7 +4,7 @@
 
 #define BMINI_DIST 10000.0f
 #define BMINI_ANIM_DUR 30
-#define BMINI_ANIM_WAIT 10
+#define BMINI_ANIM_WAIT 9
 #define BMINI_MAX_ANIM_CAMERA_PITCH -0x300
 #define BMINI_MAX_ANIM_CAMERA_YAW 0x700
 #define BMINI_MAX_ANIM_PITCH 0xC00
@@ -301,6 +301,8 @@ void bhv_blockington_mini_loop(void) {
     }
 
     bhv_blockington_mini_set_special_camera_overrides();
-    bhv_blockington_calculate_angle_scale_all();
+    if (o->oAction != ACT_BMINI_WAITING) {
+        bhv_blockington_calculate_angle_scale_all();
+    }
     bhv_blockington_mini_set_obj_pos();
 }
