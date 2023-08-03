@@ -7042,7 +7042,6 @@ sound_ref .sound_menu_star_sound_okey_dokey
 sound_ref .sound_menu_star_sound_lets_a_go
 sound_ref .sound_menu_sonic_lose_rings
 sound_ref .sound_menu_patchy
-sound_ref .sound_menu_enter_pipe
 sound_ref .sound_menu_exit_pipe
 sound_ref .sound_menu_collect_red_coin
 sound_ref .sound_menu_collect_red_coin
