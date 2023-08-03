@@ -75,9 +75,9 @@ void init_load_screen_buffers(s16 numTextures, UNUSED s32 arg1) {
 
     t0 = &memaddr[0];
     if (numTextures == 1) {
-        t1 = &memaddr[TEXTURE_SIZE];
-    } else {
         t1 = NULL;
+    } else {
+        t1 = &memaddr[TEXTURE_SIZE];
     }
 
     lastSegment = -1;
