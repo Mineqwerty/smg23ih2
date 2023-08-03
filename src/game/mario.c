@@ -1828,6 +1828,10 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
      }
 #endif
 
+    if (gFBDisabled == FB_CHECK_DISABLED && gCurrLevelNum != SMG32IH2_LEVEL_FBE) {
+        initiate_warp(SMG32IH2_LEVEL_FBE, 1, 0x0A, 0);
+    }
+
     if (gChangeArea > 0) {
         change_area(gChangeArea);
         gMarioState->area = gCurrentArea;

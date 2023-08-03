@@ -57,6 +57,8 @@ u8 gPersonaBattleTransition;
 u8 gPersonaBattleTransitionTimer;
 u8 gChangeArea;
 u8 gPatchy = FALSE;
+u8 gGlaggleMad = FALSE;
+u8 gFBDisabled = 0;
 u8 gCrashmaAudioThread = FALSE;
 u16 gPatchyTimer = 0;
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
@@ -575,6 +577,25 @@ void display_and_vsync(void) {
             sRenderingFramebuffer = 0;
         }
     }
+
+    //ok so this essentially is very hacky but it sets an FB color, waits 10 frames, and checks if the pixel is the same.
+    if (gFBDisabled == 0) {
+        gFramebuffers[0][12] = 0xFF00;
+
+        gFBDisabled = 1;
+    }
+    else if (gFBDisabled < 10) {
+        gFBDisabled += 1;
+    }
+    else if (gFBDisabled == 10) {
+        if (gFramebuffers[0][12] == 0xFF00) {
+            gFBDisabled = FB_CHECK_DISABLED;
+        }
+        else {
+            gFBDisabled = FB_CHECK_ENABLED;
+        }
+    }
+
     gGlobalTimer++;
 }
 

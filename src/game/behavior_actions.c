@@ -276,3 +276,6 @@ void set_obj_anim_with_accel_and_sound(s16 frame1, s16 frame2, s32 sound) {
 #include "behaviors/jumpman.inc.c"
 #include "behaviors/whomp_checker.inc.c"
 #include "behaviors/emulator_crasher.inc.c"
+#include "behaviors/giggler.inc.c"
+#include "behaviors/rotate_in_place.inc.c"
+#include "behaviors/glaggleland.inc.c"

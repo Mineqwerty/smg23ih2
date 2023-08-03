@@ -6510,3 +6510,31 @@ const BehaviorScript bhvEmulatorCrasher[] = {
         CALL_NATIVE(bhv_emulator_crasher_loop),
     END_LOOP(),
 };
+
+const BehaviorScript bhvGiggler[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    BILLBOARD(),
+    CALL_NATIVE(bhv_giggler_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_giggler_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvRotateInPlace[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    CALL_NATIVE(bhv_rotate_in_place_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_rotate_in_place_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvGlaggleland[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    CALL_NATIVE(bhv_glaggleland_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_glaggleland_loop),
+    END_LOOP(),
+};

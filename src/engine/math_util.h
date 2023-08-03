@@ -536,6 +536,7 @@ void mtxf_align_terrain_triangle(Mat4 mtx, Vec3f pos, s16 yaw, f32 radius);
 void mtxf_mul(Mat4 dest, Mat4 a, Mat4 b);
 void mtxf_scale_vec3f(Mat4 dest, Mat4 mtx, Vec3f s);
 void mtxf_mul_vec3s(Mat4 mtx, Vec3s b);
+void elastic_approach_i_stole_from_cozies(f32 *cur, f32 *curVel, f32 goal, f32 speedDown, f32 speedUp);
 
 extern void mtxf_to_mtx_fast(register s16 *dest, register float *src);
 ALWAYS_INLINE void mtxf_to_mtx(register void *dest, register void *src) {

@@ -1,0 +1,10 @@
+extern const GeoLayout glaggle_cube_geo[];
+extern Lights1 glaggle_cube_f3dlite_material_003_lights;
+extern u8 glaggle_cube_giggler_ci8[];
+extern u8 glaggle_cube_giggler_pal_rgba16[];
+extern Vtx glaggle_cube_Plane_001_mesh_layer_4_vtx_0[24];
+extern Gfx glaggle_cube_Plane_001_mesh_layer_4_tri_0[];
+extern Gfx mat_glaggle_cube_f3dlite_material_003[];
+extern Gfx mat_revert_glaggle_cube_f3dlite_material_003[];
+extern Gfx glaggle_cube_Plane_001_mesh_layer_4[];
+extern Gfx glaggle_cube_material_revert_render_settings[];

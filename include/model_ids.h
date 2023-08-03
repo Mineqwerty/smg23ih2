@@ -581,6 +581,9 @@
 #define MODEL_CQ_BRIDGE            0x138
 #define MODEL_JUMPMAN            0x139
 #define MODEL_SHADOW_PARTICLE            0x13A
+#define MODEL_GLAGGLE_CUBE            0x13B
+#define MODEL_GIGGLER            0x13C
+#define MODEL_GIGGLE_SUN            0x13D
 
 #endif
 

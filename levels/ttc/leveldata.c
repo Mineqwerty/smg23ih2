@@ -44,3 +44,9 @@
 #include "levels/ttc/spinner/collision.inc.c"
 #include "levels/ttc/areas/1/macro.inc.c"
 #include "levels/ttc/areas/1/movtext.inc.c"
+
+#include "levels/ttc/leveldata.inc.c"
+
+#include "levels/ttc/glaggle_cube/model.inc.c"
+#include "levels/ttc/giggler/model.inc.c"
+#include "levels/ttc/giggle_sun/model.inc.c"

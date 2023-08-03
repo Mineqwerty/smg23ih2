@@ -1810,7 +1810,6 @@ textures/segment2/segment2.05200.rgba16.png
 textures/segment2/segment2.05400.rgba16.png
 textures/segment2/segment2.05600.rgba16.png
 textures/segment2/segment2.05E00.rgba16.png
-textures/segment2/segment2.06000.rgba16.png
 textures/segment2/segment2.06200.rgba16.png
 textures/segment2/segment2.06280.rgba16.png
 textures/segment2/segment2.06300.rgba16.png
@@ -2037,7 +2036,6 @@ textures/sky/rr_textures.07000.rgba16.png
 textures/sky/rr_textures.07800.rgba16.png
 textures/sky/rr_textures.08000.rgba16.png
 textures/skyboxes/bidw.png
-textures/skyboxes/bitfs.png
 textures/skyboxes/bits.png
 textures/skyboxes/ccm.png
 textures/skyboxes/cloud_floor.png

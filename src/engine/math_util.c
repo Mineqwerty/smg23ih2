@@ -1092,6 +1092,12 @@ static u16 atan2_lookup(f32 y, f32 x) {
         : atans(y / x);
 }
 
+void elastic_approach_i_stole_from_cozies(f32 *cur, f32 *curVel, f32 goal, f32 speedDown, f32 speedUp) {
+    f32 diff = goal - *cur;
+    *curVel = approach_f32_asymptotic(*curVel, diff, *cur < goal ? speedUp : speedDown);
+    *cur = *cur + *curVel;
+}
+
 /**
  * Compute the angle from (0, 0) to (x, y) as a s16. Given that terrain is in
  * the xz-plane, this is commonly called with (z, x) to get a yaw angle.

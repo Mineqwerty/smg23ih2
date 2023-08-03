@@ -65,4 +65,13 @@ extern const Gfx ttc_dl_surface_treadmill[];
 // script
 extern const LevelScript level_ttc_entry[];
 
+
+#include "levels/ttc/header.inc.h"
+
+#include "levels/ttc/glaggle_cube/geo_header.h"
+
+#include "levels/ttc/giggler/geo_header.h"
+
+#include "levels/ttc/giggle_sun/geo_header.h"
+
 #endif

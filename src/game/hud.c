@@ -787,11 +787,11 @@ void render_hud(void) {
         }
 #endif
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
+        if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT && gCurrLevelNum != SMG32IH2_LEVEL_FBE) {
             render_hud_coins();
         }
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_STAR_COUNT) {
+        if (hudDisplayFlags & HUD_DISPLAY_FLAG_STAR_COUNT && gCurrLevelNum != SMG32IH2_LEVEL_FBE) {
             render_hud_stars();
         }
 
@@ -799,7 +799,7 @@ void render_hud(void) {
             render_hud_keys();
         }
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) {
+        if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER && gCurrLevelNum != SMG32IH2_LEVEL_FBE) {
             render_hud_power_meter();
 #ifdef PUPPYCAM
             if (!gPuppyCam.enabled) {
@@ -815,6 +815,13 @@ void render_hud(void) {
 
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_TIMER) {
             render_hud_timer();
+        }
+
+        if (gCurrLevelNum == SMG32IH2_LEVEL_FBE && gGlaggleMad == TRUE) {
+            ALIGNED8 static const Texture texture_glag[] = {
+                #include "actors/amp/glaggle_frown.rgba16.inc.c" 
+            };
+            render_multi_image(texture_glag, 0, 0, 320, 240, 0, 0, G_CYC_COPY);
         }
 
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG

@@ -29,3 +29,9 @@
 #include "levels/ttc/small_gear/geo.inc.c"
 #include "levels/ttc/large_gear/geo.inc.c"
 #include "levels/ttc/areas/1/geo.inc.c"
+
+#include "levels/ttc/geo.inc.c"
+
+#include "levels/ttc/glaggle_cube/geo.inc.c"
+#include "levels/ttc/giggler/geo.inc.c"
+#include "levels/ttc/giggle_sun/geo.inc.c"

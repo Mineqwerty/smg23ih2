@@ -13,6 +13,9 @@
 #define MARIO_ANIMS_POOL_SIZE 0x4000
 #define DEMO_INPUTS_POOL_SIZE 0x800
 
+#define FB_CHECK_ENABLED 11
+#define FB_CHECK_DISABLED 12
+
 struct GfxPool {
     Gfx buffer[GFX_POOL_SIZE];
     struct SPTask spTask;
@@ -59,6 +62,8 @@ extern u8 gPersonaBattleTransition;
 extern u8 gPersonaBattleTransitionTimer;
 extern u8 gChangeArea;
 extern u8 gPatchy;
+extern u8 gGlaggleMad;
+extern u8 gFBDisabled;
 extern u8 gCrashmaAudioThread;
 extern u16 gPatchyTimer;
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
