@@ -23,7 +23,7 @@ const LevelScript level_ending_entry_loop[] = {
 };
 
 const LevelScript level_load_screen_entry[] = {
-    CALL(/*arg*/ 0, /*func*/ init_load_screen_buffers),
+    CALL(/*arg*/ 2, /*func*/ init_load_screen_buffers),
     LOAD_LEVEL_DATA(ending),
     ALLOC_LEVEL_POOL(),
 
