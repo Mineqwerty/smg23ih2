@@ -155,6 +155,8 @@ void bhv_blockington_child_init(void) {
         o->oGoombaSize = 3;
     }
 
+    o->oBlockingtonChildStopTimer = (random_u16() % 12) + 3;
+
     o->oGoombaScale = sGoombaProperties[o->oGoombaSize].scale;
     o->oDeathSound = sGoombaProperties[o->oGoombaSize].deathSound;
 
@@ -231,7 +233,11 @@ static void mark_goomba_as_dead(void) {
 static void goomba_act_walk(void) {
     treat_far_home_as_mario(1000.0f);
 
-    obj_forward_vel_approach(o->oGoombaRelativeSpeed * o->oGoombaScale, 0.4f);
+    if (o->behavior == segmented_to_virtual(bhvBlockingtonChild) && o->oBlockingtonChildPauseFrames > 0) {
+        o->oForwardVel = 0.0f;
+    } else {
+        obj_forward_vel_approach(o->oGoombaRelativeSpeed * o->oGoombaScale, 0.4f);
+    }
 
     // If walking fast enough, play footstep sounds
     if (o->oGoombaRelativeSpeed > 4.0f / 3.0f && o->behavior != segmented_to_virtual(bhvBlockingtonChild)) {
@@ -448,9 +454,45 @@ void bhv_goomba_update(void) {
                 } else {
                     create_sound_spawner(SOUND_CUSTOM_BLOCKINGTON_NPC_CHILD_DEATH_0 + ((s32) get_blockington_death_sound() << 16));
                 }
+                o->oGraphYOffset = 0;
                 mark_goomba_as_dead();
+            } else {
+                if (o->oBlockingtonChildPauseFrames > 0) {
+                    o->oBlockingtonChildPauseFrames--;
+                    o->oGraphYOffset = 0.0f;
+                } else {
+                    if (o->oBlockingtonChildBounceHeight < 0xA800) {
+                        o->oBlockingtonChildBounceHeight += 0x900 + (random_u16() % 0x180);
+
+                        if (o->oBlockingtonChildBounceHeight >= 0xA800) {
+                            o->oBlockingtonChildStopTimer--;
+                            if (o->oBlockingtonChildStopTimer == 0) {
+                                o->oBlockingtonChildBounceHeight = 0x8000;
+                                o->oBlockingtonChildStopTimer = (random_u16() % 10) + 2;
+                                o->oBlockingtonChildPauseFrames = (random_u16() % 90) + 45;
+                            }
+                        }
+                    }
+                    if ((random_u16() % 2) == 0) {
+                        o->oBlockingtonChildBounceHeight = o->oBlockingtonChildBounceHeight % 0xA800;
+                    }
+
+                    if (o->oBlockingtonChildBounceHeight >= 0x8000) {
+                        o->oGraphYOffset = 0.0f;
+                    } else {
+                        o->oGraphYOffset = o->oBlockingtonChildBounceHeight / (f32) 0x4000;
+                        if (o->oGraphYOffset > 1.0f) {
+                            o->oGraphYOffset = 2.0f - o->oGraphYOffset;
+                        }
+                        if (cur_obj_has_model(MODEL_BLOCKINGTON_ADULT)) {
+                            o->oGraphYOffset *= 20.0f;
+                        } else {
+                            o->oGraphYOffset *= 14.0f;
+                        }
+                    }
+                }
             }
-        } else  {
+        } else {
             if (obj_handle_attacks(&sGoombaHitbox, GOOMBA_ACT_ATTACKED_MARIO,
                                 sGoombaAttackHandlers[o->oGoombaSize & 0x1])
                                 && (o->oAction != GOOMBA_ACT_ATTACKED_MARIO)) {

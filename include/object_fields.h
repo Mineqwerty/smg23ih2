@@ -677,6 +677,9 @@
 #define /*0x1B0*/ oZoomPosZ    OBJECT_FIELD_F32(0x4A)
 #endif
 #endif
+#define /*0x1AC*/ oBlockingtonChildBounceHeight OBJECT_FIELD_U32(0x49)
+#define /*0x1B0*/ oBlockingtonChildPauseFrames  OBJECT_FIELD_U32(0x4A)
+#define /*0x1C8*/ oBlockingtonChildStopTimer    OBJECT_FIELD_F32(0x50)
 
 /* Haunted Chair */
 #define /*0x0F4*/ oHauntedChairSpinTimer          OBJECT_FIELD_S32(0x1B)
