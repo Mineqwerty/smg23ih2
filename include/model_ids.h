@@ -575,15 +575,17 @@
 #define MODEL_ENEMY_SELECTOR              0x132
 #define MODEL_BLOCKINGTON                 0x133
 #define MODEL_BLOCKINGTON_MINI            0x134
-#define MODEL_CQ_GATE            0x135
-#define MODEL_CQ_DOOR            0x136
-#define MODEL_CQ_RED_CUBE            0x137
-#define MODEL_CQ_BRIDGE            0x138
-#define MODEL_JUMPMAN            0x139
-#define MODEL_SHADOW_PARTICLE            0x13A
-#define MODEL_GLAGGLE_CUBE            0x13B
-#define MODEL_GIGGLER            0x13C
-#define MODEL_GIGGLE_SUN            0x13D
+#define MODEL_BLOCKINGTON_CHILD           0x135
+#define MODEL_BLOCKINGTON_ADULT           0x136
+#define MODEL_CQ_GATE                     0x137
+#define MODEL_CQ_DOOR                     0x138
+#define MODEL_CQ_RED_CUBE                 0x139
+#define MODEL_CQ_BRIDGE                   0x13A
+#define MODEL_JUMPMAN                     0x13B
+#define MODEL_SHADOW_PARTICLE             0x13C
+#define MODEL_GLAGGLE_CUBE                0x13D
+#define MODEL_GIGGLER                     0x13E
+#define MODEL_GIGGLE_SUN                  0x13F
 
 #endif
 

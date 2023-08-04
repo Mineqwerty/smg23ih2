@@ -1613,6 +1613,7 @@ enum animIDsSwoop {
 #if defined(FLOOMBAS) && defined(INTRO_FLOOMBAS)
     #define FLOOMBA_ACT_STARTUP                             0x3
 #endif
+    #define GOOMBA_ACT_EARLY_RETURN                         0x4
     /* oAnimState */
     #define GOOMBA_ANIM_STATE_EYES_OPEN                     OBJ_BLINKING_ANIM_STATE_EYES_OPEN
     #define GOOMBA_ANIM_STATE_EYES_CLOSED                   OBJ_BLINKING_ANIM_STATE_EYES_CLOSED

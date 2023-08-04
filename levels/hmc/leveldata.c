@@ -71,3 +71,5 @@
 #include "levels/hmc/cq_red_cube/model.inc.c"
 #include "levels/hmc/cq_bridge/model.inc.c"
 #include "levels/hmc/cq_bridge/collision.inc.c"
+#include "levels/hmc/blockington_child/model.inc.c"
+#include "levels/hmc/blockington_adult/model.inc.c"

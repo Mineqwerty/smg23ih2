@@ -20,6 +20,18 @@ static struct ObjectHitbox sGoombaHitbox = {
     /* hurtboxHeight:     */ 60,
 };
 
+static struct ObjectHitbox sBlockingtonChildHitbox = {
+    /* interactType:      */ INTERACT_BOUNCE_TOP,
+    /* downOffset:        */ 0,
+    /* damageOrCoinValue: */ 1,
+    /* health:            */ 0,
+    /* numLootCoins:      */ 0,
+    /* radius:            */ 144,
+    /* height:            */ 250,
+    /* hurtboxRadius:     */ 84,
+    /* hurtboxHeight:     */ 200,
+};
+
 /**
  * Properties that vary based on goomba size.
  */
@@ -37,6 +49,8 @@ static struct GoombaProperties sGoombaProperties[] = {
     { 1.5f, SOUND_OBJ_ENEMY_DEATH_HIGH, 4000, 1 },
     { 3.5f, SOUND_OBJ_ENEMY_DEATH_LOW, 4000, 2 },
     { 0.5f, SOUND_OBJ_ENEMY_DEATH_HIGH, 1500, 0 },
+    { 1.0f, SOUND_OBJ_ENEMY_DEATH_HIGH, 20000, 0 },
+    { 1.0f, SOUND_OBJ_ENEMY_DEATH_LOW, 20000, 0 },
 };
 
 /**
@@ -60,6 +74,15 @@ static u8 sGoombaAttackHandlers[][6] = {
         /* ATTACK_GROUND_POUND_OR_TWIRL: */ ATTACK_HANDLER_SQUISHED_WITH_BLUE_COIN,
         /* ATTACK_FAST_ATTACK:           */ ATTACK_HANDLER_SPECIAL_HUGE_GOOMBA_WEAKLY_ATTACKED,
         /* ATTACK_FROM_BELOW:            */ ATTACK_HANDLER_SPECIAL_HUGE_GOOMBA_WEAKLY_ATTACKED,
+    },
+    // Blockington Child
+    {
+        /* ATTACK_PUNCH:                 */ ATTACK_HANDLER_SQUISHED,
+        /* ATTACK_KICK_OR_TRIP:          */ ATTACK_HANDLER_SQUISHED,
+        /* ATTACK_FROM_ABOVE:            */ ATTACK_HANDLER_SQUISHED,
+        /* ATTACK_GROUND_POUND_OR_TWIRL: */ ATTACK_HANDLER_SQUISHED,
+        /* ATTACK_FAST_ATTACK:           */ ATTACK_HANDLER_SQUISHED,
+        /* ATTACK_FROM_BELOW:            */ ATTACK_HANDLER_SQUISHED,
     },
 };
 
@@ -107,6 +130,27 @@ void bhv_goomba_triplet_spawner_update(void) {
 /**
  * Initialization function for goomba.
  */
+void bhv_blockington_child_init(void) {
+    o->oGoombaSize = 3;
+
+    if (cur_obj_has_model(MODEL_BLOCKINGTON_ADULT)) {
+        o->oGoombaSize = 4;
+    }
+
+    o->oGoombaScale = sGoombaProperties[o->oGoombaSize].scale;
+    o->oDeathSound = sGoombaProperties[o->oGoombaSize].deathSound;
+
+    obj_set_hitbox(o, &sBlockingtonChildHitbox);
+
+    o->oDrawingDistance = sGoombaProperties[o->oGoombaSize].drawDistance;
+    o->oDamageOrCoinValue = sGoombaProperties[o->oGoombaSize].damage;
+
+    o->oGravity = -8.0f / 3.0f * o->oGoombaScale;
+}
+
+/**
+ * Initialization function for goomba.
+ */
 void bhv_goomba_init(void) {
     o->oGoombaSize = o->oBehParams2ndByte & GOOMBA_BP_SIZE_MASK;
 
@@ -138,7 +182,9 @@ void bhv_goomba_init(void) {
  * Enter the jump action and set initial y velocity.
  */
 static void goomba_begin_jump(void) {
-    cur_obj_play_sound_2(SOUND_OBJ_GOOMBA_ALERT);
+    if (o->behavior != segmented_to_virtual(bhvBlockingtonChild)) {
+        cur_obj_play_sound_2(SOUND_OBJ_GOOMBA_ALERT);
+    }
 
     o->oAction = GOOMBA_ACT_JUMP;
     o->oForwardVel = 0.0f;
@@ -170,7 +216,7 @@ static void goomba_act_walk(void) {
     obj_forward_vel_approach(o->oGoombaRelativeSpeed * o->oGoombaScale, 0.4f);
 
     // If walking fast enough, play footstep sounds
-    if (o->oGoombaRelativeSpeed > 4.0f / 3.0f) {
+    if (o->oGoombaRelativeSpeed > 4.0f / 3.0f && o->behavior != segmented_to_virtual(bhvBlockingtonChild)) {
         cur_obj_play_sound_at_anim_range(2, 17, SOUND_OBJ_GOOMBA_WALK);
     }
 
@@ -192,7 +238,7 @@ static void goomba_act_walk(void) {
 
         if (!(o->oGoombaTurningAwayFromWall =
                   obj_bounce_off_walls_edges_objects(&o->oGoombaTargetYaw))) {
-            if (o->oDistanceToMario < 500.0f) {
+            if (o->oDistanceToMario < 500.0f && o->behavior != segmented_to_virtual(bhvBlockingtonChild)) {
                 // If close to mario, begin chasing him. If not already chasing
                 // him, jump first
 
@@ -208,10 +254,16 @@ static void goomba_act_walk(void) {
 
                 o->oGoombaRelativeSpeed = 4.0f / 3.0f;
 
+                if (o->behavior == segmented_to_virtual(bhvBlockingtonChild)) {
+                    o->oGoombaRelativeSpeed = 4.0f;
+                } else {
+                    o->oGoombaRelativeSpeed = 4.0f / 3.0f;
+                }
+
                 if (o->oGoombaWalkTimer != 0) {
                     o->oGoombaWalkTimer--;
                 } else {
-                    if (random_u16() & 3) {
+                    if ((random_u16() & 3) || o->behavior == segmented_to_virtual(bhvBlockingtonChild)) {
                         o->oGoombaTargetYaw = obj_random_fixed_turn(0x2000);
                         o->oGoombaWalkTimer = random_linear_offset(100, 100);
                     } else {
@@ -318,7 +370,7 @@ void bhv_goomba_update(void) {
         cur_obj_set_model(MODEL_GOOMBA_REAL);
     }
 
-    if (o->oAction == 4) {
+    if (o->oAction == GOOMBA_ACT_EARLY_RETURN) {
         return;
     }
 
@@ -367,20 +419,28 @@ void bhv_goomba_update(void) {
                 break;
 #endif
         }
-        if (obj_handle_attacks(&sGoombaHitbox, GOOMBA_ACT_ATTACKED_MARIO,
-                               sGoombaAttackHandlers[o->oGoombaSize & 0x1])
-                               && (o->oAction != GOOMBA_ACT_ATTACKED_MARIO)) {
-                                if (gCurrLevelNum == SMG23IH2_LEVEL_6) {
-                                    set_mario_action(gMarioState, ACT_PERSONA_BATTLE_TRANSITION, 0);
-                                    gPersonaBattleTransition = TRUE;
-                                    o->oAction = 4;
-                                    return;
-                                }
-                                else {
-                                    mark_goomba_as_dead();
-                                }
-            
-            
+        if (o->behavior == segmented_to_virtual(bhvBlockingtonChild)) {
+            s32 attackType = obj_handle_attacks(&sBlockingtonChildHitbox, GOOMBA_ACT_ATTACKED_MARIO, sGoombaAttackHandlers[2]);
+            if (attackType && (o->oAction != GOOMBA_ACT_ATTACKED_MARIO)) {
+                // if (sGoombaAttackHandlers[0][attackType] == ATTACK_HANDLER_KNOCKBACK) {
+                //     cur_obj_play_sound_2(SOUND_OBJ_STOMPED);
+                // }
+                mark_goomba_as_dead();
+            }
+        } else  {
+            if (obj_handle_attacks(&sGoombaHitbox, GOOMBA_ACT_ATTACKED_MARIO,
+                                sGoombaAttackHandlers[o->oGoombaSize & 0x1])
+                                && (o->oAction != GOOMBA_ACT_ATTACKED_MARIO)) {
+                                    if (gCurrLevelNum == SMG23IH2_LEVEL_6) {
+                                        set_mario_action(gMarioState, ACT_PERSONA_BATTLE_TRANSITION, 0);
+                                        gPersonaBattleTransition = TRUE;
+                                        o->oAction = GOOMBA_ACT_EARLY_RETURN;
+                                        return;
+                                    }
+                                    else {
+                                        mark_goomba_as_dead();
+                                    }
+            }
         }
 
         cur_obj_move_standard(-78);

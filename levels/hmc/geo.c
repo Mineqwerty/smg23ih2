@@ -30,3 +30,5 @@
 #include "levels/hmc/cq_door/geo.inc.c"
 #include "levels/hmc/cq_red_cube/geo.inc.c"
 #include "levels/hmc/cq_bridge/geo.inc.c"
+#include "levels/hmc/blockington_child/geo.inc.c"
+#include "levels/hmc/blockington_adult/geo.inc.c"

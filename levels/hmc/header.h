@@ -110,4 +110,8 @@ extern const LevelScript level_hmc_entry[];
 
 #include "levels/hmc/cq_bridge/collision_header.h"
 
+#include "levels/hmc/blockington_child/geo_header.h"
+
+#include "levels/hmc/blockington_adult/geo_header.h"
+
 #endif
