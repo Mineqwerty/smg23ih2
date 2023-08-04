@@ -953,9 +953,13 @@ you deserve...\n\
 ...a Ghoul Medal..."))
 
 DEFINE_DIALOG(DIALOG_086, 1, 3, 30, 200, _("\
-Running around in circles\n\
-makes some bad guys roll\n\
-their eyes."))
+ok i  think there\n\
+something wong with my\n\
+compter my rom manage is\n\
+being broke thenext leevel\n\
+sorry abiyt that i think\n\
+think it virus infect computer\n\
+"))
 
 DEFINE_DIALOG(DIALOG_087, 1, 4, 30, 200, _("\
 Santa Claus isn't the only\n\
