@@ -152,13 +152,17 @@ void bhv_persona_battle_manager_loop(void) {
                             gSelectedEnemy = 0;
                             select_enemy(selectedEnemy);
                             spawn_object(o, MODEL_ENEMY_SELECTOR, bhvEnemySelector);
-                            
+                            play_sound(SOUND_CUSTOM_MISC_P_CONFIRM, gGlobalSoundSource);
                         break;
                         case 1:
                             o->oAction = PERSONA_ACT_SELECT_SKILL;
                             gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_MAIN_TEXT);
                             gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_ATTACK_TEXT);
                             gPersonaMenuFlags |= PERSONA_MENU_FLAGS_SKILL_TEXT;
+                            play_sound(SOUND_CUSTOM_MISC_P_CONFIRM, gGlobalSoundSource);
+                        break;
+                        default:
+                            play_sound(SOUND_CUSTOM_MISC_P_INVALID, gGlobalSoundSource);
                         break;
                     }
                 }
@@ -283,6 +287,7 @@ void bhv_persona_battle_manager_loop(void) {
                     set_mario_animation(gMarioState, MARIO_ANIM_FIRST_PUNCH);
                     play_sound(SOUND_MARIO_PUNCH_YAH, gGlobalSoundSource);
                     gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT);
+                    play_sound(SOUND_ACTION_HIT_2, gGlobalSoundSource);
                     o->oSubAction++;
                 }
             break;
@@ -293,12 +298,14 @@ void bhv_persona_battle_manager_loop(void) {
                     o->oTimer = 0;
                     selectedEnemy = cur_obj_find_object_with_bparam_2nd_byte(bhvCowardlyMaya, gSelectedEnemy);
                     selectedEnemy->oAction = 4;
+                    
                 }
             break;
             case 2:
                 if (is_anim_at_end(gMarioState) && o->oTimer > 20) {
                     set_mario_animation(gMarioState, MARIO_ANIM_SECOND_PUNCH);
                     play_sound(SOUND_MARIO_PUNCH_WAH, gGlobalSoundSource);
+                    play_sound(SOUND_ACTION_HIT_2, gGlobalSoundSource);
                     o->oSubAction++;
                 }
             break;
@@ -527,6 +534,7 @@ void bhv_persona_battle_manager_loop(void) {
                 }
                 if (o->oTimer == 28) {
                     set_mario_animation(gMarioState, MARIO_ANIM_BACKWARD_KB);
+                    play_sound(SOUND_MARIO_OOOF2, gGlobalSoundSource);
                     gMarioState->health -= 256;
                     gPersonaMenuFlags &= ~(PERSONA_MENU_FLAGS_STRIKE_ATTACK_TEXT);
                 }

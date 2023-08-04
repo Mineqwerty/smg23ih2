@@ -160,6 +160,21 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "29_p_cancel"
+        },
+        "inst29": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2A_p_invalid"
+        },
+        "inst30": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2B_p_scroll"
+        },
+        "inst31": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2C_p_confirm"
         }
     },
     "instrument_list": [
@@ -191,6 +206,9 @@
         "inst25",
         "inst26",
         "inst27",
-        "inst28"
+        "inst28",
+        "inst29",
+        "inst30",
+        "inst31"
     ]
 }

@@ -8168,6 +8168,9 @@ sound_ref .sound_custom_misc_p_battle_start
 sound_ref .sound_custom_misc_p_menu_rotate
 sound_ref .sound_custom_misc_p_selector
 sound_ref .sound_custom_misc_p_cancel
+sound_ref .sound_custom_misc_p_invalid
+sound_ref .sound_custom_misc_p_scroll
+sound_ref .sound_custom_misc_p_confirm
 
 .sound_custom_misc_mario_maker_laugh_0:
 chan_setbank 5
@@ -8288,6 +8291,42 @@ chan_end
 
 .layer_custom_misc_p_cancel:
 layer_note1 39, 0x38, 127
+layer_end
+
+.sound_custom_misc_p_invalid:
+chan_setbank 5
+chan_setinstr 29
+chan_setval 0x20
+chan_call .set_reverb
+chan_setlayer 0, .layer_custom_misc_p_invalid
+chan_end
+
+.layer_custom_misc_p_invalid:
+layer_note1 39, 0x38, 127
+layer_end
+
+.sound_custom_misc_p_scroll:
+chan_setbank 5
+chan_setinstr 30
+chan_setval 0x20
+chan_call .set_reverb
+chan_setlayer 0, .layer_custom_misc_p_scroll
+chan_end
+
+.layer_custom_misc_p_scroll:
+layer_note1 39, 0x38, 127
+layer_end
+
+.sound_custom_misc_p_confirm:
+chan_setbank 5
+chan_setinstr 31
+chan_setval 0x20
+chan_call .set_reverb
+chan_setlayer 0, .layer_custom_misc_p_confirm
+chan_end
+
+.layer_custom_misc_p_confirm:
+layer_note1 39, 0x50, 127
 layer_end
 
 .channelB_table:

@@ -12,6 +12,7 @@ void bhv_jumpman_loop(void) {
             }
             if (o->oTimer == 40) {
                 spawn_triangle_break_particles(60, MODEL_CARTOON_STAR, 0.3f, o->oBehParams2ndByte);
+                play_sound(SOUND_GENERAL_BREAK_BOX, gGlobalSoundSource);
             }
             if (o->oTimer == 90) {
                 obj_mark_for_deletion(o);
@@ -25,6 +26,7 @@ void bhv_jumpman_loop(void) {
             }
             else {
                 o->oFaceAnglePitch -= 0x200;
+                play_sound(SOUND_AIR_BLOW_FIRE, gGlobalSoundSource);
             }
 
             if (o->oTimer == 90) {
