@@ -398,13 +398,13 @@ void play_transition_after_delay(s16 transType, s16 time, u8 red, u8 green, u8 b
 
 static const char puppyprintStr0[]  = "CLEARING MEMORY POOLS...";
 static const char puppyprintStr1[]  = "LOADING ASSETS...";
-static const char puppyprintStr2[]  = "CONFIGURING LEVEL SETTINGS...";
-static const char puppyprintStr3[]  = "PLACING OBJECTS...";
+static const char puppyprintStr2[]  = "ALLOCATING ADDITIONAL MEMORY...";
+static const char puppyprintStr3[]  = "DOWNLOADING MORE RAM...";
 static const char puppyprintStr4[]  = "TIMED OUT!";
 static const char puppyprintStr4b[] = "TRYING AGAIN...";
 static const char puppyprintStr5[]  = "<SHAKE>PLEASE WORK, DAMMIT!<SHAKE>";
 static const char puppyprintStr6[]  = "OKAY, THERE WE GO...";
-static const char puppyprintStr7[]  = "INITIALIZING AUDIO BUFFERS...";
+static const char puppyprintStr7[]  = "PLACING OBJECTS...";
 static const char puppyprintStr8[]  = "RENDERING LEVEL...";
 static const char puppyprintStr9[]  = "LOAD COMPLETE!";
 

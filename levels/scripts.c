@@ -206,7 +206,7 @@ const LevelScript script_func_global_1[] = {
     LOAD_MODEL_FROM_GEO(MODEL_CHUCKYA,                 chuckya_geo),
     LOAD_MODEL_FROM_GEO(MODEL_TRAJECTORY_MARKER_BALL,  bowling_ball_track_geo),
     LOAD_MODEL_FROM_GEO(MODEL_TITLE_SPONGE,            title_sponge_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_GOOMBA_REAL,                  goomba_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_GOOMBA_REAL,             goomba_geo),
     RETURN(),
 };
 
