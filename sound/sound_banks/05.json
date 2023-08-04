@@ -175,6 +175,26 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "2C_p_confirm"
+        },
+        "inst32": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2D_blockington_npc_death_0"
+        },
+        "inst33": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2E_blockington_npc_death_1"
+        },
+        "inst34": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2F_blockington_npc_death_2"
+        },
+        "inst35": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "30_blockington_npc_death_3"
         }
     },
     "instrument_list": [
@@ -209,6 +229,10 @@
         "inst28",
         "inst29",
         "inst30",
-        "inst31"
+        "inst31",
+        "inst32",
+        "inst33",
+        "inst34",
+        "inst35"
     ]
 }

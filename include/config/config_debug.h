@@ -26,7 +26,7 @@
  * This allows you to quickly test the level you're working on.
  * If you want the game to boot normally, just comment out the define again.
  */
-#define TEST_LEVEL SMG23IH2_LEVEL_6
+#define TEST_LEVEL SMG23IH2_LEVEL_4
 
 /**
  * Enables debug level select. Hold L while the game boots to turn it on.

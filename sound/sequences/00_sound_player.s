@@ -8171,6 +8171,14 @@ sound_ref .sound_custom_misc_p_cancel
 sound_ref .sound_custom_misc_p_invalid
 sound_ref .sound_custom_misc_p_scroll
 sound_ref .sound_custom_misc_p_confirm
+sound_ref .sound_custom_blockington_npc_death_0
+sound_ref .sound_custom_blockington_npc_death_1
+sound_ref .sound_custom_blockington_npc_death_2
+sound_ref .sound_custom_blockington_npc_death_3
+sound_ref .sound_custom_blockington_npc_child_death_0
+sound_ref .sound_custom_blockington_npc_child_death_1
+sound_ref .sound_custom_blockington_npc_child_death_2
+sound_ref .sound_custom_blockington_npc_child_death_3
 
 .sound_custom_misc_mario_maker_laugh_0:
 chan_setbank 5
@@ -8327,6 +8335,86 @@ chan_end
 
 .layer_custom_misc_p_confirm:
 layer_note1 39, 0x50, 127
+layer_end
+
+.sound_custom_blockington_npc_death_0:
+chan_setbank 5
+chan_setinstr 32
+chan_setlayer 0, .layer_custom_blockington_npc_death_0
+chan_end
+
+.layer_custom_blockington_npc_death_0:
+layer_note1 38, 0x30, 127
+layer_end
+
+.sound_custom_blockington_npc_death_1:
+chan_setbank 5
+chan_setinstr 33
+chan_setlayer 0, .layer_custom_blockington_npc_death_1
+chan_end
+
+.layer_custom_blockington_npc_death_1:
+layer_note1 38, 0x3d, 127
+layer_end
+
+.sound_custom_blockington_npc_death_2:
+chan_setbank 5
+chan_setinstr 34
+chan_setlayer 0, .layer_custom_blockington_npc_death_2
+chan_end
+
+.layer_custom_blockington_npc_death_2:
+layer_note1 38, 0x3c, 127
+layer_end
+
+.sound_custom_blockington_npc_death_3:
+chan_setbank 5
+chan_setinstr 35
+chan_setlayer 0, .layer_custom_blockington_npc_death_3
+chan_end
+
+.layer_custom_blockington_npc_death_3:
+layer_note1 38, 0x36, 127
+layer_end
+
+.sound_custom_blockington_npc_child_death_0:
+chan_setbank 5
+chan_setinstr 32
+chan_setlayer 0, .layer_custom_blockington_npc_child_death_0
+chan_end
+
+.layer_custom_blockington_npc_child_death_0:
+layer_note1 46, 0x1f, 127
+layer_end
+
+.sound_custom_blockington_npc_child_death_1:
+chan_setbank 5
+chan_setinstr 33
+chan_setlayer 0, .layer_custom_blockington_npc_child_death_1
+chan_end
+
+.layer_custom_blockington_npc_child_death_1:
+layer_note1 46, 0x26, 127
+layer_end
+
+.sound_custom_blockington_npc_child_death_2:
+chan_setbank 5
+chan_setinstr 34
+chan_setlayer 0, .layer_custom_blockington_npc_child_death_2
+chan_end
+
+.layer_custom_blockington_npc_child_death_2:
+layer_note1 46, 0x26, 127
+layer_end
+
+.sound_custom_blockington_npc_child_death_3:
+chan_setbank 5
+chan_setinstr 35
+chan_setlayer 0, .layer_custom_blockington_npc_child_death_3
+chan_end
+
+.layer_custom_blockington_npc_child_death_3:
+layer_note1 46, 0x22, 127
 layer_end
 
 .channelB_table:

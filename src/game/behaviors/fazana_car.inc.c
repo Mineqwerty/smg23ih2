@@ -13,6 +13,8 @@
 #define MINIMUM_PITCH_DRIVE 0.89f
 #define MAXIMUM_PITCH 3.35f
 
+#define DOOR_OPENING_CUTSCENE_DUR 68
+
 struct ObjectHitbox sFazanaCarHitbox = {
     /* interactType:      */ INTERACT_NONE,
     /* downOffset:        */ 0,
@@ -43,6 +45,9 @@ void bhv_fazana_car_init(void) {
     o->oBounciness = 0.225f;
     obj_set_hitbox(o, &sFazanaCarHitbox);
     cur_obj_become_tangible();
+
+    o->oFazanaCarLeftDoor = -1;
+    o->oFazanaCarRightDoor = -1;
 
     o->oFazanaCarBIndicator = spawn_object_relative(0x000B, 0, 0, 0, o, MODEL_NUMBER, bhvCarOrangeNumber);
     o->oFazanaCarLastGroundedY = o->oPosY;
@@ -215,20 +220,25 @@ void fazana_car_idle_loop(void) {
     o->oFazanaCarWheelRot = (s32) (o->oFazanaCarWheelRot + (ROTATION_CONSTANT * o->oForwardVel)) & 0xFFFF;
     o->oFazanaCarWheelTurn = 0;
 
-    if (o->oDistanceToMario < 300.0f && !(gTimeStopState & TIME_STOP_ENABLED)) {
+    if (
+      o->oDistanceToMario < 300.0f &&
+      !(gTimeStopState & TIME_STOP_ENABLED) &&
+      mario_ready_to_speak() &&
+      gMarioState->action != ACT_WAITING_FOR_DIALOG
+    ) {
         o->oFazanaCarBIndicator->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
 
         if (gPlayer1Controller->buttonPressed & B_BUTTON) {
-            o->oFazanaCarBIndicator->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
-            gMarioState->fazanaCar = o;
-            set_mario_action(gMarioState, ACT_FAZANA_CAR, 0);
-            o->oAction = FAZANA_CAR_ACT_DRIVE;
-            if (gMadeByBlakeoramoTimer < 0) {
-                gMadeByBlakeoramoTimer = 0;
+            u16 angleToMario = (u16) (obj_angle_to_object(o, gMarioObject) - o->oFaceAngleYaw);
+
+            if (angleToMario >= 0x8000) {
+                o->oFazanaCarRightDoor = 0;
+            } else {
+                o->oFazanaCarLeftDoor = 0;
             }
-            set_cam_angle(CAM_ANGLE_MARIO);
-            gCameraMovementFlags |= CAM_MOVE_ZOOMED_OUT;
-            sCameraSoundFlags = 0;
+
+            o->oFazanaCarBIndicator->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
+            set_mario_action(gMarioState, ACT_WAITING_FOR_DIALOG, 0);
         }
     } else {
         o->oFazanaCarBIndicator->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
@@ -248,6 +258,29 @@ void fazana_car_drive_loop(void) {
     }
 }
 
+static void bhv_fazana_car_update_door_rot(s32 *field) {
+    if (*field < 0) {
+        return;
+    }
+
+    (*field)++;
+
+    if (*field == (DOOR_OPENING_CUTSCENE_DUR * 4 / 10) && o->oAction == FAZANA_CAR_ACT_IDLE) {
+        o->oFazanaCarBIndicator->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
+        gMarioState->fazanaCar = o;
+        set_mario_action(gMarioState, ACT_FAZANA_CAR, 0);
+        o->oAction = FAZANA_CAR_ACT_DRIVE;
+        if (gMadeByBlakeoramoTimer < 0) {
+            gMadeByBlakeoramoTimer = 0;
+        }
+        set_cam_angle(CAM_ANGLE_MARIO);
+        gCameraMovementFlags |= CAM_MOVE_ZOOMED_OUT;
+        sCameraSoundFlags = 0;
+    } else if (*field >= DOOR_OPENING_CUTSCENE_DUR) {
+        *field = -1;
+    }
+}
+
 void bhv_fazana_car_loop(void) {
     switch(o->oAction) {
         case FAZANA_CAR_ACT_DRIVE:
@@ -261,7 +294,28 @@ void bhv_fazana_car_loop(void) {
 
     fazana_car_act_move();
 
+    bhv_fazana_car_update_door_rot(&o->oFazanaCarLeftDoor);
+    bhv_fazana_car_update_door_rot(&o->oFazanaCarRightDoor);
+
     o->oInteractStatus = INT_STATUS_NONE;
+}
+
+static s16 bhv_fazana_car_calculate_door_rot(f32 field) {
+    f32 val;
+
+    if (field < 0) {
+        return 0;
+    }
+
+    if (field < (f32) DOOR_OPENING_CUTSCENE_DUR / 3.0f) {
+        val = field / ((f32) DOOR_OPENING_CUTSCENE_DUR / 3.0f);
+    } else if (field > ((f32) DOOR_OPENING_CUTSCENE_DUR * 2.0f) / 3.0f) {
+        val = (((f32) DOOR_OPENING_CUTSCENE_DUR / 3.0f) - (field - (((f32) DOOR_OPENING_CUTSCENE_DUR * 2.0f) / 3.0f))) / ((f32) DOOR_OPENING_CUTSCENE_DUR / 3.0f);
+    } else {
+        val = 1.0f;
+    }
+
+    return (s16) (val * 0x3C00);
 }
 
 Gfx *car_front_wheels(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
@@ -294,12 +348,13 @@ Gfx *car_left_door(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
     if (callContext == GEO_CONTEXT_RENDER) {
         struct Object *obj = (struct Object *) gCurGraphNodeObject;
         struct GraphNodeTranslationRotation *rotNode = (struct GraphNodeTranslationRotation *) node->next;
+        s16 rot = bhv_fazana_car_calculate_door_rot(obj->oFazanaCarLeftDoor);
 
         rotNode->rotation[0] = 0;
-        rotNode->rotation[1] = -obj->oFazanaCarLeftDoor; // Negative Door angle
+        rotNode->rotation[1] = -rot; // Negative door angle
         rotNode->rotation[2] = 0;
-
     }
+
     return NULL;
 }
 
@@ -307,11 +362,12 @@ Gfx *car_right_door(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
     if (callContext == GEO_CONTEXT_RENDER) {
         struct Object *obj = (struct Object *) gCurGraphNodeObject;
         struct GraphNodeTranslationRotation *rotNode = (struct GraphNodeTranslationRotation *) node->next;
+        s16 rot = bhv_fazana_car_calculate_door_rot(obj->oFazanaCarRightDoor);
 
         rotNode->rotation[0] = 0;
-        rotNode->rotation[1] = obj->oFazanaCarRightDoor; // Positive door angle
+        rotNode->rotation[1] = rot; // Positive door angle
         rotNode->rotation[2] = 0;
-
     }
+
     return NULL;
 }

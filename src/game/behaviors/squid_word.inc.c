@@ -24,6 +24,7 @@ static void bhv_squid_word_idle(void) {
     if (
         lateral_dist_between_objects(o, gMarioObject) < 800.0f && 
         gMarioState->pos[1] >= 100.0f &&
+        gMarioState->action != ACT_GROUND_POUND &&
         (gMarioState->floor && gMarioState->floor->type == SURFACE_DEATH_PLANE)
     ) {
         cur_obj_unhide();

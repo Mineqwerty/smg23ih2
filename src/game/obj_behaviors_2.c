@@ -517,7 +517,11 @@ static void obj_set_knockback_action(s32 attackType) {
 }
 
 static void obj_set_squished_action(void) {
-    cur_obj_play_sound_2(SOUND_OBJ_STOMPED);
+    if (o->behavior == segmented_to_virtual(bhvBlockingtonChild)) {
+        play_sound(SOUND_ACTION_BOUNCE_OFF_OBJECT, gMarioObject->header.gfx.cameraToObject);
+    } else {
+        cur_obj_play_sound_2(SOUND_OBJ_STOMPED);
+    }
     o->oAction = OBJ_ACT_SQUISHED;
 }
 
@@ -569,9 +573,11 @@ static s32 obj_handle_attacks(struct ObjectHitbox *hitbox, s32 attackedMarioActi
                     break;
 
                 case ATTACK_HANDLER_KNOCKBACK:
-                    obj_set_knockback_action(attackType);
-                    break;
-
+                    if (o->behavior != segmented_to_virtual(bhvBlockingtonChild) || random_u16() % 3 == 0) {
+                        obj_set_knockback_action(attackType);
+                        break;
+                    }
+                    FALL_THROUGH;
                 case ATTACK_HANDLER_SQUISHED:
                     obj_set_squished_action();
                     break;

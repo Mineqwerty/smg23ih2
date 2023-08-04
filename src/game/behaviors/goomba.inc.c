@@ -49,8 +49,8 @@ static struct GoombaProperties sGoombaProperties[] = {
     { 1.5f, SOUND_OBJ_ENEMY_DEATH_HIGH, 4000, 1 },
     { 3.5f, SOUND_OBJ_ENEMY_DEATH_LOW, 4000, 2 },
     { 0.5f, SOUND_OBJ_ENEMY_DEATH_HIGH, 1500, 0 },
-    { 1.0f, SOUND_OBJ_ENEMY_DEATH_HIGH, 20000, 0 },
-    { 1.0f, SOUND_OBJ_ENEMY_DEATH_LOW, 20000, 0 },
+    { 1.0f, SOUND_OBJ_DEFAULT_DEATH, 20000, 0 },
+    { 1.0f, SOUND_OBJ_DEFAULT_DEATH, 20000, 0 },
 };
 
 /**
@@ -75,16 +75,34 @@ static u8 sGoombaAttackHandlers[][6] = {
         /* ATTACK_FAST_ATTACK:           */ ATTACK_HANDLER_SPECIAL_HUGE_GOOMBA_WEAKLY_ATTACKED,
         /* ATTACK_FROM_BELOW:            */ ATTACK_HANDLER_SPECIAL_HUGE_GOOMBA_WEAKLY_ATTACKED,
     },
-    // Blockington Child
-    {
-        /* ATTACK_PUNCH:                 */ ATTACK_HANDLER_SQUISHED,
-        /* ATTACK_KICK_OR_TRIP:          */ ATTACK_HANDLER_SQUISHED,
-        /* ATTACK_FROM_ABOVE:            */ ATTACK_HANDLER_SQUISHED,
-        /* ATTACK_GROUND_POUND_OR_TWIRL: */ ATTACK_HANDLER_SQUISHED,
-        /* ATTACK_FAST_ATTACK:           */ ATTACK_HANDLER_SQUISHED,
-        /* ATTACK_FROM_BELOW:            */ ATTACK_HANDLER_SQUISHED,
-    },
 };
+
+static u8 blockingtonNPCLastDeathSounds[2] = {0xFF, 0xFF};
+static u8 blockingtonNPCLastDeathSoundIndex = 0;
+static u8 get_blockington_death_sound(void) {
+    u8 low = blockingtonNPCLastDeathSounds[0];
+    u8 high = blockingtonNPCLastDeathSounds[1];
+    u8 ret = random_u16() % 2;
+
+    if (low > high) {
+        // Swap
+        u8 tmp = high;
+        high = low;
+        low = tmp;
+    }
+
+    if (ret >= low) {
+        ret++;
+    }
+    if (ret >= high) {
+        ret++;
+    }
+
+    blockingtonNPCLastDeathSounds[blockingtonNPCLastDeathSoundIndex] = ret;
+    blockingtonNPCLastDeathSoundIndex ^= 1;
+
+    return ret;
+}
 
 /**
  * Update function for goomba triplet spawner.
@@ -131,10 +149,10 @@ void bhv_goomba_triplet_spawner_update(void) {
  * Initialization function for goomba.
  */
 void bhv_blockington_child_init(void) {
-    o->oGoombaSize = 3;
-
     if (cur_obj_has_model(MODEL_BLOCKINGTON_ADULT)) {
         o->oGoombaSize = 4;
+    } else {
+        o->oGoombaSize = 3;
     }
 
     o->oGoombaScale = sGoombaProperties[o->oGoombaSize].scale;
@@ -201,7 +219,7 @@ static void mark_goomba_as_dead(void) {
         set_object_respawn_info_bits(
             o->parentObj, (o->oBehParams2ndByte & GOOMBA_BP_TRIPLET_FLAG_MASK) >> 2);
 
-        o->parentObj->oBehParams =
+    o->parentObj->oBehParams =
             o->parentObj->oBehParams | (o->oBehParams2ndByte & GOOMBA_BP_TRIPLET_FLAG_MASK) << 6;
     }
 }
@@ -420,11 +438,16 @@ void bhv_goomba_update(void) {
 #endif
         }
         if (o->behavior == segmented_to_virtual(bhvBlockingtonChild)) {
-            s32 attackType = obj_handle_attacks(&sBlockingtonChildHitbox, GOOMBA_ACT_ATTACKED_MARIO, sGoombaAttackHandlers[2]);
+            s32 attackType = obj_handle_attacks(&sBlockingtonChildHitbox, GOOMBA_ACT_ATTACKED_MARIO, sGoombaAttackHandlers[0]);
             if (attackType && (o->oAction != GOOMBA_ACT_ATTACKED_MARIO)) {
-                // if (sGoombaAttackHandlers[0][attackType] == ATTACK_HANDLER_KNOCKBACK) {
-                //     cur_obj_play_sound_2(SOUND_OBJ_STOMPED);
-                // }
+                if (sGoombaAttackHandlers[0][attackType] == ATTACK_HANDLER_KNOCKBACK) {
+                    play_sound(SOUND_ACTION_BOUNCE_OFF_OBJECT, gMarioObject->header.gfx.cameraToObject);
+                }
+                if (cur_obj_has_model(MODEL_BLOCKINGTON_ADULT)) {
+                    create_sound_spawner(SOUND_CUSTOM_BLOCKINGTON_NPC_DEATH_0 + ((s32) get_blockington_death_sound() << 16));
+                } else {
+                    create_sound_spawner(SOUND_CUSTOM_BLOCKINGTON_NPC_CHILD_DEATH_0 + ((s32) get_blockington_death_sound() << 16));
+                }
                 mark_goomba_as_dead();
             }
         } else  {
