@@ -41,6 +41,7 @@
 
 OSTime frameTimes[FRAMETIME_COUNT];
 u8 curFrameTimeIndex = 0;
+char personaStrBuf[2][128];
 
 #include "PR/os_convert.h"
 
@@ -400,35 +401,69 @@ void render_dl_skill_menu() {
 
 void s2d_print_deferred(int x, int y, const char *str);
 void render_persona_selector_text(void) {
-    s2d_init();
-	s2d_print_deferred(18, 185, optionText[gSelectedBattleCommand]);
+    if (gIsConsole) {
+        print_set_envcolour(160, 174, 186, 210);
+        print_small_text(14, 177, optionText[gSelectedBattleCommand], PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_VANILLA);
 
-    s2d_print_deferred(130, 210, optionDescriptionText[gSelectedBattleCommand]);
-	s2d_handle_deferred();
+        print_set_envcolour(140, 154, 166, 210);
+        print_small_text(126, 202, optionDescriptionText[gSelectedBattleCommand], PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_VANILLA);
+    } else {
+        s2d_init();
 
-	// reloads the original microcode; only needed once after all prints
-	s2d_stop();
+        sprintf(personaStrBuf[0], COLOR "160 174 186 210" SCALE "20" "%s", optionText[gSelectedBattleCommand]);
+        s2d_print_deferred(12, 179, personaStrBuf[0]);
+
+        sprintf(personaStrBuf[1], COLOR "140 154 166 210" SCALE "20" "%s", optionDescriptionText[gSelectedBattleCommand]);
+        s2d_print_deferred(124, 204, personaStrBuf[1]);
+        s2d_handle_deferred();
+
+        // reloads the original microcode; only needed once after all prints
+        s2d_stop();
+    }
 }
 
 void render_persona_skill_text(void) {
-    s2d_init();
-	s2d_print_deferred(70, 185, optionText[7]);
+    if (gIsConsole) {
+        print_set_envcolour(188, 99, 126, 210);
+        print_small_text(66, 175, optionText[7], PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_VANILLA);
 
-    if (gSelectedSkillIndex == 0) {
-        s2d_print_deferred(90, 128, COLOR "255 255 255 210" SCALE "20" "Bash");
-        s2d_print_deferred(90, 143, COLOR "20 20 20 210" SCALE "20" "Agi");
+        if (gSelectedSkillIndex == 0) {
+            print_set_envcolour(255, 255, 255, 210);
+            print_small_text(86, 120, "Bash", PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_VANILLA);
+            print_set_envcolour(20, 20, 20, 210);
+            print_small_text(86, 135, "Agi", PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_VANILLA);
+        }
+        else {
+            print_set_envcolour(20, 20, 20, 210);
+            print_small_text(86, 122, "Bash", PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_VANILLA);
+            print_set_envcolour(255, 255, 255, 210);
+            print_small_text(86, 135, "Agi", PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_VANILLA);
+        }
+
+        print_set_envcolour(140, 154, 166, 210);
+        print_small_text(126, 202, optionDescriptionText[gSelectedSkillIndex + 7], PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_VANILLA);
+    } else {
+        s2d_init();
+
+        sprintf(personaStrBuf[0], COLOR "188 99 126 210" SCALE "20" "%s", optionText[7]);
+        s2d_print_deferred(64, 177, personaStrBuf[0]);
+
+        if (gSelectedSkillIndex == 0) {
+            s2d_print_deferred(84, 122, COLOR "255 255 255 210" SCALE "20" "Bash");
+            s2d_print_deferred(84, 137, COLOR "20 20 20 210" SCALE "20" "Agi");
+        }
+        else {
+            s2d_print_deferred(84, 122, COLOR "20 20 20 210" SCALE "20" "Bash");
+            s2d_print_deferred(84, 137, COLOR "255 255 255 210" SCALE "20" "Agi");
+        }
+
+        sprintf(personaStrBuf[1], COLOR "140 154 166 210" SCALE "20" "%s", optionDescriptionText[gSelectedSkillIndex + 7]);
+        s2d_print_deferred(124, 204, personaStrBuf[1]);
+        s2d_handle_deferred();
+
+        // reloads the original microcode; only needed once after all prints
+        s2d_stop();
     }
-    else {
-        s2d_print_deferred(90, 128, COLOR "20 20 20 210" SCALE "20" "Bash");
-        s2d_print_deferred(90, 143, COLOR "255 255 255 210" SCALE "20" "Agi");
-    }
-
-    s2d_print_deferred(130, 210, optionDescriptionText[gSelectedSkillIndex + 7]);
-	s2d_handle_deferred();
-
-	// reloads the original microcode; only needed once after all prints
-	s2d_stop();
-    
 }
 
 void render_using_skill_text(void) {
@@ -447,19 +482,30 @@ void render_using_skill_text(void) {
             gSPDisplayList(gDisplayListHead++, &selectBox_selectWheel_002_mesh);
         gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
-    s2d_init();
 
-    if (gSelectedSkillIndex == 0) {
-        s2d_print_deferred(160, 40, COLOR "255 255 255 210" SCALE "20" "Bash");
-    }
-    else {
-        s2d_print_deferred(160, 40, COLOR "255 255 255 210" SCALE "20" "Agi");
-    }
+    if (gIsConsole) {
+        print_set_envcolour(255, 255, 255, 210);
+        if (gSelectedSkillIndex == 0) {
+            print_small_text(156, 32, "Bash", PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_VANILLA);
+        }
+        else {
+            print_small_text(156, 32, "Agi", PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_VANILLA);
+        }
+    } else {
+        s2d_init();
+
+        if (gSelectedSkillIndex == 0) {
+            s2d_print_deferred(154, 34, COLOR "255 255 255 210" SCALE "20" "Bash");
+        }
+        else {
+            s2d_print_deferred(154, 34, COLOR "255 255 255 210" SCALE "20" "Agi");
+        }
     
-	s2d_handle_deferred();
+        s2d_handle_deferred();
 
-	// reloads the original microcode; only needed once after all prints
-	s2d_stop();
+        // reloads the original microcode; only needed once after all prints
+        s2d_stop();
+    }
 }
 
 void render_strike_attack_text(void) {
@@ -478,15 +524,20 @@ void render_strike_attack_text(void) {
             gSPDisplayList(gDisplayListHead++, &selectBox_selectWheel_002_mesh);
         gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
-    s2d_init();
 
-        s2d_print_deferred(160, 40, COLOR "255 255 255 210" SCALE "20" "Strike Attack");
-    
-    
-	s2d_handle_deferred();
+    if (gIsConsole) {
+        print_set_envcolour(255, 255, 255, 210);
+        print_small_text(156, 32, "Strike Attack", PRINT_TEXT_ALIGN_LEFT, PRINT_ALL, FONT_VANILLA);
+    } else {
+        s2d_init();
 
-	// reloads the original microcode; only needed once after all prints
-	s2d_stop();
+        s2d_print_deferred(154, 34, COLOR "255 255 255 210" SCALE "20" "Strike Attack");
+        
+        s2d_handle_deferred();
+
+        // reloads the original microcode; only needed once after all prints
+        s2d_stop();
+    }
 }
 
 #ifdef BREATH_METER

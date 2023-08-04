@@ -55,7 +55,7 @@ const LevelScript level_bbh_entry[] = {
 		WARP_NODE(0x0A, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0xF0, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0xF1, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
-		OBJECT(MODEL_NONE, 3, 0, 2, 0, 0, 0, (4 << 8) | (255), bhvCheckpoint),
+		OBJECT(MODEL_NONE, 0, 0, 0, 0, 180, 0, (4 << 8) | (255), bhvCheckpoint),
 		OBJECT(MODEL_NONE, 0, 200, 0, 0, 0, 0, 0x000A0000, bhvSpinAirborneWarp),
 		MARIO_POS(0x01, 0, 0, 200, 0),
 		OBJECT(MODEL_NONE, -1007, 2014, 1391, 0, 0, 0, 0x00000000, bhvWhompChecker),

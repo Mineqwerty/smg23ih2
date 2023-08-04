@@ -573,6 +573,10 @@ void bhv_persona_battle_manager_loop(void) {
                 set_mario_animation(gMarioState, MARIO_ANIM_STAR_DANCE);
             }
 
+            if (o->oTimer == 42) {
+                play_sound(SOUND_MARIO_HERE_WE_GO, gMarioState->marioObj->header.gfx.cameraToObject);
+            }
+
             if (o->oTimer == 90) {
                 initiate_warp(LEVEL_RR, 1, 0x0A, 0);
             }

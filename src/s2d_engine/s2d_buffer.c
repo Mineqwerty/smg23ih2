@@ -19,9 +19,9 @@ void s2d_reset_defer_index(void) {
 // TODO: these DO NOT work
 // pls debug :)
 void s2d_print_deferred(int x, int y, const char *str) {
-	if (!gIsEmulator) {
-		x -= 6;
-		y -= 6;
+	if (gIsEmulator) {
+		x += 6;
+		y += 6;
 	}
 
 	s2d_charBuffer[s2d_charBuffer_index] = (char *) str;

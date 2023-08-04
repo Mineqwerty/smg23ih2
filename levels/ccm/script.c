@@ -59,7 +59,7 @@ const LevelScript level_ccm_entry[] = {
 		WARP_NODE(0xF0, LEVEL_ENDING, 0x02, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0xF1, LEVEL_HMC, 0x01, 0x0A, WARP_NO_CHECKPOINT),
 		WARP_NODE(0x0B, LEVEL_ENDING, 0x02, 0x0A, WARP_NO_CHECKPOINT),
-		OBJECT(MODEL_NONE, 0, 200, 0, 0, -90, 0, (1 << 16) | (4 << 8) | (255), bhvCheckpoint),
+		OBJECT(MODEL_NONE, 0, 200, 0, 0, 90, 0, (1 << 16) | (4 << 8) | (255), bhvCheckpoint),
 		OBJECT(MODEL_WOODEN_SIGNPOST, -1028, 0, 29, 0, 112, 0, (39 << 16), bhvMessagePanel),
 		OBJECT(MODEL_WOODEN_SIGNPOST, -2770, 13, 1333, 0, 178, 0, (40 << 16), bhvMessagePanel),
 		OBJECT(MODEL_WOODEN_SIGNPOST, -3822, 0, 843, 0, 119, 0, (42 << 16), bhvMessagePanel),
