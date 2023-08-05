@@ -8310,7 +8310,7 @@ chan_setlayer 0, .layer_custom_misc_p_invalid
 chan_end
 
 .layer_custom_misc_p_invalid:
-layer_note1 39, 0x38, 127
+layer_note1 39, 0x38, 79
 layer_end
 
 .sound_custom_misc_p_scroll:
@@ -8322,7 +8322,7 @@ chan_setlayer 0, .layer_custom_misc_p_scroll
 chan_end
 
 .layer_custom_misc_p_scroll:
-layer_note1 39, 0x38, 127
+layer_note1 39, 0x38, 79
 layer_end
 
 .sound_custom_misc_p_confirm:
@@ -8334,7 +8334,7 @@ chan_setlayer 0, .layer_custom_misc_p_confirm
 chan_end
 
 .layer_custom_misc_p_confirm:
-layer_note1 39, 0x50, 127
+layer_note1 39, 0x50, 79
 layer_end
 
 .sound_custom_blockington_npc_death_0:
@@ -8456,6 +8456,10 @@ sound_ref .sound_bktn_cs_final_1_0
 sound_ref .sound_bktn_cs_final_1_1
 sound_ref .sound_bktn_cs_final_1_2
 sound_ref .sound_bktn_cs_final_1_3
+sound_ref .sound_bktn_cs_adlib
+sound_ref .sound_bktn_cs_death_0
+sound_ref .sound_bktn_cs_death_1
+sound_ref .sound_bktn_cs_death_2
 
 .sound_bktn_oob:
 chan_setbank 11
@@ -9139,6 +9143,84 @@ layer_end
 
 .layer_bktn_cs_final_1_3:
 layer_note1 39, 0x26e, 127
+layer_end
+
+.sound_bktn_cs_adlib:
+chan_setbank 11
+chan_setinstr 38
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_adlib_echo
+chan_setlayer 1, .layer_bktn_cs_adlib
+chan_end
+
+.layer_bktn_cs_adlib_echo:
+layer_delay 0x10
+layer_somethingon
+.layer_bktn_cs_adlib_echo_loop:
+layer_note1 39, 0xaf7, 55
+layer_jump .layer_bktn_cs_adlib_echo_loop
+layer_end
+
+.layer_bktn_cs_adlib:
+layer_somethingon
+.layer_bktn_cs_adlib_loop:
+layer_note1 39, 0xaf7, 127
+layer_jump .layer_bktn_cs_adlib_loop
+layer_end
+
+.sound_bktn_cs_death_0:
+chan_setbank 11
+chan_setinstr 39
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_death_0_echo
+chan_setlayer 1, .layer_bktn_cs_death_0
+chan_end
+
+.layer_bktn_cs_death_0_echo:
+layer_delay 0x10
+layer_note1 39, 0x2f, 55
+layer_end
+
+.layer_bktn_cs_death_0:
+layer_note1 39, 0x2f, 127
+layer_end
+
+.sound_bktn_cs_death_1:
+chan_setbank 11
+chan_setinstr 40
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_death_1_echo
+chan_setlayer 1, .layer_bktn_cs_death_1
+chan_end
+
+.layer_bktn_cs_death_1_echo:
+layer_delay 0x10
+layer_note1 39, 0x28, 55
+layer_end
+
+.layer_bktn_cs_death_1:
+layer_note1 39, 0x28, 127
+layer_end
+
+.sound_bktn_cs_death_2:
+chan_setbank 11
+chan_setinstr 41
+chan_setval 0x10
+chan_call .set_reverb
+chan_setlayer 0, .layer_bktn_cs_death_2_echo
+chan_setlayer 1, .layer_bktn_cs_death_2
+chan_end
+
+.layer_bktn_cs_death_2_echo:
+layer_delay 0x10
+layer_note1 39, 0x200, 55
+layer_end
+
+.layer_bktn_cs_death_2:
+layer_note1 39, 0x200, 127
 layer_end
 
 .align 2, 0

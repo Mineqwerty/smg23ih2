@@ -956,7 +956,7 @@ DEFINE_DIALOG(DIALOG_086, 1, 3, 30, 200, _("\
 ok i  think there\n\
 something wong with my\n\
 compter my rom manage is\n\
-being broke thenext leevel\n\
+being hijack thenext leevel\n\
 sorry abiyt that i think\n\
 think it virus infect computer\n\
 "))

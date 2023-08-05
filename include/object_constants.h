@@ -293,6 +293,7 @@ enum OrangeNumbers { // oBehParams2ndByte, oAnimState
 enum FazanaCarActions {
     FAZANA_CAR_ACT_IDLE,
     FAZANA_CAR_ACT_DRIVE,
+    FAZANA_CAR_ACT_CUTSCENE,
 };
 
 /* Blockington Mini Actions */

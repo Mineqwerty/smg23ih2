@@ -197,6 +197,26 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "25_bktn_cs_final_1_3"
+        },
+        "inst38": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "26_blockington_cs_adlib"
+        },
+        "inst39": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "27_blockington_cs_death_0"
+        },
+        "inst40": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "28_blockington_cs_death_1"
+        },
+        "inst41": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "29_blockington_cs_death_2"
         }
     },
     "instrument_list": [
@@ -237,6 +257,10 @@
         "inst34",
         "inst35",
         "inst36",
-        "inst37"
+        "inst37",
+        "inst38",
+        "inst39",
+        "inst40",
+        "inst41"
     ]
 }

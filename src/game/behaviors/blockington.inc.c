@@ -10,8 +10,6 @@
 #define SCALE_VARIANCE_Y 0.5f
 #define SCALE_VARIANCE_Z 0.3f
 
-#define APPROACH_FRAMES 3
-
 
 #define BKTN_DIST_CAM_XZ 1600.0f
 #define BKTN_DIST_CAM_Y 250.0f
@@ -34,20 +32,28 @@ enum ActBlockington {
     BLOCKINGTON_ACT_TALK_AREA_2,
     BLOCKINGTON_ACT_MOVE_AREA_3,
     BLOCKINGTON_ACT_WAIT_AREA_3,
-    BLOCKINGTON_ACT_FINAL_CUTSCENE_TODO,
+    BLOCKINGTON_ACT_FINAL_CUTSCENE_TRANSITION,
+    BLOCKINGTON_ACT_FINAL_GET_OUT_OF_CAR,
+    BLOCKINGTON_ACT_FINAL_BKTN_MAD,
+    BLOCKINGTON_ACT_FINAL_BKTN_TANGENT,
+    BLOCKINGTON_ACT_FINAL_BKTN_SHOT,
 };
 
 struct BlockingtonStates sBlockington;
 
 const Vec3i angleLimitFactors = {0x3000, 0x1800, 0x1800};
 
+s32 approachFrames = 3;
+
 const Vec3f coordDests[3] = {
     {0.0f, 1750.0f + 351.0f, -7500.0f},
     {1000.0f, 4750.0f + 351.0f, 11250.0f},
-    {-27502.0f, 5768.0f + 351.0f, 22944.0f},
+    {-29002.0f, 5768.0f + 100.0f + 351.0f, 22944.0f},
 };
 
 void bhv_blockington_init(void) {
+    approachFrames = 3;
+
     cur_obj_scale(1.6f);
     vec3f_copy(&o->oHomeVec, &o->oPosVec);
     vec3i_copy(&o->oBlockingtonAngleHomeVec, &o->oFaceAngleVec);
@@ -79,14 +85,18 @@ void bhv_blockington_calculate_angle_scale_all(void) {
             return;
         }
 
-        isTalking = FALSE;
+        isTalking = (o->oAction == BLOCKINGTON_ACT_FINAL_BKTN_TANGENT);
     } else {
         isTalking = (o->oAction == ACT_BMINI_TALK);
+        
+        if (!isTalking && o->parentObj && o->parentObj->behavior == segmented_to_virtual(bhvBlockington)) {
+            isTalking = (o->parentObj->oAction == BLOCKINGTON_ACT_FINAL_BKTN_TANGENT);
+        }
     }
 
     sBlockington.updateVar = gGlobalTimer;
 
-    if (o->oTimer % APPROACH_FRAMES == 0) {
+    if (o->oTimer % approachFrames == 0) {
         if (isTalking) {
             sBlockington.goalAngle[0] = ((random_float() * 2.0f - 1.0f) * PITCH_VARIANCE);
             sBlockington.goalAngle[1] = ((random_float() * 2.0f - 1.0f) * YAW_VARIANCE);
@@ -105,13 +115,13 @@ void bhv_blockington_calculate_angle_scale_all(void) {
             sBlockington.goalScale[2] = 1.0f;
         }
 
-        sBlockington.approachAngle[0] = ((s16) ((u16) sBlockington.goalAngle[0] - (u16) sBlockington.curAngle[0])) / (s16) APPROACH_FRAMES;
-        sBlockington.approachAngle[1] = ((s16) ((u16) sBlockington.goalAngle[1] - (u16) sBlockington.curAngle[1])) / (s16) APPROACH_FRAMES;
-        sBlockington.approachAngle[2] = ((s16) ((u16) sBlockington.goalAngle[2] - (u16) sBlockington.curAngle[2])) / (s16) APPROACH_FRAMES;
+        sBlockington.approachAngle[0] = ((s16) ((u16) sBlockington.goalAngle[0] - (u16) sBlockington.curAngle[0])) / (s16) approachFrames;
+        sBlockington.approachAngle[1] = ((s16) ((u16) sBlockington.goalAngle[1] - (u16) sBlockington.curAngle[1])) / (s16) approachFrames;
+        sBlockington.approachAngle[2] = ((s16) ((u16) sBlockington.goalAngle[2] - (u16) sBlockington.curAngle[2])) / (s16) approachFrames;
         
-        sBlockington.approachScale[0] = (sBlockington.goalScale[0] - sBlockington.curScale[0]) / APPROACH_FRAMES;
-        sBlockington.approachScale[1] = (sBlockington.goalScale[1] - sBlockington.curScale[1]) / APPROACH_FRAMES;
-        sBlockington.approachScale[2] = (sBlockington.goalScale[2] - sBlockington.curScale[2]) / APPROACH_FRAMES;
+        sBlockington.approachScale[0] = (sBlockington.goalScale[0] - sBlockington.curScale[0]) / approachFrames;
+        sBlockington.approachScale[1] = (sBlockington.goalScale[1] - sBlockington.curScale[1]) / approachFrames;
+        sBlockington.approachScale[2] = (sBlockington.goalScale[2] - sBlockington.curScale[2]) / approachFrames;
     }
 
     vec3i_add(sBlockington.curAngle, sBlockington.approachAngle);
@@ -543,36 +553,194 @@ static void blockington_act_wait_area_3(void) {
         !(gTimeStopState & TIME_STOP_ENABLED) &&
         (gMarioState->action == ACT_FAZANA_CAR && gMarioState->fazanaCar && gMarioState->fazanaCar->oFloor != NULL)
     ) {
-        // TODO: final cutscene shit
-
-        FORCE_CRASH; // TODO: remove (obviously), but crashing here means success for now
         o->oAction++;
     }
 }
 
-static void blockington_act_final_cutscene_todo(void) {
+#define BLOCKINGTON_TRANSITION_TIME_OUT 16
+#define BLOCKINGTON_TRANSITION_TIME_IN 16
+extern void set_background_music(u16 a, u16 seqArgs, s16 fadeTimer);
+extern s16 object_step_without_floor_orient(void);
+static void blockington_act_final_cutscene_transition(void) {
+    if (o->oTimer == 0) {
+        play_transition(WARP_TRANSITION_FADE_INTO_COLOR, BLOCKINGTON_TRANSITION_TIME_OUT, 0x00, 0x00, 0x00);
+        fadeout_music((3 * BLOCKINGTON_TRANSITION_TIME_OUT / 2) * 8 - 2);
+    }
+    if (o->oTimer == BLOCKINGTON_TRANSITION_TIME_OUT) {
+        gTimeStopState |= TIME_STOP_ENABLED;
+        gCamera->cutscene = TRUE;
+        play_transition(WARP_TRANSITION_FADE_FROM_COLOR, BLOCKINGTON_TRANSITION_TIME_IN, 0x00, 0x00, 0x00);
 
+        set_background_music(0, SEQ_LEVEL_SNOW, 0);
+
+        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvFazanaCar, 0, 0);
+        if (!obj) {
+            error("No car found, that's kinda bad.");
+        }
+
+        set_mario_action(gMarioState, ACT_DISAPPEARED, 0);
+
+        obj->oAction = FAZANA_CAR_ACT_CUTSCENE;
+        obj->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
+        obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+        vec3f_copy(&obj->oPosVec, &o->oPosVec);
+        obj->oPosX += 2000;
+        obj->oPosZ += 0;
+        obj->oPosY = find_floor_height(obj->oPosX, obj->oPosY, obj->oPosZ);
+        obj->oForwardVel = 0.0f;
+        obj->oVelX = 0;
+        obj->oVelY = 0;
+        obj->oVelZ = 0;
+
+        vec3f_copy(gMarioState->pos, &obj->oPosVec);
+
+        vec3f_copy(gLakituState.goalFocus, &o->oPosVec);
+        vec3f_copy(gLakituState.goalPos, &o->oPosVec);
+
+        gLakituState.goalPos[0] = o->oPosX + 4500;
+        gLakituState.goalPos[1] = o->oPosY + 850;
+        gLakituState.goalPos[2] = o->oPosZ + 0;
+
+        vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
+        vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
+    }
+
+    if (o->oTimer == BLOCKINGTON_TRANSITION_TIME_OUT + (BLOCKINGTON_TRANSITION_TIME_IN / 2)) {
+        struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+        if (obj) {
+            obj->oBehParams = ((BKTN_DIA_CS_FINAL_0) << 16) | 20; // Top priority
+            obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+        } else {
+            o->oAction++;
+        }
+
+        // BlockingtonMini should update the next action
+    }
+}
+
+static void blockington_act_final_get_out_of_car(void) {
+    if (o->oTimer == 0) {
+        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvFazanaCar, 0, 0);
+        if (!obj) {
+            error("No car found, that's kinda bad.");
+        }
+
+        obj->oFazanaCarLeftDoor = 0;
+
+        vec3f_copy(gLakituState.goalFocus, &obj->oPosVec);
+        vec3f_copy(gLakituState.goalPos, &obj->oPosVec);
+
+        gLakituState.goalFocus[1] += 125;
+
+        gLakituState.goalPos[0] -= (1200 + 650);
+        gLakituState.goalPos[1] += (1000 + 400);
+        gLakituState.goalPos[2] += 350;
+        gLakituState.goalFocus[2] += 350;
+        gMarioState->pos[2] += 350;
+
+        vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
+        vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
+    } else if (o->oTimer > 45 && o->oTimer <= 90) {
+        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvFazanaCar, 0, 0);
+        if (!obj) {
+            error("No car found, that's kinda bad.");
+        }
+
+        f32 mult = coss(0x4000 * (f32) (o->oTimer - 45) / 45.0f);
+        gLakituState.goalPos[0] = obj->oPosX - ((mult * 1200) + 650);
+        gLakituState.goalPos[1] = obj->oPosY + ((mult * 1000) + 400);
+
+        vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
+    } 
+    
+    if (o->oTimer == 140) {
+        o->oAction++;
+    }
+}
+
+static void blockington_act_final_bktn_mad(void) {
+    if (o->oTimer == 0) {
+        vec3f_copy(gLakituState.goalFocus, &o->oPosVec);
+        vec3f_copy(gLakituState.goalPos, &o->oPosVec);
+
+        gLakituState.goalPos[0] = o->oPosX + 4500;
+        gLakituState.goalPos[1] = o->oPosY + 850;
+        gLakituState.goalPos[2] = o->oPosZ + 0;
+
+        vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
+        vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
+
+        struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+        if (obj) {
+            obj->oBehParams = ((BKTN_DIA_CS_FINAL_1) << 16) | 20; // Top priority
+            obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+        } else {
+            o->oAction++;
+        }
+
+        // BlockingtonMini should update the next action
+    }
+}
+
+static void blockington_act_final_bktn_tangent(void) {
+    if (o->oTimer == 0) {
+        approachFrames = 3;
+    }
+
+    if (o->oTimer == 135) {
+        approachFrames = 2;
+    }
+
+    if (o->oTimer == 270) {
+        approachFrames = 1;
+    }
+
+    // gLakituState.goalPos[0] = 0;
+    // gLakituState.goalPos[1] = 0;
+    // gLakituState.goalPos[2] = 0;
+
+    // vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
+    // vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
+
+    play_sound(SOUND_BLOCKINGTON_CS_ADLIB, gGlobalSoundSource);
+}
+
+static void blockington_act_final_bktn_shot(void) {
+    approachFrames = 3;
 }
 
 ObjActionFunc sBlockingtonActions[] = {
-    [BLOCKINGTON_ACT_SPAWN_WAIT]          = blockington_act_spawn_wait,
-    [BLOCKINGTON_ACT_TALK_MARIO]          = blockington_act_talk_mario,
-    [BLOCKINGTON_ACT_WAIT_CAR]            = blockington_act_wait_car,
-    [BLOCKINGTON_ACT_TALK_CAR]            = blockington_act_talk_car,
-    [BLOCKINGTON_ACT_WAIT_FOR_GATE]       = blockington_act_wait_for_gate,
-    [BLOCKINGTON_ACT_MOVE_AREA_1]         = blockington_act_move_area_1,
-    [BLOCKINGTON_ACT_WAIT_AREA_1]         = blockington_act_wait_area_1,
-    [BLOCKINGTON_ACT_TALK_AREA_1]         = blockington_act_talk_area_1,
-    [BLOCKINGTON_ACT_MOVE_AREA_2]         = blockington_act_move_area_2,
-    [BLOCKINGTON_ACT_WAIT_AREA_2]         = blockington_act_wait_area_2,
-    [BLOCKINGTON_ACT_TALK_AREA_2]         = blockington_act_talk_area_2,
-    [BLOCKINGTON_ACT_MOVE_AREA_3]         = blockington_act_move_area_3,
-    [BLOCKINGTON_ACT_WAIT_AREA_3]         = blockington_act_wait_area_3,
-    [BLOCKINGTON_ACT_FINAL_CUTSCENE_TODO] = blockington_act_final_cutscene_todo,
+    [BLOCKINGTON_ACT_SPAWN_WAIT]                = blockington_act_spawn_wait,
+    [BLOCKINGTON_ACT_TALK_MARIO]                = blockington_act_talk_mario,
+    [BLOCKINGTON_ACT_WAIT_CAR]                  = blockington_act_wait_car,
+    [BLOCKINGTON_ACT_TALK_CAR]                  = blockington_act_talk_car,
+    [BLOCKINGTON_ACT_WAIT_FOR_GATE]             = blockington_act_wait_for_gate,
+    [BLOCKINGTON_ACT_MOVE_AREA_1]               = blockington_act_move_area_1,
+    [BLOCKINGTON_ACT_WAIT_AREA_1]               = blockington_act_wait_area_1,
+    [BLOCKINGTON_ACT_TALK_AREA_1]               = blockington_act_talk_area_1,
+    [BLOCKINGTON_ACT_MOVE_AREA_2]               = blockington_act_move_area_2,
+    [BLOCKINGTON_ACT_WAIT_AREA_2]               = blockington_act_wait_area_2,
+    [BLOCKINGTON_ACT_TALK_AREA_2]               = blockington_act_talk_area_2,
+    [BLOCKINGTON_ACT_MOVE_AREA_3]               = blockington_act_move_area_3,
+    [BLOCKINGTON_ACT_WAIT_AREA_3]               = blockington_act_wait_area_3,
+    [BLOCKINGTON_ACT_FINAL_CUTSCENE_TRANSITION] = blockington_act_final_cutscene_transition,
+    [BLOCKINGTON_ACT_FINAL_GET_OUT_OF_CAR]      = blockington_act_final_get_out_of_car,
+    [BLOCKINGTON_ACT_FINAL_BKTN_MAD]            = blockington_act_final_bktn_mad,
+    [BLOCKINGTON_ACT_FINAL_BKTN_TANGENT]        = blockington_act_final_bktn_tangent,
+    [BLOCKINGTON_ACT_FINAL_BKTN_SHOT]           = blockington_act_final_bktn_shot,
 };
 
 void bhv_blockington_loop(void) {
     cur_obj_call_action_function(sBlockingtonActions);
+
+#ifdef ENABLE_DEBUG_FREE_MOVE
+    if (gPlayer1Controller->buttonPressed & L_TRIG) {
+        o->oAction = BLOCKINGTON_ACT_FINAL_CUTSCENE_TRANSITION;
+        vec3f_copy(&o->oPosVec, coordDests[2]);
+        vec3f_copy(&o->oHomeVec, coordDests[2]);
+        return;
+    }
+#endif
 
     bhv_blockington_calculate_angle_scale_all();
     switch (o->oAction) {

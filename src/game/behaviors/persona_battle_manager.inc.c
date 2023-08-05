@@ -216,7 +216,7 @@ void bhv_persona_battle_manager_loop(void) {
                     gSelectedEnemy = 0;
                 }
                 select_enemy(selectedEnemy);
-                play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
+                play_sound(SOUND_CUSTOM_MISC_P_SCROLL, gGlobalSoundSource);
             }
         }
         else if (gPlayer1Controller->rawStickX < -8) {
@@ -227,7 +227,7 @@ void bhv_persona_battle_manager_loop(void) {
                     gSelectedEnemy = 2;
                 }
                 select_enemy(selectedEnemy);
-                play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
+                play_sound(SOUND_CUSTOM_MISC_P_SCROLL, gGlobalSoundSource);
             }
         }
         else if (gPlayer1Controller->buttonPressed & B_BUTTON) {
@@ -363,7 +363,7 @@ void bhv_persona_battle_manager_loop(void) {
                     gPersonaMenuFlags |= PERSONA_MENU_FLAGS_MAIN_TEXT;
                 }
                 else if (gPlayer1Controller->rawStickY > 8) {
-                    play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
+                    play_sound(SOUND_CUSTOM_MISC_P_SCROLL, gGlobalSoundSource);
                     gSelectedSkillIndex++;
                     if (gSelectedSkillIndex == 2) {
                         gSelectedSkillIndex = 0;
@@ -372,7 +372,7 @@ void bhv_persona_battle_manager_loop(void) {
                     o->oSubAction = 2;
                 }
                 else if (gPlayer1Controller->rawStickY <= -8) {
-                    play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
+                    play_sound(SOUND_CUSTOM_MISC_P_SCROLL, gGlobalSoundSource);
                     gSelectedSkillIndex--;
                     if (gSelectedSkillIndex == -1) {
                         gSelectedSkillIndex = 1;
@@ -407,7 +407,7 @@ void bhv_persona_battle_manager_loop(void) {
                     gSelectedEnemy = 0;
                 }
                 select_enemy(selectedEnemy);
-                play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
+                play_sound(SOUND_CUSTOM_MISC_P_SCROLL, gGlobalSoundSource);
             }
         }
         else if (gPlayer1Controller->rawStickX < -8) {
@@ -418,7 +418,7 @@ void bhv_persona_battle_manager_loop(void) {
                     gSelectedEnemy = 2;
                 }
                 select_enemy(selectedEnemy);
-                play_sound(SOUND_CUSTOM_MISC_P_SELECTOR, gGlobalSoundSource);
+                play_sound(SOUND_CUSTOM_MISC_P_SCROLL, gGlobalSoundSource);
             }
         }
         else if (gPlayer1Controller->buttonPressed & B_BUTTON) {
@@ -578,6 +578,8 @@ void bhv_persona_battle_manager_loop(void) {
             }
 
             if (o->oTimer == 90) {
+                gMarioState->health = 0x880;
+                gHudDisplay.wedges = 8;
                 initiate_warp(LEVEL_RR, 1, 0x0A, 0);
             }
     break;

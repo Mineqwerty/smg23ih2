@@ -245,6 +245,21 @@ void fazana_car_idle_loop(void) {
     }
 }
 
+void fazana_car_cutscene_loop(void) {
+    if (o->oTimer == 0) {
+        gMarioState->fazanaCar = NULL;
+        o->oFazanaCarWheelTurn = 0;
+        o->oFazanaCarWheelRot = 0;
+        o->oFazanaCarRightDoor = -1;
+        o->oFazanaCarLeftDoor = -1;
+        o->oFazanaCarBIndicator->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
+        o->oFaceAngleYaw = 0xC000;
+        o->oMoveAngleYaw = o->oFaceAngleYaw;
+        
+        object_step_without_floor_orient();
+    }
+}
+
 void fazana_car_drive_loop(void) {
     fazana_car_set_forward_velocity_and_turn_wheels();
 
@@ -265,17 +280,21 @@ static void bhv_fazana_car_update_door_rot(s32 *field) {
 
     (*field)++;
 
-    if (*field == (DOOR_OPENING_CUTSCENE_DUR * 4 / 10) && o->oAction == FAZANA_CAR_ACT_IDLE) {
-        o->oFazanaCarBIndicator->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
-        gMarioState->fazanaCar = o;
-        set_mario_action(gMarioState, ACT_FAZANA_CAR, 0);
-        o->oAction = FAZANA_CAR_ACT_DRIVE;
-        if (gMadeByBlakeoramoTimer < 0) {
-            gMadeByBlakeoramoTimer = 0;
+    if (*field == DOOR_OPENING_CUTSCENE_DUR * 4 / 10) {
+        if (o->oAction == FAZANA_CAR_ACT_IDLE) {
+            o->oFazanaCarBIndicator->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
+            gMarioState->fazanaCar = o;
+            set_mario_action(gMarioState, ACT_FAZANA_CAR, 0);
+            o->oAction = FAZANA_CAR_ACT_DRIVE;
+            if (gMadeByBlakeoramoTimer < 0) {
+                gMadeByBlakeoramoTimer = 0;
+            }
+            set_cam_angle(CAM_ANGLE_MARIO);
+            gCameraMovementFlags |= CAM_MOVE_ZOOMED_OUT;
+            sCameraSoundFlags = 0;
+        } else if (o->oAction == FAZANA_CAR_ACT_CUTSCENE) {
+            // TODO:
         }
-        set_cam_angle(CAM_ANGLE_MARIO);
-        gCameraMovementFlags |= CAM_MOVE_ZOOMED_OUT;
-        sCameraSoundFlags = 0;
     } else if (*field >= DOOR_OPENING_CUTSCENE_DUR) {
         *field = -1;
     }
@@ -285,14 +304,17 @@ void bhv_fazana_car_loop(void) {
     switch(o->oAction) {
         case FAZANA_CAR_ACT_DRIVE:
             fazana_car_drive_loop();
+            fazana_car_act_move();
+            break;
+        case FAZANA_CAR_ACT_CUTSCENE:
+            fazana_car_cutscene_loop();
             break;
         case FAZANA_CAR_ACT_IDLE:
         default:
             fazana_car_idle_loop();
+            fazana_car_act_move();
             break;
     }
-
-    fazana_car_act_move();
 
     bhv_fazana_car_update_door_rot(&o->oFazanaCarLeftDoor);
     bhv_fazana_car_update_door_rot(&o->oFazanaCarRightDoor);
