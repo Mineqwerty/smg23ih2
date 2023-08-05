@@ -31,6 +31,8 @@ extern Texture load_screen_1[];
 extern Texture load_screen_2[];
 extern Texture load_screen_3[];
 extern Texture load_screen_4[];
+extern Texture bsod[];
+extern Texture patchy_textures_dma[];
 extern f32 intro_seg7_table_scale_1[];
 extern f32 intro_seg7_table_scale_2[];
 extern f32 intro_seg7_table_scale_penis[];

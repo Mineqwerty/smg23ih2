@@ -258,3 +258,7 @@ ALIGNED8 const Texture load_screen_3[] = {
 ALIGNED8 const Texture load_screen_4[] = {
 #include "actors/amp/load_screen_4.rgba16.inc.c"
 };
+
+ALIGNED8 const Texture bsod[] = {
+#include "actors/amp/bsod.rgba16.inc.c"
+};
