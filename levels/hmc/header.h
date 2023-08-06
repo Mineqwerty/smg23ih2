@@ -114,4 +114,10 @@ extern const LevelScript level_hmc_entry[];
 
 #include "levels/hmc/blockington_adult/geo_header.h"
 
+#include "levels/hmc/png_mario/geo_header.h"
+
+#include "levels/hmc/png_gun/geo_header.h"
+
+#include "levels/hmc/png_sunglasses/geo_header.h"
+
 #endif

@@ -25,6 +25,7 @@ enum BlockingtonDialogIDs {
     BKTN_DIA_CS_SECOND_AREA,
     BKTN_DIA_CS_FINAL_0,
     BKTN_DIA_CS_FINAL_1,
+    BKTN_DIA_CS_FINAL_DEATH,
 
     BKTN_DIA_COUNT,
 };

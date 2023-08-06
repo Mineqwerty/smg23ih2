@@ -40,7 +40,7 @@ struct TextureAddrs textureAddrs = {NULL, NULL};
 Texture *t0 = NULL;
 Texture *t1 = NULL;
 
-size_t lastSegment = -1;
+s32 lastSegment = -1;
 
 static Texture *loadScreenImages[5] = {
     load_screen_0,
@@ -276,13 +276,16 @@ Gfx *geo_patchy(s32 state, struct GraphNode *node, UNUSED void *context) {
         size_t offset;
         if (gPatchyTimer < PATCHY_DELAY_FRAMES) {
             offset = 0;
-        } else if (gPatchyTimer > PATCHY_DURATION) {
-            offset = TEXTURE_SIZE * ((PATCHY_DURATION - PATCHY_DELAY_FRAMES) / 4);
         } else {
             offset = TEXTURE_SIZE * ((gPatchyTimer - PATCHY_DELAY_FRAMES) / 4);
         }
 
-        if (gPatchyTimer >= PATCHY_DURATION + 4) {
+        if (lastSegment == -3) {
+            FORCE_CRASH; // Just in case
+        }
+
+        if (lastSegment == -2) {
+            lastSegment = -3;
             // Crash as many emulators as possible
             gAudioLoadLock = AUDIO_LOCK_LOADING;
             bzero(&gAiBuffers[0][0], (AIBUFFER_LEN * NUMAIBUFFERS));
@@ -292,14 +295,12 @@ Gfx *geo_patchy(s32 state, struct GraphNode *node, UNUSED void *context) {
             __asm__("SYNC");
         }
 
-        if (gPatchyTimer >= PATCHY_DURATION + 8) {
-            FORCE_CRASH; // Just in case
-        }
-
         gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
 
-        if (lastSegment != offset) {
+        if (lastSegment != (s32) offset) {
+            lastSegment = (s32) offset;
             if (gPatchyTimer > PATCHY_DURATION) {
+                lastSegment = -2;
                 dma_read_dma_seg(t0, segmented_to_virtual(bsod), segmented_to_virtual(bsod) + TEXTURE_SIZE);
             } else {
                 dma_read(t0, (u8 *) ((size_t) _patchySegmentRomStart + (size_t) offset + (size_t) segmented_to_virtual(patchy_textures_dma)),

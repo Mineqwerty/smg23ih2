@@ -32,3 +32,6 @@
 #include "levels/hmc/cq_bridge/geo.inc.c"
 #include "levels/hmc/blockington_child/geo.inc.c"
 #include "levels/hmc/blockington_adult/geo.inc.c"
+#include "levels/hmc/png_mario/geo.inc.c"
+#include "levels/hmc/png_gun/geo.inc.c"
+#include "levels/hmc/png_sunglasses/geo.inc.c"

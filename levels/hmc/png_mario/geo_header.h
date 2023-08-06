@@ -1,0 +1,14 @@
+extern const GeoLayout png_mario_geo[];
+extern Lights1 png_mario_png_mario_lights;
+extern u8 png_mario_png_mario_ci4[];
+extern u8 png_mario_png_mario_ci4_pal_rgba16[];
+extern u8 png_mario_png_mario_rear_ci4[];
+extern u8 png_mario_png_mario_rear_ci4_pal_rgba16[];
+extern Vtx png_mario_png_mario_sprite_mesh_layer_4_vtx_0[4];
+extern Gfx png_mario_png_mario_sprite_mesh_layer_4_tri_0[];
+extern Gfx mat_png_mario_png_mario[];
+extern Gfx mat_revert_png_mario_png_mario[];
+extern Gfx mat_png_mario_png_mario_rear[];
+extern Gfx mat_revert_png_mario_png_mario_rear[];
+extern Gfx png_mario_png_mario_sprite_mesh_layer_4[];
+extern Gfx png_mario_material_revert_render_settings[];

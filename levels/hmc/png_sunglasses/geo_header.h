@@ -1,0 +1,10 @@
+extern const GeoLayout png_sunglasses_geo[];
+extern Lights1 png_sunglasses_png_sunglasses_lights;
+extern u8 png_sunglasses_png_sunglasses_ci4[];
+extern u8 png_sunglasses_png_sunglasses_ci4_pal_ia16[];
+extern Vtx png_sunglasses_png_sunglasses_sprite_mesh_layer_4_vtx_0[4];
+extern Gfx png_sunglasses_png_sunglasses_sprite_mesh_layer_4_tri_0[];
+extern Gfx mat_png_sunglasses_png_sunglasses[];
+extern Gfx mat_revert_png_sunglasses_png_sunglasses[];
+extern Gfx png_sunglasses_png_sunglasses_sprite_mesh_layer_4[];
+extern Gfx png_sunglasses_material_revert_render_settings[];

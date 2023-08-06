@@ -586,6 +586,9 @@
 #define MODEL_GLAGGLE_CUBE                0x13D
 #define MODEL_GIGGLER                     0x13E
 #define MODEL_GIGGLE_SUN                  0x13F
+#define MODEL_PNG_MARIO                   0x140
+#define MODEL_PNG_GUN                     0x141
+#define MODEL_PNG_SUNGLASSES              0x142
 
 #endif
 

@@ -146,6 +146,11 @@ struct BlockingtonMiniDialog bMiniDiaCSFinal1[] = {
     {.lineCount = 2, .soundID = SOUND_BLOCKINGTON_CS_FINAL_1_3, .dialogStr = "I SHALL BANISH YOU TO THE CIRCLE REALM!\nDO YOU REALIZE WHAT YOU'VE DONE!?"},
 };
 
+// Cutscene Final Death
+struct BlockingtonMiniDialog bMiniDiaCSFinalDeath[] = {
+    {.lineCount = 1, .soundID = SOUND_BLOCKINGTON_CS_DEATH_2, .dialogStr = "...S-see you in hell...BLOCKAROOOO..."},
+};
+
 
 struct BlockingtonMiniDialogEntries bMiniDialogs[] = {
     [BKTN_DIA_OOB]                 = {.startAddr = bMiniDiaOOB,               .dialogCount = ARRAY_COUNT(bMiniDiaOOB),               .shouldRender = TRUE,  .allowRepeat = FALSE, .hasSpawned = FALSE},
@@ -171,6 +176,7 @@ struct BlockingtonMiniDialogEntries bMiniDialogs[] = {
     [BKTN_DIA_CS_SECOND_AREA]      = {.startAddr = bMiniDiaCSSecondArea,      .dialogCount = ARRAY_COUNT(bMiniDiaCSSecondArea),      .shouldRender = FALSE, .allowRepeat = TRUE,  .hasSpawned = FALSE},
     [BKTN_DIA_CS_FINAL_0]          = {.startAddr = bMiniDiaCSFinal0,          .dialogCount = ARRAY_COUNT(bMiniDiaCSFinal0),          .shouldRender = FALSE, .allowRepeat = TRUE,  .hasSpawned = FALSE},
     [BKTN_DIA_CS_FINAL_1]          = {.startAddr = bMiniDiaCSFinal1,          .dialogCount = ARRAY_COUNT(bMiniDiaCSFinal1),          .shouldRender = FALSE, .allowRepeat = TRUE,  .hasSpawned = FALSE},
+    [BKTN_DIA_CS_FINAL_DEATH]      = {.startAddr = bMiniDiaCSFinalDeath,      .dialogCount = ARRAY_COUNT(bMiniDiaCSFinalDeath),      .shouldRender = FALSE, .allowRepeat = TRUE,  .hasSpawned = FALSE},
 };
 
 STATIC_ASSERT(BKTN_DIA_COUNT == ARRAY_COUNT(bMiniDialogs), "MISSED A BLOCKINGTON DIALOG!");

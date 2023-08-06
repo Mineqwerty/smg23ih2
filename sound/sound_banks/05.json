@@ -195,6 +195,16 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "30_blockington_npc_death_3"
+        },
+        "inst36": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "31_car_door_open"
+        },
+        "inst37": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "32_car_door_shut"
         }
     },
     "instrument_list": [
@@ -233,6 +243,8 @@
         "inst32",
         "inst33",
         "inst34",
-        "inst35"
+        "inst35",
+        "inst36",
+        "inst37"
     ]
 }

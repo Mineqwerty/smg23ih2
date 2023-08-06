@@ -2081,6 +2081,7 @@ sound_ref .sound_peach_bake_a_cake
 sound_ref .sound_peach_for_mario
 sound_ref .sound_peach_mario2
 sound_ref .sound_mario_classic_death
+sound_ref .sound_mario_yahoo_unpitched
 
 .sound_mario_jump_hoo:
 chan_setbank 8
@@ -2144,6 +2145,16 @@ layer_somethingon
 layer_portamento_mario 0x85, 39, 255
 layer_note1_mario 42, 0x1e, 110
 layer_note1_mario 39, 0x41, 110
+layer_end
+
+.sound_mario_yahoo_unpitched:
+chan_setbank 8
+chan_setinstr 4
+chan_setlayer 0, .layer_mario_yahoo_unpitched
+chan_end
+
+.layer_mario_yahoo_unpitched:
+layer_note1_mario 39, 0x5b, 127
 layer_end
 
 .sound_mario_uh:
@@ -5148,6 +5159,8 @@ sound_ref .sound_obj_bowser_tail_pickup
 sound_ref .sound_obj_bowser_defeated
 sound_ref .sound_obj_bowser_spinning
 sound_ref .sound_obj_hidden_block_item
+sound_ref .sound_obj_car_door_open
+sound_ref .sound_obj_car_door_shut
 
 .sound_general_swish_water:
 chan_setbank 6
@@ -6751,6 +6764,28 @@ chan_end
 
 .layer_obj_hidden_block_item:
 layer_note1 39, 0x35, 127
+layer_end
+
+.sound_obj_car_door_open:
+chan_setbank 5
+chan_setinstr 36
+chan_setenvelope .envelope_car_door
+chan_setlayer 0, .layer_obj_car_door_open
+chan_end
+
+.layer_obj_car_door_open:
+layer_note1 39, 0x30, 111
+layer_end
+
+.sound_obj_car_door_shut:
+chan_setbank 5
+chan_setinstr 37
+chan_setenvelope .envelope_car_door
+chan_setlayer 0, .layer_obj_car_door_shut
+chan_end
+
+.layer_obj_car_door_shut:
+layer_note1 39, 0x2c, 119
 layer_end
 
 .channel6_table:
@@ -9402,3 +9437,8 @@ envelope_line 1000 32700
 envelope_line 10 16000
 envelope_line 200 32760
 envelope_goto 3
+
+.envelope_car_door:
+envelope_line 0 32700
+envelope_line 1 32700
+envelope_hang

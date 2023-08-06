@@ -625,8 +625,6 @@ static void blockington_act_final_get_out_of_car(void) {
             error("No car found, that's kinda bad.");
         }
 
-        obj->oFazanaCarLeftDoor = 0;
-
         vec3f_copy(gLakituState.goalFocus, &obj->oPosVec);
         vec3f_copy(gLakituState.goalPos, &obj->oPosVec);
 
@@ -637,23 +635,32 @@ static void blockington_act_final_get_out_of_car(void) {
         gLakituState.goalPos[2] += 350;
         gLakituState.goalFocus[2] += 350;
         gMarioState->pos[2] += 350;
+        gMarioState->faceAngle[1] = 0xC000;
+        gMarioObject->oFaceAngleYaw = gMarioState->faceAngle[1];
 
         vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
         vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
-    } else if (o->oTimer > 45 && o->oTimer <= 90) {
+    } else if (o->oTimer == 10) {
         struct Object *obj = find_first_object_with_behavior_and_bparams(bhvFazanaCar, 0, 0);
         if (!obj) {
             error("No car found, that's kinda bad.");
         }
 
-        f32 mult = coss(0x4000 * (f32) (o->oTimer - 45) / 45.0f);
+        obj->oFazanaCarLeftDoor = 0;
+    } else if (o->oTimer > 55 && o->oTimer <= 100) {
+        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvFazanaCar, 0, 0);
+        if (!obj) {
+            error("No car found, that's kinda bad.");
+        }
+
+        f32 mult = coss(0x4000 * (f32) (o->oTimer - 55) / 55.0f);
         gLakituState.goalPos[0] = obj->oPosX - ((mult * 1200) + 650);
         gLakituState.goalPos[1] = obj->oPosY + ((mult * 1000) + 400);
 
         vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
     } 
     
-    if (o->oTimer == 140) {
+    if (o->oTimer == 150) {
         o->oAction++;
     }
 }

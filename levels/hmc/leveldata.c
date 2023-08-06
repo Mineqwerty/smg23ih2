@@ -73,3 +73,6 @@
 #include "levels/hmc/cq_bridge/collision.inc.c"
 #include "levels/hmc/blockington_child/model.inc.c"
 #include "levels/hmc/blockington_adult/model.inc.c"
+#include "levels/hmc/png_mario/model.inc.c"
+#include "levels/hmc/png_gun/model.inc.c"
+#include "levels/hmc/png_sunglasses/model.inc.c"

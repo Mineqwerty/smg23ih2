@@ -420,6 +420,8 @@ void bhv_mario_maker_laugh_init(void);
 void bhv_mario_maker_laugh_loop(void);
 void bhv_babomb_excivatoin_letter_init(void);
 void bhv_babomb_excivatoin_letter_loop(void);
+void bhv_static_png_init(void);
+void bhv_static_png_loop(void);
 void bhv_fazana_car_init(void);
 void bhv_fazana_car_loop(void);
 void bhv_ticket_muncher_sound_loop(void);

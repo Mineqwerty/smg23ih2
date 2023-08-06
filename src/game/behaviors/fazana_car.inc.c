@@ -276,6 +276,8 @@ void fazana_car_drive_loop(void) {
 static void bhv_fazana_car_update_door_rot(s32 *field) {
     if (*field < 0) {
         return;
+    } else if (*field == 0) {
+        cur_obj_play_sound_2(SOUND_OBJ_CAR_DOOR_OPEN);
     }
 
     (*field)++;
@@ -293,9 +295,18 @@ static void bhv_fazana_car_update_door_rot(s32 *field) {
             gCameraMovementFlags |= CAM_MOVE_ZOOMED_OUT;
             sCameraSoundFlags = 0;
         } else if (o->oAction == FAZANA_CAR_ACT_CUTSCENE) {
-            // TODO:
+            play_sound(SOUND_MARIO_YAHOO_UNPITCHED, gMarioObject->header.gfx.cameraToObject);
+            struct Object *obj = spawn_object(gMarioObject, MODEL_PNG_MARIO, bhvStaticPNG);
+            if (!obj) {
+                error("Mario no spawn!");
+            }
+
+            obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+            obj->oBehParams = (1) << 16;
+            obj->oBehParams2ndByte = GET_BPARAM2(obj->oBehParams);
         }
     } else if (*field >= DOOR_OPENING_CUTSCENE_DUR) {
+        cur_obj_play_sound_2(SOUND_OBJ_CAR_DOOR_SHUT);
         *field = -1;
     }
 }
