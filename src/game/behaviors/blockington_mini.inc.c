@@ -14,6 +14,8 @@ u8 sBlockingtonCameraOverridden = FALSE;
 Vec3f sBlockingtonCameraBackupPos;
 Vec3f sBlockingtonCameraBackupFocus;
 
+s16 cameraCutsceneYaw;
+
 void bhv_blockington_mini_init(void) {
     u32 bparam2 = BPARAM2;
     if (bparam2 >= BKTN_DIA_COUNT || (bMiniDialogs[bparam2].allowRepeat == FALSE && bMiniDialogs[bparam2].hasSpawned == TRUE)) {
@@ -138,6 +140,54 @@ static void bhv_blockington_mini_set_special_camera_overrides(void) {
                     }
                 }
                 break;
+            case BKTN_DIA_CS_FINAL_1:
+            if (o->oBMiniDialogIndex == 0) {
+                if (o->oAction == ACT_BMINI_WAITING_TO_TALK && o->oTimer < BMINI_ANIM_WAIT / 2) {
+                    break;
+                }
+
+                if (o->parentObj && o->parentObj->behavior == segmented_to_virtual(bhvBlockington)) {
+                    cameraOverride = TRUE;
+                    focus[0] = o->parentObj->oPosX;
+                    focus[1] = o->parentObj->oPosY + 150.0f;
+                    focus[2] = o->parentObj->oPosZ;
+                    pos[0] = o->parentObj->oPosX + 1500.0f;
+                    pos[1] = o->parentObj->oPosY + 300.0f;
+                    pos[2] = o->parentObj->oPosZ;
+                }
+            } else if (o->oBMiniDialogIndex == 1) {
+                cameraOverride = TRUE;
+                if (o->oAction == ACT_BMINI_WAITING_TO_TALK && o->oTimer == 0) {
+                    pos[1] = gMarioObject->oPosY + 250.0f;
+                    vec3f_copy(focus, &gMarioObject->oPosVec);
+                    focus[1] += 125.0f;
+
+                    cameraCutsceneYaw = 0xB000;
+                } else {
+                    vec3f_copy(focus, gLakituState.curFocus);
+                    vec3f_copy(pos, gLakituState.curPos);
+                }
+
+                f32 dist = 750.0f;
+                pos[0] = focus[0] + (dist * sins(cameraCutsceneYaw));
+                pos[2] = focus[2] + (dist * coss(cameraCutsceneYaw));
+
+                cameraCutsceneYaw += 0x50;
+            } else if (o->oBMiniDialogIndex == 3) {
+                if (o->oAction == ACT_BMINI_WAITING_TO_TALK && o->oTimer < BMINI_ANIM_WAIT / 2) {
+                    break;
+                }
+
+                if (o->parentObj && o->parentObj->behavior == segmented_to_virtual(bhvBlockington)) {
+                    gLakituState.goalPos[0] = o->parentObj->oPosX + 1500.0f;
+                    gLakituState.goalPos[1] = o->parentObj->oPosY + 300.0f;
+                    gLakituState.goalPos[2] = o->parentObj->oPosZ + 0.0f;
+
+                    gLakituState.goalFocus[1] = o->parentObj->oPosY + 150.0f;
+                    vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
+                    vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
+                }
+            }
         }
     }
 

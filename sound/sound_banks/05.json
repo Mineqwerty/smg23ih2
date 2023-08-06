@@ -205,6 +205,16 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "32_car_door_shut"
+        },
+        "inst38": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "33_gun_draw"
+        },
+        "inst39": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "34_gun_fire"
         }
     },
     "instrument_list": [
@@ -245,6 +255,8 @@
         "inst34",
         "inst35",
         "inst36",
-        "inst37"
+        "inst37",
+        "inst38",
+        "inst39"
     ]
 }

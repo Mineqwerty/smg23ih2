@@ -2150,6 +2150,8 @@ layer_end
 .sound_mario_yahoo_unpitched:
 chan_setbank 8
 chan_setinstr 4
+chan_setval 0x80 // No reverb
+chan_call .set_reverb
 chan_setlayer 0, .layer_mario_yahoo_unpitched
 chan_end
 
@@ -8214,6 +8216,8 @@ sound_ref .sound_custom_blockington_npc_child_death_0
 sound_ref .sound_custom_blockington_npc_child_death_1
 sound_ref .sound_custom_blockington_npc_child_death_2
 sound_ref .sound_custom_blockington_npc_child_death_3
+sound_ref .sound_custom_misc_gun_draw
+sound_ref .sound_custom_misc_gun_fire
 
 .sound_custom_misc_mario_maker_laugh_0:
 chan_setbank 5
@@ -8450,6 +8454,28 @@ chan_end
 
 .layer_custom_blockington_npc_child_death_3:
 layer_note1 46, 0x22, 127
+layer_end
+
+.sound_custom_misc_gun_draw:
+chan_setbank 5
+chan_setinstr 38
+chan_setval 0x80 // No reverb
+chan_call .set_reverb
+chan_setlayer 0, .layer_custom_misc_gun_draw
+chan_end
+
+.layer_custom_misc_gun_draw:
+layer_note1 39, 0x3a, 127
+layer_end
+
+.sound_custom_misc_gun_fire:
+chan_setbank 5
+chan_setinstr 39
+chan_setlayer 0, .layer_custom_misc_gun_fire
+chan_end
+
+.layer_custom_misc_gun_fire:
+layer_note1 39, 0x4f, 127
 layer_end
 
 .channelB_table:
@@ -9165,7 +9191,7 @@ layer_end
 .sound_bktn_cs_final_1_3:
 chan_setbank 11
 chan_setinstr 37
-chan_setval 0x10
+chan_setval 0x4f
 chan_call .set_reverb
 chan_setlayer 0, .layer_bktn_cs_final_1_3_echo
 chan_setlayer 1, .layer_bktn_cs_final_1_3

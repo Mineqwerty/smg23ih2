@@ -573,6 +573,8 @@ static void blockington_act_final_cutscene_transition(void) {
 
         set_background_music(0, SEQ_LEVEL_SNOW, 0);
 
+        gHudDisplay.flags = HUD_DISPLAY_NONE;
+
         struct Object *obj = find_first_object_with_behavior_and_bparams(bhvFazanaCar, 0, 0);
         if (!obj) {
             error("No car found, that's kinda bad.");
@@ -625,18 +627,19 @@ static void blockington_act_final_get_out_of_car(void) {
             error("No car found, that's kinda bad.");
         }
 
-        vec3f_copy(gLakituState.goalFocus, &obj->oPosVec);
-        vec3f_copy(gLakituState.goalPos, &obj->oPosVec);
-
-        gLakituState.goalFocus[1] += 125;
-
-        gLakituState.goalPos[0] -= (1200 + 650);
-        gLakituState.goalPos[1] += (1000 + 400);
-        gLakituState.goalPos[2] += 350;
-        gLakituState.goalFocus[2] += 350;
         gMarioState->pos[2] += 350;
         gMarioState->faceAngle[1] = 0xC000;
         gMarioObject->oFaceAngleYaw = gMarioState->faceAngle[1];
+
+        vec3f_copy(gLakituState.goalFocus, &obj->oPosVec);
+        vec3f_copy(gLakituState.goalPos, &obj->oPosVec);
+
+        gLakituState.goalFocus[1] += 150;
+        gLakituState.goalFocus[2] += 350;
+
+        gLakituState.goalPos[0] = gLakituState.goalFocus[0] - (1250 + 400);
+        gLakituState.goalPos[1] = gLakituState.goalFocus[1] + (1000 + 125);
+        gLakituState.goalPos[2] = gLakituState.goalFocus[2];
 
         vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
         vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
@@ -653,9 +656,9 @@ static void blockington_act_final_get_out_of_car(void) {
             error("No car found, that's kinda bad.");
         }
 
-        f32 mult = coss(0x4000 * (f32) (o->oTimer - 55) / 55.0f);
-        gLakituState.goalPos[0] = obj->oPosX - ((mult * 1200) + 650);
-        gLakituState.goalPos[1] = obj->oPosY + ((mult * 1000) + 400);
+        f32 mult = coss(0x4000 * (f32) (o->oTimer - 55) / 45.0f);
+        gLakituState.goalPos[0] = gLakituState.goalFocus[0] - ((mult * 1250) + 400);
+        gLakituState.goalPos[1] = gLakituState.goalFocus[1] + ((mult * 1000) + 125);
 
         vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
     } 
@@ -692,6 +695,23 @@ static void blockington_act_final_bktn_mad(void) {
 static void blockington_act_final_bktn_tangent(void) {
     if (o->oTimer == 0) {
         approachFrames = 3;
+
+        gLakituState.goalPos[0] = o->oPosX + 0;
+        gLakituState.goalPos[1] = o->oPosY + 500;
+        gLakituState.goalPos[2] = o->oPosZ + 2500;
+        gLakituState.goalPos[0] += 1450;
+
+        vec3f_copy(gLakituState.goalFocus, &o->oPosVec);
+        gLakituState.goalFocus[0] += 1050;
+        gLakituState.goalFocus[2] += 125;
+    
+        vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
+        vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
+
+        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (1) << 16, 0x00FF0000);
+        if (obj) {
+            obj->oFaceAngleYaw += 0x2000;
+        }
     }
 
     if (o->oTimer == 135) {
