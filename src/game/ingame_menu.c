@@ -323,6 +323,29 @@ void render_generic_char(u8 c) {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_tex_settings);
 }
 
+extern const Vtx vertex_ia8_char_16[];
+void render_generic_char_16(u8 c) {
+    void **fontLUT = segmented_to_virtual(main_font_lut);
+    void *packedTexture = segmented_to_virtual(fontLUT[c]);
+#if MULTILANG
+    void *unpackedTexture = alloc_ia4_tex_from_i1(packedTexture, 8, 8);
+
+    gDPPipeSync(gDisplayListHead++);
+    gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_IA, G_IM_SIZ_16b, 1, VIRTUAL_TO_PHYSICAL(unpackedTexture));
+#else
+    gDPPipeSync(gDisplayListHead++);
+    gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_IA, G_IM_SIZ_16b, 1, VIRTUAL_TO_PHYSICAL(packedTexture));
+#endif
+
+    gDPSetTile(gDisplayListHead++, G_IM_FMT_IA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, (G_TX_WRAP | G_TX_MIRROR), 4, G_TX_NOLOD, (G_TX_WRAP | G_TX_MIRROR), 4, G_TX_NOLOD);
+    gDPLoadSync(gDisplayListHead++);
+    gDPLoadBlock(gDisplayListHead++, G_TX_LOADTILE, 0, 0, ((((16 * 16) + G_IM_SIZ_4b_INCR) >> G_IM_SIZ_4b_SHIFT) - 1), CALC_DXT(16, G_IM_SIZ_4b_BYTES));
+    gDPSetTile(gDisplayListHead++, G_IM_FMT_IA, G_IM_SIZ_4b, 1, 0, G_TX_RENDERTILE, 0, (G_TX_WRAP | G_TX_MIRROR), 4, G_TX_NOLOD, (G_TX_WRAP | G_TX_MIRROR), 4, G_TX_NOLOD);
+    gDPSetTileSize(gDisplayListHead++, 0, 0, 0, ((16 - 1) << G_TEXTURE_IMAGE_FRAC), ((16 - 1) << G_TEXTURE_IMAGE_FRAC));
+    gSPVertex(gDisplayListHead++, vertex_ia8_char_16, 4, 0);
+    gSP2Triangles(gDisplayListHead++, 0,  1,  2, 0x0, 0,  2,  3, 0x0);
+}
+
 
 struct MultiTextEntry {
     u8 length;
@@ -1646,18 +1669,18 @@ void render_widescreen_setting(void) {
 #endif
 
 void render_pause_my_score_coins(void) {
-    u8 textCourse[] = { TEXT_COURSE };
+    // u8 textCourse[] = { TEXT_COURSE };
     u8 textMyScore[] = { TEXT_MY_SCORE };
-    u8 textStar[] = { TEXT_STAR };
-    u8 textUnfilledStar[] = { TEXT_UNFILLED_STAR };
+    // u8 textStar[] = { TEXT_STAR };
+    // u8 textUnfilledStar[] = { TEXT_UNFILLED_STAR };
 
-    u8 strCourseNum[4];
+    // u8 strCourseNum[4];
 
     void **courseNameTbl = segmented_to_virtual(languageTable[gInGameLanguage][1]);
     void    **actNameTbl = segmented_to_virtual(languageTable[gInGameLanguage][2]);
 
     u8 courseIndex = COURSE_NUM_TO_INDEX(gCurrCourseNum);
-    u8 starFlags = save_file_get_star_flags(gCurrSaveFileNum - 1, COURSE_NUM_TO_INDEX(gCurrCourseNum));
+    // u8 starFlags = save_file_get_star_flags(gCurrSaveFileNum - 1, COURSE_NUM_TO_INDEX(gCurrCourseNum));
 
     gSPDisplayList(gDisplayListHead++, dl_rgba16_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
@@ -1680,17 +1703,17 @@ void render_pause_my_score_coins(void) {
     u8 *courseName = segmented_to_virtual(courseNameTbl[courseIndex]);
 
     if (courseIndex <= COURSE_NUM_TO_INDEX(COURSE_STAGES_MAX)) {
-        print_generic_string(TXT_COURSE_X, 157, LANGUAGE_ARRAY(textCourse));
-        int_to_str(gCurrCourseNum, strCourseNum);
-        print_generic_string(CRS_NUM_X1, 157, strCourseNum);
+        // print_generic_string(TXT_COURSE_X, 157, LANGUAGE_ARRAY(textCourse));
+        // int_to_str(gCurrCourseNum, strCourseNum);
+        // print_generic_string(CRS_NUM_X1, 157, strCourseNum);
 
         u8 *actName = segmented_to_virtual(actNameTbl[COURSE_NUM_TO_INDEX(gCurrCourseNum) * 6 + gDialogCourseActNum - 1]);
 
-        if (starFlags & (1 << (gDialogCourseActNum - 1))) {
-            print_generic_string(TXT_STAR_X, 140, textStar);
-        } else {
-            print_generic_string(TXT_STAR_X, 140, textUnfilledStar);
-        }
+        // if (starFlags & (1 << (gDialogCourseActNum - 1))) {
+        //     print_generic_string(TXT_STAR_X, 140, textStar);
+        // } else {
+        //     print_generic_string(TXT_STAR_X, 140, textUnfilledStar);
+        // }
 
         print_generic_string(ACT_NAME_X, 140, actName);
         print_generic_string(LVL_NAME_X, 157, &courseName[3]);
@@ -1911,17 +1934,21 @@ void render_pause_castle_main_strings(s16 x, s16 y) {
         int_to_str(save_file_get_course_coin_score(gCurrSaveFileNum - 1, gDialogLineNum), strVal);
         print_generic_string(x + 54, y - 5, strVal);
     } else { // Castle secret stars
-        u8 textStarX[] = { TEXT_STAR_X };
+        u8 textStarX[] = { TEXT_X };
         courseName = segmented_to_virtual(courseNameTbl[COURSE_MAX]);
-        print_generic_string(x + 40, y + 13, textStarX);
-        int_to_str(save_file_get_total_star_count(gCurrSaveFileNum - 1,
-                                                  COURSE_NUM_TO_INDEX(COURSE_BONUS_STAGES),
-                                                  COURSE_NUM_TO_INDEX(COURSE_MAX)),
-                                                  strVal);
-        print_generic_string(x + 60, y + 13, strVal);
+
+        create_dl_translation_matrix(MENU_MTX_PUSH, x + 39, y + 13, 0.0f);
+        render_generic_char_16(0x59);
+        gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+
+        print_generic_string(x + 57, y + 13, textStarX);
+        int_to_str(0,strVal);
+        print_generic_string(x + 65, y + 13, strVal);
     }
 
-    print_generic_string(x - 9, y + 30, courseName);
+    u8 textSad[] = { TEXT_SAD };
+    print_generic_string(x - 5, y + 30, courseName);
+    print_generic_string(x + 49, y - 5, textSad);
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 }

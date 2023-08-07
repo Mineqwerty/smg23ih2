@@ -566,7 +566,8 @@ void geo_process_perspective(struct GraphNodePerspective *node) {
         Mtx *mtx = alloc_display_list(sizeof(*mtx));
 #ifdef WIDE
         if (gConfig.widescreen && gCurrLevelNum != 0x01){
-            sAspectRatio = 16.0f / 9.0f; // 1.775f
+            // sAspectRatio = 16.0f / 9.0f; // 1.775f
+            sAspectRatio = 9.0f / 16.0f; // 1.775f
         } else {
             sAspectRatio = 4.0f / 3.0f; // 1.33333f
         }

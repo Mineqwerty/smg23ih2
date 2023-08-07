@@ -65,6 +65,8 @@
 #define TEXT_STAR _("★")
 #define TEXT_COIN_X _("$×")
 #define TEXT_STAR_X _("★×")
+#define TEXT_X _("×")
+#define TEXT_SAD _(":(")
 #define TEXT_VARIABLE_X _("×")
 #define TEXT_UNFILLED_STAR _("☆")
 
@@ -82,7 +84,7 @@
 //Widescreen stuff
 #if defined(WIDE) && !defined(PUPPYCAM)
 #define TEXT_HUD_CURRENT_RATIO_43 _("ASPECT RATIO: 4:3")
-#define TEXT_HUD_CURRENT_RATIO_169 _("ASPECT RATIO: 16:9")
+#define TEXT_HUD_CURRENT_RATIO_169 _("ASPECT RATIO: 9:16")
 #define TEXT_HUD_PRESS_L _("PRESS L TO SWITCH")
 #endif
 

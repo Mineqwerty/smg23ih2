@@ -84,6 +84,7 @@ static void bhv_blockington_mini_calculate_additional_rotation_and_set_scale(s16
     o->oFaceAngleRoll = 0;
 }
 
+extern f32 sAspectRatio;
 static void bhv_blockington_mini_set_obj_pos(void) {
     s16 pitch;
     s16 yaw;
@@ -91,7 +92,7 @@ static void bhv_blockington_mini_set_obj_pos(void) {
     vec3f_get_angle(gCamera->pos, gCamera->focus, &pitch, &yaw);
 
     pitch -= 0x800;
-    yaw += (gConfig.widescreen ? (0x1100 * 4 / 3) : 0x1100);
+    yaw += 0x1100 * sAspectRatio * 3 / 4;
 
     bhv_blockington_mini_calculate_additional_rotation_and_set_scale(&pitch, &yaw);
 

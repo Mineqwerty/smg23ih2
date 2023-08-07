@@ -1988,6 +1988,10 @@ ALIGNED8 static const Texture texture_font_char_us_button_C_left[] = {
 ALIGNED8 static const Texture texture_font_char_us_button_C_right[] = {
 #include "textures/segment2/font_graphics.06FC0.ia4.inc.c"
 };
+
+ALIGNED8 static const Texture texture_font_char_robux[] = {
+#include "textures/segment2/custom_robux.ia4.inc.c"
+};
 #endif
 
 ALIGNED8 static const Texture texture_hud_char_camera[] = {
@@ -2121,7 +2125,7 @@ const Texture *const main_font_lut[] = {
                   0x0,               0x0,               0x0,               0x0,
     texture_font_char_us_button_C_up, texture_font_char_us_button_C_down, texture_font_char_us_button_C_left, texture_font_char_us_button_C_right,
     texture_font_char_us_button_A, texture_font_char_us_button_B, texture_font_char_us_button_C, texture_font_char_us_button_Z,
-    texture_font_char_us_button_R,               0x0,               0x0,               0x0,
+    texture_font_char_us_button_R, texture_font_char_robux,               0x0,               0x0,
                   0x0,               0x0,               0x0,               0x0,
                   0x0,               0x0,               0x0,               0x0,
                   0x0,               0x0,               0x0,               0x0,
@@ -2374,6 +2378,21 @@ static const Vtx vertex_ia8_char[] = {
     {{{     8,      0,      0}, 0, {     0,      0}, {0xff, 0xff, 0xff, 0xff}}},
     {{{     8,     16,      0}, 0, {   480,      0}, {0xff, 0xff, 0xff, 0xff}}},
     {{{     0,     16,      0}, 0, {   480,    256}, {0xff, 0xff, 0xff, 0xff}}},
+#endif
+};
+
+// 0x0200EE28 - 0x0200EE68
+const Vtx vertex_ia8_char_16[] = {
+#if defined(VERSION_JP) || defined(VERSION_SH)
+    {{{     0,      0,      0}, 0, {     0,   1024}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    16,      0,      0}, 0, {  1024,   1024}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    16,     16,      0}, 0, {  1024,      0}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{     0,     16,      0}, 0, {     0,      0}, {0xff, 0xff, 0xff, 0xff}}},
+#else
+    {{{     0,      0,      0}, 0, {     0,    512}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    16,      0,      0}, 0, {     0,      0}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    16,     16,      0}, 0, {   512,      0}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{     0,     16,      0}, 0, {   512,    512}, {0xff, 0xff, 0xff, 0xff}}},
 #endif
 };
 
