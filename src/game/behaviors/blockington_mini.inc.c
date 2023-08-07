@@ -142,10 +142,6 @@ static void bhv_blockington_mini_set_special_camera_overrides(void) {
                 break;
             case BKTN_DIA_CS_FINAL_1:
             if (o->oBMiniDialogIndex == 0) {
-                if (o->oAction == ACT_BMINI_WAITING_TO_TALK && o->oTimer < BMINI_ANIM_WAIT / 2) {
-                    break;
-                }
-
                 if (o->parentObj && o->parentObj->behavior == segmented_to_virtual(bhvBlockington)) {
                     cameraOverride = TRUE;
                     focus[0] = o->parentObj->oPosX;

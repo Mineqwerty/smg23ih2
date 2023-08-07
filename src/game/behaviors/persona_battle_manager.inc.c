@@ -580,7 +580,7 @@ void bhv_persona_battle_manager_loop(void) {
             if (o->oTimer == 90) {
                 gMarioState->health = 0x880;
                 gHudDisplay.wedges = 8;
-                initiate_warp(LEVEL_RR, 1, 0x0A, 0);
+                initiate_warp(SMG23IH2_LEVEL_7, 1, 0x0A, 0);
             }
     break;
    }

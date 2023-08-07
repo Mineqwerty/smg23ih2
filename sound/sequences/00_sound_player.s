@@ -2156,7 +2156,7 @@ chan_setlayer 0, .layer_mario_yahoo_unpitched
 chan_end
 
 .layer_mario_yahoo_unpitched:
-layer_note1_mario 39, 0x5b, 127
+layer_note1_mario 39, 0x5b, 111
 layer_end
 
 .sound_mario_uh:
@@ -8475,7 +8475,7 @@ chan_setlayer 0, .layer_custom_misc_gun_fire
 chan_end
 
 .layer_custom_misc_gun_fire:
-layer_note1 39, 0x4f, 127
+layer_note1 39, 0x4f, 119
 layer_end
 
 .channelB_table:
@@ -9269,16 +9269,10 @@ layer_end
 .sound_bktn_cs_death_2:
 chan_setbank 11
 chan_setinstr 41
-chan_setval 0x10
+chan_setval 0
 chan_call .set_reverb
-chan_setlayer 0, .layer_bktn_cs_death_2_echo
-chan_setlayer 1, .layer_bktn_cs_death_2
+chan_setlayer 0, .layer_bktn_cs_death_2
 chan_end
-
-.layer_bktn_cs_death_2_echo:
-layer_delay 0x10
-layer_note1 39, 0x200, 55
-layer_end
 
 .layer_bktn_cs_death_2:
 layer_note1 39, 0x200, 127

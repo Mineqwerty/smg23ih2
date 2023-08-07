@@ -140,15 +140,15 @@ struct BlockingtonMiniDialog bMiniDiaCSFinal0[] = {
 
 // Cutscene Final 1
 struct BlockingtonMiniDialog bMiniDiaCSFinal1[] = {
-    {.lineCount = 1, .soundID = SOUND_BLOCKINGTON_CS_FINAL_1_0, .dialogStr = "...W-WAIT A MINUTE!"},
-    {.lineCount = 1, .soundID = SOUND_BLOCKINGTON_CS_FINAL_1_1, .dialogStr = "So it was YOU!"},
+    {.lineCount = 1, .soundID = SOUND_BLOCKINGTON_CS_FINAL_1_0, .dialogStr = "W-WAIT A MINUTE!"},
+    {.lineCount = 1, .soundID = SOUND_BLOCKINGTON_CS_FINAL_1_1, .dialogStr = "...So it was YOU!"},
     {.lineCount = 3, .soundID = SOUND_BLOCKINGTON_CS_FINAL_1_2, .dialogStr = "I thought I made myself clear that you are not\npermitted entry to this world!"},
     {.lineCount = 2, .soundID = SOUND_BLOCKINGTON_CS_FINAL_1_3, .dialogStr = "I SHALL BANISH YOU TO THE CIRCLE REALM!\nDO YOU REALIZE WHAT YOU'VE DONE!?"},
 };
 
 // Cutscene Final Death
 struct BlockingtonMiniDialog bMiniDiaCSFinalDeath[] = {
-    {.lineCount = 1, .soundID = SOUND_BLOCKINGTON_CS_DEATH_2, .dialogStr = "...S-see you in hell...BLOCKAROOOO..."},
+    {.lineCount = 1, .soundID = SOUND_BLOCKINGTON_CS_DEATH_2, .dialogStr = "...I'll see y-you in hell...BLOCKAROOOO..."},
 };
 
 

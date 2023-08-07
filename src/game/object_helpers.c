@@ -1788,6 +1788,11 @@ void cur_obj_spawn_particles(struct SpawnParticlesInfo *info) {
         particle->oForwardVel = random_float() * info->forwardVelRange + info->forwardVelBase;
         particle->oVelY = random_float() * info->velYRange + info->velYBase;
 
+        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvBlockington, 0, 0);
+        if (obj && obj->oAction >= BLOCKINGTON_ACT_FINAL_CUTSCENE_TRANSITION) {
+            particle->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+        }
+
         obj_scale(particle, scale);
     }
 }

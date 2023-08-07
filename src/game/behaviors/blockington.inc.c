@@ -18,27 +18,6 @@
 #define BKTN_CUTSCENE_FOCUS_SMOOTHSTEPXZ 0.20f
 #define BKTN_CUTSCENE_FOCUS_SMOOTHSTEPY 0.20f
 
-enum ActBlockington {
-    BLOCKINGTON_ACT_SPAWN_WAIT,
-    BLOCKINGTON_ACT_TALK_MARIO,
-    BLOCKINGTON_ACT_WAIT_CAR,
-    BLOCKINGTON_ACT_TALK_CAR,
-    BLOCKINGTON_ACT_WAIT_FOR_GATE,
-    BLOCKINGTON_ACT_MOVE_AREA_1,
-    BLOCKINGTON_ACT_WAIT_AREA_1,
-    BLOCKINGTON_ACT_TALK_AREA_1,
-    BLOCKINGTON_ACT_MOVE_AREA_2,
-    BLOCKINGTON_ACT_WAIT_AREA_2,
-    BLOCKINGTON_ACT_TALK_AREA_2,
-    BLOCKINGTON_ACT_MOVE_AREA_3,
-    BLOCKINGTON_ACT_WAIT_AREA_3,
-    BLOCKINGTON_ACT_FINAL_CUTSCENE_TRANSITION,
-    BLOCKINGTON_ACT_FINAL_GET_OUT_OF_CAR,
-    BLOCKINGTON_ACT_FINAL_BKTN_MAD,
-    BLOCKINGTON_ACT_FINAL_BKTN_TANGENT,
-    BLOCKINGTON_ACT_FINAL_BKTN_SHOT,
-};
-
 struct BlockingtonStates sBlockington;
 
 const Vec3i angleLimitFactors = {0x3000, 0x1800, 0x1800};
@@ -643,27 +622,27 @@ static void blockington_act_final_get_out_of_car(void) {
 
         vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
         vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
-    } else if (o->oTimer == 10) {
+    } else if (o->oTimer == 15) {
         struct Object *obj = find_first_object_with_behavior_and_bparams(bhvFazanaCar, 0, 0);
         if (!obj) {
             error("No car found, that's kinda bad.");
         }
 
         obj->oFazanaCarLeftDoor = 0;
-    } else if (o->oTimer > 55 && o->oTimer <= 100) {
+    } else if (o->oTimer > 60 && o->oTimer <= 105) {
         struct Object *obj = find_first_object_with_behavior_and_bparams(bhvFazanaCar, 0, 0);
         if (!obj) {
             error("No car found, that's kinda bad.");
         }
 
-        f32 mult = coss(0x4000 * (f32) (o->oTimer - 55) / 45.0f);
+        f32 mult = coss(0x4000 * (f32) (o->oTimer - 60) / 45.0f);
         gLakituState.goalPos[0] = gLakituState.goalFocus[0] - ((mult * 1250) + 400);
         gLakituState.goalPos[1] = gLakituState.goalFocus[1] + ((mult * 1000) + 125);
 
         vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
     } 
     
-    if (o->oTimer == 150) {
+    if (o->oTimer == 155) {
         o->oAction++;
     }
 }
@@ -679,7 +658,9 @@ static void blockington_act_final_bktn_mad(void) {
 
         vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
         vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
+    }
 
+    if (o->oTimer == 30) {
         struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
         if (obj) {
             obj->oBehParams = ((BKTN_DIA_CS_FINAL_1) << 16) | 20; // Top priority
@@ -693,47 +674,272 @@ static void blockington_act_final_bktn_mad(void) {
 }
 
 static void blockington_act_final_bktn_tangent(void) {
-    if (o->oTimer == 0) {
-        approachFrames = 3;
+    if (o->oSubAction == 0) {
+        if (o->oTimer == 0) {
+            approachFrames = 3;
 
-        gLakituState.goalPos[0] = o->oPosX + 0;
-        gLakituState.goalPos[1] = o->oPosY + 500;
-        gLakituState.goalPos[2] = o->oPosZ + 2500;
-        gLakituState.goalPos[0] += 1450;
+            gLakituState.goalPos[0] = o->oPosX + 0;
+            gLakituState.goalPos[1] = o->oPosY + 500;
+            gLakituState.goalPos[2] = o->oPosZ + 2500;
+            gLakituState.goalPos[0] += 1450;
 
-        vec3f_copy(gLakituState.goalFocus, &o->oPosVec);
-        gLakituState.goalFocus[0] += 1050;
-        gLakituState.goalFocus[2] += 125;
-    
-        vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
-        vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
+            vec3f_copy(gLakituState.goalFocus, &o->oPosVec);
+            gLakituState.goalFocus[0] += 1050;
+            gLakituState.goalFocus[2] += 125;
+        
+            vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
+            vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
 
-        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (1) << 16, 0x00FF0000);
-        if (obj) {
-            obj->oFaceAngleYaw += 0x2000;
+            struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (1) << 16, 0x00FF0000);
+            if (obj) {
+                obj->oFaceAngleYaw += 0x2000;
+            }
+        }
+
+        if (o->oTimer == 135) {
+            approachFrames = 2;
+        }
+
+        if (o->oTimer == 225) {
+            struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (1) << 16, 0x00FF0000);
+            if (obj) {
+                obj = spawn_object(obj, MODEL_PNG_GUN, bhvStaticPNG);
+                if (obj) {
+                    obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+                    obj->oFaceAngleYaw = 0;
+                    obj->oFaceAngleRoll = -0x800;
+                    obj->oPosX -= 60;
+                    obj->oPosY += 90;
+                    obj->oPosZ -= 60;
+                    obj->oBehParams = (2) << 16;
+                    obj->oBehParams2ndByte = GET_BPARAM2(obj->oBehParams);
+                    play_sound(SOUND_CUSTOM_MISC_GUN_DRAW, gGlobalSoundSource);
+                    vec3_same(obj->header.gfx.scale, 2.0f);
+                }
+            }
+        }
+
+        if (o->oTimer == 270) {
+            approachFrames = 1;
+        }
+
+        if (o->oTimer >= 300) {
+            f32 col;
+            u8 transparency = 255;
+            if ((o->oTimer / 15) % 2 == 1) {
+                col = 0.5f;
+            } else {
+                col = 1.0f;
+            }
+            if (o->oTimer >= 330) {
+                if (gPlayer1Controller->buttonPressed & A_BUTTON) {
+                    o->oSubAction++;
+                    o->oTimer = 0;
+                    play_sound(SOUND_CUSTOM_MISC_GUN_FIRE, gGlobalSoundSource);
+                    struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (2) << 16, 0x00FF0000);
+                    if (obj) {
+                        obj->oFaceAngleRoll = -0x1400;
+
+                        obj = spawn_object(obj, MODEL_BOWLING_BALL, bhvStaticObject);
+                        if (obj) {
+                            obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+                            obj->oPosX -= 230;
+                            obj->oPosY += 170;
+                            vec3f_copy(&obj->oHomeVec, &obj->oPosVec);
+                            obj->oBehParams = (1) << 16;
+                            obj->oBehParams2ndByte = GET_BPARAM2(obj->oBehParams);
+
+                            vec3_same(obj->header.gfx.scale, 0.2f);
+
+                            struct Object *tmp = o;
+                            o = obj;
+                            spawn_mist_particles();
+                            o = tmp;
+                        }
+                    }
+                }
+            } else {
+                transparency = (255.0f / 30.0f) * (o->oTimer - 300);
+                print_set_envcolour(255, 255, 255, (255.0f / 30.0f) * (o->oTimer - 300));
+            }
+
+            char buf[96];
+
+            sprintf(buf, "<SIZE_200>Press <COL_%02X%02X%02X%02X>A<COL_--------> to kill!<SIZE_100>", (u8) (col * 255.0f), (u8) (col * 127.0f), (u8) (col * 127.0f), transparency);
+
+            print_set_envcolour(255, 255, 255, transparency);
+            print_small_text_buffered(SCREEN_CENTER_X, SCREEN_HEIGHT - 40, buf, PRINT_TEXT_ALIGN_CENTER, PRINT_ALL, FONT_OUTLINE);
+        }
+    } else if (o->oSubAction == 1) {
+        struct Object *obj;
+
+        if (o->oTimer == 3) {
+            obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (2) << 16, 0x00FF0000);
+            if (obj) {
+                obj->oFaceAngleRoll = -0x800;
+            }
+        }
+
+        s32 offset = o->oTimer / 5;
+
+        obj = find_first_object_with_behavior_and_bparams(bhvStaticObject, (1) << 16, 0x00FF0000);
+        if (!obj) {
+            error("Where bullet");
+        }
+
+        f32 mult = (f32) offset / 8.0f;
+
+        obj->oPosX = o->oPosX * mult + obj->oHomeX * (1.0f - mult);
+        obj->oPosY = o->oPosY * mult + obj->oHomeY * (1.0f - mult);
+        obj->oPosZ = o->oPosZ * mult + obj->oHomeZ * (1.0f - mult);
+
+        if (offset == 8) {
+            struct Object *obj2 = spawn_object(obj, MODEL_EXPLOSION, bhvExplosion);
+            if (obj2) {
+                obj2->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+                obj2->oBehParams = 0x28;
+            }
+
+            obj_mark_for_deletion(obj);
+
+            o->oAction = BLOCKINGTON_ACT_FINAL_BKTN_SHOT;
         }
     }
-
-    if (o->oTimer == 135) {
-        approachFrames = 2;
-    }
-
-    if (o->oTimer == 270) {
-        approachFrames = 1;
-    }
-
-    // gLakituState.goalPos[0] = 0;
-    // gLakituState.goalPos[1] = 0;
-    // gLakituState.goalPos[2] = 0;
-
-    // vec3f_copy(gLakituState.curFocus, gLakituState.goalFocus);
-    // vec3f_copy(gLakituState.curPos, gLakituState.goalPos);
 
     play_sound(SOUND_BLOCKINGTON_CS_ADLIB, gGlobalSoundSource);
 }
 
 static void blockington_act_final_bktn_shot(void) {
-    approachFrames = 3;
+    if (o->oSubAction == 0) {
+        if (o->oTimer == 0) {
+            struct Object *obj = find_first_object_with_behavior_and_bparams(bhvFazanaCar, 0, 0);
+            if (obj) {
+                vec3f_copy(gMarioState->pos, &obj->oPosVec);
+                vec3f_copy(&gMarioObject->oPosVec, &obj->oPosVec);
+            }
+            play_music(SEQ_PLAYER_LEVEL, SEQ_SOUND_PLAYER, 0);
+            approachFrames = 5;
+            play_sound(SOUND_BLOCKINGTON_CS_DEATH_0, gGlobalSoundSource);
+        }
+        if (o->oTimer == approachFrames) {
+            cur_obj_set_model(MODEL_BLOCKINGTON_ADULT);
+            o->oPosY -= 200 * o->oBlockingtonScaleHomeY;
+        }
+
+        if (o->oTimer == 45) {
+            play_sound(SOUND_BLOCKINGTON_CS_DEATH_1, gGlobalSoundSource);
+        }
+
+        if (o->oTimer == 75) {
+            o->oSubAction++;
+            o->oTimer = 0;
+        }
+    } else if (o->oSubAction == 1) {
+        approachFrames = 1;
+        f32 mult = (f32) o->oTimer / 45.0f;
+        o->oBlockingtonAngleHomePitch = 0x4000 * sqr(sqr(mult));
+
+        if (o->oTimer == 45) {
+            cur_obj_play_sound_2(SOUND_ACTION_BONK);
+            o->oSubAction++;
+            o->oTimer = 0;
+        }
+    } else if (o->oSubAction == 2) {
+        approachFrames = 3;
+        if (o->oTimer == 10) {
+            cur_obj_set_model(MODEL_BLOCKINGTON);
+            o->oPosX += 200 * o->oBlockingtonScaleHomeY;
+
+            struct Object *obj = spawn_object(o, MODEL_BLOCKINGTON_MINI, bhvBlockingtonMini);
+            if (obj) {
+                obj->oBehParams = ((BKTN_DIA_CS_FINAL_DEATH) << 16) | 30; // Top priority
+                obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+            } else {
+                o->oAction++;
+            }
+        }
+
+        // BlockingtonMini should update the next action
+    }
+}
+
+extern void seq_player_play_sequence(u8 player, u8 seqId, u16 arg2);
+static void blockington_act_final_bktn_dead(void) {
+    if (o->oSubAction == 0) {
+        if (o->oTimer == 0) {
+            cur_obj_play_sound_2(SOUND_OBJ_ENEMY_DEFEAT_SHRINK);
+        }
+
+        if (o->oTimer == 35) {
+            cur_obj_hide();
+            o->oSubAction++;
+            o->oTimer = 0;
+            spawn_mist_particles_with_sound(SOUND_GENERAL_COIN_SPURT);
+        }
+        
+        f32 mult = (f32) (35 - o->oTimer) / 35.0f;
+        o->header.gfx.scale[0] = o->oBlockingtonScaleHomeX * mult;
+        o->header.gfx.scale[1] = o->oBlockingtonScaleHomeY * mult;
+        o->header.gfx.scale[2] = o->oBlockingtonScaleHomeZ * mult;
+    } else if (o->oSubAction == 1) {
+        if (o->oTimer == 25) {
+            struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (2) << 16, 0x00FF0000);
+            if (obj) {
+                obj_mark_for_deletion(obj);
+            }
+        }
+        if (o->oTimer == 40) {
+            o->oSubAction++;
+            o->oTimer = 0;
+
+            struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (1) << 16, 0x00FF0000);
+            if (obj) {
+                gLakituState.goalFocus[0] = obj->oPosX;
+                gLakituState.goalFocus[1] = obj->oPosY + 150;
+                gLakituState.goalFocus[2] = obj->oPosZ;
+
+                gLakituState.goalPos[0] = obj->oPosX - 500;
+                gLakituState.goalPos[1] = obj->oPosY + 150;
+                gLakituState.goalPos[2] = obj->oPosZ;
+            }
+        }
+    } else if (o->oSubAction == 2) {
+        if (o->oTimer == 1) {
+            seq_player_play_sequence(SEQ_PLAYER_ENV, SEQ_EVENT_PEACH_MESSAGE, 0);
+
+            struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (1) << 16, 0x00FF0000);
+            if (obj) {
+                obj->oFaceAngleYaw -= 0x2000;
+
+                obj = spawn_object(obj, MODEL_PNG_SUNGLASSES, bhvStaticPNG);
+                if (obj) {
+                    obj->oPosX -= 25;
+                    obj->oPosY += 163.5f;
+                    obj->oPosX += 20;
+                    vec3f_copy(&obj->oHomeVec, &obj->oPosVec);
+                    vec3_same(obj->header.gfx.scale, 2.6f);
+    
+                    obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+                    obj->oPosY += 500;
+                    obj->oBehParams = (3) << 16;
+                    obj->oBehParams2ndByte = GET_BPARAM2(obj->oBehParams);
+                }
+            }
+        }
+        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (3) << 16, 0x00FF0000);
+        if (obj) {
+            obj->oPosY = MAX(obj->oPosY - 6.0f, obj->oHomeY);
+        }
+
+        if (o->oTimer == 255) {
+            gMarioState->health = 0x880;
+            gHudDisplay.wedges = 8;
+            gTimeStopState &= ~TIME_STOP_ENABLED;
+            gCamera->cutscene = FALSE;
+
+            initiate_warp(SMG23IH2_LEVEL_5, 1, 0x0A, 0);
+        }
+    }
 }
 
 ObjActionFunc sBlockingtonActions[] = {
@@ -755,6 +961,7 @@ ObjActionFunc sBlockingtonActions[] = {
     [BLOCKINGTON_ACT_FINAL_BKTN_MAD]            = blockington_act_final_bktn_mad,
     [BLOCKINGTON_ACT_FINAL_BKTN_TANGENT]        = blockington_act_final_bktn_tangent,
     [BLOCKINGTON_ACT_FINAL_BKTN_SHOT]           = blockington_act_final_bktn_shot,
+    [BLOCKINGTON_ACT_FINAL_BKTN_DEAD]           = blockington_act_final_bktn_dead,
 };
 
 void bhv_blockington_loop(void) {
@@ -775,6 +982,7 @@ void bhv_blockington_loop(void) {
         case BLOCKINGTON_ACT_MOVE_AREA_1:
         case BLOCKINGTON_ACT_MOVE_AREA_2:
         case BLOCKINGTON_ACT_MOVE_AREA_3:
+        case BLOCKINGTON_ACT_FINAL_BKTN_DEAD:
             break;
         default:
             bhv_blockington_set_angle_scale();
