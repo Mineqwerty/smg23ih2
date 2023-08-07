@@ -134,7 +134,7 @@ struct BlockingtonMiniDialog bMiniDiaCSSecondArea[] = {
 // Cutscene Final 0
 struct BlockingtonMiniDialog bMiniDiaCSFinal0[] = {
     {.lineCount = 2, .soundID = SOUND_BLOCKINGTON_CS_FINAL_0_0, .dialogStr = "INCREDIBLOCK, YOU DID IT!!!\nYOU SAVED BLOCKTARIA!"},
-    {.lineCount = 1, .soundID = SOUND_BLOCKINGTON_CS_FINAL_0_1, .dialogStr = "You were able to restore peace to our world!"},
+    {.lineCount = 3, .soundID = SOUND_BLOCKINGTON_CS_FINAL_0_1, .dialogStr = "By retrieving all of the artifacts and restoring\nthe block bridges, you managed to make\nBlocktaria great again!"},
     {.lineCount = 3, .soundID = SOUND_BLOCKINGTON_CS_FINAL_0_2, .dialogStr = "Please, be my friend forever, hero!\nI could tell stories about you for centuries\nto come!"},
 };
 

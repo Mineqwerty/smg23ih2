@@ -1279,7 +1279,10 @@ s32 act_unused_death_exit(struct MarioState *m) {
 }
 
 s32 act_checkpoint_warp(struct MarioState *m) {
-    launch_mario_until_land(m, ACT_FREEFALL_LAND_STOP, MARIO_ANIM_GENERAL_FALL, 0.0f);
+    if (launch_mario_until_land(m, ACT_FREEFALL_LAND_STOP, MARIO_ANIM_GENERAL_FALL, 0.0f)) {
+        load_level_init_text(0);
+    }
+
     m->health = 0x880;
     gHudDisplay.wedges = 8;
     sPowerMeterHUD.animation = POWER_METER_HIDING;

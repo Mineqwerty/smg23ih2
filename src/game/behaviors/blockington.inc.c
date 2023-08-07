@@ -918,7 +918,7 @@ static void blockington_act_final_bktn_dead(void) {
             if (obj) {
                 obj->oFaceAngleYaw -= 0x2000;
 
-                for (s32 i = 0; i < 100; i++) {
+                for (s32 i = 0; i < 125; i++) {
                     if ((obj2 = spawn_object(obj, MODEL_CONFETTI, bhvConfetti))) {
                         obj2->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
                     }
@@ -954,6 +954,7 @@ static void blockington_act_final_bktn_dead(void) {
             gCamera->cutscene = FALSE;
 
             initiate_warp(SMG23IH2_LEVEL_5, 1, 0x0A, 0);
+            play_music(SEQ_PLAYER_ENV, SEQ_SOUND_PLAYER, 0); // Silence music sooner
         }
     }
 }
@@ -982,15 +983,6 @@ ObjActionFunc sBlockingtonActions[] = {
 
 void bhv_blockington_loop(void) {
     cur_obj_call_action_function(sBlockingtonActions);
-
-#ifdef ENABLE_DEBUG_FREE_MOVE
-    if (gPlayer1Controller->buttonPressed & L_TRIG) {
-        o->oAction = BLOCKINGTON_ACT_FINAL_CUTSCENE_TRANSITION;
-        vec3f_copy(&o->oPosVec, coordDests[2]);
-        vec3f_copy(&o->oHomeVec, coordDests[2]);
-        return;
-    }
-#endif
 
     bhv_blockington_calculate_angle_scale_all();
     switch (o->oAction) {

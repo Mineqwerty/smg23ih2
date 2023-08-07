@@ -113,6 +113,7 @@ const LevelScript level_castle_grounds_entry[] = {
 		STOP_MUSIC(0),
 		TERRAIN_TYPE(TERRAIN_GRASS),
 		/* Fast64 begin persistent block [area commands] */
+		OBJECT(MODEL_NONE, -1328, 212, 4664, 0, 0, 0, (0 << 16) | (2000), bhvCheckpoint),
 		/* Fast64 end persistent block [area commands] */
 	END_AREA(),
 

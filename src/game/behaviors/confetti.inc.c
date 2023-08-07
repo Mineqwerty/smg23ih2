@@ -9,28 +9,28 @@ static void confetti_update_pos_and_color(void) {
     o->oConfettiColorG = (val >> 8) & 0xFF;
     o->oConfettiColorB = (val >> 16) & 0xFF;
 
-    o->oPosY = o->oHomeY + 800.0f;
+    o->oPosY = o->oHomeY + 1000.0f;
 
-    f32 dist = 2000.0f * random_float();
+    f32 dist = 1500.0f * random_float();
     s16 angle = random_u16();
 
     o->oPosX = o->oHomeX + sins(angle) * dist;
     o->oPosZ = o->oHomeZ + coss(angle) * dist;
 
-    o->oVelY = -((f32) (3 + ((val >> 24) & 0x0F)));
+    o->oVelY = -((f32) (4 + ((val >> 24) & 0x0F)));
 
     o->oVelX = (random_float() - 0.5f) * 24.0f;
     o->oVelZ = (random_float() - 0.5f) * 24.0f;
 }
 
 void bhv_confetti_init(void) {
-    o->oHomeX = o->oPosX;
+    o->oHomeX = o->oPosX + 500;
     o->oHomeY = o->oPosY - 80;
     o->oHomeZ = o->oPosZ;
 
     confetti_update_pos_and_color();
 
-    o->oPosY = o->oHomeY + 800.0f * random_float();
+    o->oPosY = o->oHomeY + 1000.0f * random_float();
 }
 
 void bhv_confetti_loop(void) {

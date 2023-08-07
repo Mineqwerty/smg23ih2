@@ -9091,11 +9091,11 @@ chan_end
 
 .layer_bktn_cs_final_0_0_echo:
 layer_delay 0x10
-layer_note1 39, 0x24c, 55
+layer_note1 39, 0x24d, 55
 layer_end
 
 .layer_bktn_cs_final_0_0:
-layer_note1 39, 0x24c, 127
+layer_note1 39, 0x24d, 127
 layer_end
 
 .sound_bktn_cs_final_0_1:
@@ -9109,11 +9109,11 @@ chan_end
 
 .layer_bktn_cs_final_0_1_echo:
 layer_delay 0x10
-layer_note1 39, 0x183, 55
+layer_note1 39, 0x36f, 55
 layer_end
 
 .layer_bktn_cs_final_0_1:
-layer_note1 39, 0x183, 127
+layer_note1 39, 0x36f, 127
 layer_end
 
 .sound_bktn_cs_final_0_2:

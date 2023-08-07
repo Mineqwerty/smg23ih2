@@ -371,6 +371,7 @@ void init_mario_after_warp(void) {
             initCameraAngle = ckptObj->oMoveAngleYaw;
             spawnNode->object->oMoveAngleYaw = ckptObj->oMoveAngleYaw + 0x8000;
             spawnNode->object->oPosY += 350.0f;
+            marioSpawnType = MARIO_SPAWN_CHECKPOINT_WARP;
         }
     }
 
