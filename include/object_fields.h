@@ -511,6 +511,11 @@
 #define /*0x0FC*/ oCQGateCamPosZ         OBJECT_FIELD_F32(0x1D)
 #define /*0x100*/ oCQGateCamShouldUpdate OBJECT_FIELD_S32(0x1E)
 
+/* Confetti */
+#define /*0x0F4*/ oConfettiColorR OBJECT_FIELD_S32(0x1B)
+#define /*0x0F8*/ oConfettiColorG OBJECT_FIELD_S32(0x1C)
+#define /*0x0FC*/ oConfettiColorB OBJECT_FIELD_S32(0x1D)
+
 /* Fazana Car */
 #define /*0x0F4*/ oFazanaCarWheelRot       OBJECT_FIELD_S32(0x1B)
 #define /*0x0F8*/ oFazanaCarWheelTurn      OBJECT_FIELD_S32(0x1C)

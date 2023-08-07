@@ -120,4 +120,6 @@ extern const LevelScript level_hmc_entry[];
 
 #include "levels/hmc/png_sunglasses/geo_header.h"
 
+#include "levels/hmc/confetti/geo_header.h"
+
 #endif

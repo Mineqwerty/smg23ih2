@@ -589,6 +589,7 @@
 #define MODEL_PNG_MARIO                   0x140
 #define MODEL_PNG_GUN                     0x141
 #define MODEL_PNG_SUNGLASSES              0x142
+#define MODEL_CONFETTI                    0x143
 
 #endif
 

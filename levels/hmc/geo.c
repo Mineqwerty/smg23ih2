@@ -35,3 +35,4 @@
 #include "levels/hmc/png_mario/geo.inc.c"
 #include "levels/hmc/png_gun/geo.inc.c"
 #include "levels/hmc/png_sunglasses/geo.inc.c"
+#include "levels/hmc/confetti/geo.inc.c"

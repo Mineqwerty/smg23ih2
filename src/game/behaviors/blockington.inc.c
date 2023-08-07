@@ -546,15 +546,21 @@ static void blockington_act_final_cutscene_transition(void) {
         fadeout_music((3 * BLOCKINGTON_TRANSITION_TIME_OUT / 2) * 8 - 2);
     }
     if (o->oTimer == BLOCKINGTON_TRANSITION_TIME_OUT) {
+        struct Object *obj;
         gTimeStopState |= TIME_STOP_ENABLED;
         gCamera->cutscene = TRUE;
         play_transition(WARP_TRANSITION_FADE_FROM_COLOR, BLOCKINGTON_TRANSITION_TIME_IN, 0x00, 0x00, 0x00);
 
         set_background_music(0, SEQ_LEVEL_SNOW, 0);
+        
+        // Entering the final cutscene during a dialog without this will crash the game (but the result is kinda hilarious ngl)
+        while ((obj = find_first_object_with_behavior_and_bparams(bhvBlockingtonMini, 0, 0))) {
+            obj_mark_for_deletion(obj);
+        }
 
         gHudDisplay.flags = HUD_DISPLAY_NONE;
 
-        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvFazanaCar, 0, 0);
+        obj = find_first_object_with_behavior_and_bparams(bhvFazanaCar, 0, 0);
         if (!obj) {
             error("No car found, that's kinda bad.");
         }
@@ -875,20 +881,21 @@ static void blockington_act_final_bktn_dead(void) {
             o->oSubAction++;
             o->oTimer = 0;
             spawn_mist_particles_with_sound(SOUND_GENERAL_COIN_SPURT);
+            seq_player_play_sequence(SEQ_PLAYER_ENV, SEQ_STREAMED_WIISPORTS_VICTORY, 0);
         }
         
         f32 mult = (f32) (35 - o->oTimer) / 35.0f;
         o->header.gfx.scale[0] = o->oBlockingtonScaleHomeX * mult;
         o->header.gfx.scale[1] = o->oBlockingtonScaleHomeY * mult;
         o->header.gfx.scale[2] = o->oBlockingtonScaleHomeZ * mult;
-    } else if (o->oSubAction == 1) {
-        if (o->oTimer == 25) {
+    } else if (o->oSubAction == 1) {    
+        if (o->oTimer == 30) {
             struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (2) << 16, 0x00FF0000);
             if (obj) {
                 obj_mark_for_deletion(obj);
             }
         }
-        if (o->oTimer == 40) {
+        if (o->oTimer == 54) {
             o->oSubAction++;
             o->oTimer = 0;
 
@@ -904,29 +911,38 @@ static void blockington_act_final_bktn_dead(void) {
             }
         }
     } else if (o->oSubAction == 2) {
+        struct Object *obj;
+        struct Object *obj2;
         if (o->oTimer == 1) {
-            seq_player_play_sequence(SEQ_PLAYER_ENV, SEQ_EVENT_PEACH_MESSAGE, 0);
-
-            struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (1) << 16, 0x00FF0000);
+            obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (1) << 16, 0x00FF0000);
             if (obj) {
                 obj->oFaceAngleYaw -= 0x2000;
 
-                obj = spawn_object(obj, MODEL_PNG_SUNGLASSES, bhvStaticPNG);
-                if (obj) {
-                    obj->oPosX -= 25;
-                    obj->oPosY += 163.5f;
-                    obj->oPosX += 20;
-                    vec3f_copy(&obj->oHomeVec, &obj->oPosVec);
-                    vec3_same(obj->header.gfx.scale, 2.6f);
+                for (s32 i = 0; i < 100; i++) {
+                    if ((obj2 = spawn_object(obj, MODEL_CONFETTI, bhvConfetti))) {
+                        obj2->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+                    }
+                }
+
+                obj2 = spawn_object(obj, MODEL_PNG_SUNGLASSES, bhvStaticPNG);
+                if (obj2) {
+                    obj2->oPosX -= 25;
+                    obj2->oPosY += 163.5f;
+                    obj2->oPosX += 20;
+                    vec3f_copy(&obj2->oHomeVec, &obj2->oPosVec);
+                    vec3_same(obj2->header.gfx.scale, 2.6f);
     
-                    obj->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
-                    obj->oPosY += 500;
-                    obj->oBehParams = (3) << 16;
-                    obj->oBehParams2ndByte = GET_BPARAM2(obj->oBehParams);
+                    obj2->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+                    obj2->oPosY += 500;
+                    obj2->oBehParams = (3) << 16;
+                    obj2->oBehParams2ndByte = GET_BPARAM2(obj2->oBehParams);
                 }
             }
+
+            return;
         }
-        struct Object *obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (3) << 16, 0x00FF0000);
+
+        obj = find_first_object_with_behavior_and_bparams(bhvStaticPNG, (3) << 16, 0x00FF0000);
         if (obj) {
             obj->oPosY = MAX(obj->oPosY - 6.0f, obj->oHomeY);
         }

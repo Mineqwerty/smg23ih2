@@ -76,3 +76,4 @@
 #include "levels/hmc/png_mario/model.inc.c"
 #include "levels/hmc/png_gun/model.inc.c"
 #include "levels/hmc/png_sunglasses/model.inc.c"
+#include "levels/hmc/confetti/model.inc.c"

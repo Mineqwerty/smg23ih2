@@ -25,7 +25,7 @@ Gfx *geo_babomb_excivatoin_letter_color(s32 callContext, struct GraphNode *node,
 
         u32 color = obj->oBabombExcivatoinLetterColor;
 
-        // Set layers if object is transparent or not
+        // Set layers if object is alpha decal or not
         SET_GRAPH_NODE_LAYER(graphNode->fnNode.node.flags, LAYER_ALPHA_DECAL);
 
         Gfx *gfx = gfxHead = alloc_display_list(2 * sizeof(Gfx));

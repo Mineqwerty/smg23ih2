@@ -6,6 +6,7 @@
 #include "synthesis.h"
 #include "seqplayer.h"
 #include "effects.h"
+#include "external.h"
 #include "game/game_init.h"
 #include "game/puppyprint.h"
 #include "game/vc_check.h"
@@ -1199,6 +1200,7 @@ void audio_reset_session(s32 reverbPresetId) {
 
             init_reverb_us(reverbPresetId);
             bzero(&gAiBuffers[0][0], (AIBUFFER_LEN * NUMAIBUFFERS));
+            sIsBlockingtonStillTalking = FALSE;
 
             if (gAudioLoadLock != AUDIO_LOCK_UNINITIALIZED) {
                 gAudioLoadLock = AUDIO_LOCK_NOT_LOADING;

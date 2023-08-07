@@ -824,6 +824,7 @@ UNUSED s32 debug_sequence_tracker(s16 debugInputSequence[]) {
 #include "behaviors/mario_death_sprite.inc.c"
 #include "behaviors/mario_maker_laugh.inc.c"
 #include "behaviors/babomb_excivatoin_letter.inc.c"
+#include "behaviors/confetti.inc.c"
 #include "behaviors/static_png.inc.c"
 #include "behaviors/fazana_car.inc.c"
 #include "behaviors/ticket_muncher_sound.inc.c"

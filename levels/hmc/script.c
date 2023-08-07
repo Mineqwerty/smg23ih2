@@ -50,6 +50,7 @@ const LevelScript level_hmc_entry[] = {
 	LOAD_MODEL_FROM_GEO(MODEL_PNG_MARIO, png_mario_geo), 
 	LOAD_MODEL_FROM_GEO(MODEL_PNG_GUN, png_gun_geo), 
 	LOAD_MODEL_FROM_GEO(MODEL_PNG_SUNGLASSES, png_sunglasses_geo), 
+	LOAD_MODEL_FROM_GEO(MODEL_CONFETTI, confetti_geo), 
 	LOAD_MODEL_FROM_GEO(MODEL_HMC_WOODEN_DOOR, wooden_door_geo), 
 	LOAD_MODEL_FROM_GEO(MODEL_HMC_METAL_DOOR, metal_door_geo), 
 	LOAD_MODEL_FROM_GEO(MODEL_HMC_HAZY_MAZE_DOOR, hazy_maze_door_geo), 

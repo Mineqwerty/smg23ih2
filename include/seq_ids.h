@@ -52,6 +52,7 @@ enum SeqId {
     SEQ_EVENT_OOT_SECRET_SOUND,       // 0x27
     SEQ_STREAMED_FINAL,               // 0x28
     SEQ_STREAMED_GLAGGLELAND,         // 0x29
+    SEQ_STREAMED_WIISPORTS_VICTORY,   // 0x2A
     SEQ_COUNT
 };
 

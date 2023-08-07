@@ -420,6 +420,8 @@ void bhv_mario_maker_laugh_init(void);
 void bhv_mario_maker_laugh_loop(void);
 void bhv_babomb_excivatoin_letter_init(void);
 void bhv_babomb_excivatoin_letter_loop(void);
+void bhv_confetti_init(void);
+void bhv_confetti_loop(void);
 void bhv_static_png_init(void);
 void bhv_static_png_loop(void);
 void bhv_fazana_car_init(void);
@@ -586,6 +588,9 @@ Gfx *geo_crashma_parallel_launcher_lmao(s32 callContext, struct GraphNode *node,
 Gfx *geo_bits_bowser_coloring(s32 callContext, struct GraphNode *node, UNUSED s32 context);
 Gfx *geo_update_body_rot_from_parent(s32 callContext, UNUSED struct GraphNode *node, Mat4 mtx);
 Gfx *geo_switch_bowser_eyes(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
+
+// Confetti
+Gfx *geo_confetti(s32 callContext, struct GraphNode *node, UNUSED s32 context);
 
 // Fazana car
 Gfx *car_front_wheels(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c);
