@@ -551,7 +551,7 @@ static void blockington_act_final_cutscene_transition(void) {
         gCamera->cutscene = TRUE;
         play_transition(WARP_TRANSITION_FADE_FROM_COLOR, BLOCKINGTON_TRANSITION_TIME_IN, 0x00, 0x00, 0x00);
 
-        set_background_music(0, SEQ_LEVEL_SNOW, 0);
+        set_background_music(0, SEQ_LEVEL_SNOW_QUIETER, 0);
         
         // Entering the final cutscene during a dialog without this will crash the game (but the result is kinda hilarious ngl)
         while ((obj = find_first_object_with_behavior_and_bparams(bhvBlockingtonMini, 0, 0))) {
