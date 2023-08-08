@@ -27,7 +27,7 @@ void bhv_1up_common_init(void) {
     o->oBuoyancy = 1.0f;
 
     if (!gIsConsole) {
-        cur_obj_scale(0.55f);
+        cur_obj_scale(0.5f);
     } else {
         cur_obj_scale(0.75f);
     }

@@ -1501,6 +1501,8 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
 
     sWarpCheckpointActive = FALSE;
     gCurrLevelNum = levelNum;
+
+/** Comment placed here in attempt to trick fast64
     gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
 	if (gCurrLevelNum == LEVEL_TTC) return 0;
 	if (gCurrLevelNum == LEVEL_RR) return 0;
@@ -1510,15 +1512,9 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
 	if (gCurrLevelNum == LEVEL_CCM) return 0;
 	if (gCurrLevelNum == LEVEL_WF) return 0;
 	if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS) return 0;
+ */
 
-    switch (gCurrLevelNum) {
-        case SMG23IH2_LEVEL_1:
-        case SMG23IH2_LEVEL_2:
-        case SMG23IH2_LEVEL_3:
-        case SMG23IH2_LEVEL_4:
-        case SMG23IH2_LEVEL_5:
-            return FALSE;
-    }
+    gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
 
     if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE) {
         return FALSE;
