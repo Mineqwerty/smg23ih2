@@ -1300,8 +1300,19 @@ UNUSED static s32 play_mode_unused(void) {
     return FALSE;
 }
 
+extern s16 gMenuMode;
 s32 update_level(void) {
     s32 changeLevel = FALSE;
+
+    if (gGlaggleMad && sCurrPlayMode != PLAY_MODE_NORMAL) {
+        gMenuMode = MENU_MODE_NONE;
+        raise_background_noise(1);
+        gCameraMovementFlags &= ~CAM_MOVE_PAUSE_SCREEN;
+        set_play_mode(PLAY_MODE_NORMAL);
+        gCamera->cutscene = TRUE;
+        gTimeStopState |= TIME_STOP_ENABLED;
+        set_mario_action(gMarioState, ACT_WAITING_FOR_DIALOG, 0);
+    }
 
     switch (sCurrPlayMode) {
         case PLAY_MODE_NORMAL:

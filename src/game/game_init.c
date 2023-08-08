@@ -61,6 +61,7 @@ u8 gGlaggleMad = FALSE;
 u8 gFBDisabled = 0;
 u8 gCrashmaAudioThread = FALSE;
 u16 gPatchyTimer = 0;
+u16 gGlaggleTimer = 0;
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
 u8 gCustomDebugMode;
 #endif

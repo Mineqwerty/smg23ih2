@@ -551,6 +551,7 @@ void func_eu_802e9bec(s32 player, s32 channel, s32 arg2) {
 
 #else
 
+extern u32 set_mario_action(struct MarioState *m, u32 action, u32 actionArg);
 /**
  * Called from threads: thread4_sound
  */
@@ -642,6 +643,15 @@ struct SPTask *create_next_audio_frame_task(void) {
         {
             if (gPatchy) {
                 gPatchyTimer++;
+            }
+
+            if (gCurrLevelNum == SMG32IH2_LEVEL_FBE) {
+                gGlaggleTimer++;
+                if (gGlaggleTimer > 5198) {
+                    gGlaggleMad = TRUE;
+                    gCamera->cutscene = TRUE;
+                    set_mario_action(gMarioState, ACT_WAITING_FOR_DIALOG, 0);
+                }
             }
 
             aggress(gCrashmaAudioThread == FALSE, "U R DIED!\n\nSADGE");

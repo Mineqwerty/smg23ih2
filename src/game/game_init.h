@@ -66,6 +66,7 @@ extern u8 gGlaggleMad;
 extern u8 gFBDisabled;
 extern u8 gCrashmaAudioThread;
 extern u16 gPatchyTimer;
+extern u16 gGlaggleTimer;
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
 extern u8 gCustomDebugMode;
 #endif
