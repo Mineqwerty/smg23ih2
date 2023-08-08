@@ -129,7 +129,6 @@ const LevelScript level_wf_entry[] = {
 		OBJECT(MODEL_NONE, 757, 83, -7733, 0, 0, 0, (2 << 16) | (1500), bhvCheckpoint),
 		OBJECT(MODEL_NONE, -4815, 829, -6271, 0, -180, 0, (3 << 16) | (1000), bhvCheckpoint),
 		OBJECT(MODEL_NONE, -4815, 829, -600, 0, -180, 0, (4 << 16) | (1500), bhvCheckpoint),
-		OBJECT(MODEL_NONE, -4815, 829, 6506, 0, -180, 0, (5 << 16) | (1500), bhvCheckpoint),
 		OBJECT(MODEL_GLOBAL_DOOR, -590, 83, -9402, 0, 90, 0, (11 << 16), bhvDoorWarp),
 		OBJECT(MODEL_NONE, -3907, 829, -9771, 0, 90, 0, (11 << 16), bhvDoorWarp),
 		OBJECT(MODEL_NONE, -4975, 829, -6269, 0, 90, 0, (11 << 16), bhvDoorWarp),
