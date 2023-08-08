@@ -215,6 +215,11 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "34_gun_fire"
+        },
+        "inst40": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "35_nsmbw_mini_mushroom"
         }
     },
     "instrument_list": [
@@ -257,6 +262,7 @@
         "inst36",
         "inst37",
         "inst38",
-        "inst39"
+        "inst39",
+        "inst40"
     ]
 }

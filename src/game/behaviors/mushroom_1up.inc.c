@@ -2,7 +2,7 @@
 
 void bhv_1up_interact(void) {
     if (obj_check_if_collided_with_object(o, gMarioObject)) {
-        play_sound(SOUND_GENERAL_COLLECT_1UP, gGlobalSoundSource);
+        play_sound(SOUND_CUSTOM_MISC_NSMBW_MINI_MUSHROOM, gGlobalSoundSource);
 #ifdef MUSHROOMS_HEAL
         gMarioState->healCounter   = 31;
 #ifdef BREATH_METER
@@ -25,6 +25,12 @@ void bhv_1up_common_init(void) {
     o->oGravity = 3.0f;
     o->oFriction = 1.0f;
     o->oBuoyancy = 1.0f;
+
+    if (!gIsConsole) {
+        cur_obj_scale(0.55f);
+    } else {
+        cur_obj_scale(0.75f);
+    }
 }
 
 void bhv_1up_init(void) {

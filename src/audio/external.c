@@ -1342,6 +1342,10 @@ static void update_game_sound(void) {
                                 get_sound_freq_scale(bank, soundIndex);
                             gSequencePlayers[SEQ_PLAYER_SFX].channels[channelIndex]->reverbVol =
                                 get_sound_reverb(bank, soundIndex, channelIndex);
+
+                            if (gMarioState->squishTimer == 69 && bank == SOUND_BANK_VOICE) {
+                                gSequencePlayers[SEQ_PLAYER_SFX].channels[channelIndex]->freqScale *= 1.6f;
+                            }
 #endif
                             break;
                         case SOUND_BANK_GENERAL:
@@ -1514,6 +1518,10 @@ static void update_game_sound(void) {
                                 get_sound_freq_scale(bank, soundIndex);
                             gSequencePlayers[SEQ_PLAYER_SFX].channels[channelIndex]->reverbVol =
                                 get_sound_reverb(bank, soundIndex, channelIndex);
+
+                            if (gMarioState->squishTimer == 69 && bank == SOUND_BANK_VOICE) {
+                                gSequencePlayers[SEQ_PLAYER_SFX].channels[channelIndex]->freqScale *= 1.6f;
+                            }
 #endif
                             break;
                         case SOUND_BANK_GENERAL:

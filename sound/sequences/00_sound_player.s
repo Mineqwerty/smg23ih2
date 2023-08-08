@@ -8218,6 +8218,7 @@ sound_ref .sound_custom_blockington_npc_child_death_2
 sound_ref .sound_custom_blockington_npc_child_death_3
 sound_ref .sound_custom_misc_gun_draw
 sound_ref .sound_custom_misc_gun_fire
+sound_ref .sound_custom_misc_nsmbw_mini_mushroom
 
 .sound_custom_misc_mario_maker_laugh_0:
 chan_setbank 5
@@ -8476,6 +8477,17 @@ chan_end
 
 .layer_custom_misc_gun_fire:
 layer_note1 39, 0x4f, 119
+layer_end
+
+.sound_custom_misc_nsmbw_mini_mushroom:
+chan_setbank 5
+chan_setinstr 40
+chan_setlayer 0, .layer_custom_misc_nsmbw_mini_mushroom
+chan_end
+
+.layer_custom_misc_nsmbw_mini_mushroom:
+layer_shouldnotshitmusic 1
+layer_note1 39, 0x55, 127
 layer_end
 
 .channelB_table:
