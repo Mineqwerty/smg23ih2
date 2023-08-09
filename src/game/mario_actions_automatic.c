@@ -109,7 +109,7 @@ s32 act_holding_pole(struct MarioState *m) {
         return set_mario_action(m, ACT_WALL_KICK_AIR, 0);
     }
 
-    if (m->controller->stickY > 16.0f) {
+    if (m->controller->stickY <= -16.0f) {
         f32 poleTop = m->usedObj->hitboxHeight - 100.0f;
         const BehaviorScript *poleBehavior = virtual_to_segmented(SEGMENT_BEHAVIOR_DATA, m->usedObj->behavior);
 
@@ -117,13 +117,13 @@ s32 act_holding_pole(struct MarioState *m) {
             return set_mario_action(m, ACT_CLIMBING_POLE, 0);
         }
 
-        if (poleBehavior != bhvGiantPole && m->controller->stickY > 50.0f) {
+        if (poleBehavior != bhvGiantPole && m->controller->stickY <= -50.0f) {
             return set_mario_action(m, ACT_TOP_OF_POLE_TRANSITION, 0);
         }
     }
 
-    if (m->controller->stickY < -16.0f) {
-        m->angleVel[1] -= m->controller->stickY * 2;
+    if (m->controller->stickY >= 16.0f) {
+        m->angleVel[1] += m->controller->stickY * 2;
         if (m->angleVel[1] > 0x1000) {
             m->angleVel[1] = 0x1000;
         }
@@ -165,16 +165,16 @@ s32 act_climbing_pole(struct MarioState *m) {
         return set_mario_action(m, ACT_WALL_KICK_AIR, 0);
     }
 
-    if (m->controller->stickY < 8.0f) {
+    if (m->controller->stickY >= -8.0f) {
         return set_mario_action(m, ACT_HOLDING_POLE, 0);
     }
 
-    //marioObj->oMarioPolePos += m->controller->stickY / 8.0f;
+    marioObj->oMarioPolePos -= m->controller->stickY / 8.0f;
     m->angleVel[1]  = 0;
     m->faceAngle[1] = cameraAngle - approach_s32((s16)(cameraAngle - m->faceAngle[1]), 0, 0x400, 0x400);
 
     if (set_pole_position(m, 0.0f) == POLE_NONE) {
-        s32 animSpeed = m->controller->stickY / 4.0f * 0x10000;
+        s32 animSpeed = m->controller->stickY / -4.0f * 0x10000;
         set_mario_anim_with_accel(m, MARIO_ANIM_CLIMB_UP_POLE, animSpeed);
         add_tree_leaf_particles(m);
         play_climbing_sounds(m, 1);
@@ -241,7 +241,7 @@ s32 act_top_of_pole(struct MarioState *m) {
     if (m->input & INPUT_A_PRESSED) {
         return set_mario_action(m, ACT_TOP_OF_POLE_JUMP, 0);
     }
-    if (m->controller->stickY < -16.0f) {
+    if (m->controller->stickY >= 16.0f) {
         return set_mario_action(m, ACT_TOP_OF_POLE_TRANSITION, 1);
     }
 
