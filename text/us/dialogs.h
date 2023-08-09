@@ -64,7 +64,7 @@ level tahat i made mysef\n\
 and not stolen frm the\n\
 hack 『@8F1F8FFFELISE@--------』 msde by\n\
 @9F0000FFTeam Cornersoft@--------!\n\
-@4F4F4FFF(Download Now!!)"))
+@4F4F4FFF(Download Today!!)"))
 
 DEFINE_DIALOG(DIALOG_005, 1, 3, 30, 200, _("\
 Hey, Mario! Is it true\n\
