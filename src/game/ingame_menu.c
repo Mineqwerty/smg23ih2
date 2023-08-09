@@ -114,7 +114,7 @@ u8 gDialogCharWidths[256] = { // TODO: Is there a way to auto generate this?
 #ifdef VERSION_EU
     7,  5, 10,  5,  9,  8,  4,  0,  0,  0,  0,  5,  5,  6,  5,  0,
 #else
-    7,  5, 10,  5,  9,  8,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    7,  5, 10,  5,  9,  8,  4,  15,  0,  0,  0,  0,  0,  0,  0,  0,
 #endif
     0,  0,  5,  7,  7,  6,  6,  8,  0,  8, 10,  6,  4, 10,  0,  0
 };
@@ -323,6 +323,16 @@ void render_generic_char(u8 c) {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_tex_settings);
 }
 
+void render_emoji(u8 c) {
+    void **fontLUT = segmented_to_virtual(main_font_lut);
+    void *packedTexture = segmented_to_virtual(fontLUT[c]);
+
+    gDPPipeSync(gDisplayListHead++);
+    gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b_LOAD_BLOCK, 1, VIRTUAL_TO_PHYSICAL(packedTexture));
+
+    gSPDisplayList(gDisplayListHead++, dl_emoji_tex_settings);
+}
+
 extern const Vtx vertex_ia8_char_16[];
 void render_generic_char_16(u8 c) {
     void **fontLUT = segmented_to_virtual(main_font_lut);
@@ -461,6 +471,7 @@ void print_generic_string(s16 x, s16 y, const u8 *str) {
                 render_multi_text_string(STRING_YOU);
                 break;
             case DIALOG_CHAR_SPACE:
+            case DIALOG_CHAR_EMOJI:
                 // create_dl_translation_matrix(MENU_MTX_NOPUSH, (f32)(gDialogCharWidths[DIALOG_CHAR_SPACE]), 0.0f, 0.0f);
                 create_dl_translation_matrix(MENU_MTX_NOPUSH, CHAR_WIDTH_SPACE, 0.0f, 0.0f);
                 break;
@@ -942,6 +953,26 @@ void handle_dialog_text_and_pages(s8 colorMode, struct DialogEntry *dialog, s8 l
             case DIALOG_CHAR_TERMINATOR:
                 pageState = DIALOG_PAGE_STATE_END;
                 gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+                break;
+                
+            case DIALOG_CHAR_EMOJI:
+                gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+                gSPDisplayList(gDisplayListHead++, dl_emoji_begin);
+
+                if ((lineNum >= lowerBound) && (lineNum <= (lowerBound + linesPerBox))) {
+                    if (linePos || xMatrix != 1) {
+                        create_dl_translation_matrix(
+                            MENU_MTX_NOPUSH, (f32)(gDialogCharWidths[DIALOG_CHAR_SPACE] * (xMatrix - 1)), 0, 0);
+                    }
+
+                    render_emoji(strChar);
+                    create_dl_translation_matrix(MENU_MTX_NOPUSH, (f32)(gDialogCharWidths[strChar]), 0, 0);
+                    xMatrix = 1;
+                    linePos++;
+                }
+
+                gSPDisplayList(gDisplayListHead++, dl_emoji_end);
+                gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
                 break;
             case DIALOG_CHAR_COLOR:
                 customColor = 1;

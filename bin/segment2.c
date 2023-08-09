@@ -1992,6 +1992,10 @@ ALIGNED8 static const Texture texture_font_char_us_button_C_right[] = {
 ALIGNED8 static const Texture texture_font_char_robux[] = {
 #include "textures/segment2/custom_robux.ia4.inc.c"
 };
+
+ALIGNED8 static const Texture texture_font_sunglasses_emoji[] = {
+#include "textures/segment2/custom_sunglasses_emoji.rgba16.inc.c"
+};
 #endif
 
 ALIGNED8 static const Texture texture_hud_char_camera[] = {
@@ -2160,7 +2164,7 @@ const Texture *const main_font_lut[] = {
                   0x0,               0x0,               0x0,               0x0,
                   0x0,               0x0,               0x0,               0x0,
                   0x0, texture_font_char_us_open_parentheses, texture_font_char_us_close_open_parentheses, texture_font_char_us_close_parentheses,
-    texture_font_char_us_left_right_arrow, texture_font_char_us_ampersand, texture_font_char_us_ellipsis,               0x0,
+    texture_font_char_us_left_right_arrow, texture_font_char_us_ampersand, texture_font_char_us_ellipsis, texture_font_sunglasses_emoji,
                   0x0,               0x0,               0x0,               0x0,
                   0x0,               0x0,               0x0,               0x0,
                   0x0,               0x0, texture_font_char_us_exclamation, texture_font_char_us_percent,
@@ -2454,6 +2458,50 @@ const Gfx dl_ia_text_end[] = {
     gsDPSetEnvColor(255, 255, 255, 255),
     gsSPSetGeometryMode(G_LIGHTING | G_SHADING_SMOOTH),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsSPEndDisplayList(),
+};
+
+static const Vtx vertex_emoji_char[] = {
+    {{{     0,      0,      0}, 0, {     0,   2048}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    16,      0,      0}, 0, {  2048,   2048}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    16,     16,      0}, 0, {  2048,      0}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{     0,     16,      0}, 0, {     0,      0}, {0xff, 0xff, 0xff, 0xff}}},
+};
+
+// 0x0200EE68 - 0x020073E8
+const Gfx dl_emoji_begin[] = {
+    gsDPPipeSync(),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetCombineMode(G_CC_FADEA, G_CC_FADEA),
+    gsDPSetEnvColor(255, 255, 255, 255),
+    gsDPSetRenderMode(G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsDPSetTextureFilter(G_TF_POINT),
+    gsSPEndDisplayList(),
+};
+
+// 0x020073E8 - 0x02007418
+const Gfx dl_emoji_tex_settings[] = {
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b_LOAD_BLOCK, 0, 0, G_TX_LOADTILE, 0, (G_TX_CLAMP | G_TX_NOMIRROR), 5, G_TX_NOLOD, (G_TX_CLAMP | G_TX_NOMIRROR), 5, G_TX_NOLOD),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, ((32 * 32) - 1), CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+	gsDPPipeSync(),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, G_TX_RENDERTILE, 0, (G_TX_CLAMP | G_TX_NOMIRROR), 5, G_TX_NOLOD, (G_TX_CLAMP | G_TX_NOMIRROR), 5, G_TX_NOLOD),
+    gsDPSetTileSize(0, 0, 0, ((32 - 1) << G_TEXTURE_IMAGE_FRAC), ((32 - 1) << G_TEXTURE_IMAGE_FRAC)),
+    gsSPVertex(vertex_emoji_char, 4, 0),
+    gsSP2Triangles( 0,  1,  2, 0x0, 0,  2,  3, 0x0),
+    gsSPEndDisplayList(),
+};
+
+// 0x0200EEF0 - 0x0200EF30
+const Gfx dl_emoji_end[] = {
+    gsDPPipeSync(),
+    gsDPSetTexturePersp(G_TP_PERSP),
+    gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
+    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
+    gsDPSetEnvColor(255, 255, 255, 255),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsSPEndDisplayList(),
 };

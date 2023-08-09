@@ -122,6 +122,7 @@ enum DialogSpecialChars {
     DIALOG_CHAR_COLOR                = 0xDF,
     DIALOG_CHAR_SPACE                = 0x9E,
     DIALOG_CHAR_STAR_COUNT           = 0xE0, // number of stars
+    DIALOG_CHAR_EMOJI                = 0xE7,
     DIALOG_CHAR_UMLAUT               = 0xE9,
     DIALOG_CHAR_MARK_START           = 0xEF,
     DIALOG_CHAR_DAKUTEN              = (DIALOG_CHAR_MARK_START + DIALOG_MARK_DAKUTEN),

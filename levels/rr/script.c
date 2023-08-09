@@ -82,7 +82,7 @@ const LevelScript level_rr_entry[] = {
 		OBJECT(MODEL_NONE, 0, 0, 3, 0, 0, 0, (1 << 16) | (3 << 8) | (255), bhvCheckpoint),
 		OBJECT(MODEL_NONE, 625, -1011, 1125, 0, 0, 0, 0x00000000, bhvEmulatorCrasher),
 		OBJECT(MODEL_STAR, 3101, 426, 699, 0, 0, 0, 0x00000000, bhvStar),
-		OBJECT(MODEL_WOODEN_SIGNPOST, -218, 0, -1260, 0, 0, 0, (DIALOG_082 << 16), bhvMessagePanel),
+		OBJECT(MODEL_WOODEN_SIGNPOST, -218, 0, -1260, 0, 0, 0, (DIALOG_083 << 16), bhvMessagePanel),
 		OBJECT(MODEL_NONE, 0, 200, 0, 0, 0, 0, 0x000A0000, bhvSpinAirborneWarp),
 		MARIO_POS(0x01, 0, 0, 200, 0),
 		TERRAIN(rr_area_1_collision),

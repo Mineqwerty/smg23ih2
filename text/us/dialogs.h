@@ -62,7 +62,7 @@ DEFINE_DIALOG(DIALOG_004, 1, 5, 30, 200, _("\
 tihs is definnitely my\n\
 level tahat i made mysef\n\
 and not stolen frm the\n\
-hack 『@BF00BFFFELISE@--------』 msde by\n\
+hack 『@8F1F8FFFELISE@--------』 msde by\n\
 @9F0000FFTeam Cornersoft@--------!\n\
 @4F4F4FFF(Download Now!!)"))
 
@@ -920,13 +920,10 @@ if you die in yhe\n\
 game....\n\
 OU DIE IN REAL LIFE!"))
 
-DEFINE_DIALOG(DIALOG_083, 1, 6, 30, 200, _("\
-There's something strange\n\
-about that clock. As you\n\
-jump inside, watch the\n\
-position of the big hand.\n\
-Oh, look what I found!\n\
-Here, Mario, catch!"))
+DEFINE_DIALOG(DIALOG_083, 1, 3, 30, 200, _("\
+Thaks to @0F6F0FFFthecozies@-------- ad\n\
+@0F6F0FFFArthurtilly@-------- for tellig me my\n\
+my hak is cool! ;")) // Emoji
 
 DEFINE_DIALOG(DIALOG_084, 1, 3, 30, 200, _("\
 Yeeoww! Unhand me,\n\
