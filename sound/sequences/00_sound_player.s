@@ -381,6 +381,7 @@ sound_ref .sound_action_jump_default
 sound_ref .sound_action_jump_default
 sound_ref .sound_action_jump_default
 sound_ref .sound_action_hit_hidden_block
+sound_ref .sound_action_custom_teleport
 
 .sound_action_jump_default:
 chan_setbank 1
@@ -1355,6 +1356,27 @@ layer_transpose 1
 .layer_79D:
 layer_portamento 0x81, 20, 100
 layer_note1 27, 0x30, 127
+layer_end
+
+.sound_action_custom_teleport:
+chan_setbank 9
+chan_setinstr 7
+chan_setpanmix 0
+chan_setval 48
+chan_call .set_reverb
+chan_setlayer 0, .layer_custom_teleport
+chan_setlayer 1, .layer_custom_teleport_2
+chan_end
+
+.layer_custom_teleport:
+layer_setpan 0x24
+layer_note1 39, 0x100, 91
+layer_end
+
+.layer_custom_teleport_2:
+layer_delay 0x3
+layer_setpan 0x5B
+layer_note1 39, 0x100, 91
 layer_end
 
 .chan_7A5:

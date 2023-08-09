@@ -780,6 +780,10 @@ void render_hud_camera_status(void) {
 void render_hud(void) {
     s16 hudDisplayFlags = gHudDisplay.flags;
 
+    if (gCurrLevelNum == SMG23IH2_LEVEL_PURGATORY) {
+        hudDisplayFlags = HUD_DISPLAY_NONE;
+    }
+
     if (hudDisplayFlags == HUD_DISPLAY_NONE) {
         sPowerMeterHUD.animation = POWER_METER_HIDDEN;
         sPowerMeterStoredHealth = 8;
@@ -838,11 +842,11 @@ void render_hud(void) {
         }
 #endif
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT && gCurrLevelNum != SMG32IH2_LEVEL_FBE) {
+        if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT && gCurrLevelNum != SMG23IH2_LEVEL_FBE) {
             render_hud_coins();
         }
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_STAR_COUNT && gCurrLevelNum != SMG32IH2_LEVEL_FBE) {
+        if (hudDisplayFlags & HUD_DISPLAY_FLAG_STAR_COUNT && gCurrLevelNum != SMG23IH2_LEVEL_FBE) {
             render_hud_stars();
         }
 
@@ -850,7 +854,7 @@ void render_hud(void) {
             render_hud_keys();
         }
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER && gCurrLevelNum != SMG32IH2_LEVEL_FBE) {
+        if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER && gCurrLevelNum != SMG23IH2_LEVEL_FBE) {
             render_hud_power_meter();
 #ifdef PUPPYCAM
             if (!gPuppyCam.enabled) {

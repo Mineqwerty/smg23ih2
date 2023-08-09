@@ -8,6 +8,10 @@ void bhv_giggler_init(void) {
 }
 
 void bhv_giggler_loop(void) {
+    if (gGlaggleMad) {
+        return;
+    }
+
     elastic_approach_i_stole_from_cozies(&o->oFloatF4, &o->oFloatF8, absf(o->oVelY / 50.0f), 0.1f,
                                          0.3f);
 

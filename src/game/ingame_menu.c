@@ -1775,11 +1775,7 @@ void render_pause_course_options(s16 x, s16 y, s8 *index, s16 yIndex) {
 
     print_generic_string(x + 10, y - 2, LANGUAGE_ARRAY(textContinue));
 
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 0, gDialogTextAlpha);
-
     print_generic_string(x + 10, y - 17, LANGUAGE_ARRAY(textExitCourse));
-
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
 
     if (*index != MENU_OPT_CAMERA_ANGLE_R) {
         print_generic_string(x + 10, y - 33, LANGUAGE_ARRAY(textCameraAngleR));
@@ -1993,7 +1989,10 @@ s32 render_pause_courses_and_castle(void) {
 // #else
 //             if (gMarioStates[0].action & ACT_FLAG_PAUSE_EXIT) {
 // #endif
-                if (gCurrLevelNum != SMG23IH2_LEVEL_2 || (get_current_background_music() & 0x7F) != SEQ_LEVEL_SLIDE) {
+                // if (gCurrLevelNum != SMG23IH2_LEVEL_2 || (get_current_background_music() & 0x7F) != SEQ_LEVEL_SLIDE) {
+                //     render_pause_course_options(99, 93, &gDialogLineNum, 15);
+                // }
+                if (gCurrLevelNum != SMG23IH2_LEVEL_PURGATORY && gCurrLevelNum != SMG23IH2_LEVEL_FBE) {
                     render_pause_course_options(99, 93, &gDialogLineNum, 15);
                 }
 //             }

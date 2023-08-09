@@ -38,6 +38,7 @@
 #include "levels/ssl/spindel/model.inc.c"
 #include "levels/ssl/moving_pyramid_wall/model.inc.c"
 #include "levels/ssl/pyramid_elevator/model.inc.c"
+#include "levels/ssl/eyerok_col/model.inc.c" // Blank file
 #include "levels/ssl/areas/2/collision.inc.c"
 #include "levels/ssl/areas/3/collision.inc.c"
 #include "levels/ssl/areas/2/macro.inc.c"
@@ -48,3 +49,9 @@
 #include "levels/ssl/pyramid_elevator/collision.inc.c"
 #include "levels/ssl/eyerok_col/collision.inc.c"
 #include "levels/ssl/areas/2/movtext.inc.c"
+
+#include "levels/ssl/leveldata.inc.c"
+
+#include "custom_door_a/model.inc.c"
+#include "custom_portal_w/model.inc.c"
+#include "custom_portal_w/collision.inc.c"

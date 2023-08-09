@@ -1819,8 +1819,8 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
         set_mario_action(gMarioState, ACT_IDLE, 0);
     }
 
-    if (gFBDisabled == FB_CHECK_DISABLED && gCurrLevelNum != SMG32IH2_LEVEL_FBE) {
-        initiate_warp(SMG32IH2_LEVEL_FBE, 1, 0x0A, 0);
+    if (gFBDisabled == FB_CHECK_DISABLED && gCurrLevelNum != SMG23IH2_LEVEL_FBE) {
+        initiate_warp(SMG23IH2_LEVEL_FBE, 1, 0x0A, 0);
     }
 
     if (gChangeArea > 0) {

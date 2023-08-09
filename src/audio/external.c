@@ -96,7 +96,7 @@ enum DialogSpeakers {
 
 u8 sDialogSpeaker[] = {
     //       0      1      2      3      4      5      6      7      8      9
-    /* 0*/ _,     BOMB,  BOMB,  BOMB,  BOMB,  KOOPA, KOOPA, KOOPA, _,     KOOPA,
+    /* 0*/ _,     BOMB,  BOMB,  BOMB,  _,  KOOPA, KOOPA, KOOPA, _,     KOOPA,
     /* 1*/ _,     _,     _,     _,     _,     _,     _,     KBOMB, _,     _,
     /* 2*/ _,     BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1,
     /* 3*/ _,     _,     _,     _,     _,     _,     _,     TUXIE, _,     _,
@@ -645,7 +645,7 @@ struct SPTask *create_next_audio_frame_task(void) {
                 gPatchyTimer++;
             }
 
-            if (gCurrLevelNum == SMG32IH2_LEVEL_FBE) {
+            if (gCurrLevelNum == SMG23IH2_LEVEL_FBE) {
                 gGlaggleTimer++;
                 if (gGlaggleTimer > 5198) {
                     gGlaggleMad = TRUE;

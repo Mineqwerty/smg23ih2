@@ -647,7 +647,7 @@ void render_loading_screen(void) {
 
 extern const Texture texture_glag[];
 void render_glaggle(void) {
-    if (gCurrLevelNum == SMG32IH2_LEVEL_FBE && gGlaggleMad == TRUE) {
+    if (gCurrLevelNum == SMG23IH2_LEVEL_FBE && gGlaggleMad == TRUE) {
         gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
         render_multi_image(segmented_to_virtual(texture_glag), 0, 0, 320, 240, 0, 0, G_CYC_COPY);
         gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
@@ -691,6 +691,13 @@ void render_game(void) {
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, gBorderHeight, SCREEN_WIDTH,
                       SCREEN_HEIGHT - gBorderHeight);
+
+        if (gCurrLevelNum == SMG23IH2_LEVEL_PURGATORY) {
+            prepare_blank_box();
+            render_blank_box(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0, 111);
+            finish_blank_box();
+        }
+
         render_hud();
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);

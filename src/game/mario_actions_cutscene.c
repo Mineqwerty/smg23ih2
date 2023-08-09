@@ -1530,8 +1530,13 @@ s32 act_teleport_fade_out(struct MarioState *m) {
 }
 
 s32 act_teleport_fade_in(struct MarioState *m) {
-    play_sound_if_no_flag(m, SOUND_ACTION_TELEPORT, MARIO_ACTION_SOUND_PLAYED);
-    set_mario_animation(m, MARIO_ANIM_FIRST_PERSON);
+    if (gCurrLevelNum  == SMG23IH2_LEVEL_PURGATORY) {
+        play_sound_if_no_flag(m, SOUND_ACTION_CUSTOM_TELEPORT, MARIO_ACTION_SOUND_PLAYED);
+        set_mario_animation(m, MARIO_ANIM_IDLE_HEAD_CENTER);
+    } else {
+        play_sound_if_no_flag(m, SOUND_ACTION_TELEPORT, MARIO_ACTION_SOUND_PLAYED);
+        set_mario_animation(m, MARIO_ANIM_FIRST_PERSON);
+    }
 
 #if ENABLE_RUMBLE
     if (m->actionTimer == 0) {

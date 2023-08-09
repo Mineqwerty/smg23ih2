@@ -4948,6 +4948,26 @@ const BehaviorScript bhvStaticPNG[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvStaticDoor[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, 0),
+    LOAD_COLLISION_DATA(door_seg3_collision_door),
+    SET_FLOAT(oCollisionDistance, 30000),
+    SET_FLOAT(oDrawingDistance, 30000),
+    CALL_NATIVE(load_object_static_model),
+    BREAK(),
+};
+
+const BehaviorScript bhvStaticPortal[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, 0),
+    LOAD_COLLISION_DATA(custom_portal_w_collision),
+    SET_FLOAT(oCollisionDistance, 30000),
+    SET_FLOAT(oDrawingDistance, 30000),
+    CALL_NATIVE(load_object_static_model),
+    BREAK(),
+};
+
 const BehaviorScript bhvFazanaCar[] = {
     BEGIN(OBJ_LIST_CAR),
     OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),

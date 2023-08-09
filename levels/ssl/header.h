@@ -85,4 +85,11 @@ extern const Gfx ssl_dl_pyramid_sand_pathway_side_end[];
 // script
 extern const LevelScript level_ssl_entry[];
 
+
+#include "levels/ssl/header.inc.h"
+
+#include "custom_door_a/geo_header.h"
+#include "custom_portal_w/geo_header.h"
+#include "custom_portal_w/collision_header.h"
+
 #endif

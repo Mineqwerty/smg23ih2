@@ -590,6 +590,8 @@
 #define MODEL_PNG_GUN                     0x141
 #define MODEL_PNG_SUNGLASSES              0x142
 #define MODEL_CONFETTI                    0x143
+#define MODEL_CUSTOM_DOOR_A               0x144        // ELISE door for house   
+#define MODEL_PORTAL_WARP                 0x145        // ELISE generic warp portal
 
 #endif
 

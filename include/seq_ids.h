@@ -54,6 +54,7 @@ enum SeqId {
     SEQ_STREAMED_GLAGGLELAND,         // 0x29
     SEQ_STREAMED_WIISPORTS_VICTORY,   // 0x2A
     SEQ_LEVEL_SNOW_QUIETER,           // 0x2B
+    SEQ_LEVEL_ALONE_ELISE,            // 0x2C
     SEQ_COUNT
 };
 

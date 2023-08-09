@@ -434,6 +434,8 @@ extern const BehaviorScript bhvBabombExcivatoinLetter[];
 extern const BehaviorScript bhvCarOrangeNumber[];
 extern const BehaviorScript bhvConfetti[];
 extern const BehaviorScript bhvStaticPNG[];
+extern const BehaviorScript bhvStaticDoor[];
+extern const BehaviorScript bhvStaticPortal[];
 extern const BehaviorScript bhvFazanaCar[];
 extern const BehaviorScript bhvTicketMuncherSound[];
 extern const BehaviorScript bhvHiddenBlock[];

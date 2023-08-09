@@ -1193,12 +1193,7 @@ s32 play_mode_paused(void) {
             set_play_mode(PLAY_MODE_NORMAL);
             level_trigger_warp(gMarioState, WARP_OP_DEATH);
 #else
-            struct SaveFileCheckpoint *checkpoint = save_file_get_last_checkpoint();
-            if (checkpoint) {
-                initiate_warp(checkpoint->checkpointLastLevel, checkpoint->checkpointLastArea, WARP_NODE_CHECKPOINT, WARP_FLAG_EXIT_COURSE);
-            } else {
-                initiate_warp(EXIT_COURSE_LEVEL, EXIT_COURSE_AREA, EXIT_COURSE_NODE, WARP_FLAG_EXIT_COURSE);
-            }
+            initiate_warp(EXIT_COURSE_LEVEL, EXIT_COURSE_AREA, EXIT_COURSE_NODE, WARP_FLAG_EXIT_COURSE);
             fade_into_special_warp(WARP_SPECIAL_NONE, 0);
             gSavedCourseNum = COURSE_NONE;
 #endif

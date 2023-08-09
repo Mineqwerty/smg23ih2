@@ -234,6 +234,8 @@
 
 // Elemental
 #define COLOR_RGB_JRB_SKY                   { 0x50, 0x64, 0x5A } //  80 100  90
+#define COLOR_RGB_JRB_SKY_CNS               { 0xC5, 0xC5, 0xC5 } // 197 197 197
+#define COLOR_RGB_JRB_SKY_EMU               { 0x8C, 0x8C, 0x8C } // 140 140 140
 #define COLOR_RGB_WATER                     { 0x05, 0x50, 0x96 } //   5  80 150
 #define COLOR_RGB_ICE                       { 0x7D, 0x9A, 0xD0 } // 125 154 208
 #define COLOR_RGB_LAVA                      { 0x8F, 0x06, 0x00 } // 143   6   0
