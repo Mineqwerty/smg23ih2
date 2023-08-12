@@ -169,6 +169,7 @@ SECTIONS
 #ifdef S2DEX_TEXT_ENGINE
       BUILD_DIR/src/s2d_engine*.o(.text*);
 #endif
+      BUILD_DIR/src/libpl*.o(.text*);
       */ULTRALIB.a:*.o(.text*);
       */libnustd.a:*.o(.text*);
       */libgcc.a:*.o(.text*);
@@ -191,6 +192,7 @@ SECTIONS
 #ifdef S2DEX_TEXT_ENGINE
       BUILD_DIR/src/s2d_engine*.o(.*data*);
 #endif
+      BUILD_DIR/src/libpl*.o(.*data*);
       */ULTRALIB.a:*.o(.data*);
       */libhvqm2.a:*.o(.data*);
       */librtc.a:*.o(.data*);
@@ -207,6 +209,7 @@ SECTIONS
 #ifdef S2DEX_TEXT_ENGINE
       BUILD_DIR/src/s2d_engine*.o(.rodata*);
 #endif
+      BUILD_DIR/src/libpl*.o(.rodata*);
       */ULTRALIB.a:*.o(.rodata*);
       */libgcc.a:*.o(.rodata*);
       */librtc.a:*.o(.rodata*);
@@ -224,6 +227,7 @@ SECTIONS
 #ifdef S2DEX_TEXT_ENGINE
       BUILD_DIR/src/s2d_engine*.o(.*bss*);
 #endif
+      BUILD_DIR/src/libpl*.o(.*bss*);
       */ULTRALIB.a:*.o(COMMON);
       */ULTRALIB.a:*.o(.scommon);
       */ULTRALIB.a:*.o(.*bss*);

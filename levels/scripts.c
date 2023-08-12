@@ -120,6 +120,7 @@ const LevelScript level_main_scripts_entry[] = {
 	LOAD_MODEL_FROM_GEO(MODEL_MARIO_DEATH_SPRITE,      custom_mario_death_sprite_geo), 
 	LOAD_MODEL_FROM_GEO(MODEL_MARIO_MAKER_LAUGH,       mario_maker_laugh_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SPINY,                   spiny_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_RHDC_PFP,                rhdc_pfp_geo),
 #ifdef IA8_30FPS_COINS
     LOAD_MODEL_FROM_GEO(MODEL_SILVER_COIN,             silver_coin_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SILVER_COIN_NO_SHADOW,   silver_coin_no_shadow_geo),

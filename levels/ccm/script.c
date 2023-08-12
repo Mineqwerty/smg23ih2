@@ -77,6 +77,7 @@ const LevelScript level_ccm_entry[] = {
 		STOP_MUSIC(0),
 		TERRAIN_TYPE(TERRAIN_GRASS),
 		/* Fast64 begin persistent block [area commands] */
+		OBJECT(MODEL_RHDC_PFP, -11137, 1300, 0, 0, 90, 0, 0x00000000, bhvRHDCPFP),
 		OBJECT(MODEL_NONE, -9370, 0, 2554, 0, 0, 0, 0x00000000, bhvTicketMuncherSound),
 		SET_BACKGROUND_MUSIC_WITH_REVERB(0, SEQ_SHIT_BROS_2, 0, 0),
 		/* Fast64 end persistent block [area commands] */

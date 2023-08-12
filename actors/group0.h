@@ -395,4 +395,6 @@ extern const struct Animation *const spiny_egg_seg5_anims_050157E4[];
 
 #include "mario_maker_laugh/geo_header.h"
 
+#include "rhdc_pfp/geo_header.h"
+
 #endif

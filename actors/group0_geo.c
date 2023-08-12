@@ -25,5 +25,6 @@
 #include "fazana_car/geo.inc.c"
 #include "custom_mario_death_sprite/geo.inc.c"
 #include "mario_maker_laugh/geo.inc.c"
+#include "rhdc_pfp/geo.inc.c"
 #include "spiny/geo.inc.c"
 #include "spiny_egg/geo.inc.c"

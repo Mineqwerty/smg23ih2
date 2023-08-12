@@ -823,6 +823,7 @@ UNUSED s32 debug_sequence_tracker(s16 debugInputSequence[]) {
 #include "behaviors/checkpoint.inc.c"
 #include "behaviors/mario_death_sprite.inc.c"
 #include "behaviors/mario_maker_laugh.inc.c"
+#include "behaviors/rhdc_pfp.inc.c"
 #include "behaviors/babomb_excivatoin_letter.inc.c"
 #include "behaviors/confetti.inc.c"
 #include "behaviors/static_png.inc.c"

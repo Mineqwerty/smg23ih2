@@ -592,6 +592,7 @@
 #define MODEL_CONFETTI                    0x143
 #define MODEL_CUSTOM_DOOR_A               0x144        // ELISE door for house   
 #define MODEL_PORTAL_WARP                 0x145        // ELISE generic warp portal
+#define MODEL_RHDC_PFP                    0x146        // RHDC Profile Picture (to be DMA'd)
 
 #endif
 

@@ -10,6 +10,9 @@
 #include "memory.h"
 #include "config.h"
 
+extern u8 rhdcPFPRGBA32[];
+extern char rhdcUsername[32];
+
 #define MARIO_ANIMS_POOL_SIZE 0x4000
 #define DEMO_INPUTS_POOL_SIZE 0x800
 

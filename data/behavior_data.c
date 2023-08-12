@@ -4948,6 +4948,16 @@ const BehaviorScript bhvStaticPNG[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvRHDCPFP[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, 0),
+    SET_FLOAT(oDrawingDistance, 20000),
+    CALL_NATIVE(bhv_rhdc_pfp_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_rhdc_pfp_loop),
+    END_LOOP(),
+};
+
 const BehaviorScript bhvStaticDoor[] = {
     BEGIN(OBJ_LIST_SURFACE),
     OR_INT(oFlags, 0),

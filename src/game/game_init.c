@@ -1,5 +1,7 @@
 #include <ultra64.h>
 
+#include "libpl/libpl-emu.h"
+#include "libpl/libpl-rhdc.h"
 #include "sm64.h"
 #include "gfx_dimensions.h"
 #include "audio/external.h"
@@ -31,6 +33,19 @@
 #include "vc_check.h"
 #include "vc_ultra.h"
 #include "profiling.h"
+#include "debug.h"
+
+// RHDC Profile Picture
+ALIGNED16 u8 rhdcPFPRGBA32[] = {
+#include "src/game/rhdc_pfp.rgba32.c.in"
+};
+
+// RHDC Username
+char rhdcUsername[32];
+
+static u8 isLibpl = TRUE;
+static u8 usernameSet = FALSE;
+static u8 rhdcPFPSet = FALSE;
 
 // First 3 controller slots
 struct Controller gControllers[3];
@@ -864,6 +879,49 @@ void init_controllers(void) {
     }
 }
 
+static void get_rhdc_info(void) {
+    if (!isLibpl || !libpl_is_supported(LPL_ABI_VERSION_3)) {
+        isLibpl = FALSE;
+        return;
+    }
+
+    if (!usernameSet) {
+        const char *res = libpl_get_my_rhdc_username();
+        if (!res) {
+            return;
+        }
+
+        bcopy(res, rhdcUsername, sizeof(rhdcUsername));
+        usernameSet = TRUE;
+    }
+
+    if (usernameSet && !rhdcPFPSet) {
+        u8 ret = libpl_get_rhdc_avatar_32_async(rhdcUsername, rhdcPFPRGBA32);
+
+        if (ret != 0 && ret != 2 && ret != 4) {
+            // Failure, do not try again
+            rhdcPFPSet = TRUE;
+        } else {
+            switch (lpl_errno) {
+                case 0:
+                    // Success, no need to try again
+                    rhdcPFPSet = TRUE;
+                    break;
+                case 5:
+                    // Waiting on async response, try again next frame
+                    break;
+                default:
+                    // Eternal failure state, do not try again
+                    rhdcPFPSet = TRUE;
+                    // assert(FALSE, "rhdc avatar error");
+                    break;
+            }
+        }
+
+        // Failure, try again next frame
+    }
+}
+
 // Game thread core
 // ----------------------------------------------------------------------------------------------------
 
@@ -935,6 +993,8 @@ void thread5_game_loop(UNUSED void *arg) {
         if (gCrashmaWii) {
             continue;
         }
+
+        get_rhdc_info();
 
         profiler_frame_setup();
         // If the reset timer is active, run the process to reset the game.
